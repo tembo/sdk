@@ -1,5 +1,5 @@
 import { inspect } from 'node:util';
-import { buildHeaders, type HeadersLike, type NullableHeaders } from 'tembo-sdk/internal/headers';
+import { buildHeaders, type HeadersLike, type NullableHeaders } from '@tembo-io/sdk/internal/headers';
 
 function inspectNullableHeaders(headers: NullableHeaders) {
   return `NullableHeaders {${[

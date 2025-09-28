@@ -25,7 +25,7 @@ export default tseslint.config(
         {
           patterns: [
             {
-              regex: '^tembo-sdk(/.*)?',
+              regex: '^@tembo-io/sdk(/.*)?',
               message: 'Use a relative import, not a package import.',
             },
           ],
