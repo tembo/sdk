@@ -7,8 +7,8 @@ const config: JestConfigWithTsJest = {
     '^.+\\.(t|j)sx?$': ['@swc/jest', { sourceMaps: 'inline' }],
   },
   moduleNameMapper: {
-    '^tembo-sdk$': '<rootDir>/src/index.ts',
-    '^tembo-sdk/(.*)$': '<rootDir>/src/$1',
+    '^@tembo-io/sdk$': '<rootDir>/src/index.ts',
+    '^@tembo-io/sdk/(.*)$': '<rootDir>/src/$1',
   },
   modulePathIgnorePatterns: [
     '<rootDir>/ecosystem-tests/',

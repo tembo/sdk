@@ -1,12 +1,12 @@
 {
-  "name": "tembo-sdk",
-  "version": "0.0.1",
+  "name": "@tembo-io/sdk",
+  "version": "0.0.2",
   "description": "The official TypeScript library for the Tembo SDK API",
   "author": "Tembo SDK <>",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "type": "commonjs",
-  "repository": "github:stainless-sdks/tembo-sdk-typescript",
+  "repository": "github:tembo/sdk",
   "license": "Apache-2.0",
   "packageManager": "yarn@1.22.22",
   "files": [

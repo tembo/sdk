@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { TemboSDK } from 'tembo-sdk';
+import { TemboSDK } from '@tembo-io/sdk';
 
 const { stringifyQuery } = TemboSDK.prototype as any;
 
