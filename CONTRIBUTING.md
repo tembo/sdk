@@ -55,12 +55,12 @@ $ cd sdk
 # With yarn
 $ yarn link
 $ cd ../my-package
-$ yarn link @tembo/sdk
+$ yarn link @tembo-io/sdk
 
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @tembo/sdk
+$ pnpm link -—global @tembo-io/sdk
 ```
 
 ## Running tests
