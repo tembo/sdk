@@ -5,8 +5,8 @@
   "compilerOptions": {
     "rootDir": "./dist/src",
     "paths": {
-      "tembo/*": ["./dist/src/*"],
-      "tembo": ["./dist/src/index.ts"]
+      "@tembo/sdk/*": ["./dist/src/*"],
+      "@tembo/sdk": ["./dist/src/index.ts"]
     },
     "noEmit": false,
     "declaration": true,
