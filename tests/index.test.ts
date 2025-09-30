@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { APIPromise } from '@tembo-io/sdk/core/api-promise';
+import { APIPromise } from 'tembo/core/api-promise';
 
 import util from 'node:util';
-import TemboSDK from '@tembo-io/sdk';
-import { APIUserAbortError } from '@tembo-io/sdk';
+import Tembo from 'tembo';
+import { APIUserAbortError } from 'tembo';
 const defaultFetch = fetch;
 
 describe('instantiate client', () => {
@@ -20,7 +20,7 @@ describe('instantiate client', () => {
   });
 
   describe('defaultHeaders', () => {
-    const client = new TemboSDK({
+    const client = new Tembo({
       baseURL: 'http://localhost:5000/',
       defaultHeaders: { 'X-My-Default-Header': '2' },
       apiKey: 'My API Key',
@@ -54,14 +54,14 @@ describe('instantiate client', () => {
 
     beforeEach(() => {
       process.env = { ...env };
-      process.env['TEMBO_SDK_LOG'] = undefined;
+      process.env['TEMBO_LOG'] = undefined;
     });
 
     afterEach(() => {
       process.env = env;
     });
 
-    const forceAPIResponseForClient = async (client: TemboSDK) => {
+    const forceAPIResponseForClient = async (client: Tembo) => {
       await new APIPromise(
         client,
         Promise.resolve({
@@ -87,14 +87,14 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new TemboSDK({ logger: logger, logLevel: 'debug', apiKey: 'My API Key' });
+      const client = new Tembo({ logger: logger, logLevel: 'debug', apiKey: 'My API Key' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).toHaveBeenCalled();
     });
 
     test('default logLevel is warn', async () => {
-      const client = new TemboSDK({ apiKey: 'My API Key' });
+      const client = new Tembo({ apiKey: 'My API Key' });
       expect(client.logLevel).toBe('warn');
     });
 
@@ -107,7 +107,7 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      const client = new TemboSDK({ logger: logger, logLevel: 'info', apiKey: 'My API Key' });
+      const client = new Tembo({ logger: logger, logLevel: 'info', apiKey: 'My API Key' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -122,8 +122,8 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      process.env['TEMBO_SDK_LOG'] = 'debug';
-      const client = new TemboSDK({ logger: logger, apiKey: 'My API Key' });
+      process.env['TEMBO_LOG'] = 'debug';
+      const client = new Tembo({ logger: logger, apiKey: 'My API Key' });
       expect(client.logLevel).toBe('debug');
 
       await forceAPIResponseForClient(client);
@@ -139,11 +139,11 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      process.env['TEMBO_SDK_LOG'] = 'not a log level';
-      const client = new TemboSDK({ logger: logger, apiKey: 'My API Key' });
+      process.env['TEMBO_LOG'] = 'not a log level';
+      const client = new Tembo({ logger: logger, apiKey: 'My API Key' });
       expect(client.logLevel).toBe('warn');
       expect(warnMock).toHaveBeenCalledWith(
-        'process.env[\'TEMBO_SDK_LOG\'] was set to "not a log level", expected one of ["off","error","warn","info","debug"]',
+        'process.env[\'TEMBO_LOG\'] was set to "not a log level", expected one of ["off","error","warn","info","debug"]',
       );
     });
 
@@ -156,8 +156,8 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      process.env['TEMBO_SDK_LOG'] = 'debug';
-      const client = new TemboSDK({ logger: logger, logLevel: 'off', apiKey: 'My API Key' });
+      process.env['TEMBO_LOG'] = 'debug';
+      const client = new Tembo({ logger: logger, logLevel: 'off', apiKey: 'My API Key' });
 
       await forceAPIResponseForClient(client);
       expect(debugMock).not.toHaveBeenCalled();
@@ -172,8 +172,8 @@ describe('instantiate client', () => {
         error: jest.fn(),
       };
 
-      process.env['TEMBO_SDK_LOG'] = 'not a log level';
-      const client = new TemboSDK({ logger: logger, logLevel: 'debug', apiKey: 'My API Key' });
+      process.env['TEMBO_LOG'] = 'not a log level';
+      const client = new Tembo({ logger: logger, logLevel: 'debug', apiKey: 'My API Key' });
       expect(client.logLevel).toBe('debug');
       expect(warnMock).not.toHaveBeenCalled();
     });
@@ -181,7 +181,7 @@ describe('instantiate client', () => {
 
   describe('defaultQuery', () => {
     test('with null query params given', () => {
-      const client = new TemboSDK({
+      const client = new Tembo({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo' },
         apiKey: 'My API Key',
@@ -190,7 +190,7 @@ describe('instantiate client', () => {
     });
 
     test('multiple default query params', () => {
-      const client = new TemboSDK({
+      const client = new Tembo({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { apiVersion: 'foo', hello: 'world' },
         apiKey: 'My API Key',
@@ -199,7 +199,7 @@ describe('instantiate client', () => {
     });
 
     test('overriding with `undefined`', () => {
-      const client = new TemboSDK({
+      const client = new Tembo({
         baseURL: 'http://localhost:5000/',
         defaultQuery: { hello: 'world' },
         apiKey: 'My API Key',
@@ -209,7 +209,7 @@ describe('instantiate client', () => {
   });
 
   test('custom fetch', async () => {
-    const client = new TemboSDK({
+    const client = new Tembo({
       baseURL: 'http://localhost:5000/',
       apiKey: 'My API Key',
       fetch: (url) => {
@@ -227,7 +227,7 @@ describe('instantiate client', () => {
 
   test('explicit global fetch', async () => {
     // make sure the global fetch type is assignable to our Fetch type
-    const client = new TemboSDK({
+    const client = new Tembo({
       baseURL: 'http://localhost:5000/',
       apiKey: 'My API Key',
       fetch: defaultFetch,
@@ -235,7 +235,7 @@ describe('instantiate client', () => {
   });
 
   test('custom signal', async () => {
-    const client = new TemboSDK({
+    const client = new Tembo({
       baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
       apiKey: 'My API Key',
       fetch: (...args) => {
@@ -267,11 +267,7 @@ describe('instantiate client', () => {
       return new Response(JSON.stringify({}), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new TemboSDK({
-      baseURL: 'http://localhost:5000/',
-      apiKey: 'My API Key',
-      fetch: testFetch,
-    });
+    const client = new Tembo({ baseURL: 'http://localhost:5000/', apiKey: 'My API Key', fetch: testFetch });
 
     await client.patch('/foo');
     expect(capturedRequest?.method).toEqual('PATCH');
@@ -279,59 +275,59 @@ describe('instantiate client', () => {
 
   describe('baseUrl', () => {
     test('trailing slash', () => {
-      const client = new TemboSDK({ baseURL: 'http://localhost:5000/custom/path/', apiKey: 'My API Key' });
+      const client = new Tembo({ baseURL: 'http://localhost:5000/custom/path/', apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
 
     test('no trailing slash', () => {
-      const client = new TemboSDK({ baseURL: 'http://localhost:5000/custom/path', apiKey: 'My API Key' });
+      const client = new Tembo({ baseURL: 'http://localhost:5000/custom/path', apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null)).toEqual('http://localhost:5000/custom/path/foo');
     });
 
     afterEach(() => {
-      process.env['TEMBO_SDK_BASE_URL'] = undefined;
+      process.env['TEMBO_BASE_URL'] = undefined;
     });
 
     test('explicit option', () => {
-      const client = new TemboSDK({ baseURL: 'https://example.com', apiKey: 'My API Key' });
+      const client = new Tembo({ baseURL: 'https://example.com', apiKey: 'My API Key' });
       expect(client.baseURL).toEqual('https://example.com');
     });
 
     test('env variable', () => {
-      process.env['TEMBO_SDK_BASE_URL'] = 'https://example.com/from_env';
-      const client = new TemboSDK({ apiKey: 'My API Key' });
+      process.env['TEMBO_BASE_URL'] = 'https://example.com/from_env';
+      const client = new Tembo({ apiKey: 'My API Key' });
       expect(client.baseURL).toEqual('https://example.com/from_env');
     });
 
     test('empty env variable', () => {
-      process.env['TEMBO_SDK_BASE_URL'] = ''; // empty
-      const client = new TemboSDK({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://api.v2.dba.ai/');
+      process.env['TEMBO_BASE_URL'] = ''; // empty
+      const client = new Tembo({ apiKey: 'My API Key' });
+      expect(client.baseURL).toEqual('https://internal.tembo.io/');
     });
 
     test('blank env variable', () => {
-      process.env['TEMBO_SDK_BASE_URL'] = '  '; // blank
-      const client = new TemboSDK({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://api.v2.dba.ai/');
+      process.env['TEMBO_BASE_URL'] = '  '; // blank
+      const client = new Tembo({ apiKey: 'My API Key' });
+      expect(client.baseURL).toEqual('https://internal.tembo.io/');
     });
 
     test('in request options', () => {
-      const client = new TemboSDK({ apiKey: 'My API Key' });
+      const client = new Tembo({ apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/option/foo',
       );
     });
 
     test('in request options overridden by client options', () => {
-      const client = new TemboSDK({ apiKey: 'My API Key', baseURL: 'http://localhost:5000/client' });
+      const client = new Tembo({ apiKey: 'My API Key', baseURL: 'http://localhost:5000/client' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/client/foo',
       );
     });
 
     test('in request options overridden by env variable', () => {
-      process.env['TEMBO_SDK_BASE_URL'] = 'http://localhost:5000/env';
-      const client = new TemboSDK({ apiKey: 'My API Key' });
+      process.env['TEMBO_BASE_URL'] = 'http://localhost:5000/env';
+      const client = new Tembo({ apiKey: 'My API Key' });
       expect(client.buildURL('/foo', null, 'http://localhost:5000/option')).toEqual(
         'http://localhost:5000/env/foo',
       );
@@ -339,17 +335,17 @@ describe('instantiate client', () => {
   });
 
   test('maxRetries option is correctly set', () => {
-    const client = new TemboSDK({ maxRetries: 4, apiKey: 'My API Key' });
+    const client = new Tembo({ maxRetries: 4, apiKey: 'My API Key' });
     expect(client.maxRetries).toEqual(4);
 
     // default
-    const client2 = new TemboSDK({ apiKey: 'My API Key' });
+    const client2 = new Tembo({ apiKey: 'My API Key' });
     expect(client2.maxRetries).toEqual(2);
   });
 
   describe('withOptions', () => {
     test('creates a new client with overridden options', async () => {
-      const client = new TemboSDK({ baseURL: 'http://localhost:5000/', maxRetries: 3, apiKey: 'My API Key' });
+      const client = new Tembo({ baseURL: 'http://localhost:5000/', maxRetries: 3, apiKey: 'My API Key' });
 
       const newClient = client.withOptions({
         maxRetries: 5,
@@ -370,7 +366,7 @@ describe('instantiate client', () => {
     });
 
     test('inherits options from the parent client', async () => {
-      const client = new TemboSDK({
+      const client = new Tembo({
         baseURL: 'http://localhost:5000/',
         defaultHeaders: { 'X-Test-Header': 'test-value' },
         defaultQuery: { 'test-param': 'test-value' },
@@ -389,7 +385,7 @@ describe('instantiate client', () => {
     });
 
     test('respects runtime property changes when creating new client', () => {
-      const client = new TemboSDK({ baseURL: 'http://localhost:5000/', timeout: 1000, apiKey: 'My API Key' });
+      const client = new Tembo({ baseURL: 'http://localhost:5000/', timeout: 1000, apiKey: 'My API Key' });
 
       // Modify the client properties directly after creation
       client.baseURL = 'http://localhost:6000/';
@@ -417,21 +413,21 @@ describe('instantiate client', () => {
 
   test('with environment variable arguments', () => {
     // set options via env var
-    process.env['TEMBO_SDK_API_KEY'] = 'My API Key';
-    const client = new TemboSDK();
+    process.env['TEMBO_API_KEY'] = 'My API Key';
+    const client = new Tembo();
     expect(client.apiKey).toBe('My API Key');
   });
 
   test('with overridden environment variable arguments', () => {
     // set options via env var
-    process.env['TEMBO_SDK_API_KEY'] = 'another My API Key';
-    const client = new TemboSDK({ apiKey: 'My API Key' });
+    process.env['TEMBO_API_KEY'] = 'another My API Key';
+    const client = new Tembo({ apiKey: 'My API Key' });
     expect(client.apiKey).toBe('My API Key');
   });
 });
 
 describe('request building', () => {
-  const client = new TemboSDK({ apiKey: 'My API Key' });
+  const client = new Tembo({ apiKey: 'My API Key' });
 
   describe('custom headers', () => {
     test('handles undefined', async () => {
@@ -450,7 +446,7 @@ describe('request building', () => {
 });
 
 describe('default encoder', () => {
-  const client = new TemboSDK({ apiKey: 'My API Key' });
+  const client = new Tembo({ apiKey: 'My API Key' });
 
   class Serializable {
     toJSON() {
@@ -535,7 +531,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new TemboSDK({ apiKey: 'My API Key', timeout: 10, fetch: testFetch });
+    const client = new Tembo({ apiKey: 'My API Key', timeout: 10, fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -565,7 +561,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new TemboSDK({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+    const client = new Tembo({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
 
@@ -589,7 +585,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new TemboSDK({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+    const client = new Tembo({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -618,7 +614,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new TemboSDK({
+    const client = new Tembo({
       apiKey: 'My API Key',
       fetch: testFetch,
       maxRetries: 4,
@@ -651,7 +647,7 @@ describe('retries', () => {
       capturedRequest = init;
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
-    const client = new TemboSDK({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
+    const client = new Tembo({ apiKey: 'My API Key', fetch: testFetch, maxRetries: 4 });
 
     expect(
       await client.request({
@@ -681,7 +677,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new TemboSDK({ apiKey: 'My API Key', fetch: testFetch });
+    const client = new Tembo({ apiKey: 'My API Key', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);
@@ -711,7 +707,7 @@ describe('retries', () => {
       return new Response(JSON.stringify({ a: 1 }), { headers: { 'Content-Type': 'application/json' } });
     };
 
-    const client = new TemboSDK({ apiKey: 'My API Key', fetch: testFetch });
+    const client = new Tembo({ apiKey: 'My API Key', fetch: testFetch });
 
     expect(await client.request({ path: '/foo', method: 'get' })).toEqual({ a: 1 });
     expect(count).toEqual(2);

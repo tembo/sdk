@@ -2,76 +2,216 @@
 
 import { APIResource } from '../core/resource';
 import { APIPromise } from '../core/api-promise';
-import { buildHeaders } from '../internal/headers';
 import { RequestOptions } from '../internal/request-options';
 
 export class Task extends APIResource {
   /**
    * Create a user-supplied task
+   *
+   * @example
+   * ```ts
+   * const task = await client.task.create();
+   * ```
    */
-  create(body: TaskCreateParams, options?: RequestOptions): APIPromise<void> {
-    return this._client.post('/task/create', {
-      body,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+  create(
+    body: TaskCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<TaskCreateResponse> {
+    return this._client.post('/task/create', { body, ...options });
   }
 
   /**
    * Gets a paginated list of issues for the organization
+   *
+   * @example
+   * ```ts
+   * const tasks = await client.task.list();
+   * ```
    */
-  list(query: TaskListParams | null | undefined = {}, options?: RequestOptions): APIPromise<void> {
-    return this._client.get('/task/list', {
-      query,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+  list(
+    query: TaskListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<TaskListResponse> {
+    return this._client.get('/task/list', { query, ...options });
   }
 
   /**
    * Search issues for the organization with pagination
+   *
+   * @example
+   * ```ts
+   * const response = await client.task.search({
+   *   q: 'authentication bug',
+   * });
+   * ```
    */
-  search(query: TaskSearchParams, options?: RequestOptions): APIPromise<void> {
-    return this._client.get('/task/search', {
-      query,
-      ...options,
-      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
-    });
+  search(query: TaskSearchParams, options?: RequestOptions): APIPromise<TaskSearchResponse> {
+    return this._client.get('/task/search', { query, ...options });
+  }
+}
+
+export interface TaskCreateResponse {
+  id: string;
+
+  createdAt: string;
+
+  description: string;
+
+  organizationId: string;
+
+  status: string;
+
+  title: string;
+
+  updatedAt: string;
+}
+
+export interface TaskListResponse {
+  issues: Array<TaskListResponse.Issue>;
+
+  meta: TaskListResponse.Meta;
+}
+
+export namespace TaskListResponse {
+  export interface Issue {
+    id: string;
+
+    createdAt: string;
+
+    description: string;
+
+    organizationId: string;
+
+    status: string;
+
+    title: string;
+
+    updatedAt: string;
+  }
+
+  export interface Meta {
+    currentPage: number;
+
+    hasNext: boolean;
+
+    hasPrevious: boolean;
+
+    pageSize: number;
+
+    totalCount: number;
+
+    totalPages: number;
+  }
+}
+
+export interface TaskSearchResponse {
+  issues: Array<TaskSearchResponse.Issue>;
+
+  meta: TaskSearchResponse.Meta;
+
+  query: string;
+}
+
+export namespace TaskSearchResponse {
+  export interface Issue {
+    id: string;
+
+    createdAt: string;
+
+    description: string;
+
+    organizationId: string;
+
+    status: string;
+
+    title: string;
+
+    updatedAt: string;
+  }
+
+  export interface Meta {
+    currentPage: number;
+
+    hasNext: boolean;
+
+    hasPrevious: boolean;
+
+    pageSize: number;
+
+    totalCount: number;
+
+    totalPages: number;
   }
 }
 
 export interface TaskCreateParams {
-  json: string;
-
+  /**
+   * Specific agent to assign this task to
+   */
   agent?: string;
 
+  /**
+   * Specific git branch to target for this task
+   */
   branch?: string | null;
 
   codeRepoIds?: Array<string>;
 
+  /**
+   * Detailed description of the task (alternative to prompt)
+   */
   description?: string;
 
+  /**
+   * Brief description of the task to be performed
+   */
   prompt?: string;
 
+  /**
+   * Whether to immediately queue the task for processing
+   */
   queueRightAway?: boolean;
+
+  /**
+   * Array of code repository urls that this task relates to
+   */
+  repositories?: Array<string>;
 }
 
 export interface TaskListParams {
+  /**
+   * Number of items to return per page (max 100)
+   */
   limit?: number;
 
+  /**
+   * Page number to retrieve (starts from 1)
+   */
   page?: number;
 }
 
 export interface TaskSearchParams {
+  /**
+   * Search query to find issues by title or description
+   */
   q: string;
 
+  /**
+   * Number of items to return per page (max 100)
+   */
   limit?: number;
 
+  /**
+   * Page number to retrieve (starts from 1)
+   */
   page?: number;
 }
 
 export declare namespace Task {
   export {
+    type TaskCreateResponse as TaskCreateResponse,
+    type TaskListResponse as TaskListResponse,
+    type TaskSearchResponse as TaskSearchResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
     type TaskSearchParams as TaskSearchParams,

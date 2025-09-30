@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import { type TemboSDK } from '../client';
+import { type Tembo } from '../client';
 
 import { type PromiseOrValue } from '../internal/types';
 import { APIResponseProps, defaultParseResponse } from '../internal/parse';
@@ -11,13 +11,13 @@ import { APIResponseProps, defaultParseResponse } from '../internal/parse';
  */
 export class APIPromise<T> extends Promise<T> {
   private parsedPromise: Promise<T> | undefined;
-  #client: TemboSDK;
+  #client: Tembo;
 
   constructor(
-    client: TemboSDK,
+    client: Tembo,
     private responsePromise: Promise<APIResponseProps>,
     private parseResponse: (
-      client: TemboSDK,
+      client: Tembo,
       props: APIResponseProps,
     ) => PromiseOrValue<T> = defaultParseResponse,
   ) {
