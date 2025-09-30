@@ -16,8 +16,17 @@ import * as Errors from './core/error';
 import * as Uploads from './core/uploads';
 import * as API from './resources/index';
 import { APIPromise } from './core/api-promise';
-import { Repository } from './resources/repository';
-import { Task, TaskCreateParams, TaskListParams, TaskSearchParams } from './resources/task';
+import { Me, MeRetrieveResponse } from './resources/me';
+import { Repository, RepositoryListResponse } from './resources/repository';
+import {
+  Task,
+  TaskCreateParams,
+  TaskCreateResponse,
+  TaskListParams,
+  TaskListResponse,
+  TaskSearchParams,
+  TaskSearchResponse,
+} from './resources/task';
 import { type Fetch } from './internal/builtin-types';
 import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
 import { FinalRequestOptions, RequestOptions } from './internal/request-options';
@@ -33,14 +42,14 @@ import { isEmptyObj } from './internal/utils/values';
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['TEMBO_SDK_API_KEY'].
+   * Defaults to process.env['TEMBO_API_KEY'].
    */
   apiKey?: string | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['TEMBO_SDK_BASE_URL'].
+   * Defaults to process.env['TEMBO_BASE_URL'].
    */
   baseURL?: string | null | undefined;
 
@@ -94,7 +103,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['TEMBO_SDK_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env['TEMBO_LOG'] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -107,9 +116,9 @@ export interface ClientOptions {
 }
 
 /**
- * API Client for interfacing with the Tembo SDK API.
+ * API Client for interfacing with the Tembo API.
  */
-export class TemboSDK {
+export class Tembo {
   apiKey: string;
 
   baseURL: string;
@@ -125,10 +134,10 @@ export class TemboSDK {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Tembo SDK API.
+   * API Client for interfacing with the Tembo API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['TEMBO_SDK_API_KEY'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['TEMBO_SDK_BASE_URL'] ?? https://api.v2.dba.ai/] - Override the default base URL for the API.
+   * @param {string | undefined} [opts.apiKey=process.env['TEMBO_API_KEY'] ?? undefined]
+   * @param {string} [opts.baseURL=process.env['TEMBO_BASE_URL'] ?? https://internal.tembo.io/] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -137,31 +146,31 @@ export class TemboSDK {
    * @param {Record<string, string | undefined>} opts.defaultQuery - Default query parameters to include with every request to the API.
    */
   constructor({
-    baseURL = readEnv('TEMBO_SDK_BASE_URL'),
-    apiKey = readEnv('TEMBO_SDK_API_KEY'),
+    baseURL = readEnv('TEMBO_BASE_URL'),
+    apiKey = readEnv('TEMBO_API_KEY'),
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
-      throw new Errors.TemboSDKError(
-        "The TEMBO_SDK_API_KEY environment variable is missing or empty; either provide it, or instantiate the TemboSDK client with an apiKey option, like new TemboSDK({ apiKey: 'My API Key' }).",
+      throw new Errors.TemboError(
+        "The TEMBO_API_KEY environment variable is missing or empty; either provide it, or instantiate the Tembo client with an apiKey option, like new Tembo({ apiKey: 'My API Key' }).",
       );
     }
 
     const options: ClientOptions = {
       apiKey,
       ...opts,
-      baseURL: baseURL || `https://api.v2.dba.ai/`,
+      baseURL: baseURL || `https://internal.tembo.io/`,
     };
 
     this.baseURL = options.baseURL!;
-    this.timeout = options.timeout ?? TemboSDK.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? Tembo.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('TEMBO_SDK_LOG'), "process.env['TEMBO_SDK_LOG']", this) ??
+      parseLogLevel(readEnv('TEMBO_LOG'), "process.env['TEMBO_LOG']", this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
@@ -196,7 +205,7 @@ export class TemboSDK {
    * Check whether the base URL is set to its default.
    */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'https://api.v2.dba.ai/';
+    return this.baseURL !== 'https://internal.tembo.io/';
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
@@ -224,7 +233,7 @@ export class TemboSDK {
         if (value === null) {
           return `${encodeURIComponent(key)}=`;
         }
-        throw new Errors.TemboSDKError(
+        throw new Errors.TemboError(
           `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
         );
       })
@@ -696,10 +705,10 @@ export class TemboSDK {
     }
   }
 
-  static TemboSDK = this;
+  static Tembo = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static TemboSDKError = Errors.TemboSDKError;
+  static TemboError = Errors.TemboError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -715,22 +724,29 @@ export class TemboSDK {
 
   static toFile = Uploads.toFile;
 
+  me: API.Me = new API.Me(this);
   task: API.Task = new API.Task(this);
   repository: API.Repository = new API.Repository(this);
 }
 
-TemboSDK.Task = Task;
-TemboSDK.Repository = Repository;
+Tembo.Me = Me;
+Tembo.Task = Task;
+Tembo.Repository = Repository;
 
-export declare namespace TemboSDK {
+export declare namespace Tembo {
   export type RequestOptions = Opts.RequestOptions;
+
+  export { Me as Me, type MeRetrieveResponse as MeRetrieveResponse };
 
   export {
     Task as Task,
+    type TaskCreateResponse as TaskCreateResponse,
+    type TaskListResponse as TaskListResponse,
+    type TaskSearchResponse as TaskSearchResponse,
     type TaskCreateParams as TaskCreateParams,
     type TaskListParams as TaskListParams,
     type TaskSearchParams as TaskSearchParams,
   };
 
-  export { Repository as Repository };
+  export { Repository as Repository, type RepositoryListResponse as RepositoryListResponse };
 }

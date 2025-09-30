@@ -7,10 +7,10 @@ const client = new Tembo({
   baseURL: process.env['TEST_API_BASE_URL'] ?? 'http://127.0.0.1:4010',
 });
 
-describe('resource repository', () => {
+describe('resource me', () => {
   // Prism tests are disabled
-  test.skip('list', async () => {
-    const responsePromise = client.repository.list();
+  test.skip('retrieve', async () => {
+    const responsePromise = client.me.retrieve();
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;

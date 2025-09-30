@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import type { TemboSDK } from '../client';
+import type { Tembo } from '../client';
 
 export abstract class APIResource {
-  protected _client: TemboSDK;
+  protected _client: Tembo;
 
-  constructor(client: TemboSDK) {
+  constructor(client: Tembo) {
     this._client = client;
   }
 }
