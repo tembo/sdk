@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-import Tembo from '@tembo/sdk';
+import Tembo from '@tembo-io/sdk';
 
 const client = new Tembo({
   apiKey: 'My API Key',

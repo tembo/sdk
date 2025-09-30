@@ -1,5 +1,5 @@
 {
-  "name": "@tembo/sdk",
+  "name": "@tembo-io/sdk",
   "version": "0.0.3",
   "description": "The official TypeScript library for the Tembo API",
   "author": "Tembo <>",

@@ -1,4 +1,4 @@
-import { createPathTagFunction, encodeURIPath } from '@tembo/sdk/internal/utils/path';
+import { createPathTagFunction, encodeURIPath } from '@tembo-io/sdk/internal/utils/path';
 import { inspect } from 'node:util';
 import { runInNewContext } from 'node:vm';
 

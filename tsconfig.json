@@ -8,8 +8,8 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "paths": {
-      "@tembo/sdk/*": ["./src/*"],
-      "@tembo/sdk": ["./src/index.ts"]
+      "@tembo-io/sdk/*": ["./src/*"],
+      "@tembo-io/sdk": ["./src/index.ts"]
     },
     "noEmit": true,
 

@@ -1,5 +1,5 @@
-import { multipartFormRequestOptions, createForm } from '@tembo/sdk/internal/uploads';
-import { toFile } from '@tembo/sdk/core/uploads';
+import { multipartFormRequestOptions, createForm } from '@tembo-io/sdk/internal/uploads';
+import { toFile } from '@tembo-io/sdk/core/uploads';
 
 describe('form data validation', () => {
   test('valid values do not error', async () => {
