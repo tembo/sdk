@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.4 (2025-09-30)
+
+Full Changelog: [v0.0.3...v0.0.4](https://github.com/tembo/sdk/compare/v0.0.3...v0.0.4)
+
+### Chores
+
+* update SDK settings ([c558dd7](https://github.com/tembo/sdk/commit/c558dd7e3afc6411dc0a0feb8e07fab13863f51c))
+
 ## 0.0.3 (2025-09-30)
 
 Full Changelog: [v0.0.2...v0.0.3](https://github.com/tembo/sdk/compare/v0.0.2...v0.0.3)
