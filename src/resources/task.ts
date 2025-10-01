@@ -143,6 +143,11 @@ export namespace TaskSearchResponse {
 
 export interface TaskCreateParams {
   /**
+   * The agent to use for this task
+   */
+  agent?: string;
+
+  /**
    * Specific git branch to target for this task
    */
   branch?: string | null;
@@ -159,7 +164,7 @@ export interface TaskCreateParams {
   queueRightAway?: boolean | null;
 
   /**
-   * Array of code repository IDs that this task relates to
+   * Array of code repository urls that this task relates to
    */
   repositories?: Array<string>;
 }
