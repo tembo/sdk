@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.0.5 (2025-10-01)
+
+Full Changelog: [v0.0.4...v0.0.5](https://github.com/tembo/sdk/compare/v0.0.4...v0.0.5)
+
+### Features
+
+* **api:** manual updates ([bbfa5df](https://github.com/tembo/sdk/commit/bbfa5dfdbee0db3724ccc6083778a163bcbe4056))
+
 ## 0.0.4 (2025-09-30)
 
 Full Changelog: [v0.0.3...v0.0.4](https://github.com/tembo/sdk/compare/v0.0.3...v0.0.4)

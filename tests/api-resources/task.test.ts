@@ -10,7 +10,7 @@ const client = new Tembo({
 describe('resource task', () => {
   // Prism tests are disabled
   test.skip('create', async () => {
-    const responsePromise = client.task.create();
+    const responsePromise = client.task.create({});
     const rawResponse = await responsePromise.asResponse();
     expect(rawResponse).toBeInstanceOf(Response);
     const response = await responsePromise;
@@ -18,26 +18,6 @@ describe('resource task', () => {
     const dataAndResponse = await responsePromise.withResponse();
     expect(dataAndResponse.data).toBe(response);
     expect(dataAndResponse.response).toBe(rawResponse);
-  });
-
-  // Prism tests are disabled
-  test.skip('create: request options and params are passed correctly', async () => {
-    // ensure the request options are being passed correctly by passing an invalid HTTP method in order to cause an error
-    await expect(
-      client.task.create(
-        {
-          agent: 'J!Q0Ok0bzJb7:pro',
-          branch: 'feature/auth-fix',
-          codeRepoIds: ['string'],
-          description:
-            'Users are reporting they cannot log in. The JWT token validation appears to be failing.',
-          prompt: 'Fix the authentication bug in the login component',
-          queueRightAway: true,
-          repositories: ['https://github.com/org/repo', 'https://gitlab.com/org/repo-2'],
-        },
-        { path: '/_stainless_unknown_path' },
-      ),
-    ).rejects.toThrow(Tembo.NotFoundError);
   });
 
   // Prism tests are disabled
