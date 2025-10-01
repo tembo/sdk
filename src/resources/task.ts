@@ -13,10 +13,7 @@ export class Task extends APIResource {
    * const task = await client.task.create();
    * ```
    */
-  create(
-    body: TaskCreateParams | null | undefined = {},
-    options?: RequestOptions,
-  ): APIPromise<TaskCreateResponse> {
+  create(body: TaskCreateParams, options?: RequestOptions): APIPromise<TaskCreateResponse> {
     return this._client.post('/task/create', { body, ...options });
   }
 
@@ -146,21 +143,9 @@ export namespace TaskSearchResponse {
 
 export interface TaskCreateParams {
   /**
-   * Specific agent to assign this task to
-   */
-  agent?: string;
-
-  /**
    * Specific git branch to target for this task
    */
   branch?: string | null;
-
-  codeRepoIds?: Array<string>;
-
-  /**
-   * Detailed description of the task (alternative to prompt)
-   */
-  description?: string;
 
   /**
    * Brief description of the task to be performed
@@ -168,12 +153,13 @@ export interface TaskCreateParams {
   prompt?: string;
 
   /**
-   * Whether to immediately queue the task for processing
+   * Whether to immediately queue the task for processing (optional, defaults to
+   * true)
    */
-  queueRightAway?: boolean;
+  queueRightAway?: boolean | null;
 
   /**
-   * Array of code repository urls that this task relates to
+   * Array of code repository IDs that this task relates to
    */
   repositories?: Array<string>;
 }
