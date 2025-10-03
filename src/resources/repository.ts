@@ -6,7 +6,7 @@ import { RequestOptions } from '../internal/request-options';
 
 export class Repository extends APIResource {
   /**
-   * Gets a list of enabled code repositories for the organization
+   * Gets a list of enabled repositories for the organization
    */
   list(options?: RequestOptions): APIPromise<RepositoryListResponse> {
     return this._client.get('/repository/list', options);
