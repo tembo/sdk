@@ -26,9 +26,9 @@ const client = new Tembo({
   apiKey: process.env['TEMBO_API_KEY'], // This is the default and can be omitted
 });
 
-const me = await client.me.retrieve();
+const task = await client.task.create();
 
-console.log(me.orgId);
+console.log(task.id);
 ```
 
 ### Request & Response types
@@ -43,7 +43,7 @@ const client = new Tembo({
   apiKey: process.env['TEMBO_API_KEY'], // This is the default and can be omitted
 });
 
-const me: Tembo.MeRetrieveResponse = await client.me.retrieve();
+const task: Tembo.TaskCreateResponse = await client.task.create();
 ```
 
 Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
@@ -56,7 +56,7 @@ a subclass of `APIError` will be thrown:
 
 <!-- prettier-ignore -->
 ```ts
-const me = await client.me.retrieve().catch(async (err) => {
+const task = await client.task.create().catch(async (err) => {
   if (err instanceof Tembo.APIError) {
     console.log(err.status); // 400
     console.log(err.name); // BadRequestError
@@ -96,7 +96,7 @@ const client = new Tembo({
 });
 
 // Or, configure per-request:
-await client.me.retrieve({
+await client.task.create({
   maxRetries: 5,
 });
 ```
@@ -113,7 +113,7 @@ const client = new Tembo({
 });
 
 // Override per-request:
-await client.me.retrieve({
+await client.task.create({
   timeout: 5 * 1000,
 });
 ```
@@ -136,13 +136,13 @@ Unlike `.asResponse()` this method consumes the body, returning once it is parse
 ```ts
 const client = new Tembo();
 
-const response = await client.me.retrieve().asResponse();
+const response = await client.task.create().asResponse();
 console.log(response.headers.get('X-My-Header'));
 console.log(response.statusText); // access the underlying Response object
 
-const { data: me, response: raw } = await client.me.retrieve().withResponse();
+const { data: task, response: raw } = await client.task.create().withResponse();
 console.log(raw.headers.get('X-My-Header'));
-console.log(me.orgId);
+console.log(task.id);
 ```
 
 ### Logging
@@ -222,7 +222,7 @@ parameter. This library doesn't validate at runtime that the request matches the
 send will be sent as-is.
 
 ```ts
-client.me.retrieve({
+client.task.create({
   // ...
   // @ts-expect-error baz is not yet public
   baz: 'undocumented option',

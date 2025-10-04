@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.0 (2025-10-04)
+
+Full Changelog: [v0.0.6...v0.1.0](https://github.com/tembo/sdk/compare/v0.0.6...v0.1.0)
+
+### Features
+
+* **api:** api update ([c7ecab4](https://github.com/tembo/sdk/commit/c7ecab4641c84e1c55f428de26fbd8e14ce14c7d))
+* **api:** manual updates ([ec7a586](https://github.com/tembo/sdk/commit/ec7a586a13b4f902a22b34a3fcbfabe0f8f1608c))
+
+
+### Chores
+
+* **jsdoc:** fix [@link](https://github.com/link) annotations to refer only to parts of the package‘s public interface ([5344e57](https://github.com/tembo/sdk/commit/5344e5744836d1b21139bc2d8a2fd910428c38e6))
+
 ## 0.0.6 (2025-10-03)
 
 Full Changelog: [v0.0.5...v0.0.6](https://github.com/tembo/sdk/compare/v0.0.5...v0.0.6)

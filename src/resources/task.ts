@@ -6,7 +6,7 @@ import { RequestOptions } from '../internal/request-options';
 
 export class Task extends APIResource {
   /**
-   * Create a user-supplied task
+   * Create a task for tembo to start working on in the background
    *
    * @example
    * ```ts
@@ -153,7 +153,7 @@ export interface TaskCreateParams {
   branch?: string | null;
 
   /**
-   * Brief description of the task to be performed
+   * Description of the task to be performed. Supports tagging files.
    */
   prompt?: string;
 
