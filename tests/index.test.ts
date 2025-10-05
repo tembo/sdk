@@ -302,13 +302,13 @@ describe('instantiate client', () => {
     test('empty env variable', () => {
       process.env['TEMBO_BASE_URL'] = ''; // empty
       const client = new Tembo({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://internal.tembo.io/');
+      expect(client.baseURL).toEqual('https://api.tembo.io/');
     });
 
     test('blank env variable', () => {
       process.env['TEMBO_BASE_URL'] = '  '; // blank
       const client = new Tembo({ apiKey: 'My API Key' });
-      expect(client.baseURL).toEqual('https://internal.tembo.io/');
+      expect(client.baseURL).toEqual('https://api.tembo.io/');
     });
 
     test('in request options', () => {
