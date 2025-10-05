@@ -1,6 +1,6 @@
 {
   "name": "@tembo-io/sdk",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "The official TypeScript library for the Tembo API",
   "author": "Tembo <darren@tembo.io>",
   "types": "dist/index.d.ts",
