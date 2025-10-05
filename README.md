@@ -22,9 +22,7 @@ The full API of this library can be found in [api.md](api.md).
 ```js
 import Tembo from '@tembo-io/sdk';
 
-const client = new Tembo({
-  apiKey: process.env['TEMBO_API_KEY'], // This is the default and can be omitted
-});
+const client = new Tembo();
 
 const task = await client.task.create();
 
@@ -39,9 +37,7 @@ This library includes TypeScript definitions for all request params and response
 ```ts
 import Tembo from '@tembo-io/sdk';
 
-const client = new Tembo({
-  apiKey: process.env['TEMBO_API_KEY'], // This is the default and can be omitted
-});
+const client = new Tembo();
 
 const task: Tembo.TaskCreateResponse = await client.task.create();
 ```
@@ -92,6 +88,7 @@ You can use the `maxRetries` option to configure or disable this:
 ```js
 // Configure the default for all requests:
 const client = new Tembo({
+  apiKey: 'My API Key',
   maxRetries: 0, // default is 2
 });
 
@@ -109,6 +106,7 @@ Requests time out after 1 minute by default. You can configure this with a `time
 ```ts
 // Configure the default for all requests:
 const client = new Tembo({
+  apiKey: 'My API Key',
   timeout: 20 * 1000, // 20 seconds (default is 1 minute)
 });
 
