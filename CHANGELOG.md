@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2 (2025-10-07)
+
+Full Changelog: [v0.1.1...v0.1.2](https://github.com/tembo/sdk/compare/v0.1.1...v0.1.2)
+
+### Chores
+
+* **internal:** use npm pack for build uploads ([665eede](https://github.com/tembo/sdk/commit/665eede92119fa20db6fce5afc88d15a17371607))
+
 ## 0.1.1 (2025-10-05)
 
 Full Changelog: [v0.1.0...v0.1.1](https://github.com/tembo/sdk/compare/v0.1.0...v0.1.1)
