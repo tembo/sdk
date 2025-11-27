@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.3 (2025-11-27)
+
+Full Changelog: [v0.1.2...v0.1.3](https://github.com/tembo/sdk/compare/v0.1.2...v0.1.3)
+
+### Chores
+
+* add docs link ([f811f18](https://github.com/tembo/sdk/commit/f811f18f73e825ec24a323285b1157814475c39a))
+
 ## 0.1.2 (2025-10-07)
 
 Full Changelog: [v0.1.1...v0.1.2](https://github.com/tembo/sdk/compare/v0.1.1...v0.1.2)
