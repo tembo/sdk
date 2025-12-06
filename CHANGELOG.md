@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.4 (2025-12-06)
+
+Full Changelog: [v0.1.3...v0.1.4](https://github.com/tembo/sdk/compare/v0.1.3...v0.1.4)
+
+### Bug Fixes
+
+* **mcp:** correct code tool API endpoint ([630c333](https://github.com/tembo/sdk/commit/630c333a5ce58bc95cb0778209fed34ea61bbefd))
+* **mcp:** return correct lines on typescript errors ([d2b55c7](https://github.com/tembo/sdk/commit/d2b55c75502e02d7ef7687de756de72bc2aee96c))
+
+
+### Chores
+
+* **client:** fix logger property type ([d8fd87f](https://github.com/tembo/sdk/commit/d8fd87f2df2961ef927cb093ceb6cbeebd2e0143))
+* **internal:** codegen related update ([30293cd](https://github.com/tembo/sdk/commit/30293cdb34dac3c5345a3d36c5a075f9c6f4033f))
+* **internal:** codegen related update ([0086300](https://github.com/tembo/sdk/commit/0086300a56c76f309aa94232953b6509776dd8e3))
+* **internal:** upgrade eslint ([559bf65](https://github.com/tembo/sdk/commit/559bf6585ae4a551e391060f30a617ddac098207))
+
 ## 0.1.3 (2025-11-27)
 
 Full Changelog: [v0.1.2...v0.1.3](https://github.com/tembo/sdk/compare/v0.1.2...v0.1.3)
