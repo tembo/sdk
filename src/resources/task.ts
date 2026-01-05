@@ -54,6 +54,11 @@ export interface TaskCreateResponse {
 
   description: string;
 
+  /**
+   * URL to view this task in the Tembo web application
+   */
+  htmlUrl: string;
+
   organizationId: string;
 
   status: string;
@@ -76,6 +81,11 @@ export namespace TaskListResponse {
     createdAt: string;
 
     description: string;
+
+    /**
+     * URL to view this task in the Tembo web application
+     */
+    htmlUrl: string;
 
     organizationId: string;
 
@@ -116,6 +126,11 @@ export namespace TaskSearchResponse {
     createdAt: string;
 
     description: string;
+
+    /**
+     * URL to view this task in the Tembo web application
+     */
+    htmlUrl: string;
 
     organizationId: string;
 
