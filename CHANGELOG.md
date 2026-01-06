@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.2 (2026-01-06)
+
+Full Changelog: [v0.2.1...v0.2.2](https://github.com/tembo/sdk/compare/v0.2.1...v0.2.2)
+
+### Features
+
+* **api:** api update ([16d3b82](https://github.com/tembo/sdk/commit/16d3b82e7a429e5e3f7c2b824b0e736423acaf61))
+
 ## 0.2.1 (2026-01-05)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/tembo/sdk/compare/v0.2.0...v0.2.1)
