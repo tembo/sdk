@@ -163,9 +163,9 @@ export interface TaskCreateParams {
   agent?: string;
 
   /**
-   * Specific git branch to target for this task
+   * The branch name to use for the work
    */
-  branch?: string | null;
+  branchName?: string | null;
 
   /**
    * Description of the task to be performed. Supports tagging files.
@@ -182,6 +182,11 @@ export interface TaskCreateParams {
    * Array of code repository urls that this task relates to
    */
   repositories?: Array<string>;
+
+  /**
+   * The branch to open the pull request against (e.g. main, develop)
+   */
+  targetBranch?: string | null;
 }
 
 export interface TaskListParams {
