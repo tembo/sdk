@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.0 (2026-01-10)
+
+Full Changelog: [v0.2.2...v0.3.0](https://github.com/tembo/sdk/compare/v0.2.2...v0.3.0)
+
+### Features
+
+* **api:** api update ([27ff947](https://github.com/tembo/sdk/commit/27ff947cc3b7874d478c99206b0267291e3e73e3))
+
+
+### Chores
+
+* break long lines in snippets into multiline ([6dcb2ec](https://github.com/tembo/sdk/commit/6dcb2ec7beb7857cdf100f438fd704eeab5f056f))
+
 ## 0.2.2 (2026-01-06)
 
 Full Changelog: [v0.2.1...v0.2.2](https://github.com/tembo/sdk/compare/v0.2.1...v0.2.2)
