@@ -54,6 +54,10 @@ describe('resource task', () => {
 
   // Prism tests are disabled
   test.skip('search: required and optional params', async () => {
-    const response = await client.task.search({ q: 'authentication bug', limit: 10, page: 1 });
+    const response = await client.task.search({
+      q: 'authentication bug',
+      limit: 10,
+      page: 1,
+    });
   });
 });

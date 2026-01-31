@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.3 (2026-01-31)
+
+Full Changelog: [v0.2.2...v0.2.3](https://github.com/tembo/sdk/compare/v0.2.2...v0.2.3)
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([13e506f](https://github.com/tembo/sdk/commit/13e506f361ee9d4547892b16f9bea810a3515256))
+* **internal:** update `actions/checkout` version ([a2ec104](https://github.com/tembo/sdk/commit/a2ec10474da63e9326637b7d3dec132727e558f5))
+
 ## 0.2.2 (2026-01-06)
 
 Full Changelog: [v0.2.1...v0.2.2](https://github.com/tembo/sdk/compare/v0.2.1...v0.2.2)
