@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.4 (2026-02-14)
+
+Full Changelog: [v0.2.3...v0.2.4](https://github.com/tembo/sdk/compare/v0.2.3...v0.2.4)
+
+### Bug Fixes
+
+* **client:** avoid memory leak with abort signals ([9e6801f](https://github.com/tembo/sdk/commit/9e6801f3fbc4a550dcbb91eee42ec52a27a54227))
+* **client:** avoid removing abort listener too early ([86f5e27](https://github.com/tembo/sdk/commit/86f5e27ab6a28798c0f1f494a0aad9df8fbb8177))
+
+
+### Chores
+
+* **client:** do not parse responses with empty content-length ([381bf40](https://github.com/tembo/sdk/commit/381bf400d90b081e2d27a9543c8fe1d4467bb2c1))
+* **client:** restructure abort controller binding ([c951fb9](https://github.com/tembo/sdk/commit/c951fb925d1c195234af9232702727c86db0c484))
+* **internal:** avoid type checking errors with ts-reset ([fce4774](https://github.com/tembo/sdk/commit/fce47748081dd0e300b188fdc3b03c9c003bb019))
+
 ## 0.2.3 (2026-01-31)
 
 Full Changelog: [v0.2.2...v0.2.3](https://github.com/tembo/sdk/compare/v0.2.2...v0.2.3)
