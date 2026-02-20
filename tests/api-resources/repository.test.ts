@@ -8,7 +8,7 @@ const client = new Tembo({
 });
 
 describe('resource repository', () => {
-  // Prism tests are disabled
+  // Mock server tests are disabled
   test.skip('list', async () => {
     const responsePromise = client.repository.list();
     const rawResponse = await responsePromise.asResponse();
