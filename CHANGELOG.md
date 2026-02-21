@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.4 (2026-02-21)
+
+Full Changelog: [v0.2.3...v0.2.4](https://github.com/tembo/sdk/compare/v0.2.3...v0.2.4)
+
+### Chores
+
+* **internal/client:** fix form-urlencoded requests ([d876662](https://github.com/tembo/sdk/commit/d8766628f462fd5c5ca5cd598f5aad8312cd1714))
+* **internal:** avoid type checking errors with ts-reset ([fce4774](https://github.com/tembo/sdk/commit/fce47748081dd0e300b188fdc3b03c9c003bb019))
+* **internal:** remove mock server code ([4f02a9e](https://github.com/tembo/sdk/commit/4f02a9e4708466a277fd73af468fa519188c195b))
+* update mock server docs ([135089b](https://github.com/tembo/sdk/commit/135089b4d1807a3b9a85d66d5fea43c88a082f7a))
+
 ## 0.2.3 (2026-01-31)
 
 Full Changelog: [v0.2.2...v0.2.3](https://github.com/tembo/sdk/compare/v0.2.2...v0.2.3)
