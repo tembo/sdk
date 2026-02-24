@@ -60,7 +60,7 @@ $ yarn link @tembo-io/sdk
 # With pnpm
 $ pnpm link --global
 $ cd ../my-package
-$ pnpm link -—global @tembo-io/sdk
+$ pnpm link --global @tembo-io/sdk
 ```
 
 ## Running tests
