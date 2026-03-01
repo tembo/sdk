@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.2.4 (2026-03-01)
+
+Full Changelog: [v0.2.3...v0.2.4](https://github.com/tembo/sdk/compare/v0.2.3...v0.2.4)
+
+### Bug Fixes
+
+* **docs/contributing:** correct pnpm link command ([75edc3f](https://github.com/tembo/sdk/commit/75edc3f544adce0837d96a23da45693712bf8351))
+
+
+### Chores
+
+* **internal/client:** fix form-urlencoded requests ([d876662](https://github.com/tembo/sdk/commit/d8766628f462fd5c5ca5cd598f5aad8312cd1714))
+* **internal:** move stringifyQuery implementation to internal function ([fa98a54](https://github.com/tembo/sdk/commit/fa98a54e9875cc40ae2f31f2adbc2fd2b325a12b))
+* **internal:** remove mock server code ([4f02a9e](https://github.com/tembo/sdk/commit/4f02a9e4708466a277fd73af468fa519188c195b))
+* update mock server docs ([135089b](https://github.com/tembo/sdk/commit/135089b4d1807a3b9a85d66d5fea43c88a082f7a))
+
 ## 0.2.3 (2026-01-31)
 
 Full Changelog: [v0.2.2...v0.2.3](https://github.com/tembo/sdk/compare/v0.2.2...v0.2.3)
