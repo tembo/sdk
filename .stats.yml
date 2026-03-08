@@ -1,4 +1,4 @@
 configured_endpoints: 5
-openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/tembo%2Ftembo-2df752f9f23d5125fc1db63f95040115e9cf919f9e16b87339b3ea9dc196257a.yml
-openapi_spec_hash: 09474858925fb8d4498ddba51be0c416
+openapi_spec_url: https://storage.googleapis.com/stainless-sdk-openapi-specs/tembo%2Ftembo-2776789a11caaf037fcf17491972123c1e5f1fd6471ee0b555e3db6943d0daa6.yml
+openapi_spec_hash: ecb4e8e4850fddb1f33ff87ce6af22a9
 config_hash: 8fba1d45a848bce88e9564ab8a960838
