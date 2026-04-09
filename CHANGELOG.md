@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.2.4 (2026-04-09)
+
+Full Changelog: [v0.2.3...v0.2.4](https://github.com/tembo/sdk/compare/v0.2.3...v0.2.4)
+
+### Bug Fixes
+
+* **client:** preserve URL params already embedded in path ([56529a8](https://github.com/tembo/sdk/commit/56529a847ccd6028e30f7bebcd46b58046e2a297))
+* **docs/contributing:** correct pnpm link command ([75edc3f](https://github.com/tembo/sdk/commit/75edc3f544adce0837d96a23da45693712bf8351))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([0f4fb57](https://github.com/tembo/sdk/commit/0f4fb5747f69b0c0a4e99dd82f3f75e8c9db9980))
+* **ci:** skip uploading artifacts on stainless-internal branches ([c79f69f](https://github.com/tembo/sdk/commit/c79f69f39500a34b0fa1893a609a00a060f81ccb))
+* **internal:** codegen related update ([9a46cfa](https://github.com/tembo/sdk/commit/9a46cfacf0272744679506d75758fb9480f62dcb))
+* **internal:** codegen related update ([f1dfc41](https://github.com/tembo/sdk/commit/f1dfc41778e3179db22dcbf4e5705579b08e390a))
+* **internal:** codegen related update ([0b8f63e](https://github.com/tembo/sdk/commit/0b8f63e4fb0d01fd53493a455d1c7c6086463a81))
+* **internal:** move stringifyQuery implementation to internal function ([fa98a54](https://github.com/tembo/sdk/commit/fa98a54e9875cc40ae2f31f2adbc2fd2b325a12b))
+* **internal:** tweak CI branches ([ede6659](https://github.com/tembo/sdk/commit/ede6659f8aa825fa58c1cc62ff0fa0f74df52dd0))
+* **internal:** update dependencies to address dependabot vulnerabilities ([3d46895](https://github.com/tembo/sdk/commit/3d4689542463a7d74896c8c2a64b27478d81a35f))
+* **internal:** update gitignore ([6c7fd81](https://github.com/tembo/sdk/commit/6c7fd819771812f517bfd9a018b2fa7e0a72f984))
+
 ## 0.2.3 (2026-01-31)
 
 Full Changelog: [v0.2.2...v0.2.3](https://github.com/tembo/sdk/compare/v0.2.2...v0.2.3)
