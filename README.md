@@ -1,56 +1,161 @@
-# Tembo TypeScript SDK
+# Tembo Public API
 
-Work-in-progress Scalar replacement for `@tembo-io/sdk`. This branch is **not published** and is not a drop-in replacement for the existing Stainless SDK. Python is unchanged.
+This library provides convenient access to the Tembo Public API from TypeScript or JavaScript.
 
-The generated client includes all 116 v1 operations in the checked-in development OpenAPI snapshot. Compatibility routes outside `/v1/` are excluded. See [api.md](api.md) for the generated method reference.
+The full API of this library can be found in [api.md](./api.md).
 
-## Try it locally
+<br />
 
-Use Node.js 24 or newer:
+## Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](./api.md)
+- [Authentication](#authentication)
+- [Errors](#errors)
+- [Client Options](#client-options)
+- [Request Options](#request-options)
+- [Retries and Timeouts](#retries-and-timeouts)
+- [Helpers](#helpers)
+- [Logging](#logging)
+- [Requirements](#requirements)
+
+<br />
+
+## Installation
 
 ```sh
-npm ci
-npm test
+npm install @tembo-io/sdk
 ```
 
-```js
-import Tembo from './dist/esm/index.js';
+<br />
+
+## Usage
+
+```ts
+import Tembo from '@tembo-io/sdk';
 
 const client = new Tembo({
-  apiKey: process.env.TEMBO_API_KEY,
-  baseURL: 'https://internal.tembo-development.com/public-api',
+  apiKey: process.env['TEMBO_API_KEY'], // defaults to the TEMBO_API_KEY env var
 });
 
-const models = await client.models.list({ limit: '1' });
-console.log(models);
+const apiKey = await client.apiKeys.list({
+  limit: '50',
+});
+
+console.log(apiKey);
 ```
 
-This candidate defaults to **development**, not production. `TEMBO_API_KEY` and `TEMBO_BASE_URL` are supported; constructor options override environment variables. Supply a dev API key, not a browser session cookie. `.env` files are not loaded automatically.
+The examples in the following sections assume a `client` configured as shown above.
 
-```sh
-export TEMBO_API_KEY='your-dev-api-key'
-npm run test:dev
+See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## Authentication
+
+Pass credentials to the generated client constructor. Environment variables are read automatically when supported by the target runtime.
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `apiKey` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to TEMBO_API_KEY. |
+
+Declared schemes:
+
+- `apiKey` bearer token
+
+<br />
+
+## Errors
+
+Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
+
+```ts
+import { APIError } from '@tembo-io/sdk';
+
+try {
+  const apiKey = await client.apiKeys.list({
+    limit: '50',
+  });
+} catch (err) {
+  if (err instanceof APIError) {
+    console.log(err.status, err.name, err.headers);
+  }
+  throw err;
+}
 ```
 
-The dev smoke test pins the dev backend and only reads models. It never creates, updates, or deletes resources. Normal tests use mocked HTTP and require no credentials.
+Documented error statuses: `400`, `401`, `403`, `404`, `409`, `500`, `502`, `503`, `504`.
 
-## What changed
+<br />
 
-- Scalar-generated v1 resources replace the previous Stainless client.
-- Both ESM and CommonJS output are built from TypeScript.
-- Resource names use the merged API contracts, including `instructions`, `richContent`, `durationMs`, and plural relationship fields.
-- OpenAPI, Scalar config, and generator manifest are checked in for review.
-- A generation-only normalization names and flattens disjoint recursive rich-text variants so Scalar emits typed children. The original API schema, wire format, and database are unchanged.
-- Old generation/release scripts and publishing workflows are removed. Publishing is blocked by `private: true` and a failing `prepublishOnly` script.
+## Client Options
 
-## Remaining release gates
+Configure the generated client by setting any of these options when you create it.
 
-The authenticated, read-only `models.list` smoke test passed against development on September 11, 2026. This confirms that the generated client can authenticate and read from dev, not that every operation has been exercised live. No credentials are stored in this repository.
+```ts
+import Tembo from '@tembo-io/sdk';
 
-Recursive `TipTapNode` generation is fixed in this branch, with compile-time checks rejecting primitive nodes and invalid nested children. Custom-document and extensible-attribute dictionaries remain intentionally open-ended to match the existing API contract.
+const client = new Tembo({
+  timeout: 60000,
+  maxRetries: 2,
+  logLevel: 'debug',
+});
+```
 
-- Confirm production schema parity and configure the production base URL before release.
-- Review migration examples against real consumers; this changes resource names and the old SDK surface. Node 24 is the only supported/tested runtime for this candidate; browser support is not claimed.
-- Choose the final version, connect the intended Scalar SDK to this repository, and explicitly configure publishing. `1.0.0-beta.0` is only an unpublished candidate version.
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `apiKey` | `string \| AuthTokenProvider` | `process.env["TEMBO_API_KEY"]` | Credential for the apiKey scheme. |
+| `baseURL` | `string \| null` | `process.env["TEMBO_BASE_URL"]` | Override the default API base URL. Pass `null` when selecting a configured environment. |
+| `timeout` | `number` | `60000` | Maximum time in milliseconds to wait for a response before aborting a request. |
+| `maxRetries` | `number` | `2` | Number of retries for temporary failures. |
+| `defaultHeaders` | `HeadersInit` | - | Headers sent with every request. |
+| `defaultQuery` | `Record<string, string \| undefined>` | - | Query parameters sent with every request. |
+| `fetchOptions` | `RequestInit` | - | Additional fetch options sent with every request. |
+| `fetch` | `Fetch` | - | Custom fetch implementation. |
+| `logLevel` | `"off" \| "error" \| "warn" \| "info" \| "debug" \| null` | `process.env["TEMBO_LOG"]` | Controls request and retry debug logging. |
+| `logger` | `Logger \| null` | `console` | Custom logger implementation. |
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for regeneration and validation. Do not enable publishing until these gates have been reviewed.
+<br />
+
+## Request Options
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `headers` | `HeadersInit` | - | Per-request headers. |
+| `query` | `Record<string, unknown>` | - | Per-request query parameters. |
+| `body` | `unknown` | - | Override the generated request body. |
+| `timeout` | `number` | - | Per-request timeout in milliseconds. |
+| `maxRetries` | `number` | - | Per-request retry count. |
+| `signal` | `AbortSignal` | - | Abort an in-flight request. |
+| `fetchOptions` | `RequestInit` | - | Per-request fetch options. |
+| `idempotencyKey` | `string` | - | Idempotency key for retry-safe operations. Applies to this request and its retries. |
+
+<br />
+
+## Retries and Timeouts
+
+Generated clients support request timeouts and retry temporary failures such as network errors, 408, 409, 429, and 5xx responses. Retry delays honor `Retry-After` headers when present. Tune the retry and timeout client options shown above, or override them per request.
+
+<br />
+
+## Helpers
+
+- Use `.withResponse()` on any request to inspect both parsed data and the raw `Response` object.
+- Every operation returns an `APIPromise`, so you can `await` it directly or chain `.withResponse()`.
+
+<br />
+
+## Logging
+
+- Set `logLevel: "debug"` to log request URLs, options, response status, response headers, and retry attempts.
+- Pass a custom `logger` to route logs into your own observability pipeline.
+- Set `logLevel: null` to disable environment-driven logging.
+
+<br />
+
+## Requirements
+
+- Node.js 20+, a modern browser, or any runtime with `fetch` support
+
+Powered by Scalar.

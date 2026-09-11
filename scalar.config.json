@@ -522,15 +522,22 @@
   },
   "targets": {
     "typescript": {
-      "packageName": "@tembo-io/sdk"
+      "packageName": "@tembo-io/sdk",
+      "destinations": {
+        "production": {
+          "repo": "tembo/sdk",
+          "branch": "main"
+        }
+      },
+      "publish": {
+        "npm": false
+      }
     }
   },
   "environments": {
     "development": "https://internal.tembo-development.com/public-api"
   },
-  "environmentOrder": [
-    "development"
-  ],
+  "environmentOrder": ["development"],
   "clientSettings": {
     "opts": {
       "apiKey": {

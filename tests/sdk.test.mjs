@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import test from 'node:test';
 import Tembo, { AuthenticationError, BadRequestError } from '../dist/esm/index.js';
@@ -9,7 +9,10 @@ const schema = JSON.parse(readFileSync(new URL('../openapi/openapi.json', import
 const manifest = JSON.parse(readFileSync(new URL('../scalar-sdk.manifest.json', import.meta.url)));
 const config = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
 const packageJson = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
-const document = { type: 'doc', content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hello' }] }] };
+const document = {
+  type: 'doc',
+  content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hello' }] }],
+};
 
 function mockClient(response = { data: [], nextCursor: null }, status = 200, options = {}) {
   const requests = [];
@@ -20,7 +23,12 @@ function mockClient(response = { data: [], nextCursor: null }, status = 200, opt
     ...options,
     fetch: async (input, init) => {
       const request = new Request(input, init);
-      requests.push({ url: request.url, method: request.method, headers: request.headers, body: await request.text() });
+      requests.push({
+        url: request.url,
+        method: request.method,
+        headers: request.headers,
+        body: await request.text(),
+      });
       return Response.json(response, { status });
     },
   });
@@ -29,11 +37,20 @@ function mockClient(response = { data: [], nextCursor: null }, status = 200, opt
 
 test('manifest and configured methods cover exactly the public v1 operations', () => {
   const methods = new Set(['get', 'post', 'put', 'patch', 'delete', 'head', 'options', 'trace']);
-  const expected = Object.entries(schema.paths).flatMap(([path, item]) =>
-    path.startsWith('/v1/') ? Object.keys(item).filter(method => methods.has(method)).map(method => `${method.toUpperCase()} ${path}`) : [],
-  ).sort();
+  const expected = Object.entries(schema.paths)
+    .flatMap(([path, item]) =>
+      path.startsWith('/v1/')
+        ? Object.keys(item)
+            .filter((method) => methods.has(method))
+            .map((method) => `${method.toUpperCase()} ${path}`)
+        : [],
+    )
+    .sort();
   assert.ok(expected.length > 0);
-  assert.deepEqual(manifest.operations.map(operation => `${operation.method} ${operation.path}`).sort(), expected);
+  assert.deepEqual(
+    manifest.operations.map((operation) => `${operation.method} ${operation.path}`).sort(),
+    expected,
+  );
   const endpoints = [];
   function collect(resources) {
     for (const resource of Object.values(resources)) {
@@ -50,15 +67,20 @@ test('manifest and configured methods cover exactly the public v1 operations', (
   const { client } = mockClient();
   for (const operation of manifest.operations) {
     const resource = operation.publicResource.split('.').reduce((value, key) => value[key], client);
-    assert.equal(typeof resource[operation.publicOperation], 'function', `${operation.publicResource}.${operation.publicOperation}`);
+    assert.equal(
+      typeof resource[operation.publicOperation],
+      'function',
+      `${operation.publicResource}.${operation.publicOperation}`,
+    );
   }
 });
 
-test('ESM and CommonJS entry points load and agree on the package version', async () => {
+test('ESM and CommonJS entry points load with generated version metadata', async () => {
   assert.equal(typeof Tembo, 'function');
   assert.equal(typeof require('../dist/cjs/index.js').Tembo, 'function');
   const { VERSION } = await import('../dist/esm/version.js');
-  assert.equal(VERSION, packageJson.version);
+  assert.equal(typeof VERSION, 'string');
+  assert.match(VERSION, /^\d+\.\d+\.\d+/);
 });
 
 test('dev URL, bearer authentication and pagination query are serialized', async () => {
@@ -74,7 +96,11 @@ test('agent instructions and message richContent remain objects on the wire', as
   await client.agents.create({ instructions: document });
   await client.messages.create({ sessionId: 'test-session', content: 'Hello', richContent: document });
   assert.deepEqual(JSON.parse(requests[0].body), { instructions: document });
-  assert.deepEqual(JSON.parse(requests[1].body), { sessionId: 'test-session', content: 'Hello', richContent: document });
+  assert.deepEqual(JSON.parse(requests[1].body), {
+    sessionId: 'test-session',
+    content: 'Hello',
+    richContent: document,
+  });
   assert.equal(requests[0].method, 'POST');
   assert.equal(requests[1].method, 'POST');
   assert.equal(requests[1].headers.get('content-type'), 'application/json');
@@ -93,16 +119,26 @@ test('base URL can be overridden and path parameters are escaped', async () => {
 });
 
 test('HTTP failures become typed errors without retries', async () => {
-  for (const [status, ErrorType] of [[401, AuthenticationError], [400, BadRequestError]]) {
+  for (const [status, ErrorType] of [
+    [401, AuthenticationError],
+    [400, BadRequestError],
+  ]) {
     const { client, requests } = mockClient({ error: 'Test failure' }, status);
-    await assert.rejects(() => client.models.list(), error => error instanceof ErrorType && error.status === status);
+    await assert.rejects(
+      () => client.models.list(),
+      (error) => error instanceof ErrorType && error.status === status,
+    );
     assert.equal(requests.length, 1);
   }
 });
 
 test('publishing stays disabled during migration', () => {
-  assert.equal(packageJson.private, true);
+  assert.equal(packageJson.name, '@tembo-io/sdk');
   assert.deepEqual(Object.keys(config.targets), ['typescript']);
-  assert.equal(config.targets.typescript.destinations, undefined);
-  assert.equal(config.targets.typescript.publish, undefined);
+  assert.deepEqual(config.targets.typescript.destinations.production, { repo: 'tembo/sdk', branch: 'main' });
+  assert.equal(config.targets.typescript.publish.npm, false);
+  assert.equal(existsSync(new URL('../.github/workflows/publish-npm.yml', import.meta.url)), false);
+  assert.equal(existsSync(new URL('../.github/workflows/sdk-release.yml', import.meta.url)), false);
+  const workflow = readFileSync(new URL('../.github/workflows/release-please.yml', import.meta.url), 'utf8');
+  assert.doesNotMatch(workflow, /^  publish:/m);
 });

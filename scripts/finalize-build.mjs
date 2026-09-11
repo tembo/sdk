@@ -73,6 +73,7 @@ async function finalizeCompiledOutput(dir, { addJsExtensions }) {
     }),
   );
 }
+
 /**
  * Makes the CommonJS entry callable as a constructor, so `new (require('<package>'))()` builds a
  * client the same way `new Client()` does after an ESM import.

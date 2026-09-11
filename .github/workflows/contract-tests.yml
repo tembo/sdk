@@ -1,20 +1,19 @@
-name: CI
+name: SDK Contract Tests
 
 on:
   push:
   pull_request:
-  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  verify:
+  contracts:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
           cache: npm

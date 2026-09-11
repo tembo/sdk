@@ -12,7 +12,7 @@ test('normalization preserves the contract, hoisting only disjoint recursive var
   assert.deepEqual(source, original);
   const references = normalized.components.schemas.TipTapNode.anyOf.slice(0, -1);
   const restored = structuredClone(normalized);
-  const variants = references.map(reference => {
+  const variants = references.map((reference) => {
     const name = reference.$ref.split('/').at(-1);
     const variant = restored.components.schemas[name];
     delete restored.components.schemas[name];
@@ -31,7 +31,10 @@ test('all configured models resolve against the prepared schema', () => {
   function check(resources) {
     for (const resource of Object.values(resources)) {
       for (const reference of Object.values(resource.models ?? {})) {
-        const model = reference.slice(2).split('/').reduce((value, key) => value?.[key], schema);
+        const model = reference
+          .slice(2)
+          .split('/')
+          .reduce((value, key) => value?.[key], schema);
         assert.ok(model, `Missing configured model ${reference}`);
       }
       check(resource.subresources ?? {});
@@ -42,10 +45,18 @@ test('all configured models resolve against the prepared schema', () => {
 
 test('normalization refuses overlapping variants or additional union constraints', () => {
   for (const mutate of [
-    schema => { schema.components.schemas.TipTapNode.anyOf[0].oneOf[0].required = []; },
-    schema => { schema.components.schemas.TipTapNode.anyOf[0].oneOf[0].properties.type.const = 'mention'; },
-    schema => { schema.components.schemas.TipTapNode.anyOf[0].not = {}; },
-    schema => { schema.components.schemas.TipTapImageContentNode = {}; },
+    (schema) => {
+      schema.components.schemas.TipTapNode.anyOf[0].oneOf[0].required = [];
+    },
+    (schema) => {
+      schema.components.schemas.TipTapNode.anyOf[0].oneOf[0].properties.type.const = 'mention';
+    },
+    (schema) => {
+      schema.components.schemas.TipTapNode.anyOf[0].not = {};
+    },
+    (schema) => {
+      schema.components.schemas.TipTapImageContentNode = {};
+    },
   ]) {
     const schema = structuredClone(source);
     mutate(schema);

@@ -1,0 +1,30 @@
+name: TypeScript SDK CI
+
+on:
+  push:
+  pull_request:
+
+# Least privilege for a verification-only workflow: every job below only reads the checked-out
+# tree, so the run's GITHUB_TOKEN is narrowed to that regardless of the repository's default
+# grants. Declared at the workflow level so a job added later inherits the floor.
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
+      - run: npm run build
+      # Verification only, never auto-fix: the SDK is generated formatted, so a diff here means
+      # either hand-edited custom code or a regenerate that was not committed. Auto-fixing would
+      # make the pushed bytes differ from generator output. `format` without `--write` is already
+      # check-only and exits non-zero on a diff; Biome has no `--check` flag, and `biome ci` is
+      # avoided so enabling the linter in this repo's biome.json cannot fail CI on generator-owned
+      # code the shipped config deliberately exempts.
+      - run: npx --yes @biomejs/biome@2.5.7 format .

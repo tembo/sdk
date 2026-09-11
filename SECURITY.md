@@ -1,7 +1,19 @@
 # Security Policy
 
-Report security concerns privately to darren@tembo.io. Do not include credentials, private API payloads, or vulnerability details in public issues.
+## Reporting Security Issues
 
-This TypeScript SDK is generated with Scalar. Reports involving generated transport or serialization code may require coordination with Scalar. Reports involving the Tembo API are handled by Tembo.
+This is a generated TypeScript SDK for Tembo Public API, produced by the Scalar SDK Generator (https://scalar.com).
 
-Please allow time to investigate and address a vulnerability before public disclosure.
+If the issue is in the generated SDK itself — its runtime, authentication handling, path construction, or serialization — report it to the Scalar team at support@scalar.com. We will acknowledge the report, triage it for severity and impact, and communicate a timeline for a fix or an explanation if we decline it.
+
+## Responsible Disclosure
+
+Please allow us reasonable time to investigate and address the issue before disclosing it publicly. Do not include credentials, tokens, or private API payloads in a public issue.
+
+## Reporting Non-SDK Security Issues
+
+If the issue is in the Tembo Public API or service rather than in this SDK, report it through the security process Tembo Public API has published.
+
+---
+
+Generated code validates emitted paths and escapes spec-derived strings, but OpenAPI documents should still be treated as untrusted input before generation.
