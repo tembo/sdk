@@ -106,6 +106,7 @@ export class Skills extends APIResource {
     return this._client.delete(__scalarPath`/v1/skills/${skillID}`, options);
   }
 }
+
 export interface SkillListParams {
   /**
    * @format uuid

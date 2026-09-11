@@ -86,6 +86,7 @@ export class Models extends APIResource {
     return this._client.patch(__scalarPath`/v1/models/${modelName}`, { body, ...options });
   }
 }
+
 export interface ModelListParams {
   cursor?:
     | 'claude-fable-5-1'

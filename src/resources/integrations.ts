@@ -44,6 +44,7 @@ export class Integrations extends APIResource {
     return this._client.get(__scalarPath`/v1/integrations/${integrationID}`, options);
   }
 }
+
 export interface IntegrationListParams {
   /**
    * @format uuid

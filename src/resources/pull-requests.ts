@@ -43,6 +43,7 @@ export class PullRequests extends APIResource {
     return this._client.get(__scalarPath`/v1/pull-requests/${pullRequestID}`, options);
   }
 }
+
 export interface PullRequestListParams {
   authorIds?: string | Array<string>;
   /**

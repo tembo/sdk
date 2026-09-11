@@ -20,6 +20,7 @@ const levelNumbers = {
   info: 400,
   debug: 500,
 };
+
 export const parseLogLevel = (
   maybeLevel: string | undefined,
   sourceName: string,

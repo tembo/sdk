@@ -1212,6 +1212,7 @@ const headerExplicitlyOmitted = (source: HeadersLike | undefined, name: string):
   const target = name.toLowerCase();
   return Object.entries(source).some(([key, value]) => key.toLowerCase() === target && value === null);
 };
+
 const appendAuthCookies = (headers: Headers, cookies: Record<string, string>): void => {
   for (const [name, value] of Object.entries(cookies)) {
     if (cookieHeaderHas(headers.get('Cookie'), name)) continue;

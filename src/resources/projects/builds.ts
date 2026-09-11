@@ -98,6 +98,7 @@ export class Builds extends APIResource {
     return this._client.post(__scalarPath`/v1/projects/${projectId}/builds/${buildID}/cancel`, options);
   }
 }
+
 export interface BuildListParams {
   /**
    * @minLength 1

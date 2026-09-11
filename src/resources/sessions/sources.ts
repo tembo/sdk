@@ -44,6 +44,7 @@ export class Sources extends APIResource {
     return this._client.get(__scalarPath`/v1/sessions/sources/${sourceID}`, options);
   }
 }
+
 export interface SourceListParams {
   /**
    * @format uuid

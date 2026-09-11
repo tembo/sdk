@@ -54,6 +54,7 @@ function is_non_nullish_primitive(v: unknown): v is string | number | boolean | 
     typeof v === 'bigint'
   );
 }
+
 const sentinel = {};
 
 function inner_stringify(

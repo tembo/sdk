@@ -133,6 +133,7 @@ export class Members extends APIResource {
     );
   }
 }
+
 export interface MemberListParams {
   /**
    * @minLength 1

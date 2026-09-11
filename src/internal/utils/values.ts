@@ -8,6 +8,7 @@ const startsWithSchemeRegexp = /^[a-z][a-z0-9+.-]*:/i;
 export const isAbsoluteURL = (url: string): boolean => {
   return startsWithSchemeRegexp.test(url);
 };
+
 export let isArray = (val: unknown): val is unknown[] => ((isArray = Array.isArray), isArray(val));
 export let isReadonlyArray = isArray as (val: unknown) => val is readonly unknown[];
 

@@ -74,6 +74,7 @@ export class Users extends APIResource {
     return this._client.delete(__scalarPath`/v1/users/${userID}`, { body, ...options });
   }
 }
+
 export interface UserRetrieveResponse {
   /**
    * @format date-time

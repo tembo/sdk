@@ -45,6 +45,7 @@ export class Repositories extends APIResource {
     return this._client.get(__scalarPath`/v1/repositories/${repositoryID}`, options);
   }
 }
+
 export interface RepositoryListParams {
   /**
    * @format uuid

@@ -161,6 +161,7 @@ const client = new Tembo({
   apiKey: process.env['TEMBO_API_KEY'], // defaults to the TEMBO_API_KEY env var
 });
 ```
+
 ## `ApiKeys`
 
 ### List API keys

@@ -179,6 +179,7 @@ export class Sessions extends APIResource {
     return this._client.get(__scalarPath`/v1/sessions/${sessionID}/events`, { query, ...options });
   }
 }
+
 export interface SessionEventData {
   /**
    * @maxLength 100

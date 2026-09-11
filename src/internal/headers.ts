@@ -26,6 +26,7 @@ export type NullableHeaders = {
   /** Set of lowercase header names explicitly set to null. */
   nulls: Set<string>;
 };
+
 function* iterateHeaders(headers: HeadersLike): IterableIterator<readonly [string, string | null]> {
   if (!headers) return;
 

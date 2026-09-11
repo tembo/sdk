@@ -80,6 +80,7 @@ export interface BlobPropertyBag {
   endings?: EndingType;
   type?: string;
 }
+
 /**
  * A copy of the builtin `FilePropertyBag` type as it isn't fully supported in certain
  * environments and attempting to reference the global version will error.

@@ -53,6 +53,7 @@ export class Diffs extends APIResource {
     return this._client.get(__scalarPath`/v1/sessions/${sessionId}/diffs/${diffID}`, options);
   }
 }
+
 export interface DiffListParams {
   /**
    * @format uuid

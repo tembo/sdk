@@ -174,6 +174,7 @@ export class Projects extends APIResource {
     return this._client.delete(__scalarPath`/v1/projects/${projectID}`, options);
   }
 }
+
 export interface ProjectUpdateDefaultsParams {
   /**
    * @minLength 1

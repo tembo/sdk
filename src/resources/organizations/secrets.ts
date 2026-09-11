@@ -131,6 +131,7 @@ export class Secrets extends APIResource {
     );
   }
 }
+
 export interface SecretListParams {
   /**
    * @format uuid

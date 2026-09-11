@@ -104,6 +104,7 @@ export class Snapshots extends APIResource {
     return this._client.delete(__scalarPath`/v1/projects/${projectId}/snapshots/${snapshotID}`, options);
   }
 }
+
 export interface SnapshotListParams {
   /**
    * @minLength 1

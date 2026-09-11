@@ -136,6 +136,7 @@ export class McpConnections extends APIResource {
     return this._client.post(__scalarPath`/v1/mcp-connections/${mcpConnectionID}/test`, options);
   }
 }
+
 export interface McpConnectionListParams {
   connected?: 'true' | 'false';
   /**

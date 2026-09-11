@@ -53,6 +53,7 @@ export class Files extends APIResource {
     return this._client.get(__scalarPath`/v1/sessions/${sessionId}/files/${fileID}`, options);
   }
 }
+
 export interface FileListParams {
   /**
    * @format uuid

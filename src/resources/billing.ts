@@ -41,6 +41,7 @@ export class Billing extends APIResource {
     return this._client.get('/v1/billing/usage', { query, ...options });
   }
 }
+
 export interface BillingRetrieveResponse {
   billingEnabled: boolean;
   balance: BillingRetrieveResponse.Balance;

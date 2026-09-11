@@ -20,6 +20,7 @@ export const toBase64 = (data: string | Uint8Array | null | undefined): string =
 
   throw new TemboError('Cannot generate base64 string; Expected `Buffer` or `btoa` to be defined');
 };
+
 export const fromBase64 = (str: string): Uint8Array => {
   if (typeof (globalThis as any).Buffer !== 'undefined') {
     const buf = (globalThis as any).Buffer.from(str, 'base64');

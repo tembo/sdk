@@ -24,6 +24,7 @@ export const checkFileSupport = () => {
     );
   }
 };
+
 /**
  * Typically, this is a native "File" class.
  *

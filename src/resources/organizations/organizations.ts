@@ -116,6 +116,7 @@ export class Organizations extends APIResource {
     return this._client.delete(__scalarPath`/v1/organizations/${organizationID}`, options);
   }
 }
+
 export interface OrganizationCreateParams {
   /**
    * @minLength 1

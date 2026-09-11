@@ -46,6 +46,7 @@ export class Settings extends APIResource {
     });
   }
 }
+
 export interface SettingRetrieveResponse {
   organizationId: string;
   settings: SettingRetrieveResponse.Settings;

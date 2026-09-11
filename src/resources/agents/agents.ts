@@ -183,6 +183,7 @@ export class Agents extends APIResource {
     return this._client.delete(__scalarPath`/v1/agents/${agentID}`, options);
   }
 }
+
 /**
  * Execution settings for the selected agent runtime, including provider-specific options.
  */

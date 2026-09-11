@@ -82,6 +82,7 @@ export class Artifacts extends APIResource {
     return this._client.delete(__scalarPath`/v1/artifacts/${artifactID}`, options);
   }
 }
+
 export interface ArtifactListParams {
   /**
    * @format uuid

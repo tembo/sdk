@@ -100,163 +100,28 @@ export class Messages extends APIResource {
     return this._client.delete(__scalarPath`/v1/messages/${messageID}`, options);
   }
 }
+
 /**
  * Rich-text document containing text, formatting, images, and mentions. A document typically has a "doc" root with nested content nodes.
  */
 export type TipTapDocument =
-  | TipTapDocument.TipTapDocumentItem
-  | TipTapDocument.TipTapDocumentItem2
-  | TipTapDocument.TipTapDocumentItem3
-  | TipTapDocument.TipTapDocumentItem4
-  | TipTapDocument.TipTapDocumentItem5
-  | TipTapDocument.TipTapDocumentItem6
+  | TipTapImageNode
+  | TipTapMentionNode
+  | TipTapHeadingNode
+  | TipTapOrderedListNode
+  | TipTapTaskItemNode
+  | TipTapCodeBlockNode
   | TipTapContentNode
   | Record<string, unknown>;
 
-export namespace TipTapDocument {
-  export interface TipTapDocumentItem {
-    type: 'image';
-    /**
-     * @maxLength 1000000
-     */
-    text?: string;
-    /**
-     * @maxItems 1000
-     */
-    marks?: Array<TipTapLinkMark | TipTapMark>;
-    attrs?: TipTapImageAttributes;
-    /**
-     * @maxItems 10000
-     */
-    content?: Array<TipTapNode>;
-    [k: string]: unknown;
-  }
-
-  export interface TipTapDocumentItem2 {
-    type: 'mention';
-    /**
-     * @maxLength 1000000
-     */
-    text?: string;
-    /**
-     * @maxItems 1000
-     */
-    marks?: Array<TipTapLinkMark | TipTapMark>;
-    attrs?: TipTapMentionAttributes;
-    /**
-     * @maxItems 10000
-     */
-    content?: Array<TipTapNode>;
-    [k: string]: unknown;
-  }
-
-  export interface TipTapDocumentItem3 {
-    type: 'heading';
-    /**
-     * @maxLength 1000000
-     */
-    text?: string;
-    /**
-     * @maxItems 1000
-     */
-    marks?: Array<TipTapLinkMark | TipTapMark>;
-    attrs?: TipTapDocumentItem3.Attrs;
-    /**
-     * @maxItems 10000
-     */
-    content?: Array<TipTapNode>;
-    [k: string]: unknown;
-  }
-
-  export namespace TipTapDocumentItem3 {
-    export interface Attrs {
-      /**
-       * @minimum 1
-       * @maximum 6
-       */
-      level?: number;
-      [k: string]: unknown;
-    }
-  }
-
-  export interface TipTapDocumentItem4 {
-    type: 'orderedList';
-    /**
-     * @maxLength 1000000
-     */
-    text?: string;
-    /**
-     * @maxItems 1000
-     */
-    marks?: Array<TipTapLinkMark | TipTapMark>;
-    attrs?: TipTapDocumentItem4.Attrs;
-    /**
-     * @maxItems 10000
-     */
-    content?: Array<TipTapNode>;
-    [k: string]: unknown;
-  }
-
-  export namespace TipTapDocumentItem4 {
-    export interface Attrs {
-      start?: number;
-      type?: string | null;
-      [k: string]: unknown;
-    }
-  }
-
-  export interface TipTapDocumentItem5 {
-    type: 'taskItem';
-    /**
-     * @maxLength 1000000
-     */
-    text?: string;
-    /**
-     * @maxItems 1000
-     */
-    marks?: Array<TipTapLinkMark | TipTapMark>;
-    attrs?: TipTapDocumentItem5.Attrs;
-    /**
-     * @maxItems 10000
-     */
-    content?: Array<TipTapNode>;
-    [k: string]: unknown;
-  }
-
-  export namespace TipTapDocumentItem5 {
-    export interface Attrs {
-      checked?: boolean;
-      [k: string]: unknown;
-    }
-  }
-
-  export interface TipTapDocumentItem6 {
-    type: 'codeBlock';
-    /**
-     * @maxLength 1000000
-     */
-    text?: string;
-    /**
-     * @maxItems 1000
-     */
-    marks?: Array<TipTapLinkMark | TipTapMark>;
-    attrs?: TipTapDocumentItem6.Attrs;
-    /**
-     * @maxItems 10000
-     */
-    content?: Array<TipTapNode>;
-    [k: string]: unknown;
-  }
-
-  export namespace TipTapDocumentItem6 {
-    export interface Attrs {
-      language?: string | null;
-      [k: string]: unknown;
-    }
-  }
-}
-
-export type TipTapNode = unknown | TipTapContentNode;
+export type TipTapNode =
+  | TipTapImageNode
+  | TipTapMentionNode
+  | TipTapHeadingNode
+  | TipTapOrderedListNode
+  | TipTapTaskItemNode
+  | TipTapCodeBlockNode
+  | TipTapContentNode;
 
 export interface TipTapImageNode {
   type: 'image';
@@ -269,6 +134,10 @@ export interface TipTapImageNode {
    */
   marks?: Array<TipTapLinkMark | TipTapMark>;
   attrs?: TipTapImageAttributes;
+  /**
+   * @maxItems 10000
+   */
+  content?: Array<TipTapNode>;
   [k: string]: unknown;
 }
 
@@ -283,6 +152,10 @@ export interface TipTapMentionNode {
    */
   marks?: Array<TipTapLinkMark | TipTapMark>;
   attrs?: TipTapMentionAttributes;
+  /**
+   * @maxItems 10000
+   */
+  content?: Array<TipTapNode>;
   [k: string]: unknown;
 }
 
@@ -297,6 +170,10 @@ export interface TipTapHeadingNode {
    */
   marks?: Array<TipTapLinkMark | TipTapMark>;
   attrs?: TipTapHeadingNode.Attrs;
+  /**
+   * @maxItems 10000
+   */
+  content?: Array<TipTapNode>;
   [k: string]: unknown;
 }
 
@@ -322,6 +199,10 @@ export interface TipTapOrderedListNode {
    */
   marks?: Array<TipTapLinkMark | TipTapMark>;
   attrs?: TipTapOrderedListNode.Attrs;
+  /**
+   * @maxItems 10000
+   */
+  content?: Array<TipTapNode>;
   [k: string]: unknown;
 }
 
@@ -344,6 +225,10 @@ export interface TipTapTaskItemNode {
    */
   marks?: Array<TipTapLinkMark | TipTapMark>;
   attrs?: TipTapTaskItemNode.Attrs;
+  /**
+   * @maxItems 10000
+   */
+  content?: Array<TipTapNode>;
   [k: string]: unknown;
 }
 
@@ -365,6 +250,10 @@ export interface TipTapCodeBlockNode {
    */
   marks?: Array<TipTapLinkMark | TipTapMark>;
   attrs?: TipTapCodeBlockNode.Attrs;
+  /**
+   * @maxItems 10000
+   */
+  content?: Array<TipTapNode>;
   [k: string]: unknown;
 }
 

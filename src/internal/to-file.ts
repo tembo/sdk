@@ -18,6 +18,7 @@ interface BlobLike {
   /** [MDN Reference](https://developer.mozilla.org/docs/Web/API/Blob/slice) */
   slice(start?: number, end?: number): BlobLike;
 }
+
 /**
  * This check adds the arrayBuffer() method type because it is available and used at runtime
  */

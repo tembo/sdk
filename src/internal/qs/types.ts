@@ -33,6 +33,7 @@ export type StringifyBaseOptions = {
   allowEmptyArrays?: boolean;
   commaRoundTrip?: boolean;
 };
+
 export type StringifyOptions = StringifyBaseOptions;
 
 export type ParseBaseOptions = {

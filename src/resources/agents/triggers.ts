@@ -129,6 +129,7 @@ export class Triggers extends APIResource {
     return this._client.delete(__scalarPath`/v1/agents/${agentId}/triggers/${triggerID}`, options);
   }
 }
+
 export interface TriggerListParams {
   /**
    * @format uuid

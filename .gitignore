@@ -13,3 +13,4 @@ scalar-test/
 .env.*
 !.env.example
 *.tsbuildinfo
+/openapi/scalar.openapi.json

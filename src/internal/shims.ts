@@ -19,6 +19,7 @@ export function getDefaultFetch(): Fetch {
     '`fetch` is not defined as a global; Either pass `fetch` to the client, `new Tembo({ fetch })` or polyfill the global, `globalThis.fetch = fetch`',
   );
 }
+
 type ReadableStreamArgs = ConstructorParameters<typeof ReadableStream>;
 
 export function makeReadableStream(...args: ReadableStreamArgs): ReadableStream {

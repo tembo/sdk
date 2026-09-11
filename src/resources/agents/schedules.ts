@@ -128,6 +128,7 @@ export class Schedules extends APIResource {
     return this._client.delete(__scalarPath`/v1/agents/${agentId}/schedules/${scheduleID}`, options);
   }
 }
+
 export interface ScheduleListParams {
   /**
    * @format uuid

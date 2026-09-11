@@ -19,6 +19,7 @@ export type RequestOptions = {
   defaultBaseURL?: string | undefined;
   __binaryResponse?: boolean | undefined;
 };
+
 export type FinalRequestOptions = RequestOptions & {
   method: HTTPMethod;
   path: string;

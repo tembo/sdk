@@ -98,6 +98,7 @@ export class APIKeys extends APIResource {
     return this._client.delete(__scalarPath`/v1/api-keys/${apiKeyID}`, options);
   }
 }
+
 export interface APIKeyListParams {
   /**
    * @format uuid

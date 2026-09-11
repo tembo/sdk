@@ -50,606 +50,28 @@
         "kind": "union",
         "variants": [
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "image"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "ref",
-                  "name": "tip_tap_image_attributes"
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_image_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "mention"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "ref",
-                  "name": "tip_tap_mention_attributes"
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_mention_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "heading"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "level",
-                      "publicName": "level",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "primitive",
-                        "type": "integer",
-                        "validation": {
-                          "minimum": 1,
-                          "maximum": 6
-                        }
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_heading_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "orderedList"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "start",
-                      "publicName": "start",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "primitive",
-                        "type": "integer"
-                      }
-                    },
-                    {
-                      "name": "type",
-                      "publicName": "type",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "union",
-                        "variants": [
-                          {
-                            "kind": "primitive",
-                            "type": "string"
-                          },
-                          {
-                            "kind": "null"
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_ordered_list_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "taskItem"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "checked",
-                      "publicName": "checked",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "primitive",
-                        "type": "boolean"
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_task_item_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "codeBlock"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "language",
-                      "publicName": "language",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "union",
-                        "variants": [
-                          {
-                            "kind": "primitive",
-                            "type": "string"
-                          },
-                          {
-                            "kind": "null"
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_code_block_node"
           },
           {
             "kind": "ref",
@@ -681,606 +103,28 @@
         "kind": "union",
         "variants": [
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "image"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "ref",
-                  "name": "tip_tap_image_attributes"
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_image_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "mention"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "ref",
-                  "name": "tip_tap_mention_attributes"
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_mention_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "heading"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "level",
-                      "publicName": "level",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "primitive",
-                        "type": "integer",
-                        "validation": {
-                          "minimum": 1,
-                          "maximum": 6
-                        }
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_heading_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "orderedList"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "start",
-                      "publicName": "start",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "primitive",
-                        "type": "integer"
-                      }
-                    },
-                    {
-                      "name": "type",
-                      "publicName": "type",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "union",
-                        "variants": [
-                          {
-                            "kind": "primitive",
-                            "type": "string"
-                          },
-                          {
-                            "kind": "null"
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_ordered_list_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "taskItem"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "checked",
-                      "publicName": "checked",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "primitive",
-                        "type": "boolean"
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_task_item_node"
           },
           {
-            "kind": "object",
-            "properties": [
-              {
-                "name": "text",
-                "publicName": "text",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "primitive",
-                  "type": "string",
-                  "validation": {
-                    "maxLength": 1000000
-                  }
-                }
-              },
-              {
-                "name": "marks",
-                "publicName": "marks",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_link_mark"
-                      },
-                      {
-                        "kind": "ref",
-                        "name": "tip_tap_mark"
-                      }
-                    ],
-                    "variantNames": [
-                      null,
-                      null
-                    ]
-                  },
-                  "validation": {
-                    "maxItems": 1000
-                  }
-                }
-              },
-              {
-                "name": "type",
-                "publicName": "type",
-                "required": true,
-                "deprecated": false,
-                "type": {
-                  "kind": "literal",
-                  "value": "codeBlock"
-                }
-              },
-              {
-                "name": "attrs",
-                "publicName": "attrs",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "object",
-                  "properties": [
-                    {
-                      "name": "language",
-                      "publicName": "language",
-                      "required": false,
-                      "deprecated": false,
-                      "type": {
-                        "kind": "union",
-                        "variants": [
-                          {
-                            "kind": "primitive",
-                            "type": "string"
-                          },
-                          {
-                            "kind": "null"
-                          }
-                        ]
-                      }
-                    }
-                  ],
-                  "additionalProperties": {
-                    "kind": "unknown"
-                  }
-                }
-              },
-              {
-                "name": "content",
-                "publicName": "content",
-                "required": false,
-                "deprecated": false,
-                "type": {
-                  "kind": "array",
-                  "items": {
-                    "kind": "ref",
-                    "name": "tip_tap_node"
-                  },
-                  "validation": {
-                    "maxItems": 10000
-                  }
-                }
-              }
-            ],
-            "additionalProperties": {
-              "kind": "unknown"
-            }
+            "kind": "ref",
+            "name": "tip_tap_code_block_node"
           },
           {
             "kind": "ref",
@@ -1296,82 +140,6 @@
           null,
           null
         ]
-      }
-    },
-    {
-      "name": "tip_tap_image_node",
-      "source": "tip_tap_image_node",
-      "publicAliases": [],
-      "deprecated": false,
-      "type": {
-        "kind": "object",
-        "properties": [
-          {
-            "name": "text",
-            "publicName": "text",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "primitive",
-              "type": "string",
-              "validation": {
-                "maxLength": 1000000
-              }
-            }
-          },
-          {
-            "name": "marks",
-            "publicName": "marks",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "array",
-              "items": {
-                "kind": "union",
-                "variants": [
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_link_mark"
-                  },
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_mark"
-                  }
-                ],
-                "variantNames": [
-                  null,
-                  null
-                ]
-              },
-              "validation": {
-                "maxItems": 1000
-              }
-            }
-          },
-          {
-            "name": "type",
-            "publicName": "type",
-            "required": true,
-            "deprecated": false,
-            "type": {
-              "kind": "literal",
-              "value": "image"
-            }
-          },
-          {
-            "name": "attrs",
-            "publicName": "attrs",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "ref",
-              "name": "tip_tap_image_attributes"
-            }
-          }
-        ],
-        "additionalProperties": {
-          "kind": "unknown"
-        }
       }
     },
     {
@@ -1697,82 +465,6 @@
       }
     },
     {
-      "name": "tip_tap_mention_node",
-      "source": "tip_tap_mention_node",
-      "publicAliases": [],
-      "deprecated": false,
-      "type": {
-        "kind": "object",
-        "properties": [
-          {
-            "name": "text",
-            "publicName": "text",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "primitive",
-              "type": "string",
-              "validation": {
-                "maxLength": 1000000
-              }
-            }
-          },
-          {
-            "name": "marks",
-            "publicName": "marks",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "array",
-              "items": {
-                "kind": "union",
-                "variants": [
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_link_mark"
-                  },
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_mark"
-                  }
-                ],
-                "variantNames": [
-                  null,
-                  null
-                ]
-              },
-              "validation": {
-                "maxItems": 1000
-              }
-            }
-          },
-          {
-            "name": "type",
-            "publicName": "type",
-            "required": true,
-            "deprecated": false,
-            "type": {
-              "kind": "literal",
-              "value": "mention"
-            }
-          },
-          {
-            "name": "attrs",
-            "publicName": "attrs",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "ref",
-              "name": "tip_tap_mention_attributes"
-            }
-          }
-        ],
-        "additionalProperties": {
-          "kind": "unknown"
-        }
-      }
-    },
-    {
       "name": "tip_tap_mention_attributes",
       "source": "tip_tap_mention_attributes",
       "publicAliases": [],
@@ -1932,396 +624,6 @@
                   "kind": "null"
                 }
               ]
-            }
-          }
-        ],
-        "additionalProperties": {
-          "kind": "unknown"
-        }
-      }
-    },
-    {
-      "name": "tip_tap_heading_node",
-      "source": "tip_tap_heading_node",
-      "publicAliases": [],
-      "deprecated": false,
-      "type": {
-        "kind": "object",
-        "properties": [
-          {
-            "name": "text",
-            "publicName": "text",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "primitive",
-              "type": "string",
-              "validation": {
-                "maxLength": 1000000
-              }
-            }
-          },
-          {
-            "name": "marks",
-            "publicName": "marks",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "array",
-              "items": {
-                "kind": "union",
-                "variants": [
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_link_mark"
-                  },
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_mark"
-                  }
-                ],
-                "variantNames": [
-                  null,
-                  null
-                ]
-              },
-              "validation": {
-                "maxItems": 1000
-              }
-            }
-          },
-          {
-            "name": "type",
-            "publicName": "type",
-            "required": true,
-            "deprecated": false,
-            "type": {
-              "kind": "literal",
-              "value": "heading"
-            }
-          },
-          {
-            "name": "attrs",
-            "publicName": "attrs",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "object",
-              "properties": [
-                {
-                  "name": "level",
-                  "publicName": "level",
-                  "required": false,
-                  "deprecated": false,
-                  "type": {
-                    "kind": "primitive",
-                    "type": "integer",
-                    "validation": {
-                      "minimum": 1,
-                      "maximum": 6
-                    }
-                  }
-                }
-              ],
-              "additionalProperties": {
-                "kind": "unknown"
-              }
-            }
-          }
-        ],
-        "additionalProperties": {
-          "kind": "unknown"
-        }
-      }
-    },
-    {
-      "name": "tip_tap_ordered_list_node",
-      "source": "tip_tap_ordered_list_node",
-      "publicAliases": [],
-      "deprecated": false,
-      "type": {
-        "kind": "object",
-        "properties": [
-          {
-            "name": "text",
-            "publicName": "text",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "primitive",
-              "type": "string",
-              "validation": {
-                "maxLength": 1000000
-              }
-            }
-          },
-          {
-            "name": "marks",
-            "publicName": "marks",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "array",
-              "items": {
-                "kind": "union",
-                "variants": [
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_link_mark"
-                  },
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_mark"
-                  }
-                ],
-                "variantNames": [
-                  null,
-                  null
-                ]
-              },
-              "validation": {
-                "maxItems": 1000
-              }
-            }
-          },
-          {
-            "name": "type",
-            "publicName": "type",
-            "required": true,
-            "deprecated": false,
-            "type": {
-              "kind": "literal",
-              "value": "orderedList"
-            }
-          },
-          {
-            "name": "attrs",
-            "publicName": "attrs",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "object",
-              "properties": [
-                {
-                  "name": "start",
-                  "publicName": "start",
-                  "required": false,
-                  "deprecated": false,
-                  "type": {
-                    "kind": "primitive",
-                    "type": "integer"
-                  }
-                },
-                {
-                  "name": "type",
-                  "publicName": "type",
-                  "required": false,
-                  "deprecated": false,
-                  "type": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "primitive",
-                        "type": "string"
-                      },
-                      {
-                        "kind": "null"
-                      }
-                    ]
-                  }
-                }
-              ],
-              "additionalProperties": {
-                "kind": "unknown"
-              }
-            }
-          }
-        ],
-        "additionalProperties": {
-          "kind": "unknown"
-        }
-      }
-    },
-    {
-      "name": "tip_tap_task_item_node",
-      "source": "tip_tap_task_item_node",
-      "publicAliases": [],
-      "deprecated": false,
-      "type": {
-        "kind": "object",
-        "properties": [
-          {
-            "name": "text",
-            "publicName": "text",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "primitive",
-              "type": "string",
-              "validation": {
-                "maxLength": 1000000
-              }
-            }
-          },
-          {
-            "name": "marks",
-            "publicName": "marks",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "array",
-              "items": {
-                "kind": "union",
-                "variants": [
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_link_mark"
-                  },
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_mark"
-                  }
-                ],
-                "variantNames": [
-                  null,
-                  null
-                ]
-              },
-              "validation": {
-                "maxItems": 1000
-              }
-            }
-          },
-          {
-            "name": "type",
-            "publicName": "type",
-            "required": true,
-            "deprecated": false,
-            "type": {
-              "kind": "literal",
-              "value": "taskItem"
-            }
-          },
-          {
-            "name": "attrs",
-            "publicName": "attrs",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "object",
-              "properties": [
-                {
-                  "name": "checked",
-                  "publicName": "checked",
-                  "required": false,
-                  "deprecated": false,
-                  "type": {
-                    "kind": "primitive",
-                    "type": "boolean"
-                  }
-                }
-              ],
-              "additionalProperties": {
-                "kind": "unknown"
-              }
-            }
-          }
-        ],
-        "additionalProperties": {
-          "kind": "unknown"
-        }
-      }
-    },
-    {
-      "name": "tip_tap_code_block_node",
-      "source": "tip_tap_code_block_node",
-      "publicAliases": [],
-      "deprecated": false,
-      "type": {
-        "kind": "object",
-        "properties": [
-          {
-            "name": "text",
-            "publicName": "text",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "primitive",
-              "type": "string",
-              "validation": {
-                "maxLength": 1000000
-              }
-            }
-          },
-          {
-            "name": "marks",
-            "publicName": "marks",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "array",
-              "items": {
-                "kind": "union",
-                "variants": [
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_link_mark"
-                  },
-                  {
-                    "kind": "ref",
-                    "name": "tip_tap_mark"
-                  }
-                ],
-                "variantNames": [
-                  null,
-                  null
-                ]
-              },
-              "validation": {
-                "maxItems": 1000
-              }
-            }
-          },
-          {
-            "name": "type",
-            "publicName": "type",
-            "required": true,
-            "deprecated": false,
-            "type": {
-              "kind": "literal",
-              "value": "codeBlock"
-            }
-          },
-          {
-            "name": "attrs",
-            "publicName": "attrs",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "object",
-              "properties": [
-                {
-                  "name": "language",
-                  "publicName": "language",
-                  "required": false,
-                  "deprecated": false,
-                  "type": {
-                    "kind": "union",
-                    "variants": [
-                      {
-                        "kind": "primitive",
-                        "type": "string"
-                      },
-                      {
-                        "kind": "null"
-                      }
-                    ]
-                  }
-                }
-              ],
-              "additionalProperties": {
-                "kind": "unknown"
-              }
             }
           }
         ],
@@ -7208,6 +5510,644 @@
         "kind": "object",
         "properties": [],
         "additionalProperties": false
+      }
+    },
+    {
+      "name": "tip_tap_image_node",
+      "source": "tip_tap_image_node",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "text",
+            "publicName": "text",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "string",
+              "validation": {
+                "maxLength": 1000000
+              }
+            }
+          },
+          {
+            "name": "marks",
+            "publicName": "marks",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "union",
+                "variants": [
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_link_mark"
+                  },
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_mark"
+                  }
+                ],
+                "variantNames": [
+                  null,
+                  null
+                ]
+              },
+              "validation": {
+                "maxItems": 1000
+              }
+            }
+          },
+          {
+            "name": "type",
+            "publicName": "type",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "literal",
+              "value": "image"
+            }
+          },
+          {
+            "name": "attrs",
+            "publicName": "attrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "ref",
+              "name": "tip_tap_image_attributes"
+            }
+          },
+          {
+            "name": "content",
+            "publicName": "content",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "ref",
+                "name": "tip_tap_node"
+              },
+              "validation": {
+                "maxItems": 10000
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "tip_tap_mention_node",
+      "source": "tip_tap_mention_node",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "text",
+            "publicName": "text",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "string",
+              "validation": {
+                "maxLength": 1000000
+              }
+            }
+          },
+          {
+            "name": "marks",
+            "publicName": "marks",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "union",
+                "variants": [
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_link_mark"
+                  },
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_mark"
+                  }
+                ],
+                "variantNames": [
+                  null,
+                  null
+                ]
+              },
+              "validation": {
+                "maxItems": 1000
+              }
+            }
+          },
+          {
+            "name": "type",
+            "publicName": "type",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "literal",
+              "value": "mention"
+            }
+          },
+          {
+            "name": "attrs",
+            "publicName": "attrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "ref",
+              "name": "tip_tap_mention_attributes"
+            }
+          },
+          {
+            "name": "content",
+            "publicName": "content",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "ref",
+                "name": "tip_tap_node"
+              },
+              "validation": {
+                "maxItems": 10000
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "tip_tap_heading_node",
+      "source": "tip_tap_heading_node",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "text",
+            "publicName": "text",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "string",
+              "validation": {
+                "maxLength": 1000000
+              }
+            }
+          },
+          {
+            "name": "marks",
+            "publicName": "marks",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "union",
+                "variants": [
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_link_mark"
+                  },
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_mark"
+                  }
+                ],
+                "variantNames": [
+                  null,
+                  null
+                ]
+              },
+              "validation": {
+                "maxItems": 1000
+              }
+            }
+          },
+          {
+            "name": "type",
+            "publicName": "type",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "literal",
+              "value": "heading"
+            }
+          },
+          {
+            "name": "attrs",
+            "publicName": "attrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "object",
+              "properties": [
+                {
+                  "name": "level",
+                  "publicName": "level",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "primitive",
+                    "type": "integer",
+                    "validation": {
+                      "minimum": 1,
+                      "maximum": 6
+                    }
+                  }
+                }
+              ],
+              "additionalProperties": {
+                "kind": "unknown"
+              }
+            }
+          },
+          {
+            "name": "content",
+            "publicName": "content",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "ref",
+                "name": "tip_tap_node"
+              },
+              "validation": {
+                "maxItems": 10000
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "tip_tap_ordered_list_node",
+      "source": "tip_tap_ordered_list_node",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "text",
+            "publicName": "text",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "string",
+              "validation": {
+                "maxLength": 1000000
+              }
+            }
+          },
+          {
+            "name": "marks",
+            "publicName": "marks",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "union",
+                "variants": [
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_link_mark"
+                  },
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_mark"
+                  }
+                ],
+                "variantNames": [
+                  null,
+                  null
+                ]
+              },
+              "validation": {
+                "maxItems": 1000
+              }
+            }
+          },
+          {
+            "name": "type",
+            "publicName": "type",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "literal",
+              "value": "orderedList"
+            }
+          },
+          {
+            "name": "attrs",
+            "publicName": "attrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "object",
+              "properties": [
+                {
+                  "name": "start",
+                  "publicName": "start",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "primitive",
+                    "type": "integer"
+                  }
+                },
+                {
+                  "name": "type",
+                  "publicName": "type",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "union",
+                    "variants": [
+                      {
+                        "kind": "primitive",
+                        "type": "string"
+                      },
+                      {
+                        "kind": "null"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "additionalProperties": {
+                "kind": "unknown"
+              }
+            }
+          },
+          {
+            "name": "content",
+            "publicName": "content",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "ref",
+                "name": "tip_tap_node"
+              },
+              "validation": {
+                "maxItems": 10000
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "tip_tap_task_item_node",
+      "source": "tip_tap_task_item_node",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "text",
+            "publicName": "text",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "string",
+              "validation": {
+                "maxLength": 1000000
+              }
+            }
+          },
+          {
+            "name": "marks",
+            "publicName": "marks",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "union",
+                "variants": [
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_link_mark"
+                  },
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_mark"
+                  }
+                ],
+                "variantNames": [
+                  null,
+                  null
+                ]
+              },
+              "validation": {
+                "maxItems": 1000
+              }
+            }
+          },
+          {
+            "name": "type",
+            "publicName": "type",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "literal",
+              "value": "taskItem"
+            }
+          },
+          {
+            "name": "attrs",
+            "publicName": "attrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "object",
+              "properties": [
+                {
+                  "name": "checked",
+                  "publicName": "checked",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "primitive",
+                    "type": "boolean"
+                  }
+                }
+              ],
+              "additionalProperties": {
+                "kind": "unknown"
+              }
+            }
+          },
+          {
+            "name": "content",
+            "publicName": "content",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "ref",
+                "name": "tip_tap_node"
+              },
+              "validation": {
+                "maxItems": 10000
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "tip_tap_code_block_node",
+      "source": "tip_tap_code_block_node",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "text",
+            "publicName": "text",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "string",
+              "validation": {
+                "maxLength": 1000000
+              }
+            }
+          },
+          {
+            "name": "marks",
+            "publicName": "marks",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "union",
+                "variants": [
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_link_mark"
+                  },
+                  {
+                    "kind": "ref",
+                    "name": "tip_tap_mark"
+                  }
+                ],
+                "variantNames": [
+                  null,
+                  null
+                ]
+              },
+              "validation": {
+                "maxItems": 1000
+              }
+            }
+          },
+          {
+            "name": "type",
+            "publicName": "type",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "literal",
+              "value": "codeBlock"
+            }
+          },
+          {
+            "name": "attrs",
+            "publicName": "attrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "object",
+              "properties": [
+                {
+                  "name": "language",
+                  "publicName": "language",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "union",
+                    "variants": [
+                      {
+                        "kind": "primitive",
+                        "type": "string"
+                      },
+                      {
+                        "kind": "null"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "additionalProperties": {
+                "kind": "unknown"
+              }
+            }
+          },
+          {
+            "name": "content",
+            "publicName": "content",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "ref",
+                "name": "tip_tap_node"
+              },
+              "validation": {
+                "maxItems": 10000
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
       }
     }
   ],

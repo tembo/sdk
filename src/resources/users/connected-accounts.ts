@@ -56,6 +56,7 @@ export class ConnectedAccounts extends APIResource {
     );
   }
 }
+
 export interface ConnectedAccountListParams {
   /**
    * @minLength 1

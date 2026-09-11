@@ -40,13 +40,15 @@ The dev smoke test pins the dev backend and only reads models. It never creates,
 - Both ESM and CommonJS output are built from TypeScript.
 - Resource names use the merged API contracts, including `instructions`, `richContent`, `durationMs`, and plural relationship fields.
 - OpenAPI, Scalar config, and generator manifest are checked in for review.
+- A generation-only normalization names and flattens disjoint recursive rich-text variants so Scalar emits typed children. The original API schema, wire format, and database are unchanged.
 - Old generation/release scripts and publishing workflows are removed. Publishing is blocked by `private: true` and a failing `prepublishOnly` script.
 
 ## Remaining release gates
 
 The authenticated, read-only `models.list` smoke test passed against development on September 11, 2026. This confirms that the generated client can authenticate and read from dev, not that every operation has been exercised live. No credentials are stored in this repository.
 
-- Resolve Scalar's recursive `TipTapNode` union degrading to `unknown` before claiming fully typed rich-content children. The OpenAPI snapshot and Scalar manifest both retain the six structured node variants and content-node reference; the generated TypeScript loses them. Extensible attribute dictionaries are separately intentional in the API schema. Generation compiles despite this limitation.
+Recursive `TipTapNode` generation is fixed in this branch, with compile-time checks rejecting primitive nodes and invalid nested children. Custom-document and extensible-attribute dictionaries remain intentionally open-ended to match the existing API contract.
+
 - Confirm production schema parity and configure the production base URL before release.
 - Review migration examples against real consumers; this changes resource names and the old SDK surface. Node 24 is the only supported/tested runtime for this candidate; browser support is not claimed.
 - Choose the final version, connect the intended Scalar SDK to this repository, and explicitly configure publishing. `1.0.0-beta.0` is only an unpublished candidate version.

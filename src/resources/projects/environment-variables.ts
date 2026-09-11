@@ -77,6 +77,7 @@ export class EnvironmentVariables extends APIResource {
     return this._client.delete(__scalarPath`/v1/projects/${projectId}/environment-variables/${key}`, options);
   }
 }
+
 export interface EnvironmentVariableListResponse {
   items: Array<EnvironmentVariableListResponse.Item>;
 }

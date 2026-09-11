@@ -12,6 +12,7 @@ export const isRunningInBrowser = () => {
     typeof navigator !== 'undefined'
   );
 };
+
 type DetectedPlatform = 'deno' | 'node' | 'edge' | 'unknown';
 
 /**

@@ -44,6 +44,7 @@ export class Templates extends APIResource {
     return this._client.get(__scalarPath`/v1/agents/templates/${templateName}`, options);
   }
 }
+
 /**
  * Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type.
  */

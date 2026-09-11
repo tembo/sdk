@@ -80,6 +80,7 @@ export class Insights extends APIResource {
     return this._client.get('/v1/insights/repositories', { query, ...options });
   }
 }
+
 export interface InsightRetrieveResponse {
   /**
    * @format uuid
