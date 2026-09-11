@@ -18,9 +18,9 @@ export const checkFileSupport = () => {
       typeof process?.versions?.node === 'string' && parseInt(process.versions.node.split('.')) < 20;
     throw new Error(
       '`File` is not defined as a global, which is required for file uploads.' +
-        (isOldNode ?
-          " Update to Node 20 LTS or newer, or set `globalThis.File` to `import('node:buffer').File`."
-        : ''),
+        (isOldNode
+          ? " Update to Node 20 LTS or newer, or set `globalThis.File` to `import('node:buffer').File`."
+          : ''),
     );
   }
 };
@@ -34,7 +34,7 @@ export const checkFileSupport = () => {
  * For convenience, you can also pass a fetch Response, or in Node,
  * the result of fs.createReadStream().
  */
-export type Uploadable = File | Response | FsReadStream | BunFile;
+export type Uploadable = Blob | File | Response | FsReadStream | BunFile;
 
 /**
  * Construct a `File` instance. This is used to ensure a helpful error is thrown
@@ -104,10 +104,17 @@ function supportsFormData(fetchObject: Tembo | Fetch): Promise<boolean> {
   if (cached) return cached;
   const promise = (async () => {
     try {
+      // Prefer a `Response` constructor we can reach without a network round-trip: the one attached to
+      // the fetch function, then the global `Response`. Only fall back to probing `data:,` when neither
+      // exists, so serializing an already-provided File/Blob never triggers an extra fetch (which would
+      // otherwise show up as a spurious request to `data:,` before the real API call).
       const FetchResponse = (
-        'Response' in fetch ?
-          fetch.Response
-        : (await fetch('data:,')).constructor) as typeof Response;
+        'Response' in fetch
+          ? fetch.Response
+          : typeof Response !== 'undefined'
+            ? Response
+            : (await fetch('data:,')).constructor
+      ) as typeof Response;
       const data = new FormData();
       if (data.toString() === (await new FetchResponse(data).text())) {
         return false;
@@ -132,18 +139,23 @@ export const createForm = async <T = Record<string, unknown>>(
     );
   }
   const form = new FormData();
+  if (isUploadable(body)) {
+    // Multipart schemas can describe the whole request body as a single binary part.
+    await addFormValue(form, 'body', body);
+    return form;
+  }
   await Promise.all(Object.entries(body || {}).map(([key, value]) => addFormValue(form, key, value)));
   return form;
 };
 
 // We check for Blob not File because Bun.File doesn't inherit from File,
 // but they both inherit from Blob and have a `name` property at runtime.
-const isNamedBlob = (value: unknown) => value instanceof Blob && 'name' in value;
+const isBlob = (value: unknown): value is Blob => value instanceof Blob;
 
 const isUploadable = (value: unknown) =>
   typeof value === 'object' &&
   value !== null &&
-  (value instanceof Response || isAsyncIterable(value) || isNamedBlob(value));
+  (value instanceof Response || isAsyncIterable(value) || isBlob(value));
 
 const hasUploadableValue = (value: unknown): boolean => {
   if (isUploadable(value)) return true;
@@ -171,8 +183,13 @@ const addFormValue = async (form: FormData, key: string, value: unknown): Promis
     form.append(key, makeFile([await value.blob()], getName(value)));
   } else if (isAsyncIterable(value)) {
     form.append(key, makeFile([await new Response(ReadableStreamFrom(value)).blob()], getName(value)));
-  } else if (isNamedBlob(value)) {
-    form.append(key, value, getName(value));
+  } else if (isBlob(value)) {
+    const name = getName(value);
+    if (name === undefined) {
+      form.append(key, value);
+    } else {
+      form.append(key, value, name);
+    }
   } else if (Array.isArray(value)) {
     await Promise.all(value.map((entry) => addFormValue(form, key + '[]', entry)));
   } else if (typeof value === 'object') {

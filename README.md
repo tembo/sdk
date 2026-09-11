@@ -1,12 +1,26 @@
-# Tembo TypeScript API Library
+# Tembo Public API
 
-[![NPM version](<https://img.shields.io/npm/v/@tembo-io/sdk.svg?label=npm%20(stable)>)](https://npmjs.org/package/@tembo-io/sdk) ![npm bundle size](https://img.shields.io/bundlephobia/minzip/@tembo-io/sdk)
+This library provides convenient access to the Tembo Public API from TypeScript or JavaScript.
 
-This library provides convenient access to the Tembo REST API from server-side TypeScript or JavaScript.
+The full API of this library can be found in [api.md](./api.md).
 
-The REST API documentation can be found on [docs.tembo.io](https://docs.tembo.io/welcome). The full API of this library can be found in [api.md](api.md).
+<br />
 
-It is generated with [Stainless](https://www.stainless.com/).
+## Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](./api.md)
+- [Authentication](#authentication)
+- [Errors](#errors)
+- [Client Options](#client-options)
+- [Request Options](#request-options)
+- [Retries and Timeouts](#retries-and-timeouts)
+- [Helpers](#helpers)
+- [Logging](#logging)
+- [Requirements](#requirements)
+
+<br />
 
 ## Installation
 
@@ -14,345 +28,134 @@ It is generated with [Stainless](https://www.stainless.com/).
 npm install @tembo-io/sdk
 ```
 
+<br />
+
 ## Usage
 
-The full API of this library can be found in [api.md](api.md).
-
-<!-- prettier-ignore -->
-```js
-import Tembo from '@tembo-io/sdk';
-
-const client = new Tembo({
-  apiKey: process.env['TEMBO_API_KEY'], // This is the default and can be omitted
-});
-
-const task = await client.task.create();
-
-console.log(task.id);
-```
-
-### Request & Response types
-
-This library includes TypeScript definitions for all request params and response fields. You may import and use them like so:
-
-<!-- prettier-ignore -->
 ```ts
 import Tembo from '@tembo-io/sdk';
 
 const client = new Tembo({
-  apiKey: process.env['TEMBO_API_KEY'], // This is the default and can be omitted
+  apiKey: process.env['TEMBO_API_KEY'], // defaults to the TEMBO_API_KEY env var
 });
 
-const task: Tembo.TaskCreateResponse = await client.task.create();
+const apiKey = await client.apiKeys.list({
+  limit: '50',
+});
+
+console.log(apiKey);
 ```
 
-Documentation for each method, request param, and response field are available in docstrings and will appear on hover in most modern editors.
+The examples in the following sections assume a `client` configured as shown above.
 
-## Handling errors
+See the [API reference](./api.md) for every available operation.
 
-When the library is unable to connect to the API,
-or if the API returns a non-success status code (i.e., 4xx or 5xx response),
-a subclass of `APIError` will be thrown:
+<br />
 
-<!-- prettier-ignore -->
+## Authentication
+
+Pass credentials to the generated client constructor. Environment variables are read automatically when supported by the target runtime.
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `apiKey` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to TEMBO_API_KEY. |
+
+Declared schemes:
+
+- `apiKey` bearer token
+
+<br />
+
+## Errors
+
+Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
+
 ```ts
-const task = await client.task.create().catch(async (err) => {
-  if (err instanceof Tembo.APIError) {
-    console.log(err.status); // 400
-    console.log(err.name); // BadRequestError
-    console.log(err.headers); // {server: 'nginx', ...}
-  } else {
-    throw err;
+import { APIError } from '@tembo-io/sdk';
+
+try {
+  const apiKey = await client.apiKeys.list({
+    limit: '50',
+  });
+} catch (err) {
+  if (err instanceof APIError) {
+    console.log(err.status, err.name, err.headers);
   }
-});
+  throw err;
+}
 ```
 
-Error codes are as follows:
+Documented error statuses: `400`, `401`, `403`, `404`, `409`, `500`, `502`, `503`, `504`.
 
-| Status Code | Error Type                 |
-| ----------- | -------------------------- |
-| 400         | `BadRequestError`          |
-| 401         | `AuthenticationError`      |
-| 403         | `PermissionDeniedError`    |
-| 404         | `NotFoundError`            |
-| 422         | `UnprocessableEntityError` |
-| 429         | `RateLimitError`           |
-| >=500       | `InternalServerError`      |
-| N/A         | `APIConnectionError`       |
+<br />
 
-### Retries
+## Client Options
 
-Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
-Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,
-429 Rate Limit, and >=500 Internal errors will all be retried by default.
-
-You can use the `maxRetries` option to configure or disable this:
-
-<!-- prettier-ignore -->
-```js
-// Configure the default for all requests:
-const client = new Tembo({
-  maxRetries: 0, // default is 2
-});
-
-// Or, configure per-request:
-await client.task.create({
-  maxRetries: 5,
-});
-```
-
-### Timeouts
-
-Requests time out after 1 minute by default. You can configure this with a `timeout` option:
-
-<!-- prettier-ignore -->
-```ts
-// Configure the default for all requests:
-const client = new Tembo({
-  timeout: 20 * 1000, // 20 seconds (default is 1 minute)
-});
-
-// Override per-request:
-await client.task.create({
-  timeout: 5 * 1000,
-});
-```
-
-On timeout, an `APIConnectionTimeoutError` is thrown.
-
-Note that requests which time out will be [retried twice by default](#retries).
-
-## Advanced Usage
-
-### Accessing raw Response data (e.g., headers)
-
-The "raw" `Response` returned by `fetch()` can be accessed through the `.asResponse()` method on the `APIPromise` type that all methods return.
-This method returns as soon as the headers for a successful response are received and does not consume the response body, so you are free to write custom parsing or streaming logic.
-
-You can also use the `.withResponse()` method to get the raw `Response` along with the parsed data.
-Unlike `.asResponse()` this method consumes the body, returning once it is parsed.
-
-<!-- prettier-ignore -->
-```ts
-const client = new Tembo();
-
-const response = await client.task.create().asResponse();
-console.log(response.headers.get('X-My-Header'));
-console.log(response.statusText); // access the underlying Response object
-
-const { data: task, response: raw } = await client.task.create().withResponse();
-console.log(raw.headers.get('X-My-Header'));
-console.log(task.id);
-```
-
-### Logging
-
-> [!IMPORTANT]
-> All log messages are intended for debugging only. The format and content of log messages
-> may change between releases.
-
-#### Log levels
-
-The log level can be configured in two ways:
-
-1. Via the `TEMBO_LOG` environment variable
-2. Using the `logLevel` client option (overrides the environment variable if set)
+Configure the generated client by setting any of these options when you create it.
 
 ```ts
 import Tembo from '@tembo-io/sdk';
 
 const client = new Tembo({
-  logLevel: 'debug', // Show all log messages
+  timeout: 60000,
+  maxRetries: 2,
+  logLevel: 'debug',
 });
 ```
 
-Available log levels, from most to least verbose:
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `apiKey` | `string \| AuthTokenProvider` | `process.env["TEMBO_API_KEY"]` | Credential for the apiKey scheme. |
+| `baseURL` | `string \| null` | `process.env["TEMBO_BASE_URL"]` | Override the default API base URL. Pass `null` when selecting a configured environment. |
+| `timeout` | `number` | `60000` | Maximum time in milliseconds to wait for a response before aborting a request. |
+| `maxRetries` | `number` | `2` | Number of retries for temporary failures. |
+| `defaultHeaders` | `HeadersInit` | - | Headers sent with every request. |
+| `defaultQuery` | `Record<string, string \| undefined>` | - | Query parameters sent with every request. |
+| `fetchOptions` | `RequestInit` | - | Additional fetch options sent with every request. |
+| `fetch` | `Fetch` | - | Custom fetch implementation. |
+| `logLevel` | `"off" \| "error" \| "warn" \| "info" \| "debug" \| null` | `process.env["TEMBO_LOG"]` | Controls request and retry debug logging. |
+| `logger` | `Logger \| null` | `console` | Custom logger implementation. |
 
-- `'debug'` - Show debug messages, info, warnings, and errors
-- `'info'` - Show info messages, warnings, and errors
-- `'warn'` - Show warnings and errors (default)
-- `'error'` - Show only errors
-- `'off'` - Disable all logging
+<br />
 
-At the `'debug'` level, all HTTP requests and responses are logged, including headers and bodies.
-Some authentication-related headers are redacted, but sensitive data in request and response bodies
-may still be visible.
+## Request Options
 
-#### Custom logger
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `headers` | `HeadersInit` | - | Per-request headers. |
+| `query` | `Record<string, unknown>` | - | Per-request query parameters. |
+| `body` | `unknown` | - | Override the generated request body. |
+| `timeout` | `number` | - | Per-request timeout in milliseconds. |
+| `maxRetries` | `number` | - | Per-request retry count. |
+| `signal` | `AbortSignal` | - | Abort an in-flight request. |
+| `fetchOptions` | `RequestInit` | - | Per-request fetch options. |
+| `idempotencyKey` | `string` | - | Idempotency key for retry-safe operations. Applies to this request and its retries. |
 
-By default, this library logs to `globalThis.console`. You can also provide a custom logger.
-Most logging libraries are supported, including [pino](https://www.npmjs.com/package/pino), [winston](https://www.npmjs.com/package/winston), [bunyan](https://www.npmjs.com/package/bunyan), [consola](https://www.npmjs.com/package/consola), [signale](https://www.npmjs.com/package/signale), and [@std/log](https://jsr.io/@std/log). If your logger doesn't work, please open an issue.
+<br />
 
-When providing a custom logger, the `logLevel` option still controls which messages are emitted, messages
-below the configured level will not be sent to your logger.
+## Retries and Timeouts
 
-```ts
-import Tembo from '@tembo-io/sdk';
-import pino from 'pino';
+Generated clients support request timeouts and retry temporary failures such as network errors, 408, 409, 429, and 5xx responses. Retry delays honor `Retry-After` headers when present. Tune the retry and timeout client options shown above, or override them per request.
 
-const logger = pino();
+<br />
 
-const client = new Tembo({
-  logger: logger.child({ name: 'Tembo' }),
-  logLevel: 'debug', // Send all messages to pino, allowing it to filter
-});
-```
+## Helpers
 
-### Making custom/undocumented requests
+- Use `.withResponse()` on any request to inspect both parsed data and the raw `Response` object.
+- Every operation returns an `APIPromise`, so you can `await` it directly or chain `.withResponse()`.
 
-This library is typed for convenient access to the documented API. If you need to access undocumented
-endpoints, params, or response properties, the library can still be used.
+<br />
 
-#### Undocumented endpoints
+## Logging
 
-To make requests to undocumented endpoints, you can use `client.get`, `client.post`, and other HTTP verbs.
-Options on the client, such as retries, will be respected when making these requests.
+- Set `logLevel: "debug"` to log request URLs, options, response status, response headers, and retry attempts.
+- Pass a custom `logger` to route logs into your own observability pipeline.
+- Set `logLevel: null` to disable environment-driven logging.
 
-```ts
-await client.post('/some/path', {
-  body: { some_prop: 'foo' },
-  query: { some_query_arg: 'bar' },
-});
-```
-
-#### Undocumented request params
-
-To make requests using undocumented parameters, you may use `// @ts-expect-error` on the undocumented
-parameter. This library doesn't validate at runtime that the request matches the type, so any extra values you
-send will be sent as-is.
-
-```ts
-client.task.create({
-  // ...
-  // @ts-expect-error baz is not yet public
-  baz: 'undocumented option',
-});
-```
-
-For requests with the `GET` verb, any extra params will be in the query, all other requests will send the
-extra param in the body.
-
-If you want to explicitly send an extra argument, you can do so with the `query`, `body`, and `headers` request
-options.
-
-#### Undocumented response properties
-
-To access undocumented response properties, you may access the response object with `// @ts-expect-error` on
-the response object, or cast the response object to the requisite type. Like the request params, we do not
-validate or strip extra properties from the response from the API.
-
-### Customizing the fetch client
-
-By default, this library expects a global `fetch` function is defined.
-
-If you want to use a different `fetch` function, you can either polyfill the global:
-
-```ts
-import fetch from 'my-fetch';
-
-globalThis.fetch = fetch;
-```
-
-Or pass it to the client:
-
-```ts
-import Tembo from '@tembo-io/sdk';
-import fetch from 'my-fetch';
-
-const client = new Tembo({ fetch });
-```
-
-### Fetch options
-
-If you want to set custom `fetch` options without overriding the `fetch` function, you can provide a `fetchOptions` object when instantiating the client or making a request. (Request-specific options override client options.)
-
-```ts
-import Tembo from '@tembo-io/sdk';
-
-const client = new Tembo({
-  fetchOptions: {
-    // `RequestInit` options
-  },
-});
-```
-
-#### Configuring proxies
-
-To modify proxy behavior, you can provide custom `fetchOptions` that add runtime-specific proxy
-options to requests:
-
-<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/node.svg" align="top" width="18" height="21"> **Node** <sup>[[docs](https://github.com/nodejs/undici/blob/main/docs/docs/api/ProxyAgent.md#example---proxyagent-with-fetch)]</sup>
-
-```ts
-import Tembo from '@tembo-io/sdk';
-import * as undici from 'undici';
-
-const proxyAgent = new undici.ProxyAgent('http://localhost:8888');
-const client = new Tembo({
-  fetchOptions: {
-    dispatcher: proxyAgent,
-  },
-});
-```
-
-<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/bun.svg" align="top" width="18" height="21"> **Bun** <sup>[[docs](https://bun.sh/guides/http/proxy)]</sup>
-
-```ts
-import Tembo from '@tembo-io/sdk';
-
-const client = new Tembo({
-  fetchOptions: {
-    proxy: 'http://localhost:8888',
-  },
-});
-```
-
-<img src="https://raw.githubusercontent.com/stainless-api/sdk-assets/refs/heads/main/deno.svg" align="top" width="18" height="21"> **Deno** <sup>[[docs](https://docs.deno.com/api/deno/~/Deno.createHttpClient)]</sup>
-
-```ts
-import Tembo from 'npm:@tembo-io/sdk';
-
-const httpClient = Deno.createHttpClient({ proxy: { url: 'http://localhost:8888' } });
-const client = new Tembo({
-  fetchOptions: {
-    client: httpClient,
-  },
-});
-```
-
-## Frequently Asked Questions
-
-## Semantic versioning
-
-This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
-
-1. Changes that only affect static types, without breaking runtime behavior.
-2. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
-3. Changes that we do not expect to impact the vast majority of users in practice.
-
-We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
-
-We are keen for your feedback; please open an [issue](https://www.github.com/tembo/sdk/issues) with questions, bugs, or suggestions.
+<br />
 
 ## Requirements
 
-TypeScript >= 4.9 is supported.
+- Node.js 20+, a modern browser, or any runtime with `fetch` support
 
-The following runtimes are supported:
-
-- Web browsers (Up-to-date Chrome, Firefox, Safari, Edge, and more)
-- Node.js 20 LTS or later ([non-EOL](https://endoflife.date/nodejs)) versions.
-- Deno v1.28.0 or higher.
-- Bun 1.0 or later.
-- Cloudflare Workers.
-- Vercel Edge Runtime.
-- Jest 28 or greater with the `"node"` environment (`"jsdom"` is not supported at this time).
-- Nitro v2.6 or greater.
-
-Note that React Native is not supported at this time.
-
-If you are interested in other runtime environments, please open or upvote an issue on GitHub.
-
-## Contributing
-
-See [the contributing documentation](./CONTRIBUTING.md).
+Powered by Scalar.
