@@ -5,7 +5,7 @@ This repository follows [Scalar's managed GitHub workflow](https://scalar.com/pr
 ## Branches and ownership
 
 - `scalar-generated`: pristine output managed by Scalar. Do not edit this branch.
-- `scalar-next`: generated output plus reviewed customizations. Target custom-code pull requests here.
+- `scalar-next`: generated output plus customizations. Commit custom changes here so they appear alongside the generated changes in the single release PR.
 - `main`: released states promoted through Scalar's release pull request. Do not merge that release PR until the intended customizations and release settings have been reviewed.
 
 Scalar manages the client, API reference, README, package/build defaults, release configuration, generated workflows and version metadata. See `VERSIONING.md` for version selection. Do not manually set package versions or copy downloaded builds over repository files; Scalar preserves customizations through its three-way merge.
@@ -33,7 +33,7 @@ For an authenticated, read-only dev check, export a dev `TEMBO_API_KEY` and run 
 2. Run `npm run schema:prepare`. This creates ignored `openapi/scalar.openapi.json` for Scalar. Validate it with `npx --yes --package=@scalar/cli@2.1.0 scalar document validate openapi/scalar.openapi.json`.
 3. Upload the prepared document to the linked registry API `tembo/tembo-eight-pr-verification` as a new version. For test versions, use `--no-current` to avoid changing its current API version. Apply the reviewed `scalar.config.json` and API version to SDK `tembo/tembo-v1-sdk-test` in Scalar. The local config is not automatically uploaded when committed.
 4. Build that draft version in Scalar, or run `npx --yes --package=@scalar/cli@2.1.0 scalar sdk build --namespace tembo --slug tembo-v1-sdk-test --version <draft-version>`. The CLI starts the build; wait for its completion and repository sync.
-5. Scalar updates `scalar-generated`, integrates into `scalar-next`, and refreshes the release PR against `main`. Review code, diagnostics and checks there. Put schema snapshot/config/test changes through a custom-code PR against `scalar-next` before approving the release PR.
+5. Scalar updates `scalar-generated`, integrates into `scalar-next`, and refreshes the release PR against `main`. Add schema snapshot/config/test changes to `scalar-next` and review the combined code, diagnostics and checks in that one release PR. A separate custom-code PR is optional, not a required step.
 
 The connected build uses the reviewed prepared API version `1.0.2-devverify.20260911`; SDK build `0.2.1` uses generator `0.32.9`. These are generation identifiers, not a requested npm release version. The remote SDK currently defaults to development and does not automatically track every deployment.
 
