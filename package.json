@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Manage agents, sessions, repositories, and organization resources with the Tembo API.",
   "author": "Tembo Public API",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tembo/sdk.git"
+  },
   "type": "module",
   "sideEffects": false,
   "main": "./dist/cjs/index.js",
