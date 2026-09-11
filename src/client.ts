@@ -1,55 +1,213 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import type { RequestInit, RequestInfo, BodyInit } from './internal/builtin-types';
-import type { HTTPMethod, PromiseOrValue, MergedRequestInit, FinalizedRequestInit } from './internal/types';
+import { APIPromise, type APIResponseProps } from './api-promise';
+import * as Errors from './error';
 import { uuid4 } from './internal/utils/uuid';
-import { validatePositiveInteger, isAbsoluteURL, safeJSON } from './internal/utils/values';
+import { validatePositiveInteger, isAbsoluteURL, safeJSON, isEmptyObj } from './internal/utils/values';
 import { sleep } from './internal/utils/sleep';
-export type { Logger, LogLevel } from './internal/utils/log';
 import { castToError, isAbortError } from './internal/errors';
-import type { APIResponseProps } from './internal/parse';
 import { getPlatformHeaders } from './internal/detect-platform';
 import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
-import { VERSION } from './version';
-import * as Errors from './core/error';
-import * as Uploads from './core/uploads';
-import * as API from './resources/index';
-import { APIPromise } from './core/api-promise';
-import { Me, MeRetrieveResponse } from './resources/me';
-import { Repository, RepositoryListResponse } from './resources/repository';
-import {
-  Task,
-  TaskCreateParams,
-  TaskCreateResponse,
-  TaskListParams,
-  TaskListResponse,
-  TaskSearchParams,
-  TaskSearchResponse,
-} from './resources/task';
-import { type Fetch } from './internal/builtin-types';
-import { HeadersLike, NullableHeaders, buildHeaders } from './internal/headers';
-import { FinalRequestOptions, RequestOptions } from './internal/request-options';
 import { readEnv } from './internal/utils/env';
 import {
-  type LogLevel,
-  type Logger,
   formatRequestDetails,
   loggerFor,
   parseLogLevel,
+  type LogLevel,
+  type Logger,
 } from './internal/utils/log';
-import { isEmptyObj } from './internal/utils/values';
+export type { Logger, LogLevel } from './internal/utils/log';
+import type { RequestInit, RequestInfo, BodyInit, Fetch } from './internal/builtin-types';
+import { buildHeaders, type HeadersLike, type NullableHeaders } from './internal/headers';
+import type { FinalRequestOptions, RequestOptions } from './internal/request-options';
+import type { HTTPMethod, FinalizedRequestInit, MergedRequestInit, PromiseOrValue } from './internal/types';
+import { stringifyQuery } from './internal/utils/query';
+import { toFile } from './core/uploads';
+import { VERSION } from './version';
+import {
+  APIKeys,
+  type APIKeyListResponse,
+  type APIKeyCreateResponse,
+  type APIKeyRetrieveResponse,
+  type APIKeyUpdateResponse,
+  type APIKeyDeleteResponse,
+  type APIKeyListParams,
+  type APIKeyCreateParams,
+  type APIKeyUpdateParams,
+} from './resources/api-keys';
+import {
+  Skills,
+  type SkillListResponse,
+  type SkillCreateResponse,
+  type SkillRetrieveResponse,
+  type SkillUpdateResponse,
+  type SkillDeleteResponse,
+  type SkillListParams,
+  type SkillCreateParams,
+  type SkillUpdateParams,
+} from './resources/skills';
+import {
+  Insights,
+  type InsightRetrieveResponse,
+  type InsightUpdateResponse,
+  type InsightListMembersResponse,
+  type InsightListRepositoriesResponse,
+  type InsightUpdateParams,
+  type InsightListMembersParams,
+  type InsightListRepositoriesParams,
+} from './resources/insights';
+import {
+  Organizations,
+  type OrganizationCreateResponse,
+  type OrganizationRetrieveResponse,
+  type OrganizationUpdateResponse,
+  type OrganizationDeleteResponse,
+  type OrganizationCreateParams,
+  type OrganizationUpdateParams,
+} from './resources/organizations/organizations';
+import {
+  McpConnections,
+  type McpConnectionListResponse,
+  type McpConnectionCreateResponse,
+  type McpConnectionRetrieveResponse,
+  type McpConnectionUpdateResponse,
+  type McpConnectionDeleteResponse,
+  type McpConnectionAuthorizeResponse,
+  type McpConnectionTestResponse,
+  type McpConnectionListParams,
+  type McpConnectionCreateParams,
+  type McpConnectionUpdateParams,
+} from './resources/mcp-connections';
+import {
+  Artifacts,
+  type ArtifactListResponse,
+  type ArtifactCreateResponse,
+  type ArtifactRetrieveResponse,
+  type ArtifactDeleteResponse,
+  type ArtifactListParams,
+  type ArtifactCreateParams,
+} from './resources/artifacts';
+import {
+  Messages,
+  type TipTapDocument,
+  type TipTapNode,
+  type TipTapImageNode,
+  type TipTapMentionNode,
+  type TipTapHeadingNode,
+  type TipTapOrderedListNode,
+  type TipTapTaskItemNode,
+  type TipTapCodeBlockNode,
+  type TipTapContentNode,
+  type TipTapLinkMark,
+  type TipTapMark,
+  type TipTapImageAttributes,
+  type TipTapMentionAttributes,
+  type TipTapExtensionAttributes,
+  type MessageListResponse,
+  type MessageCreateResponse,
+  type MessageRetrieveResponse,
+  type MessageUpdateResponse,
+  type MessageDeleteResponse,
+  type MessageListParams,
+  type MessageCreateParams,
+  type MessageUpdateParams,
+} from './resources/messages';
+import {
+  Models,
+  type ModelListResponse,
+  type ModelUpdateResponse,
+  type ModelListParams,
+  type ModelUpdateParams,
+} from './resources/models';
+import {
+  Users,
+  type UserRetrieveResponse,
+  type UserUpdateResponse,
+  type UserDeleteResponse,
+  type UserUpdateParams,
+  type UserDeleteParams,
+} from './resources/users/users';
+import {
+  Sessions,
+  type SessionEventData,
+  type SessionDocumentNode,
+  type SessionListResponse,
+  type SessionCreateResponse,
+  type SessionRetrieveResponse,
+  type SessionUpdateResponse,
+  type SessionDeleteResponse,
+  type SessionStopResponse,
+  type SessionListEventsResponse,
+  type SessionListParams,
+  type SessionCreateParams,
+  type SessionUpdateParams,
+  type SessionStopParams,
+  type SessionListEventsParams,
+} from './resources/sessions/sessions';
+import {
+  Projects,
+  type ProjectUpdateDefaultsResponse,
+  type ProjectListResponse,
+  type ProjectCreateResponse,
+  type ProjectRetrieveResponse,
+  type ProjectUpdateResponse,
+  type ProjectDeleteResponse,
+  type ProjectUpdateDefaultsParams,
+  type ProjectListParams,
+  type ProjectCreateParams,
+  type ProjectUpdateParams,
+} from './resources/projects/projects';
+import {
+  PullRequests,
+  type PullRequestListResponse,
+  type PullRequestRetrieveResponse,
+  type PullRequestListParams,
+} from './resources/pull-requests';
+import {
+  Agents,
+  type AgentOptionsInput,
+  type AgentState,
+  type AgentListResponse,
+  type AgentCreateResponse,
+  type AgentRetrieveResponse,
+  type AgentUpdateResponse,
+  type AgentDeleteResponse,
+  type AgentListParams,
+  type AgentCreateParams,
+  type AgentUpdateParams,
+} from './resources/agents/agents';
+import {
+  Repositories,
+  type RepositoryListResponse,
+  type RepositoryRetrieveResponse,
+  type RepositoryListParams,
+} from './resources/repositories';
+import {
+  Integrations,
+  type IntegrationListResponse,
+  type IntegrationRetrieveResponse,
+  type IntegrationListParams,
+} from './resources/integrations';
+import {
+  Billing,
+  type BillingRetrieveResponse,
+  type BillingListUsageResponse,
+  type BillingListUsageParams,
+} from './resources/billing';
+
+export type AuthTokenProvider = () => string | Promise<string>;
 
 export interface ClientOptions {
   /**
-   * Defaults to process.env['TEMBO_API_KEY'].
+   * The token used for authentication.
    */
-  apiKey?: string | undefined;
+  apiKey?: string | AuthTokenProvider | undefined;
 
   /**
    * Override the default base URL for the API, e.g., "https://api.example.com/v2/"
    *
-   * Defaults to process.env['TEMBO_BASE_URL'].
+   * Defaults to process.env["TEMBO_BASE_URL"].
    */
   baseURL?: string | null | undefined;
 
@@ -63,6 +221,7 @@ export interface ClientOptions {
    * @unit milliseconds
    */
   timeout?: number | undefined;
+
   /**
    * Additional `RequestInit` options to be passed to `fetch` calls.
    * Properties will be overridden by per-request `fetchOptions`.
@@ -103,7 +262,7 @@ export interface ClientOptions {
   /**
    * Set the log level.
    *
-   * Defaults to process.env['TEMBO_LOG'] or 'warn' if it isn't set.
+   * Defaults to process.env["TEMBO_LOG"] or 'warn' if it isn't set.
    */
   logLevel?: LogLevel | undefined;
 
@@ -115,11 +274,13 @@ export interface ClientOptions {
   logger?: Logger | undefined;
 }
 
+export type TemboOptions = ClientOptions;
+
 /**
- * API Client for interfacing with the Tembo API.
+ * API Client for interfacing with the TemboPublicApi API.
  */
 export class Tembo {
-  apiKey: string;
+  apiKey: string | AuthTokenProvider;
 
   baseURL: string;
   maxRetries: number;
@@ -127,17 +288,18 @@ export class Tembo {
   logger: Logger;
   logLevel: LogLevel | undefined;
   fetchOptions: MergedRequestInit | undefined;
-
   private fetch: Fetch;
   #encoder: Opts.RequestEncoder;
   protected idempotencyHeader?: string;
+  private _baseURLOverridden: boolean;
+  private _defaultBaseURL: string;
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the Tembo API.
+   * API Client for interfacing with the TemboPublicApi API.
    *
-   * @param {string | undefined} [opts.apiKey=process.env['TEMBO_API_KEY'] ?? undefined]
-   * @param {string} [opts.baseURL=process.env['TEMBO_BASE_URL'] ?? https://api.tembo.io/] - Override the default base URL for the API.
+   * @param {string | AuthTokenProvider | undefined} [opts.apiKey=process.env["TEMBO_API_KEY"] ?? undefined]
+   * @param {string} [opts.baseURL=process.env["TEMBO_BASE_URL"] ?? https://internal.tembo-development.com/public-api] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -159,10 +321,11 @@ export class Tembo {
     const options: ClientOptions = {
       apiKey,
       ...opts,
-      baseURL: baseURL || `https://api.tembo.io/`,
+      baseURL: baseURL || 'https://internal.tembo-development.com/public-api',
     };
-
-    this.baseURL = options.baseURL!;
+    const baseURLOverridden = baseURL !== null && baseURL !== undefined && baseURL !== '';
+    const defaultBaseURL = 'https://internal.tembo-development.com/public-api';
+    this.baseURL = options.baseURL || defaultBaseURL;
     this.timeout = options.timeout ?? Tembo.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
@@ -170,25 +333,36 @@ export class Tembo {
     this.logLevel = defaultLogLevel;
     this.logLevel =
       parseLogLevel(options.logLevel, 'ClientOptions.logLevel', this) ??
-      parseLogLevel(readEnv('TEMBO_LOG'), "process.env['TEMBO_LOG']", this) ??
+      parseLogLevel(readEnv('TEMBO_LOG'), 'process.env["TEMBO_LOG"]', this) ??
       defaultLogLevel;
     this.fetchOptions = options.fetchOptions;
     this.maxRetries = options.maxRetries ?? 2;
     this.fetch = options.fetch ?? Shims.getDefaultFetch();
     this.#encoder = Opts.FallbackEncoder;
 
-    this._options = options;
+    const customHeadersEnv = readEnv('TEMBO_CUSTOM_HEADERS');
+    if (customHeadersEnv) {
+      const parsed: Record<string, string> = {};
+      for (const line of customHeadersEnv.split('\n')) {
+        const colon = line.indexOf(':');
+        if (colon >= 0) {
+          parsed[line.substring(0, colon).trim()] = line.substring(colon + 1).trim();
+        }
+      }
+      options.defaultHeaders = { ...parsed, ...options.defaultHeaders };
+    }
+
+    this._options = { ...options, baseURL: baseURLOverridden ? this.baseURL : undefined };
+    this._baseURLOverridden = baseURLOverridden;
+    this._defaultBaseURL = defaultBaseURL;
 
     this.apiKey = apiKey;
   }
 
-  /**
-   * Create a new client instance re-using the same options given to the current client with optional overriding.
-   */
   withOptions(options: Partial<ClientOptions>): this {
-    const client = new (this.constructor as any as new (props: ClientOptions) => typeof this)({
+    const client = new (this.constructor as new (props: ClientOptions) => this)({
       ...this._options,
-      baseURL: this.baseURL,
+      ...(this.#baseURLOverridden() ? { baseURL: this.baseURL } : {}),
       maxRetries: this.maxRetries,
       timeout: this.timeout,
       logger: this.logger,
@@ -201,43 +375,17 @@ export class Tembo {
     return client;
   }
 
-  /**
-   * Check whether the base URL is set to its default.
-   */
   #baseURLOverridden(): boolean {
-    return this.baseURL !== 'https://api.tembo.io/';
+    // A named environment selects a default URL; only explicit overrides should bypass per-request defaults.
+    return this._baseURLOverridden || this.baseURL !== this._defaultBaseURL;
   }
 
   protected defaultQuery(): Record<string, string | undefined> | undefined {
     return this._options.defaultQuery;
   }
 
-  protected validateHeaders({ values, nulls }: NullableHeaders) {
-    return;
-  }
-
-  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
-    return buildHeaders([{ Authorization: `Bearer ${this.apiKey}` }]);
-  }
-
-  /**
-   * Basic re-implementation of `qs.stringify` for primitive types.
-   */
-  protected stringifyQuery(query: Record<string, unknown>): string {
-    return Object.entries(query)
-      .filter(([_, value]) => typeof value !== 'undefined')
-      .map(([key, value]) => {
-        if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-          return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
-        }
-        if (value === null) {
-          return `${encodeURIComponent(key)}=`;
-        }
-        throw new Errors.TemboError(
-          `Cannot stringify type ${typeof value}; Expected string, number, boolean, or null. If you need to pass nested query parameters, you can manually encode them, e.g. { query: { 'foo[key1]': value1, 'foo[key2]': value2 } }, and please open a GitHub issue requesting better support for your use case.`,
-        );
-      })
-      .join('&');
+  protected stringifyQuery(query: object | Record<string, unknown>): string {
+    return stringifyQuery(query);
   }
 
   private getUserAgent(): string {
@@ -245,12 +393,12 @@ export class Tembo {
   }
 
   protected defaultIdempotencyKey(): string {
-    return `stainless-node-retry-${uuid4()}`;
+    return `scalar-node-retry-${uuid4()}`;
   }
 
   protected makeStatusError(
     status: number,
-    error: Object,
+    error: object | undefined,
     message: string | undefined,
     headers: Headers,
   ): Errors.APIError {
@@ -263,18 +411,22 @@ export class Tembo {
     defaultBaseURL?: string | undefined,
   ): string {
     const baseURL = (!this.#baseURLOverridden() && defaultBaseURL) || this.baseURL;
-    const url =
-      isAbsoluteURL(path) ?
-        new URL(path)
-      : new URL(baseURL + (baseURL.endsWith('/') && path.startsWith('/') ? path.slice(1) : path));
+    // Guarantee exactly one "/" between baseURL and path so that bases without a trailing slash
+    // and paths without a leading slash do not fuse into a malformed URL (e.g. ".../v1" + "widgets").
+    const url = isAbsoluteURL(path)
+      ? new URL(path)
+      : new URL(
+          (baseURL.endsWith('/') ? baseURL : baseURL + '/') + (path.startsWith('/') ? path.slice(1) : path),
+        );
 
     const defaultQuery = this.defaultQuery();
-    if (!isEmptyObj(defaultQuery)) {
-      query = { ...defaultQuery, ...query };
+    const pathQuery = Object.fromEntries(url.searchParams);
+    if (!isEmptyObj(defaultQuery) || !isEmptyObj(pathQuery)) {
+      query = { ...pathQuery, ...defaultQuery, ...query };
     }
 
     if (typeof query === 'object' && query && !Array.isArray(query)) {
-      url.search = this.stringifyQuery(query as Record<string, unknown>);
+      url.search = this.stringifyQuery(query);
     }
 
     return url.toString();
@@ -323,7 +475,7 @@ export class Tembo {
   ): APIPromise<Rsp> {
     return this.request(
       Promise.resolve(opts).then((opts) => {
-        return { method, path, ...opts };
+        return { method, path, ...opts } as FinalRequestOptions;
       }),
     );
   }
@@ -458,7 +610,7 @@ export class Tembo {
       loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
 
       const errText = await response.text().catch((err: any) => castToError(err).message);
-      const errJSON = safeJSON(errText);
+      const errJSON = safeJSON(errText) as any;
       const errMessage = errJSON ? undefined : errText;
 
       loggerFor(this).debug(
@@ -499,9 +651,10 @@ export class Tembo {
     controller: AbortController,
   ): Promise<Response> {
     const { signal, method, ...options } = init || {};
-    if (signal) signal.addEventListener('abort', () => controller.abort());
+    const abort = this._makeAbort(controller);
+    if (signal) signal.addEventListener('abort', abort, { once: true });
 
-    const timeout = setTimeout(() => controller.abort(), ms);
+    const timeout = setTimeout(abort, ms);
 
     const isReadableBody =
       ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) ||
@@ -578,9 +731,18 @@ export class Tembo {
       }
     }
 
-    // If the API asks us to wait a certain amount of time (and it's a reasonable amount),
-    // just do what it says, but otherwise calculate a default
-    if (!(timeoutMillis && 0 <= timeoutMillis && timeoutMillis < 60 * 1000)) {
+    // If the API asks us to wait a certain amount of time, just do what it says,
+    // but cap server-provided delays at 60s so an oversized or malformed Retry-After
+    // (e.g. `retry-after-ms: 999999999`, a past HTTP-date, or a value that Date.parse
+    // failed on) cannot block retries for an unbounded amount of time. Otherwise fall
+    // back to the default exponential-backoff calculation.
+    const maxRetryAfterMillis = 60 * 1000;
+    if (
+      timeoutMillis === undefined ||
+      !Number.isFinite(timeoutMillis) ||
+      timeoutMillis <= 0 ||
+      timeoutMillis > maxRetryAfterMillis
+    ) {
       const maxRetries = options.maxRetries ?? this.maxRetries;
       timeoutMillis = this.calculateDefaultRetryTimeoutMillis(retriesRemaining, maxRetries);
     }
@@ -615,7 +777,16 @@ export class Tembo {
     if ('timeout' in options) validatePositiveInteger('timeout', options.timeout);
     options.timeout = options.timeout ?? this.timeout;
     const { bodyHeaders, body } = this.buildBody({ options });
-    const reqHeaders = await this.buildHeaders({ options: inputOptions, method, bodyHeaders, retryCount });
+    // Headers read the caller's own options, not the copy defaulted above: `X-Scalar-Timeout`
+    // reports an explicit per-request timeout, and the idempotency key written back here has to
+    // land where the retry can see it.
+    const reqHeaders = await this.buildHeaders({
+      options: inputOptions,
+      method,
+      bodyHeaders,
+      retryCount,
+      url,
+    });
 
     const req: FinalizedRequestInit = {
       method,
@@ -623,11 +794,12 @@ export class Tembo {
       ...(options.signal && { signal: options.signal }),
       ...((globalThis as any).ReadableStream &&
         body instanceof (globalThis as any).ReadableStream && { duplex: 'half' }),
-      ...(body && { body }),
+      // `buildBody` already collapses no-body into `undefined`; here we only need to drop that
+      // sentinel. A truthiness spread would also strip an intentional empty-string body.
+      ...(body !== undefined && { body }),
       ...((this.fetchOptions as any) ?? {}),
       ...((options.fetchOptions as any) ?? {}),
     };
-
     return { req, url, timeout: options.timeout };
   }
 
@@ -636,11 +808,13 @@ export class Tembo {
     method,
     bodyHeaders,
     retryCount,
+    url,
   }: {
     options: FinalRequestOptions;
     method: HTTPMethod;
     bodyHeaders: HeadersLike;
     retryCount: number;
+    url: string;
   }): Promise<Headers> {
     let idempotencyHeaders: HeadersLike = {};
     if (this.idempotencyHeader && method !== 'get') {
@@ -653,8 +827,8 @@ export class Tembo {
       {
         Accept: 'application/json',
         'User-Agent': this.getUserAgent(),
-        'X-Stainless-Retry-Count': String(retryCount),
-        ...(options.timeout ? { 'X-Stainless-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
+        'X-Scalar-Retry-Count': String(retryCount),
+        ...(options.timeout ? { 'X-Scalar-Timeout': String(Math.trunc(options.timeout / 1000)) } : {}),
         ...getPlatformHeaders(),
       },
       await this.authHeaders(options),
@@ -662,17 +836,28 @@ export class Tembo {
       bodyHeaders,
       options.headers,
     ]);
+    appendAuthCookies(headers.values, await this.authCookiesAsync());
 
-    this.validateHeaders(headers);
+    this.validateAuth(url, headers.values, options);
 
     return headers.values;
+  }
+
+  private _makeAbort(controller: AbortController) {
+    // note: we can't just inline this method inside `fetchWithTimeout()` because then the closure
+    //       would capture all request options, and cause a memory leak.
+    return () => controller.abort();
   }
 
   private buildBody({ options: { body, headers: rawHeaders } }: { options: FinalRequestOptions }): {
     bodyHeaders: HeadersLike;
     body: BodyInit | undefined;
   } {
-    if (!body) {
+    // Skip only `null`/`undefined` so an intentional empty-string (or 0/false) payload still
+    // reaches the encoder. A plain `!body` check would silently drop those falsy-but-valid bodies,
+    // and `null` must be excluded here too because the iterator check below uses `in`, which
+    // throws on null.
+    if (body == null) {
       return { bodyHeaders: undefined, body: undefined };
     }
     const headers = buildHeaders([rawHeaders]);
@@ -681,9 +866,12 @@ export class Tembo {
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      (typeof body === 'string' &&
-        // Preserve legacy string encoding behavior for now
-        headers.values.has('content-type')) ||
+      // Always pass strings through verbatim. The previous guard required a caller-set
+      // `content-type` and otherwise fell through to `FallbackEncoder`, which JSON.stringifies
+      // the value and labels it `application/json` — silently quoting plain-text payloads and
+      // mislabeling them as JSON. fetch defaults a string body to `text/plain;charset=UTF-8`
+      // when no `content-type` is set, which is a safer default than misclaiming JSON.
+      typeof body === 'string' ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -700,9 +888,80 @@ export class Tembo {
         (Symbol.iterator in body && 'next' in body && typeof body.next === 'function'))
     ) {
       return { bodyHeaders: undefined, body: Shims.ReadableStreamFrom(body as AsyncIterable<Uint8Array>) };
+    } else if (
+      typeof body === 'object' &&
+      headers.values.get('content-type') === 'application/x-www-form-urlencoded'
+    ) {
+      return {
+        bodyHeaders: { 'content-type': 'application/x-www-form-urlencoded' },
+        body: this.stringifyQuery(body),
+      };
     } else {
       return this.#encoder({ body, headers });
     }
+  }
+
+  protected validateAuth(url: string, headers: Headers, options: FinalRequestOptions): void {
+    if (headers.has('Authorization')) return;
+    if (headerExplicitlyOmitted(options.headers, 'Authorization')) return;
+    throw new Errors.AuthenticationError(
+      401,
+      undefined,
+      'Could not resolve authentication method. Expected the apiKey to be set. Or for the "Authorization" headers to be explicitly omitted',
+      headers,
+    );
+  }
+
+  authHeadersSync(): Record<string, string> {
+    const headers: Record<string, string> = {};
+    const apiKey = this.resolveAuthOptionSync('apiKey', this.apiKey);
+    if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+    return headers;
+  }
+
+  webSocketAuthHeaders(): Record<string, string> {
+    const apiKey = this.resolveAuthOptionSync('apiKey', this.apiKey);
+    if (apiKey) return { Authorization: `Bearer ${apiKey}` };
+    return {};
+  }
+
+  protected async authHeaders(opts: FinalRequestOptions): Promise<NullableHeaders | undefined> {
+    const apiKey = await this.resolveAuthOption('apiKey', this.apiKey);
+    if (apiKey == null) {
+      return undefined;
+    }
+    return buildHeaders([{ Authorization: `Bearer ${apiKey}` }]);
+  }
+
+  private async authQueryAsync(): Promise<Record<string, string>> {
+    const query: Record<string, string> = {};
+    return query;
+  }
+
+  private async authCookiesAsync(): Promise<Record<string, string>> {
+    const cookies: Record<string, string> = {};
+    return cookies;
+  }
+
+  private async resolveAuthOption(
+    optionName: string,
+    value: string | AuthTokenProvider | null | undefined,
+  ): Promise<string | undefined> {
+    if (value == null) return undefined;
+    const token = typeof value === 'function' ? await value() : value;
+    if (!token) throw new Errors.TemboError(`Expected '${optionName}' to resolve to a non-empty string.`);
+    return token;
+  }
+
+  private resolveAuthOptionSync(
+    optionName: string,
+    value: string | AuthTokenProvider | null | undefined,
+  ): string | undefined {
+    if (value == null) return undefined;
+    const token = typeof value === 'function' ? value() : value;
+    if (typeof token !== 'string' || !token)
+      throw new Errors.TemboError(`Expected '${optionName}' to resolve to a non-empty string.`);
+    return token;
   }
 
   static Tembo = this;
@@ -722,31 +981,249 @@ export class Tembo {
   static PermissionDeniedError = Errors.PermissionDeniedError;
   static UnprocessableEntityError = Errors.UnprocessableEntityError;
 
-  static toFile = Uploads.toFile;
+  static toFile = toFile;
 
-  me: API.Me = new API.Me(this);
-  task: API.Task = new API.Task(this);
-  repository: API.Repository = new API.Repository(this);
+  apiKeys: APIKeys = new APIKeys(this);
+  skills: Skills = new Skills(this);
+  insights: Insights = new Insights(this);
+  organizations: Organizations = new Organizations(this);
+  mcpConnections: McpConnections = new McpConnections(this);
+  artifacts: Artifacts = new Artifacts(this);
+  messages: Messages = new Messages(this);
+  models: Models = new Models(this);
+  users: Users = new Users(this);
+  sessions: Sessions = new Sessions(this);
+  projects: Projects = new Projects(this);
+  pullRequests: PullRequests = new PullRequests(this);
+  agents: Agents = new Agents(this);
+  repositories: Repositories = new Repositories(this);
+  integrations: Integrations = new Integrations(this);
+  billing: Billing = new Billing(this);
 }
 
-Tembo.Me = Me;
-Tembo.Task = Task;
-Tembo.Repository = Repository;
+Tembo.APIKeys = APIKeys;
+Tembo.Skills = Skills;
+Tembo.Insights = Insights;
+Tembo.Organizations = Organizations;
+Tembo.McpConnections = McpConnections;
+Tembo.Artifacts = Artifacts;
+Tembo.Messages = Messages;
+Tembo.Models = Models;
+Tembo.Users = Users;
+Tembo.Sessions = Sessions;
+Tembo.Projects = Projects;
+Tembo.PullRequests = PullRequests;
+Tembo.Agents = Agents;
+Tembo.Repositories = Repositories;
+Tembo.Integrations = Integrations;
+Tembo.Billing = Billing;
 
 export declare namespace Tembo {
   export type RequestOptions = Opts.RequestOptions;
-
-  export { Me as Me, type MeRetrieveResponse as MeRetrieveResponse };
-
   export {
-    Task as Task,
-    type TaskCreateResponse as TaskCreateResponse,
-    type TaskListResponse as TaskListResponse,
-    type TaskSearchResponse as TaskSearchResponse,
-    type TaskCreateParams as TaskCreateParams,
-    type TaskListParams as TaskListParams,
-    type TaskSearchParams as TaskSearchParams,
+    APIKeys as APIKeys,
+    type APIKeyListResponse as APIKeyListResponse,
+    type APIKeyCreateResponse as APIKeyCreateResponse,
+    type APIKeyRetrieveResponse as APIKeyRetrieveResponse,
+    type APIKeyUpdateResponse as APIKeyUpdateResponse,
+    type APIKeyDeleteResponse as APIKeyDeleteResponse,
+    type APIKeyListParams as APIKeyListParams,
+    type APIKeyCreateParams as APIKeyCreateParams,
+    type APIKeyUpdateParams as APIKeyUpdateParams,
   };
 
-  export { Repository as Repository, type RepositoryListResponse as RepositoryListResponse };
+  export {
+    Skills as Skills,
+    type SkillListResponse as SkillListResponse,
+    type SkillCreateResponse as SkillCreateResponse,
+    type SkillRetrieveResponse as SkillRetrieveResponse,
+    type SkillUpdateResponse as SkillUpdateResponse,
+    type SkillDeleteResponse as SkillDeleteResponse,
+    type SkillListParams as SkillListParams,
+    type SkillCreateParams as SkillCreateParams,
+    type SkillUpdateParams as SkillUpdateParams,
+  };
+
+  export {
+    Insights as Insights,
+    type InsightRetrieveResponse as InsightRetrieveResponse,
+    type InsightUpdateResponse as InsightUpdateResponse,
+    type InsightListMembersResponse as InsightListMembersResponse,
+    type InsightListRepositoriesResponse as InsightListRepositoriesResponse,
+    type InsightUpdateParams as InsightUpdateParams,
+    type InsightListMembersParams as InsightListMembersParams,
+    type InsightListRepositoriesParams as InsightListRepositoriesParams,
+  };
+
+  export {
+    Organizations as Organizations,
+    type OrganizationCreateResponse as OrganizationCreateResponse,
+    type OrganizationRetrieveResponse as OrganizationRetrieveResponse,
+    type OrganizationUpdateResponse as OrganizationUpdateResponse,
+    type OrganizationDeleteResponse as OrganizationDeleteResponse,
+    type OrganizationCreateParams as OrganizationCreateParams,
+    type OrganizationUpdateParams as OrganizationUpdateParams,
+  };
+
+  export {
+    McpConnections as McpConnections,
+    type McpConnectionListResponse as McpConnectionListResponse,
+    type McpConnectionCreateResponse as McpConnectionCreateResponse,
+    type McpConnectionRetrieveResponse as McpConnectionRetrieveResponse,
+    type McpConnectionUpdateResponse as McpConnectionUpdateResponse,
+    type McpConnectionDeleteResponse as McpConnectionDeleteResponse,
+    type McpConnectionAuthorizeResponse as McpConnectionAuthorizeResponse,
+    type McpConnectionTestResponse as McpConnectionTestResponse,
+    type McpConnectionListParams as McpConnectionListParams,
+    type McpConnectionCreateParams as McpConnectionCreateParams,
+    type McpConnectionUpdateParams as McpConnectionUpdateParams,
+  };
+
+  export {
+    Artifacts as Artifacts,
+    type ArtifactListResponse as ArtifactListResponse,
+    type ArtifactCreateResponse as ArtifactCreateResponse,
+    type ArtifactRetrieveResponse as ArtifactRetrieveResponse,
+    type ArtifactDeleteResponse as ArtifactDeleteResponse,
+    type ArtifactListParams as ArtifactListParams,
+    type ArtifactCreateParams as ArtifactCreateParams,
+  };
+
+  export {
+    Messages as Messages,
+    type TipTapDocument as TipTapDocument,
+    type TipTapNode as TipTapNode,
+    type TipTapImageNode as TipTapImageNode,
+    type TipTapMentionNode as TipTapMentionNode,
+    type TipTapHeadingNode as TipTapHeadingNode,
+    type TipTapOrderedListNode as TipTapOrderedListNode,
+    type TipTapTaskItemNode as TipTapTaskItemNode,
+    type TipTapCodeBlockNode as TipTapCodeBlockNode,
+    type TipTapContentNode as TipTapContentNode,
+    type TipTapLinkMark as TipTapLinkMark,
+    type TipTapMark as TipTapMark,
+    type TipTapImageAttributes as TipTapImageAttributes,
+    type TipTapMentionAttributes as TipTapMentionAttributes,
+    type TipTapExtensionAttributes as TipTapExtensionAttributes,
+    type MessageListResponse as MessageListResponse,
+    type MessageCreateResponse as MessageCreateResponse,
+    type MessageRetrieveResponse as MessageRetrieveResponse,
+    type MessageUpdateResponse as MessageUpdateResponse,
+    type MessageDeleteResponse as MessageDeleteResponse,
+    type MessageListParams as MessageListParams,
+    type MessageCreateParams as MessageCreateParams,
+    type MessageUpdateParams as MessageUpdateParams,
+  };
+
+  export {
+    Models as Models,
+    type ModelListResponse as ModelListResponse,
+    type ModelUpdateResponse as ModelUpdateResponse,
+    type ModelListParams as ModelListParams,
+    type ModelUpdateParams as ModelUpdateParams,
+  };
+
+  export {
+    Users as Users,
+    type UserRetrieveResponse as UserRetrieveResponse,
+    type UserUpdateResponse as UserUpdateResponse,
+    type UserDeleteResponse as UserDeleteResponse,
+    type UserUpdateParams as UserUpdateParams,
+    type UserDeleteParams as UserDeleteParams,
+  };
+
+  export {
+    Sessions as Sessions,
+    type SessionEventData as SessionEventData,
+    type SessionDocumentNode as SessionDocumentNode,
+    type SessionListResponse as SessionListResponse,
+    type SessionCreateResponse as SessionCreateResponse,
+    type SessionRetrieveResponse as SessionRetrieveResponse,
+    type SessionUpdateResponse as SessionUpdateResponse,
+    type SessionDeleteResponse as SessionDeleteResponse,
+    type SessionStopResponse as SessionStopResponse,
+    type SessionListEventsResponse as SessionListEventsResponse,
+    type SessionListParams as SessionListParams,
+    type SessionCreateParams as SessionCreateParams,
+    type SessionUpdateParams as SessionUpdateParams,
+    type SessionStopParams as SessionStopParams,
+    type SessionListEventsParams as SessionListEventsParams,
+  };
+
+  export {
+    Projects as Projects,
+    type ProjectUpdateDefaultsResponse as ProjectUpdateDefaultsResponse,
+    type ProjectListResponse as ProjectListResponse,
+    type ProjectCreateResponse as ProjectCreateResponse,
+    type ProjectRetrieveResponse as ProjectRetrieveResponse,
+    type ProjectUpdateResponse as ProjectUpdateResponse,
+    type ProjectDeleteResponse as ProjectDeleteResponse,
+    type ProjectUpdateDefaultsParams as ProjectUpdateDefaultsParams,
+    type ProjectListParams as ProjectListParams,
+    type ProjectCreateParams as ProjectCreateParams,
+    type ProjectUpdateParams as ProjectUpdateParams,
+  };
+
+  export {
+    PullRequests as PullRequests,
+    type PullRequestListResponse as PullRequestListResponse,
+    type PullRequestRetrieveResponse as PullRequestRetrieveResponse,
+    type PullRequestListParams as PullRequestListParams,
+  };
+
+  export {
+    Agents as Agents,
+    type AgentOptionsInput as AgentOptionsInput,
+    type AgentState as AgentState,
+    type AgentListResponse as AgentListResponse,
+    type AgentCreateResponse as AgentCreateResponse,
+    type AgentRetrieveResponse as AgentRetrieveResponse,
+    type AgentUpdateResponse as AgentUpdateResponse,
+    type AgentDeleteResponse as AgentDeleteResponse,
+    type AgentListParams as AgentListParams,
+    type AgentCreateParams as AgentCreateParams,
+    type AgentUpdateParams as AgentUpdateParams,
+  };
+
+  export {
+    Repositories as Repositories,
+    type RepositoryListResponse as RepositoryListResponse,
+    type RepositoryRetrieveResponse as RepositoryRetrieveResponse,
+    type RepositoryListParams as RepositoryListParams,
+  };
+
+  export {
+    Integrations as Integrations,
+    type IntegrationListResponse as IntegrationListResponse,
+    type IntegrationRetrieveResponse as IntegrationRetrieveResponse,
+    type IntegrationListParams as IntegrationListParams,
+  };
+
+  export {
+    Billing as Billing,
+    type BillingRetrieveResponse as BillingRetrieveResponse,
+    type BillingListUsageResponse as BillingListUsageResponse,
+    type BillingListUsageParams as BillingListUsageParams,
+  };
 }
+
+const headerExplicitlyOmitted = (source: HeadersLike | undefined, name: string): boolean => {
+  if (!source || Array.isArray(source) || source instanceof Headers) return false;
+  const target = name.toLowerCase();
+  return Object.entries(source).some(([key, value]) => key.toLowerCase() === target && value === null);
+};
+
+const appendAuthCookies = (headers: Headers, cookies: Record<string, string>): void => {
+  for (const [name, value] of Object.entries(cookies)) {
+    if (cookieHeaderHas(headers.get('Cookie'), name)) continue;
+    const cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+    const existing = headers.get('Cookie');
+    headers.set('Cookie', existing ? existing + '; ' + cookie : cookie);
+  }
+};
+
+const cookieHeaderHas = (value: string | null, name: string): boolean => {
+  if (!value) return false;
+  const target = encodeURIComponent(name) + '=';
+  return value.split(';').some((cookie) => cookie.trim().startsWith(target));
+};

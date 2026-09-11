@@ -1,107 +1,52 @@
-## Setting up the environment
+# Contributing to the Tembo SDK
 
-This repository uses [`yarn@v1`](https://classic.yarnpkg.com/lang/en/docs/install).
-Other package managers may work but are not officially supported for development.
+This repository follows [Scalar's managed GitHub workflow](https://scalar.com/products/sdk-generator/publishing/github). The TypeScript target is connected to `tembo/sdk`; Python is independent. Package publishing is explicitly disabled with `targets.typescript.publish.npm: false`.
 
-To set up the repository, run:
+## Branches and ownership
 
-```sh
-$ yarn
-$ yarn build
-```
+- `scalar-generated`: pristine output managed by Scalar. Do not edit this branch.
+- `scalar-next`: generated output plus customizations. Commit custom changes here so they appear alongside the generated changes in the single release PR.
+- `main`: released states promoted through Scalar's release pull request. Do not merge that release PR until the intended customizations and release settings have been reviewed.
 
-This will install all the required dependencies and build output files to `dist/`.
+Scalar manages the client, API reference, README, package/build defaults, release configuration, generated workflows and version metadata. See `VERSIONING.md` for version selection. Do not manually set package versions or copy downloaded builds over repository files; Scalar preserves customizations through its three-way merge.
 
-## Modifying/Adding code
+Our additions are the schema preparation below, offline/consumer tests, the optional read-only dev test, a lockfile, and the separate contract-test workflow. `biome.json` excludes the raw schema input and ignored local experiments from code formatting. Keep custom changes small and outside generated resources where possible.
 
-Most of the SDK is generated code. Modifications to code will be persisted between generations, but may
-result in merge conflicts between manual patches and changes from the generator. The generator will never
-modify the contents of the `src/lib/` and `examples/` directories.
+## Validate locally
 
-## Adding and running examples
-
-All files in the `examples/` directory are not modified by the generator and can be freely edited or added to.
-
-```ts
-// add an example to examples/<your-example>.ts
-
-#!/usr/bin/env -S npm run tsn -T
-…
-```
+Use Node 24 for the build tools and Scalar CLI, matching generated CI. This does not add a Node 24-only restriction to SDK consumers; the generated README describes runtime support.
 
 ```sh
-$ chmod +x examples/<your-example>.ts
-# run the example against your api
-$ yarn tsn -T examples/<your-example>.ts
+npm ci
+npm run typecheck
+npm test
+npm pack --dry-run
 ```
 
-## Using the repository from source
+The generated `sdk-ci.yml` builds and checks formatting. Our `contract-tests.yml` checks consumer declarations, v1 coverage, serialization, normalization, and publishing-off safeguards without API credentials. The generated `tests/smoke-test.ts` is preserved, but is not run against dev because its operation set includes writes. Do not run that script against an environment with real data.
 
-If you’d like to use the repository from source, you can either install from git or link to a cloned repository:
+For an authenticated, read-only dev check, export a dev `TEMBO_API_KEY` and run `npm run test:dev`. It pins `https://internal.tembo-development.com/public-api` and only calls `models.list`. Browser login is not an API key; `.env` files are not loaded automatically. Never commit credentials.
 
-To install via git:
+## Update the schema and regenerate
 
-```sh
-$ npm install git+ssh://git@github.com:tembo/sdk.git
-```
+1. Run `npm run schema:fetch`. Review `openapi/openapi.json`, the source snapshot from the public dev schema endpoint. `TEMBO_OPENAPI_URL` can override the source explicitly.
+2. Run `npm run schema:prepare`. This creates ignored `openapi/scalar.openapi.json` for Scalar. Validate it with `npx --yes --package=@scalar/cli@2.1.0 scalar document validate openapi/scalar.openapi.json`.
+3. Upload the prepared document to the linked registry API `tembo/tembo-eight-pr-verification` as a new version. For test versions, use `--no-current` to avoid changing its current API version. Apply the reviewed `scalar.config.json` and API version to SDK `tembo/tembo-v1-sdk-test` in Scalar. The local config is not automatically uploaded when committed.
+4. Build that draft version in Scalar, or run `npx --yes --package=@scalar/cli@2.1.0 scalar sdk build --namespace tembo --slug tembo-v1-sdk-test --version <draft-version>`. The CLI starts the build; wait for its completion and repository sync.
+5. Scalar updates `scalar-generated`, integrates into `scalar-next`, and refreshes the release PR against `main`. Add schema snapshot/config/test changes to `scalar-next` and review the combined code, diagnostics and checks in that one release PR. A separate custom-code PR is optional, not a required step.
 
-Alternatively, to link a local copy of the repo:
+The connected build uses the reviewed prepared API version `1.0.2-devverify.20260911`; SDK build `0.2.1` uses generator `0.32.9`. These are generation identifiers, not a requested npm release version. The remote SDK currently defaults to development and does not automatically track every deployment.
 
-```sh
-# Clone
-$ git clone https://www.github.com/tembo/sdk
-$ cd sdk
+## Why schema preparation exists
 
-# With yarn
-$ yarn link
-$ cd ../my-package
-$ yarn link @tembo-io/sdk
+Scalar 0.32.9 lost recursive `TipTapNode` union members in emitted TypeScript despite retaining them in its intermediate manifest. Inline model mappings alone did not fix it. `scripts/normalize-openapi.mjs` hoists the six structured variants into named components and flattens their nested union for generation only.
 
-# With pnpm
-$ pnpm link --global
-$ cd ../my-package
-$ pnpm link -—global @tembo-io/sdk
-```
+Each branch requires a different constant `type`, so these branches are disjoint and flattening this specific nested `oneOf` into `anyOf` preserves accepted values. Fields, constraints, references and the fallback branch are preserved; the normalizer refuses changed assumptions. Tests reconstruct the original schema and assert that generated nodes and their children are not `unknown`. No API implementation, wire format or database changes are involved. Attribute/custom-document dictionaries remain intentionally extensible.
 
-## Running tests
+This is a documented custom workaround, not a general Scalar requirement. Remove it only after an unnormalized build passes the same regression checks. Generated resource types are not hand-patched.
 
-Most tests require you to [set up a mock server](https://github.com/stoplightio/prism) against the OpenAPI spec to run the tests.
+## Release safety
 
-```sh
-$ npx prism mock path/to/your/openapi.yml
-```
+Scalar's npm switch is off. Its generated release workflow can create GitHub tags/releases when a release PR is merged, but currently contains no npm publish job. The previous standalone `Publish NPM` workflow on `main` has also been disabled; the Scalar replacement removes that obsolete file.
 
-```sh
-$ yarn run test
-```
-
-## Linting and formatting
-
-This repository uses [prettier](https://www.npmjs.com/package/prettier) and
-[eslint](https://www.npmjs.com/package/eslint) to format the code in the repository.
-
-To lint:
-
-```sh
-$ yarn lint
-```
-
-To format and fix all lint issues automatically:
-
-```sh
-$ yarn fix
-```
-
-## Publishing and releases
-
-Changes made to this repository via the automated release PR pipeline should publish to npm automatically. If
-the changes aren't made through the automated pipeline, you may want to make releases manually.
-
-### Publish with a GitHub workflow
-
-You can release to package managers by using [the `Publish NPM` GitHub action](https://www.github.com/tembo/sdk/actions/workflows/publish-npm.yml). This requires a setup organization or repository secret to be set up.
-
-### Publish manually
-
-If you need to manually release a package, you can run the `bin/publish-npm` script with an `NPM_TOKEN` set on
-the environment.
+Before a public release, review production defaults/schema parity, migration guidance, broader authenticated consumer testing and the intended version. Then separately approve npm publishing and configure Scalar's supported publishing settings. Do not merge a release PR merely to test generation. Do not enable an old publishing workflow or add a parallel publishing pipeline.

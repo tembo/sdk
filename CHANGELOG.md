@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.3.0](https://github.com/tembo/sdk/compare/v0.2.3...v0.3.0) (2026-09-11)
+
+
+### Features
+
+* **api:** initial SDK generation ([f284491](https://github.com/tembo/sdk/commit/f284491b14fefc28b7457c9152109381edb7b3db))
+* **sdk:** prepare Scalar TypeScript migration ([271db4c](https://github.com/tembo/sdk/commit/271db4cbb71c2892da85b0b8a7027502e4cfe5b3))
+
+
+### Bug Fixes
+
+* **sdk:** preserve recursive rich-content types in Scalar output ([f879990](https://github.com/tembo/sdk/commit/f879990172a1ffa3b2b60997d515ca377a79bbe5))
+
+
+### Chores
+
+* **api:** update generated SDK content ([0858bf8](https://github.com/tembo/sdk/commit/0858bf89eebb8e2bdf9ec308c21df54683f7ca0e))
+
+
+### Documentation
+
+* **sdk:** use a single release PR for review ([999f4b1](https://github.com/tembo/sdk/commit/999f4b1206f8dcc23be4aad898c63a17bd6b78a0))
+
 ## 0.2.3 (2026-01-31)
 
 Full Changelog: [v0.2.2...v0.2.3](https://github.com/tembo/sdk/compare/v0.2.2...v0.2.3)
