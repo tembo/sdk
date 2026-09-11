@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 export type Fetch = (input: string | URL | Request, init?: RequestInit) => Promise<Response>;
 
@@ -80,7 +80,6 @@ export interface BlobPropertyBag {
   endings?: EndingType;
   type?: string;
 }
-
 /**
  * A copy of the builtin `FilePropertyBag` type as it isn't fully supported in certain
  * environments and attempting to reference the global version will error.

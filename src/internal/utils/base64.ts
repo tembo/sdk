@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { TemboError } from '../../core/error';
 import { encodeUTF8 } from './bytes';
@@ -20,7 +20,6 @@ export const toBase64 = (data: string | Uint8Array | null | undefined): string =
 
   throw new TemboError('Cannot generate base64 string; Expected `Buffer` or `btoa` to be defined');
 };
-
 export const fromBase64 = (str: string): Uint8Array => {
   if (typeof (globalThis as any).Buffer !== 'undefined') {
     const buf = (globalThis as any).Buffer.from(str, 'base64');

@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { isReadonlyArray } from './utils/values';
 
@@ -26,7 +26,6 @@ export type NullableHeaders = {
   /** Set of lowercase header names explicitly set to null. */
   nulls: Set<string>;
 };
-
 function* iterateHeaders(headers: HeadersLike): IterableIterator<readonly [string, string | null]> {
   if (!headers) return;
 

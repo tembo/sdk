@@ -1,37 +1,19 @@
 {
-  "include": ["src", "tests", "examples"],
-  "exclude": [],
   "compilerOptions": {
-    "target": "es2020",
-    "lib": ["es2020"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "paths": {
-      "@tembo-io/sdk/*": ["./src/*"],
-      "@tembo-io/sdk": ["./src/index.ts"]
-    },
-    "noEmit": true,
-
-    "resolveJsonModule": true,
-
-    "forceConsistentCasingInFileNames": true,
-
+    "target": "ES2023",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    "rootDir": "src",
+    "outDir": "./dist/esm",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "noImplicitReturns": true,
-    "alwaysStrict": true,
-    "exactOptionalPropertyTypes": true,
     "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "isolatedModules": false,
-
+    "exactOptionalPropertyTypes": true,
+    "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*.ts"]
 }

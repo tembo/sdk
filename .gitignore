@@ -8,4 +8,8 @@ dist-deno
 /*.tgz
 .idea/
 .eslintcache
-
+scalar-test/
+.env
+.env.*
+!.env.example
+*.tsbuildinfo

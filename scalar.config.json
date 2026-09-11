@@ -1,0 +1,561 @@
+{
+  "organization": {
+    "name": "Tembo Public API"
+  },
+  "resources": {
+    "api_keys": {
+      "methods": {
+        "list": "get /v1/api-keys",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/api-keys",
+          "verb": "post",
+          "path": "/v1/api-keys",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/api-keys/{apiKeyId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/api-keys/{apiKeyId}",
+          "verb": "patch",
+          "path": "/v1/api-keys/{apiKeyId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/api-keys/{apiKeyId}"
+      }
+    },
+    "skills": {
+      "methods": {
+        "list": "get /v1/skills",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/skills",
+          "verb": "post",
+          "path": "/v1/skills",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/skills/{skillId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/skills/{skillId}",
+          "verb": "patch",
+          "path": "/v1/skills/{skillId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/skills/{skillId}"
+      }
+    },
+    "insights": {
+      "methods": {
+        "retrieve": "get /v1/insights",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/insights",
+          "verb": "patch",
+          "path": "/v1/insights",
+          "bodyParamName": "body"
+        },
+        "list_members": "get /v1/insights/members",
+        "list_repositories": "get /v1/insights/repositories"
+      }
+    },
+    "organizations": {
+      "methods": {
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/organizations",
+          "verb": "post",
+          "path": "/v1/organizations",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/organizations/{organizationId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/organizations/{organizationId}",
+          "verb": "patch",
+          "path": "/v1/organizations/{organizationId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/organizations/{organizationId}"
+      },
+      "subresources": {
+        "members": {
+          "methods": {
+            "list": "get /v1/organizations/{organizationId}/members",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/members",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/members",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/organizations/{organizationId}/members/{memberId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/organizations/{organizationId}/members/{memberId}",
+              "verb": "patch",
+              "path": "/v1/organizations/{organizationId}/members/{memberId}",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/organizations/{organizationId}/members/{memberId}"
+          }
+        },
+        "secrets": {
+          "methods": {
+            "list": "get /v1/organizations/{organizationId}/secrets",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/secrets",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/secrets",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/organizations/{organizationId}/secrets/{secretId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/organizations/{organizationId}/secrets/{secretId}",
+              "verb": "patch",
+              "path": "/v1/organizations/{organizationId}/secrets/{secretId}",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/organizations/{organizationId}/secrets/{secretId}"
+          }
+        },
+        "settings": {
+          "methods": {
+            "retrieve": "get /v1/organizations/{organizationId}/settings",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/organizations/{organizationId}/settings",
+              "verb": "patch",
+              "path": "/v1/organizations/{organizationId}/settings",
+              "bodyParamName": "body"
+            }
+          }
+        }
+      }
+    },
+    "mcp_connections": {
+      "methods": {
+        "list": "get /v1/mcp-connections",
+        "create": "post /v1/mcp-connections",
+        "retrieve": "get /v1/mcp-connections/{mcpConnectionId}",
+        "update": "patch /v1/mcp-connections/{mcpConnectionId}",
+        "delete": "delete /v1/mcp-connections/{mcpConnectionId}",
+        "authorize": "post /v1/mcp-connections/{mcpConnectionId}/authorize",
+        "test": "post /v1/mcp-connections/{mcpConnectionId}/test"
+      }
+    },
+    "artifacts": {
+      "methods": {
+        "list": "get /v1/artifacts",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/artifacts",
+          "verb": "post",
+          "path": "/v1/artifacts",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/artifacts/{artifactId}",
+        "delete": "delete /v1/artifacts/{artifactId}"
+      }
+    },
+    "messages": {
+      "models": {
+        "tip_tap_document": "#/components/schemas/TipTapDocument",
+        "tip_tap_node": "#/components/schemas/TipTapNode",
+        "tip_tap_image_node": "#/components/schemas/TipTapImageNode",
+        "tip_tap_mention_node": "#/components/schemas/TipTapMentionNode",
+        "tip_tap_heading_node": "#/components/schemas/TipTapHeadingNode",
+        "tip_tap_ordered_list_node": "#/components/schemas/TipTapOrderedListNode",
+        "tip_tap_task_item_node": "#/components/schemas/TipTapTaskItemNode",
+        "tip_tap_code_block_node": "#/components/schemas/TipTapCodeBlockNode",
+        "tip_tap_content_node": "#/components/schemas/TipTapContentNode",
+        "tip_tap_link_mark": "#/components/schemas/TipTapLinkMark",
+        "tip_tap_mark": "#/components/schemas/TipTapMark",
+        "tip_tap_image_attributes": "#/components/schemas/TipTapImageAttributes",
+        "tip_tap_mention_attributes": "#/components/schemas/TipTapMentionAttributes",
+        "tip_tap_extension_attributes": "#/components/schemas/TipTapExtensionAttributes"
+      },
+      "methods": {
+        "list": "get /v1/messages",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/messages",
+          "verb": "post",
+          "path": "/v1/messages",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/messages/{messageId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/messages/{messageId}",
+          "verb": "patch",
+          "path": "/v1/messages/{messageId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/messages/{messageId}"
+      }
+    },
+    "models": {
+      "methods": {
+        "list": "get /v1/models",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/models/{modelName}",
+          "verb": "patch",
+          "path": "/v1/models/{modelName}",
+          "bodyParamName": "body"
+        }
+      }
+    },
+    "users": {
+      "methods": {
+        "retrieve": "get /v1/users/{userId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/users/{userId}",
+          "verb": "patch",
+          "path": "/v1/users/{userId}",
+          "bodyParamName": "body"
+        },
+        "delete": {
+          "kind": "http",
+          "endpoint": "delete /v1/users/{userId}",
+          "verb": "delete",
+          "path": "/v1/users/{userId}",
+          "bodyParamName": "body"
+        }
+      },
+      "subresources": {
+        "connected_accounts": {
+          "methods": {
+            "list": "get /v1/users/{userId}/connected-accounts",
+            "retrieve": "get /v1/users/{userId}/connected-accounts/{connectedAccountId}"
+          }
+        }
+      }
+    },
+    "sessions": {
+      "models": {
+        "session_event_data": "#/components/schemas/SessionEventData",
+        "SessionDocumentNode": "#/components/schemas/SessionDocumentNode"
+      },
+      "methods": {
+        "list": "get /v1/sessions",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/sessions",
+          "verb": "post",
+          "path": "/v1/sessions",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/sessions/{sessionId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/sessions/{sessionId}",
+          "verb": "patch",
+          "path": "/v1/sessions/{sessionId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/sessions/{sessionId}",
+        "stop": "post /v1/sessions/{sessionId}/stop",
+        "list_events": "get /v1/sessions/{sessionId}/events"
+      },
+      "subresources": {
+        "sources": {
+          "methods": {
+            "list": "get /v1/sessions/sources",
+            "retrieve": "get /v1/sessions/sources/{sourceId}"
+          }
+        },
+        "files": {
+          "methods": {
+            "list": "get /v1/sessions/{sessionId}/files",
+            "retrieve": "get /v1/sessions/{sessionId}/files/{fileId}"
+          }
+        },
+        "diffs": {
+          "methods": {
+            "list": "get /v1/sessions/{sessionId}/diffs",
+            "retrieve": "get /v1/sessions/{sessionId}/diffs/{diffId}"
+          }
+        }
+      }
+    },
+    "projects": {
+      "methods": {
+        "update_defaults": {
+          "kind": "http",
+          "endpoint": "put /v1/projects/defaults",
+          "verb": "put",
+          "path": "/v1/projects/defaults",
+          "bodyParamName": "body"
+        },
+        "list": "get /v1/projects",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/projects",
+          "verb": "post",
+          "path": "/v1/projects",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/projects/{projectId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/projects/{projectId}",
+          "verb": "patch",
+          "path": "/v1/projects/{projectId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/projects/{projectId}"
+      },
+      "subresources": {
+        "environment_variables": {
+          "methods": {
+            "list": "get /v1/projects/{projectId}/environment-variables",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/projects/{projectId}/environment-variables",
+              "verb": "post",
+              "path": "/v1/projects/{projectId}/environment-variables",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/projects/{projectId}/environment-variables/{key}"
+          }
+        },
+        "snapshots": {
+          "methods": {
+            "list": "get /v1/projects/{projectId}/snapshots",
+            "retrieve": "get /v1/projects/{projectId}/snapshots/{snapshotId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/projects/{projectId}/snapshots/{snapshotId}",
+              "verb": "patch",
+              "path": "/v1/projects/{projectId}/snapshots/{snapshotId}",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/projects/{projectId}/snapshots/{snapshotId}"
+          }
+        },
+        "builds": {
+          "methods": {
+            "list": "get /v1/projects/{projectId}/builds",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/projects/{projectId}/builds",
+              "verb": "post",
+              "path": "/v1/projects/{projectId}/builds",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/projects/{projectId}/builds/{buildId}",
+            "cancel": "post /v1/projects/{projectId}/builds/{buildId}/cancel"
+          }
+        },
+        "schedules": {
+          "methods": {
+            "list": "get /v1/projects/{projectId}/schedules",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/projects/{projectId}/schedules",
+              "verb": "post",
+              "path": "/v1/projects/{projectId}/schedules",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/projects/{projectId}/schedules/{scheduleId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/projects/{projectId}/schedules/{scheduleId}",
+              "verb": "patch",
+              "path": "/v1/projects/{projectId}/schedules/{scheduleId}",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/projects/{projectId}/schedules/{scheduleId}"
+          }
+        }
+      }
+    },
+    "pull_requests": {
+      "methods": {
+        "list": "get /v1/pull-requests",
+        "retrieve": "get /v1/pull-requests/{pullRequestId}"
+      }
+    },
+    "agents": {
+      "models": {
+        "agent_options_input": "#/components/schemas/AgentOptionsInput",
+        "agent_state": "#/components/schemas/AgentState"
+      },
+      "methods": {
+        "list": "get /v1/agents",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/agents",
+          "verb": "post",
+          "path": "/v1/agents",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/agents/{agentId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/agents/{agentId}",
+          "verb": "patch",
+          "path": "/v1/agents/{agentId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/agents/{agentId}"
+      },
+      "subresources": {
+        "templates": {
+          "models": {
+            "trigger_filters": "#/components/schemas/TriggerFilters",
+            "atlassian_issue_added_to_board_filters": "#/components/schemas/AtlassianIssueAddedToBoardFilters",
+            "atlassian_issue_assigned_to_user_filters": "#/components/schemas/AtlassianIssueAssignedToUserFilters",
+            "atlassian_issue_created_filters": "#/components/schemas/AtlassianIssueCreatedFilters",
+            "atlassian_issue_label_added_filters": "#/components/schemas/AtlassianIssueLabelAddedFilters",
+            "atlassian_issue_status_changed_filters": "#/components/schemas/AtlassianIssueStatusChangedFilters",
+            "atlassian_issue_updated_filters": "#/components/schemas/AtlassianIssueUpdatedFilters",
+            "bitbucket_pull_request_opened_filters": "#/components/schemas/BitbucketPullRequestOpenedFilters",
+            "github_create_filters": "#/components/schemas/GithubCreateFilters",
+            "github_issue_closed_filters": "#/components/schemas/GithubIssueClosedFilters",
+            "github_issue_comment_created_filters": "#/components/schemas/GithubIssueCommentCreatedFilters",
+            "github_issue_opened_filters": "#/components/schemas/GithubIssueOpenedFilters",
+            "github_pull_request_closed_filters": "#/components/schemas/GithubPullRequestClosedFilters",
+            "github_pull_request_merged_filters": "#/components/schemas/GithubPullRequestMergedFilters",
+            "github_pull_request_opened_filters": "#/components/schemas/GithubPullRequestOpenedFilters",
+            "github_pull_request_ready_for_review_filters": "#/components/schemas/GithubPullRequestReadyForReviewFilters",
+            "github_pull_request_synchronize_filters": "#/components/schemas/GithubPullRequestSynchronizeFilters",
+            "github_tembo_pull_request_opened_filters": "#/components/schemas/GithubTemboPullRequestOpenedFilters",
+            "github_workflow_run_failed_filters": "#/components/schemas/GithubWorkflowRunFailedFilters",
+            "gitlab_bot_merge_request_comment_filters": "#/components/schemas/GitlabBotMergeRequestCommentFilters",
+            "gitlab_issue_closed_filters": "#/components/schemas/GitlabIssueClosedFilters",
+            "gitlab_issue_opened_filters": "#/components/schemas/GitlabIssueOpenedFilters",
+            "gitlab_merge_request_closed_filters": "#/components/schemas/GitlabMergeRequestClosedFilters",
+            "gitlab_merge_request_merged_filters": "#/components/schemas/GitlabMergeRequestMergedFilters",
+            "gitlab_merge_request_opened_filters": "#/components/schemas/GitlabMergeRequestOpenedFilters",
+            "gitlab_merge_request_updated_filters": "#/components/schemas/GitlabMergeRequestUpdatedFilters",
+            "gitlab_pipeline_failed_filters": "#/components/schemas/GitlabPipelineFailedFilters",
+            "gitlab_ref_created_filters": "#/components/schemas/GitlabRefCreatedFilters",
+            "linear_issue_create_filters": "#/components/schemas/LinearIssueCreateFilters",
+            "linear_issue_label_added_filters": "#/components/schemas/LinearIssueLabelAddedFilters",
+            "linear_issue_status_changed_filters": "#/components/schemas/LinearIssueStatusChangedFilters",
+            "linear_issue_updated_filters": "#/components/schemas/LinearIssueUpdatedFilters",
+            "sentry_issue_created_filters": "#/components/schemas/SentryIssueCreatedFilters",
+            "slack_message_reaction_added_filters": "#/components/schemas/SlackMessageReactionAddedFilters",
+            "slack_message_sent_in_channel_filters": "#/components/schemas/SlackMessageSentInChannelFilters",
+            "empty_trigger_filters": "#/components/schemas/EmptyTriggerFilters"
+          },
+          "methods": {
+            "list": "get /v1/agents/templates",
+            "retrieve": "get /v1/agents/templates/{templateName}"
+          }
+        },
+        "schedules": {
+          "methods": {
+            "list": "get /v1/agents/{agentId}/schedules",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/agents/{agentId}/schedules",
+              "verb": "post",
+              "path": "/v1/agents/{agentId}/schedules",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/agents/{agentId}/schedules/{scheduleId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/agents/{agentId}/schedules/{scheduleId}",
+              "verb": "patch",
+              "path": "/v1/agents/{agentId}/schedules/{scheduleId}",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/agents/{agentId}/schedules/{scheduleId}"
+          }
+        },
+        "triggers": {
+          "methods": {
+            "list": "get /v1/agents/{agentId}/triggers",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/agents/{agentId}/triggers",
+              "verb": "post",
+              "path": "/v1/agents/{agentId}/triggers",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/agents/{agentId}/triggers/{triggerId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/agents/{agentId}/triggers/{triggerId}",
+              "verb": "patch",
+              "path": "/v1/agents/{agentId}/triggers/{triggerId}",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/agents/{agentId}/triggers/{triggerId}"
+          }
+        },
+        "runs": {
+          "methods": {
+            "list": "get /v1/agents/{agentId}/runs",
+            "create": "post /v1/agents/{agentId}/runs",
+            "retrieve": "get /v1/agents/{agentId}/runs/{runId}"
+          }
+        }
+      }
+    },
+    "repositories": {
+      "methods": {
+        "list": "get /v1/repositories",
+        "retrieve": "get /v1/repositories/{repositoryId}"
+      }
+    },
+    "integrations": {
+      "methods": {
+        "list": "get /v1/integrations",
+        "retrieve": "get /v1/integrations/{integrationId}"
+      }
+    },
+    "billing": {
+      "methods": {
+        "retrieve": "get /v1/billing",
+        "list_usage": "get /v1/billing/usage"
+      }
+    }
+  },
+  "targets": {
+    "typescript": {
+      "packageName": "@tembo-io/sdk"
+    }
+  },
+  "environments": {
+    "development": "https://internal.tembo-development.com/public-api"
+  },
+  "environmentOrder": [
+    "development"
+  ],
+  "clientSettings": {
+    "opts": {
+      "apiKey": {
+        "type": "string",
+        "readEnv": "TEMBO_API_KEY",
+        "securityScheme": "apiKey",
+        "role": "value"
+      }
+    },
+    "defaultEnvPrefix": "TEMBO",
+    "defaultClientName": "Tembo"
+  },
+  "openapi": {
+    "security": [
+      {
+        "apiKey": []
+      }
+    ],
+    "codeSampleLanguages": {},
+    "securitySchemes": {
+      "apiKey": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "name": "Tembo API"
+}
