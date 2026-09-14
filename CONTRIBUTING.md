@@ -1,6 +1,6 @@
 # Contributing to the Tembo SDK
 
-This repository follows [Scalar's managed GitHub workflow](https://scalar.com/products/sdk-generator/publishing/github). The TypeScript target is connected to `tembo/sdk`; Python is independent. npm trusted publishing is enabled with `targets.typescript.publish.npm: true`.
+This repository follows [Scalar's managed GitHub workflow](https://scalar.com/products/sdk-generator/publishing/github). The TypeScript target is connected to `tembo/sdk`. npm trusted publishing is enabled with `targets.typescript.publish.npm: true`.
 
 ## Branches and ownership
 
@@ -49,4 +49,4 @@ This is a documented custom workaround, not a general Scalar requirement. Remove
 
 Scalar's npm switch is enabled. The generated release workflow publishes after creating a release. npm trusts owner `tembo`, repository `sdk`, workflow `release-please.yml`, with no environment restriction. Authentication uses OIDC, not an npm token. The previous standalone `Publish NPM` workflow remains disabled. The generated manual `sdk-release.yml` fallback needs its own trusted publisher before use.
 
-Before merging a release PR, review production defaults/schema parity, migration guidance, consumer tests and the intended version. Merging authorizes publication; do not merge merely to test generation. A package dry run does not verify OIDC authentication: the first successful release provides that end-to-end verification. Do not enable an old publishing workflow or add a parallel publishing pipeline.
+Before merging a release PR, review production defaults/schema parity, consumer tests and the intended version. Merging authorizes publication; do not merge merely to test generation. A package dry run does not verify OIDC authentication: the first successful release provides that end-to-end verification. Do not enable an old publishing workflow or add a parallel publishing pipeline.

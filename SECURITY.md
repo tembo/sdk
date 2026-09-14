@@ -12,7 +12,7 @@ Please allow us reasonable time to investigate and address the issue before disc
 
 ## Reporting Non-SDK Security Issues
 
-If the issue is in the Tembo Public API or service rather than in this SDK, report it through the security process Tembo Public API has published.
+If the issue is in the Tembo API or service rather than in this SDK, contact darren@tembo.io privately. Do not report vulnerabilities or send credentials in a public issue.
 
 ---
 

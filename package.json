@@ -41,7 +41,8 @@
   "files": [
     "dist",
     "api.md",
-    "SKILL.md"
+    "SKILL.md",
+    "src/internal/qs/LICENSE.md"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/finalize-build.mjs",
