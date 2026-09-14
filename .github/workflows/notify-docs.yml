@@ -1,0 +1,62 @@
+name: Update SDK documentation after release
+
+on:
+  workflow_run:
+    workflows: [Release Please]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: notify-sdk-docs
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    if: vars.SDK_DOCS_AUTOGEN_ENABLED == 'true' && (github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_repository.full_name == github.repository))
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check publication succeeded
+        id: published
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          if [ -z "$RUN_ID" ]; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          elif gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/jobs" --paginate --jq '.jobs[] | select(.name == "publish" and .conclusion == "success") | .id' | grep -q .; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.published.outputs.ready == 'true'
+        with:
+          node-version: '24'
+      - name: Resolve published stable version
+        if: steps.published.outputs.ready == 'true'
+        id: version
+        run: |
+          VERSION=$(npm view @tembo-io/sdk dist-tags.latest)
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+      - uses: actions/create-github-app-token@v2
+        if: steps.published.outputs.ready == 'true'
+        id: bot
+        with:
+          app-id: ${{ vars.CI_BOT_APP_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+          owner: tembo
+          repositories: docs
+          permission-contents: write
+      - name: Request documentation update
+        if: steps.published.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ steps.bot.outputs.token }}
+          SDK_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          jq -n --arg version "$SDK_VERSION" '{event_type:"sdk-published",client_payload:{version:$version}}' |
+            gh api --method POST repos/tembo/docs/dispatches --input -

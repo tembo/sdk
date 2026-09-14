@@ -1,0 +1,87 @@
+name: Update production OpenAPI
+
+on:
+  repository_dispatch:
+    types: [production-api-deployed]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Validate without uploading or pushing
+        type: boolean
+        default: true
+      force:
+        description: Upload even if unchanged (initial setup or recovery)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-openapi
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.event_name == 'workflow_dispatch' || vars.SDK_AUTOGEN_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts
+      - name: Read pending SDK schema and mappings
+        run: |
+          git show origin/scalar-next:openapi/openapi.json > openapi/openapi.json
+          git show origin/scalar-next:scalar.config.json > scalar.config.json
+      - id: schema
+        run: node scripts/refresh-schema.mjs
+        env:
+          FORCE_SCHEMA_UPLOAD: ${{ inputs.force || false }}
+      - if: steps.schema.outputs.changed == 'true'
+        run: |
+          npm run schema:prepare
+          node --test tests/schema.test.mjs tests/schema-contract.test.mjs
+          npx --yes --package=@scalar/cli@2.1.0 scalar document validate openapi/scalar.openapi.json
+      - name: Generate schema sync token
+        if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true
+        id: bot
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.CI_BOT_APP_ID }}
+          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+          permission-contents: write
+      - name: Publish schema to Scalar Registry
+        if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true
+        env:
+          SCALAR_API_KEY: ${{ secrets.SCALAR_API_KEY }}
+        run: |
+          test -n "$SCALAR_API_KEY" || { echo 'SCALAR_API_KEY is required'; exit 1; }
+          npx --yes --package=@scalar/cli@2.1.0 scalar auth login
+          npx --yes --package=@scalar/cli@2.1.0 scalar registry publish openapi/scalar.openapi.json --namespace tembo --slug tembo-eight-pr-verification --version "2.0.$GITHUB_RUN_ID" --force
+      - name: Save uploaded source snapshot
+        if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ steps.bot.outputs.token }}
+        run: |
+          gh auth setup-git
+          git fetch origin scalar-next
+          git worktree add --detach "$RUNNER_TEMP/sdk-sync" origin/scalar-next
+          cp openapi/openapi.json "$RUNNER_TEMP/sdk-sync/openapi/openapi.json"
+          cd "$RUNNER_TEMP/sdk-sync"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add openapi/openapi.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'chore(api): sync production OpenAPI snapshot'
+            git pull --rebase origin scalar-next
+            git push origin HEAD:scalar-next
+          fi
+      - name: Report failure
+        if: failure()
+        run: echo 'SDK generation update failed. Review schema mappings, Scalar diagnostics, and credentials. Production is unchanged.' >> "$GITHUB_STEP_SUMMARY"
