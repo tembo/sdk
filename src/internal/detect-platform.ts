@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { VERSION } from '../version';
 
@@ -50,68 +50,68 @@ type PlatformName =
   | 'Unknown';
 type Browser = 'ie' | 'edge' | 'chrome' | 'firefox' | 'safari';
 type PlatformProperties = {
-  'X-Stainless-Lang': 'js';
-  'X-Stainless-Package-Version': string;
-  'X-Stainless-OS': PlatformName;
-  'X-Stainless-Arch': Arch;
-  'X-Stainless-Runtime': 'node' | 'deno' | 'edge' | `browser:${Browser}` | 'unknown';
-  'X-Stainless-Runtime-Version': string;
+  'X-Scalar-Lang': 'js';
+  'X-Scalar-Package-Version': string;
+  'X-Scalar-OS': PlatformName;
+  'X-Scalar-Arch': Arch;
+  'X-Scalar-Runtime': 'node' | 'deno' | 'edge' | `browser:${Browser}` | 'unknown';
+  'X-Scalar-Runtime-Version': string;
 };
 const getPlatformProperties = (): PlatformProperties => {
   const detectedPlatform = getDetectedPlatform();
   if (detectedPlatform === 'deno') {
     return {
-      'X-Stainless-Lang': 'js',
-      'X-Stainless-Package-Version': VERSION,
-      'X-Stainless-OS': normalizePlatform(Deno.build.os),
-      'X-Stainless-Arch': normalizeArch(Deno.build.arch),
-      'X-Stainless-Runtime': 'deno',
-      'X-Stainless-Runtime-Version':
-        typeof Deno.version === 'string' ? Deno.version : Deno.version?.deno ?? 'unknown',
+      'X-Scalar-Lang': 'js',
+      'X-Scalar-Package-Version': VERSION,
+      'X-Scalar-OS': normalizePlatform(Deno.build.os),
+      'X-Scalar-Arch': normalizeArch(Deno.build.arch),
+      'X-Scalar-Runtime': 'deno',
+      'X-Scalar-Runtime-Version':
+        typeof Deno.version === 'string' ? Deno.version : (Deno.version?.deno ?? 'unknown'),
     };
   }
   if (typeof EdgeRuntime !== 'undefined') {
     return {
-      'X-Stainless-Lang': 'js',
-      'X-Stainless-Package-Version': VERSION,
-      'X-Stainless-OS': 'Unknown',
-      'X-Stainless-Arch': `other:${EdgeRuntime}`,
-      'X-Stainless-Runtime': 'edge',
-      'X-Stainless-Runtime-Version': (globalThis as any).process.version,
+      'X-Scalar-Lang': 'js',
+      'X-Scalar-Package-Version': VERSION,
+      'X-Scalar-OS': 'Unknown',
+      'X-Scalar-Arch': `other:${EdgeRuntime}`,
+      'X-Scalar-Runtime': 'edge',
+      'X-Scalar-Runtime-Version': (globalThis as any).process.version,
     };
   }
   // Check if Node.js
   if (detectedPlatform === 'node') {
     return {
-      'X-Stainless-Lang': 'js',
-      'X-Stainless-Package-Version': VERSION,
-      'X-Stainless-OS': normalizePlatform((globalThis as any).process.platform ?? 'unknown'),
-      'X-Stainless-Arch': normalizeArch((globalThis as any).process.arch ?? 'unknown'),
-      'X-Stainless-Runtime': 'node',
-      'X-Stainless-Runtime-Version': (globalThis as any).process.version ?? 'unknown',
+      'X-Scalar-Lang': 'js',
+      'X-Scalar-Package-Version': VERSION,
+      'X-Scalar-OS': normalizePlatform((globalThis as any).process.platform ?? 'unknown'),
+      'X-Scalar-Arch': normalizeArch((globalThis as any).process.arch ?? 'unknown'),
+      'X-Scalar-Runtime': 'node',
+      'X-Scalar-Runtime-Version': (globalThis as any).process.version ?? 'unknown',
     };
   }
 
   const browserInfo = getBrowserInfo();
   if (browserInfo) {
     return {
-      'X-Stainless-Lang': 'js',
-      'X-Stainless-Package-Version': VERSION,
-      'X-Stainless-OS': 'Unknown',
-      'X-Stainless-Arch': 'unknown',
-      'X-Stainless-Runtime': `browser:${browserInfo.browser}`,
-      'X-Stainless-Runtime-Version': browserInfo.version,
+      'X-Scalar-Lang': 'js',
+      'X-Scalar-Package-Version': VERSION,
+      'X-Scalar-OS': 'Unknown',
+      'X-Scalar-Arch': 'unknown',
+      'X-Scalar-Runtime': `browser:${browserInfo.browser}`,
+      'X-Scalar-Runtime-Version': browserInfo.version,
     };
   }
 
   // TODO add support for Cloudflare workers, etc.
   return {
-    'X-Stainless-Lang': 'js',
-    'X-Stainless-Package-Version': VERSION,
-    'X-Stainless-OS': 'Unknown',
-    'X-Stainless-Arch': 'unknown',
-    'X-Stainless-Runtime': 'unknown',
-    'X-Stainless-Runtime-Version': 'unknown',
+    'X-Scalar-Lang': 'js',
+    'X-Scalar-Package-Version': VERSION,
+    'X-Scalar-OS': 'Unknown',
+    'X-Scalar-Arch': 'unknown',
+    'X-Scalar-Runtime': 'unknown',
+    'X-Scalar-Runtime-Version': 'unknown',
   };
 };
 

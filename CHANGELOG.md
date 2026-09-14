@@ -1,5 +1,40 @@
 # Changelog
 
+## [0.3.0](https://github.com/tembo/sdk/compare/v0.2.3...v0.3.0) (2026-09-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Removed environment `development`.
+
+### Features
+
+* **api:** initial SDK generation ([f284491](https://github.com/tembo/sdk/commit/f284491b14fefc28b7457c9152109381edb7b3db))
+* **api:** remove environment development (+1 more change) ([504cabb](https://github.com/tembo/sdk/commit/504cabb11ea2cbb7bc23832b8958d437cd9e6ef1))
+* **sdk:** enable Scalar npm trusted publishing ([1dd2b96](https://github.com/tembo/sdk/commit/1dd2b9678449a906f0842887dda5ed4243508e07))
+* **sdk:** prepare Scalar TypeScript migration ([271db4c](https://github.com/tembo/sdk/commit/271db4cbb71c2892da85b0b8a7027502e4cfe5b3))
+
+
+### Bug Fixes
+
+* **sdk:** generate and validate against production API ([b36c41f](https://github.com/tembo/sdk/commit/b36c41f5c0787e4da2a34202e5c8d763af7396a8))
+* **sdk:** preserve recursive rich-content types in Scalar output ([f879990](https://github.com/tembo/sdk/commit/f879990172a1ffa3b2b60997d515ca377a79bbe5))
+* **sdk:** use production in example environment ([f6f968f](https://github.com/tembo/sdk/commit/f6f968f87a260da1d68beccd8b56a1ae9dc56aed))
+
+
+### Chores
+
+* **api:** update generated SDK content ([6cd2d80](https://github.com/tembo/sdk/commit/6cd2d800d0a502409f5ff89925db76cb86bd8532))
+* **api:** update generated SDK content ([0858bf8](https://github.com/tembo/sdk/commit/0858bf89eebb8e2bdf9ec308c21df54683f7ca0e))
+
+
+### Documentation
+
+* **sdk:** clarify release guidance and preserve license notices ([7a255ec](https://github.com/tembo/sdk/commit/7a255ec47cc850487caa4b05ccfbfabd9ff96b7c))
+* **sdk:** preserve Scalar-generated documentation ([791d4fc](https://github.com/tembo/sdk/commit/791d4fccc8cad8a1cb83def292a83b8b2f50b095))
+* **sdk:** reference renamed Scalar project ([1840150](https://github.com/tembo/sdk/commit/1840150e4aea902c0d8d832afee5966879f90c1e))
+* **sdk:** use a single release PR for review ([999f4b1](https://github.com/tembo/sdk/commit/999f4b1206f8dcc23be4aad898c63a17bd6b78a0))
+
 ## 0.2.3 (2026-01-31)
 
 Full Changelog: [v0.2.2...v0.2.3](https://github.com/tembo/sdk/compare/v0.2.2...v0.2.3)

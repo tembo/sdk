@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { TemboError } from '../../core/error';
 
@@ -13,12 +13,12 @@ export let isArray = (val: unknown): val is unknown[] => ((isArray = Array.isArr
 export let isReadonlyArray = isArray as (val: unknown) => val is readonly unknown[];
 
 /** Returns an object if the given value isn't an object, otherwise returns as-is */
-export function maybeObj(x: unknown): object {
+export function maybeObj(x: unknown): Record<string, unknown> {
   if (typeof x !== 'object') {
     return {};
   }
 
-  return x ?? {};
+  return (x ?? {}) as Record<string, unknown>;
 }
 
 // https://stackoverflow.com/a/34491287

@@ -12,6 +12,37 @@ export function encodeURIPath(str: string) {
   return str.replace(/[^A-Za-z0-9\-._~!$&'()*+,;=:@]+/g, encodeURIComponent);
 }
 
+/**
+ * Like {@link encodeURIPath} but leaves `/` unescaped, implementing RFC 6570 reserved expansion
+ * (`{+var}`) for path-like parameters such as a file path. The slash is part of the route shape for
+ * these params — `docs/example.txt` must stay nested under `.../files/docs/example.txt` rather than
+ * collapsing to a single `docs%2Fexample.txt` segment that points at a different backend path. Each
+ * `/`-separated segment is still run through {@link encodeURIPath}, so every other unsafe character is
+ * percent-encoded with the exact same rules, and the tag function below still rejects `.`/`..` segments,
+ * so a reserved value cannot smuggle in path traversal.
+ */
+export function encodeURIPathReserved(str: string) {
+  return str.split('/').map(encodeURIPath).join('/');
+}
+
+/**
+ * Wrapper marking a path-parameter value for reserved expansion. The {@link createPathTagFunction} tag
+ * detects this instance and encodes its value with {@link encodeURIPathReserved} (slash-preserving)
+ * instead of the default per-segment encoder, while leaving all other interpolated params untouched.
+ */
+class ReservedPathParam {
+  constructor(readonly value: string) {}
+  toString(): string {
+    return this.value;
+  }
+}
+
+/**
+ * Marks a value so the `path` tag preserves `/` when encoding it (RFC 6570 reserved expansion). Used by
+ * generated request paths for parameters the spec flags with `allowReserved` (e.g. file paths).
+ */
+export const reserved = (value: unknown): ReservedPathParam => new ReservedPathParam('' + value);
+
 const EMPTY = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.create(null));
 
 export const createPathTagFunction = (pathEncoder = encodeURIPath) =>
@@ -25,8 +56,13 @@ export const createPathTagFunction = (pathEncoder = encodeURIPath) =>
       if (/[?#]/.test(currentValue)) {
         postPath = true;
       }
-      const value = params[index];
-      let encoded = (postPath ? encodeURIComponent : pathEncoder)('' + value);
+      const param = params[index];
+      // Reserved params keep `/` (file-path-like values); everything else uses the default encoder.
+      const isReserved = param instanceof ReservedPathParam;
+      const value = isReserved ? param.value : param;
+      let encoded = (postPath ? encodeURIComponent : isReserved ? encodeURIPathReserved : pathEncoder)(
+        '' + value,
+      );
       if (
         index !== params.length &&
         (value == null ||
