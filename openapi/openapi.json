@@ -20801,8 +20801,7 @@
                       ]
                     },
                     "memoryEnabled": {
-                      "type": "boolean",
-                      "default": false
+                      "type": "boolean"
                     },
                     "diffSummary": {
                       "type": [
@@ -21044,7 +21043,6 @@
                     "visibility",
                     "artifacts",
                     "description",
-                    "memoryEnabled",
                     "diffSummary",
                     "htmlUrl",
                     "isPinned",
@@ -21714,8 +21712,7 @@
                       ]
                     },
                     "memoryEnabled": {
-                      "type": "boolean",
-                      "default": false
+                      "type": "boolean"
                     },
                     "diffSummary": {
                       "type": [
@@ -21957,7 +21954,6 @@
                     "visibility",
                     "artifacts",
                     "description",
-                    "memoryEnabled",
                     "diffSummary",
                     "htmlUrl",
                     "isPinned",
@@ -22498,8 +22494,7 @@
                       ]
                     },
                     "memoryEnabled": {
-                      "type": "boolean",
-                      "default": false
+                      "type": "boolean"
                     },
                     "diffSummary": {
                       "type": [
@@ -22741,7 +22736,6 @@
                     "visibility",
                     "artifacts",
                     "description",
-                    "memoryEnabled",
                     "diffSummary",
                     "htmlUrl",
                     "isPinned",
