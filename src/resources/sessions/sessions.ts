@@ -1,3 +1,4 @@
+import { Automations, Computer } from './extensions';
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { APIResource } from '../../resource';
@@ -30,6 +31,12 @@ import {
 } from './diffs';
 
 export class Sessions extends APIResource {
+  automations: Automations = new Automations(this._client);
+  computer: Computer = new Computer(this._client);
+  /** SSE response. Pass Last-Event-ID in headers to resume. */
+  streamEvents(sessionId: string, options?: RequestOptions): Promise<Response> {
+    return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/events/stream`, { maxRetries: 0, ...options }).asResponse();
+  }
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
   files: FilesAPI.Files = new FilesAPI.Files(this._client);
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
@@ -499,6 +506,7 @@ export namespace SessionListResponse {
 }
 
 export interface SessionCreateParams {
+  memoryEnabled?: boolean;
   /**
    * Initial task or prompt for the session.
    * @minLength 1
@@ -580,6 +588,8 @@ export namespace SessionCreateParams {
 }
 
 export interface SessionCreateResponse {
+  memoryEnabled?: boolean;
+  mcpServers?: string[];
   agent: string | null;
   /**
    * @format uuid
@@ -810,6 +820,8 @@ export namespace SessionCreateResponse {
 }
 
 export interface SessionRetrieveResponse {
+  memoryEnabled?: boolean;
+  mcpServers?: string[];
   agent: string | null;
   /**
    * @format uuid
@@ -1040,6 +1052,7 @@ export namespace SessionRetrieveResponse {
 }
 
 export interface SessionUpdateParams {
+  memoryEnabled?: boolean;
   /**
    * @minLength 1
    * @maxLength 500
@@ -1111,6 +1124,8 @@ export namespace SessionUpdateParams {
 }
 
 export interface SessionUpdateResponse {
+  memoryEnabled?: boolean;
+  mcpServers?: string[];
   agent: string | null;
   /**
    * @format uuid

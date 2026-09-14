@@ -260,7 +260,8 @@
         },
         "delete": "delete /v1/sessions/{sessionId}",
         "stop": "post /v1/sessions/{sessionId}/stop",
-        "list_events": "get /v1/sessions/{sessionId}/events"
+        "list_events": "get /v1/sessions/{sessionId}/events",
+        "streamEvents": "get /v1/sessions/{sessionId}/events/stream"
       },
       "subresources": {
         "sources": {
@@ -279,6 +280,23 @@
           "methods": {
             "list": "get /v1/sessions/{sessionId}/diffs",
             "retrieve": "get /v1/sessions/{sessionId}/diffs/{diffId}"
+          }
+        },
+        "computer": {
+          "methods": {
+            "retrieve": "get /v1/sessions/{sessionId}/computer",
+            "start": "post /v1/sessions/{sessionId}/computer/start",
+            "reconnect": "post /v1/sessions/{sessionId}/computer/reconnect"
+          }
+        },
+        "automations": {
+          "methods": {
+            "list": "get /v1/sessions/{sessionId}/automations",
+            "create": "post /v1/sessions/{sessionId}/automations",
+            "retrieve": "get /v1/sessions/{sessionId}/automations/{automationId}",
+            "update": "patch /v1/sessions/{sessionId}/automations/{automationId}",
+            "delete": "delete /v1/sessions/{sessionId}/automations/{automationId}",
+            "run": "post /v1/sessions/{sessionId}/automations/{automationId}/run"
           }
         }
       }
@@ -537,7 +555,9 @@
   "environments": {
     "production": "https://api.tembo.io"
   },
-  "environmentOrder": ["production"],
+  "environmentOrder": [
+    "production"
+  ],
   "clientSettings": {
     "opts": {
       "apiKey": {

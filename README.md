@@ -142,7 +142,9 @@ Generated clients support request timeouts and retry temporary failures such as 
 ## Helpers
 
 - Use `.withResponse()` on any request to inspect both parsed data and the raw `Response` object.
-- Every operation returns an `APIPromise`, so you can `await` it directly or chain `.withResponse()`.
+- JSON operations return an `APIPromise`, so you can `await` them directly or chain `.withResponse()`. The local `sessions.streamEvents` extension returns a raw `Promise<Response>` for reading SSE.
+
+The local session API additions and regeneration workflow are documented in [SESSION_EXTENSIONS.md](./SESSION_EXTENSIONS.md).
 
 <br />
 
