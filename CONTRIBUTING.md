@@ -53,7 +53,7 @@ The schema snapshot is saved only after registry upload succeeds. If synchroniza
 
 `Update SDK documentation after release` checks that the generated release workflow's publish job succeeded, resolves npm's stable `latest`, and dispatches `sdk-published` to `tembo/docs`. A manual run retries notification. It does not publish packages. The docs workflow validates against npm and opens a review PR instead of merging automatically.
 
-`CODEOWNERS` requests `@cooper-gadd` on SDK changes. Enable required code-owner approval and contract/build checks in GitHub's `main` rules separately; adding the file alone does not enforce approval. Keep the Scalar integration branches compatible with the managed synchronization flow.
+Configure required approval and contract/build checks in GitHub's `main` rules separately. Keep the Scalar integration branches compatible with the managed synchronization flow.
 
 `Notify engineering of SDK release PR` mentions Cooper in Slack only when Scalar opens a new release PR against `main`. Store an incoming webhook configured for `#engineering` as `SLACK_ENGINEERING_WEBHOOK_URL` in both `sdk` and `docs`. The workflow must be present on `main`; it does not notify for updates, reopened PRs, releases, or failures. It reads event metadata only and never checks out PR code. A manual rerun can resend the notification.
 
