@@ -23,9 +23,13 @@ concurrency:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on
+      - runner=2cpu-linux-x64
+      - env=prod
     timeout-minutes: 15
     steps:
+      - uses: runs-on/action@v2
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0

@@ -18,9 +18,13 @@ concurrency:
 jobs:
   notify:
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.head_repository.full_name == github.repository
-    runs-on: ubuntu-latest
+    runs-on:
+      - runs-on
+      - runner=2cpu-linux-x64
+      - env=prod
     timeout-minutes: 5
     steps:
+      - uses: runs-on/action@v2
       - name: Check publication succeeded
         id: published
         env:
