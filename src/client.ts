@@ -299,7 +299,7 @@ export class Tembo {
    * API Client for interfacing with the TemboPublicApi API.
    *
    * @param {string | AuthTokenProvider | undefined} [opts.apiKey=process.env["TEMBO_API_KEY"] ?? undefined]
-   * @param {string} [opts.baseURL=process.env["TEMBO_BASE_URL"] ?? https://internal.tembo-development.com/public-api] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env["TEMBO_BASE_URL"] ?? https://api.tembo.io] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -321,10 +321,10 @@ export class Tembo {
     const options: ClientOptions = {
       apiKey,
       ...opts,
-      baseURL: baseURL || 'https://internal.tembo-development.com/public-api',
+      baseURL: baseURL || 'https://api.tembo.io',
     };
     const baseURLOverridden = baseURL !== null && baseURL !== undefined && baseURL !== '';
-    const defaultBaseURL = 'https://internal.tembo-development.com/public-api';
+    const defaultBaseURL = 'https://api.tembo.io';
     this.baseURL = options.baseURL || defaultBaseURL;
     this.timeout = options.timeout ?? Tembo.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;

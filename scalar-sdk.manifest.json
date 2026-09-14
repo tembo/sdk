@@ -6,10 +6,10 @@
     "https://api.tembo.io/"
   ],
   "environments": {
-    "development": "https://internal.tembo-development.com/public-api"
+    "production": "https://api.tembo.io"
   },
   "environmentOrder": [
-    "development"
+    "production"
   ],
   "auth": [
     "bearer"
