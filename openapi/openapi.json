@@ -902,6 +902,31 @@
           "toolName": {
             "type": "string"
           },
+          "toolResult": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "running",
+                  "completed",
+                  "error"
+                ]
+              },
+              "output": {
+                "type": "string"
+              },
+              "exitCode": {
+                "type": "number"
+              },
+              "error": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
           "snapshotId": {
             "type": "string"
           },
@@ -1164,6 +1189,31 @@
           "toolName": {
             "type": "string",
             "maxLength": 1000
+          },
+          "toolResult": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "enum": [
+                  "running",
+                  "completed",
+                  "error"
+                ]
+              },
+              "output": {
+                "type": "string"
+              },
+              "exitCode": {
+                "type": "number"
+              },
+              "error": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "status"
+            ]
           },
           "snapshotId": {
             "type": "string"
@@ -2581,6 +2631,13 @@
               "type": "string"
             },
             "description": "Only trigger if the message contains one of these substrings"
+          },
+          "messageNotContains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Skip messages containing any of these case-sensitive substrings (for example, On-call handover:)"
           }
         }
       },
@@ -5378,7 +5435,7 @@
                     },
                     "createdAt": {
                       "type": "string",
-                      "default": "2026-09-14T13:07:00.414Z"
+                      "default": "2026-09-14T23:52:18.858Z"
                     },
                     "updatedAt": {
                       "type": "string"
@@ -5459,7 +5516,7 @@
                         "string",
                         "null"
                       ],
-                      "default": "2026-09-14T13:07:00.414Z"
+                      "default": "2026-09-14T23:52:18.858Z"
                     },
                     "artifactType": {
                       "type": [
