@@ -1,7 +1,6 @@
 import { writeFile } from 'node:fs/promises';
 
-const url =
-  process.env.TEMBO_OPENAPI_URL ?? 'https://api.tembo.io/public-api/openapi/public';
+const url = process.env.TEMBO_OPENAPI_URL ?? 'https://api.tembo.io/public-api/openapi/public';
 const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
 if (!response.ok) throw new Error(`OpenAPI download failed: HTTP ${response.status}`);
 const schema = await response.json();
