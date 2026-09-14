@@ -53,7 +53,7 @@ The schema snapshot is saved only after registry upload succeeds. If synchroniza
 
 `Update SDK documentation after release` checks that the generated release workflow's publish job succeeded, resolves npm's stable `latest`, and dispatches `sdk-published` to `tembo/docs`. A manual run retries notification. It does not publish packages. The docs workflow validates against npm and opens a review PR instead of merging automatically.
 
-Configure required approval and contract/build checks in GitHub's `main` rules separately. Keep the Scalar integration branches compatible with the managed synchronization flow.
+`CODEOWNERS` requests review from `@cooper-gadd` on SDK changes once the ownership file reaches the PR's base branch. Configure required approval and contract/build checks in GitHub's `main` rules separately; ownership alone does not require approval before merging. Keep the Scalar integration branches compatible with the managed synchronization flow.
 
 ## Why schema preparation exists
 
