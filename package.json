@@ -1,6 +1,6 @@
 {
   "name": "@tembo-io/sdk",
-  "version": "0.3.0-session.3",
+  "version": "0.3.2-session.1",
   "description": "Manage agents, sessions, repositories, and organization resources with the Tembo API.",
   "author": "Tembo Public API",
   "repository": {
