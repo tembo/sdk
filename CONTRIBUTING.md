@@ -35,7 +35,13 @@ For an authenticated, read-only dev check, export a dev `TEMBO_API_KEY` and run 
 4. Build that draft version in Scalar, or run `npx --yes --package=@scalar/cli@2.1.0 scalar sdk build --namespace tembo --slug tembo-sdk --version <draft-version>`. The CLI starts the build; wait for its completion and repository sync.
 5. Scalar updates `scalar-generated`, integrates into `scalar-next`, and refreshes the release PR against `main`. Add schema snapshot/config/test changes to `scalar-next` and review the combined code, diagnostics and checks in that one release PR. A separate custom-code PR is optional, not a required step.
 
-The production schema is uploaded as a reviewed snapshot, not automatically synchronized with every deployment. The SDK defaults to `https://api.tembo.io`; the optional dev smoke test overrides that default explicitly. Generation versions are independent of npm release versions. Merging a release PR triggers npm publishing.
+The SDK defaults to `https://api.tembo.io`; the optional dev smoke test overrides that default explicitly. Generation versions are independent of npm release versions. Merging a release PR triggers npm publishing.
+
+## Automated updates
+
+Production API deployments trigger schema validation and upload only when the contract changes. New or removed endpoints require a mapping review. Scalar follows registry versions `2.0.x` to generate release PRs; successful npm publication triggers a docs update PR. Neither PR is auto-merged.
+
+Verify from `main` with a manual OpenAPI run using `force: true` and `dry_run: true`, then `dry_run: false` to seed generation. Manual workflow runs also recover missed events; no enable flags are needed.
 
 ## Why schema preparation exists
 

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.1](https://github.com/tembo/sdk/compare/v0.3.0...v0.3.1) (2026-09-14)
+
+
+### Bug Fixes
+
+* **ci:** update docs when SDK publication succeeds ([f611707](https://github.com/tembo/sdk/commit/f611707f8e837b710f57dc3344638f3876064ad4))
+
+
+### Documentation
+
+* remove credential setup from contributor guide ([2577b63](https://github.com/tembo/sdk/commit/2577b63355613d8cb41d284b7fb52312a1c19f6e))
+* trim SDK automation setup notes ([33a8896](https://github.com/tembo/sdk/commit/33a889685d25ff3d25770dc8c1a99789819ea579))
+
 ## [0.3.0](https://github.com/tembo/sdk/compare/v0.2.3...v0.3.0) (2026-09-14)
 
 
