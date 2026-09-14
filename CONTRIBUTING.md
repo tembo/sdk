@@ -41,8 +41,6 @@ The SDK defaults to `https://api.tembo.io`; the optional dev smoke test override
 
 Production API deployments trigger schema validation and upload only when the contract changes. New or removed endpoints require a mapping review. Scalar follows registry versions `2.0.x` to generate release PRs; successful npm publication triggers a docs update PR. Neither PR is auto-merged.
 
-Before merging the automation, configure the existing `CI_BOT_APP_ID` / `CI_BOT_PRIVATE_KEY` with contents write access to SDK/docs and pull requests write access to docs, plus `SCALAR_API_KEY` in SDK. Set `Tembo SDK` to follow `2.0.x` on registry API `tembo/tembo-eight-pr-verification`. Have the docs receiver on `main` before SDK publication, and the SDK receiver on `main` before the monorepo deployment hook.
-
 Verify with a manual OpenAPI run using `force: true` and `dry_run: true`, then `dry_run: false` to seed generation. Manual workflow runs also recover missed events; no enable flags are needed.
 
 ## Why schema preparation exists
