@@ -23,18 +23,15 @@ concurrency:
 
 jobs:
   update:
-    runs-on:
-      - runs-on
-      - runner=2cpu-linux-x64
-      - env=prod
+    if: github.repository == 'tembo/sdk' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: runs-on/action@v2
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: '24'
       - run: npm ci --ignore-scripts
@@ -54,10 +51,12 @@ jobs:
       - name: Generate schema sync token
         if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true
         id: bot
-        uses: actions/create-github-app-token@v2
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
         with:
-          app-id: ${{ vars.CI_BOT_APP_ID }}
-          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+          app-id: ${{ vars.CI_PUBLIC_BOT_APP_ID }}
+          private-key: ${{ secrets.CI_PUBLIC_BOT_PRIVATE_KEY }}
+          owner: tembo
+          repositories: sdk
           permission-contents: write
       - name: Publish schema to Scalar Registry
         if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true

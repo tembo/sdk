@@ -17,14 +17,10 @@ concurrency:
 
 jobs:
   notify:
-    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.head_repository.full_name == github.repository
-    runs-on:
-      - runs-on
-      - runner=2cpu-linux-x64
-      - env=prod
+    if: github.repository == 'tembo/sdk' && github.ref == 'refs/heads/main' && (github.event_name == 'workflow_dispatch' || ((github.event.workflow_run.event == 'push' || github.event.workflow_run.event == 'workflow_dispatch') && github.event.workflow_run.head_repository.full_name == github.repository))
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: runs-on/action@v2
       - name: Check publication succeeded
         id: published
         env:
@@ -36,7 +32,7 @@ jobs:
           elif gh api "repos/$GITHUB_REPOSITORY/actions/runs/$RUN_ID/jobs" --paginate --jq '.jobs[] | select(.name == "publish" and .conclusion == "success") | .id' | grep -q .; then
             echo 'ready=true' >> "$GITHUB_OUTPUT"
           fi
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         if: steps.published.outputs.ready == 'true'
         with:
           node-version: '24'
@@ -47,12 +43,12 @@ jobs:
           VERSION=$(npm view @tembo-io/sdk dist-tags.latest)
           [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || exit 1
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-      - uses: actions/create-github-app-token@v2
+      - uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
         if: steps.published.outputs.ready == 'true'
         id: bot
         with:
-          app-id: ${{ vars.CI_BOT_APP_ID }}
-          private-key: ${{ secrets.CI_BOT_PRIVATE_KEY }}
+          app-id: ${{ vars.CI_PUBLIC_BOT_APP_ID }}
+          private-key: ${{ secrets.CI_PUBLIC_BOT_PRIVATE_KEY }}
           owner: tembo
           repositories: docs
           permission-contents: write

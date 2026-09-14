@@ -41,7 +41,7 @@ The SDK defaults to `https://api.tembo.io`; the optional dev smoke test override
 
 Production API deployments trigger schema validation and upload only when the contract changes. New or removed endpoints require a mapping review. Scalar follows registry versions `2.0.x` to generate release PRs; successful npm publication triggers a docs update PR. Neither PR is auto-merged.
 
-Verify with a manual OpenAPI run using `force: true` and `dry_run: true`, then `dry_run: false` to seed generation. Manual workflow runs also recover missed events; no enable flags are needed.
+Verify from `main` with a manual OpenAPI run using `force: true` and `dry_run: true`, then `dry_run: false` to seed generation. Manual workflow runs also recover missed events; no enable flags are needed.
 
 ## Why schema preparation exists
 
