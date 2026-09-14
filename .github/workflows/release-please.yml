@@ -55,3 +55,41 @@ jobs:
           git checkout -B scalar-next origin/scalar-next
           git merge --no-edit -m "Sync release ${{ steps.release.outputs.tag_name }} back to scalar-next" "${{ steps.release.outputs.sha }}"
           git push origin scalar-next
+  publish:
+    needs: release-please
+    # `!cancelled()` keeps publishing even when the back-sync to the integration branch
+    # failed: a raced integration branch must not block the release from reaching its
+    # registry.
+    if: ${{ !cancelled() && needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    # Job-level permissions replace the workflow's release-cutting grants with the publish
+    # floor. OIDC trusted publishing verifies this run's claims, which name this workflow
+    # file — register release-please.yml as the trusted publisher on the registry.
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    env:
+      VERSIONING_POLICY: manual
+    steps:
+      # Publishing runs inline — a top-level job of this same run — rather than dispatching
+      # sdk-release.yml: workflow_dispatch resolves the target workflow on the repository's
+      # default branch only, so a dispatch would 404 whenever the release line is any other
+      # branch, while OIDC trusted publishing accepts this job because it stays top-level
+      # (never a reusable-workflow call). The release-please job cut the tag earlier in this
+      # run; checking it out publishes exactly the released commit, not the branch head that
+      # triggered the workflow.
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
+      - run: npm run build
+      # OIDC trusted publishing needs npm >= 11.5; pinned to the major (not `latest`) so a new
+      # npm major raising its Node engine floor cannot break publishes against the pinned Node.
+      - run: npm install -g npm@11
+      - name: Publish to npm
+        run: node scripts/publish-npm.mjs
