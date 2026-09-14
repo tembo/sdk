@@ -39,6 +39,6 @@ Computer exposes `retrieve`, `start` (including resume), and `reconnect`. Missin
 
 ## Regenerate
 
-1. From the backend root, run `bun apps/api/scripts/export-session-api.ts ../bot-sdk/openapi/session-extensions.json`.
+1. From the backend root, run `bun apps/api/scripts/exportSessionApi.ts ../bot-sdk/openapi/session-extensions.json`.
 2. Run `npm run generate:sessions` and `npm test` here. The deterministic generator updates session/message contracts, child resources, SSE, merged OpenAPI, Scalar config, and operation manifest from actual Hono routes.
 3. Build/pack using the existing SDK scripts. The base SDK remains Scalar-generated. Deploy platform dependencies before enabling app integration.

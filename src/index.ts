@@ -21,6 +21,15 @@ export {
   UnprocessableEntityError,
 } from './error';
 
-export type { SessionAutomation, SessionAutomationInput, SessionAutomationList, SessionAutomationRun, SessionComputer } from './resources/sessions/extensions';
+export type {
+  SessionAutomation,
+  SessionAutomationInput,
+  SessionAutomationList,
+  SessionAutomationRun,
+  SessionComputer,
+} from './resources/sessions/extensions';
 
-export type { SessionAutomationDeleteInput, SessionAutomationRunInput } from './resources/sessions/extensions';
+export type {
+  SessionAutomationDeleteInput,
+  SessionAutomationRunInput,
+} from './resources/sessions/extensions';

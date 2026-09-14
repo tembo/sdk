@@ -35,7 +35,9 @@ export class Sessions extends APIResource {
   computer: Computer = new Computer(this._client);
   /** SSE response. Pass Last-Event-ID in headers to resume. */
   streamEvents(sessionId: string, options?: RequestOptions): Promise<Response> {
-    return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/events/stream`, { maxRetries: 0, ...options }).asResponse();
+    return this._client
+      .get(`/v1/sessions/${encodeURIComponent(sessionId)}/events/stream`, { maxRetries: 0, ...options })
+      .asResponse();
   }
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
   files: FilesAPI.Files = new FilesAPI.Files(this._client);

@@ -53,8 +53,8 @@
     "schema:prepare": "node scripts/prepare-schema.mjs",
     "generate:sessions": "node scripts/generate-session-extensions.mjs"
   },
-  "dependencies": {},
   "devDependencies": {
+    "@biomejs/biome": "2.5.7",
     "typescript": "^6.0.0"
   },
   "license": "Apache-2.0"

@@ -2,24 +2,120 @@
 import { APIResource } from '../../resource';
 import type { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
-export type SessionAutomation = { "name": string; "prompt": string; "cron": string; "timezone": string; "enabled": boolean; "reporting": "useful" | "always"; "revision": number; "id": string; "sessionId": string; "syncStatus": "synced" | "pending"; "nextRunAt": string | null; "lastRunAt": string | null; "lastStatus": "queued" | "running" | "completed" | "failed" | "cancelled" | null };
-export type SessionAutomationInput = { "name": string; "prompt": string; "cron": string; "timezone": string; "enabled"?: boolean; "reporting"?: "useful" | "always"; "id": string; "expectedRevision": number; "requestId": string };
-export type SessionAutomationList = { "items": Array<{ "name": string; "prompt": string; "cron": string; "timezone": string; "enabled": boolean; "reporting": "useful" | "always"; "revision": number; "id": string; "sessionId": string; "syncStatus": "synced" | "pending"; "nextRunAt": string | null; "lastRunAt": string | null; "lastStatus": "queued" | "running" | "completed" | "failed" | "cancelled" | null }> };
-export type SessionAutomationRun = { "jobId": string; "messageId": string };
-export type SessionAutomationDeleted = { "id": string; "deleted": true };
-export type SessionAutomationDeleteInput = { "expectedRevision": number; "requestId": string };
-export type SessionAutomationRunInput = { "requestId": string };
-export type SessionComputer = { "status": "unsupported" | "stopped" | "starting" | "running" | "suspended" | "error"; "viewerUrl": string | null; "error"?: string };
+export type SessionAutomation = {
+  name: string;
+  prompt: string;
+  cron: string;
+  timezone: string;
+  enabled: boolean;
+  reporting: 'useful' | 'always';
+  revision: number;
+  id: string;
+  sessionId: string;
+  syncStatus: 'synced' | 'pending';
+  nextRunAt: string | null;
+  lastRunAt: string | null;
+  lastStatus: 'queued' | 'running' | 'completed' | 'failed' | 'cancelled' | null;
+};
+export type SessionAutomationInput = {
+  name: string;
+  prompt: string;
+  cron: string;
+  timezone: string;
+  enabled?: boolean;
+  reporting?: 'useful' | 'always';
+  id: string;
+  expectedRevision: number;
+  requestId: string;
+};
+export type SessionAutomationList = {
+  items: Array<{
+    name: string;
+    prompt: string;
+    cron: string;
+    timezone: string;
+    enabled: boolean;
+    reporting: 'useful' | 'always';
+    revision: number;
+    id: string;
+    sessionId: string;
+    syncStatus: 'synced' | 'pending';
+    nextRunAt: string | null;
+    lastRunAt: string | null;
+    lastStatus: 'queued' | 'running' | 'completed' | 'failed' | 'cancelled' | null;
+  }>;
+};
+export type SessionAutomationRun = { jobId: string; messageId: string };
+export type SessionAutomationDeleted = { id: string; deleted: true };
+export type SessionAutomationDeleteInput = { expectedRevision: number; requestId: string };
+export type SessionAutomationRunInput = { requestId: string };
+export type SessionComputer = {
+  status: 'unsupported' | 'stopped' | 'starting' | 'running' | 'suspended' | 'error';
+  viewerUrl: string | null;
+  error?: string;
+};
 export class Automations extends APIResource {
-  list(sessionId:string,options?:RequestOptions):APIPromise<SessionAutomationList> { return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/automations`,{...options}); }
-  create(sessionId:string,body:SessionAutomationInput,options?:RequestOptions):APIPromise<SessionAutomation> { return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/automations`,{body,...options}); }
-  retrieve(sessionId:string,automationId:string,options?:RequestOptions):APIPromise<SessionAutomation> { return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}`,{...options}); }
-  update(sessionId:string,automationId:string,body:SessionAutomationInput,options?:RequestOptions):APIPromise<SessionAutomation> { return this._client.patch(`/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}`,{body,...options}); }
-  delete(sessionId:string,automationId:string,body:SessionAutomationDeleteInput,options?:RequestOptions):APIPromise<SessionAutomationDeleted> { return this._client.delete(`/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}`,{body,...options}); }
-  run(sessionId:string,automationId:string,body:SessionAutomationRunInput,options?:RequestOptions):APIPromise<SessionAutomationRun> { return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}/run`,{body,...options}); }
+  list(sessionId: string, options?: RequestOptions): APIPromise<SessionAutomationList> {
+    return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/automations`, { ...options });
+  }
+  create(
+    sessionId: string,
+    body: SessionAutomationInput,
+    options?: RequestOptions,
+  ): APIPromise<SessionAutomation> {
+    return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/automations`, {
+      body,
+      ...options,
+    });
+  }
+  retrieve(sessionId: string, automationId: string, options?: RequestOptions): APIPromise<SessionAutomation> {
+    return this._client.get(
+      `/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}`,
+      { ...options },
+    );
+  }
+  update(
+    sessionId: string,
+    automationId: string,
+    body: SessionAutomationInput,
+    options?: RequestOptions,
+  ): APIPromise<SessionAutomation> {
+    return this._client.patch(
+      `/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}`,
+      { body, ...options },
+    );
+  }
+  delete(
+    sessionId: string,
+    automationId: string,
+    body: SessionAutomationDeleteInput,
+    options?: RequestOptions,
+  ): APIPromise<SessionAutomationDeleted> {
+    return this._client.delete(
+      `/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}`,
+      { body, ...options },
+    );
+  }
+  run(
+    sessionId: string,
+    automationId: string,
+    body: SessionAutomationRunInput,
+    options?: RequestOptions,
+  ): APIPromise<SessionAutomationRun> {
+    return this._client.post(
+      `/v1/sessions/${encodeURIComponent(sessionId)}/automations/${encodeURIComponent(automationId)}/run`,
+      { body, ...options },
+    );
+  }
 }
 export class Computer extends APIResource {
-  retrieve(sessionId:string,options?:RequestOptions):APIPromise<SessionComputer> {return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/computer`,options);}
-  start(sessionId:string,options?:RequestOptions):APIPromise<SessionComputer> {return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/computer/start`,options);}
-  reconnect(sessionId:string,options?:RequestOptions):APIPromise<SessionComputer> {return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/computer/reconnect`,options);}
+  retrieve(sessionId: string, options?: RequestOptions): APIPromise<SessionComputer> {
+    return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/computer`, options);
+  }
+  start(sessionId: string, options?: RequestOptions): APIPromise<SessionComputer> {
+    return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/computer/start`, options);
+  }
+  reconnect(sessionId: string, options?: RequestOptions): APIPromise<SessionComputer> {
+    return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/computer/reconnect`, options);
+  }
 }
