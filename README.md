@@ -106,15 +106,15 @@ const client = new Tembo({
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `apiKey` | `string \| AuthTokenProvider` | `process.env["TEMBO_API_KEY"]` | Credential for the apiKey scheme. |
-| `baseURL` | `string \| null` | `process.env["TEMBO_BASE_URL"]` or `https://api.tembo.io` | Override the API base URL. Pass `null` to ignore the environment variable and use production. |
+| `baseURL` | `string \| null` | `process.env["TEMBO_BASE_URL"]` | Override the default API base URL. Pass `null` when selecting a configured environment. |
 | `timeout` | `number` | `60000` | Maximum time in milliseconds to wait for a response before aborting a request. |
 | `maxRetries` | `number` | `2` | Number of retries for temporary failures. |
 | `defaultHeaders` | `HeadersInit` | - | Headers sent with every request. |
 | `defaultQuery` | `Record<string, string \| undefined>` | - | Query parameters sent with every request. |
 | `fetchOptions` | `RequestInit` | - | Additional fetch options sent with every request. |
 | `fetch` | `Fetch` | - | Custom fetch implementation. |
-| `logLevel` | `"off" \| "error" \| "warn" \| "info" \| "debug"` | `process.env["TEMBO_LOG"]` or `"warn"` | Controls request and retry logging. |
-| `logger` | `Logger` | `console` | Custom logger implementation. |
+| `logLevel` | `"off" \| "error" \| "warn" \| "info" \| "debug" \| null` | `process.env["TEMBO_LOG"]` | Controls request and retry debug logging. |
+| `logger` | `Logger \| null` | `console` | Custom logger implementation. |
 
 <br />
 
@@ -150,7 +150,7 @@ Generated clients support request timeouts and retry temporary failures such as 
 
 - Set `logLevel: "debug"` to log request URLs, options, response status, response headers, and retry attempts.
 - Pass a custom `logger` to route logs into your own observability pipeline.
-- Set `logLevel: "off"` to disable logging, including when `TEMBO_LOG` is set.
+- Set `logLevel: null` to disable environment-driven logging.
 
 <br />
 

@@ -52,9 +52,9 @@ git commit --allow-empty -m "chore: release 1.0.0" -m "Release-As: 1.0.0"
 
 ### When a release PR does not merge cleanly
 
-The generated release PR branch may be rewritten when Scalar refreshes it. This does not
-authorize replacing `main`. A release PR that conflicts with the default branch cannot
-be merged until its conflicts are resolved. The two causes have different fixes:
+Nothing is ever force-pushed automatically: a release PR that conflicts with the default
+branch simply cannot be merged, and GitHub disables its merge button. The two causes have
+different fixes:
 
 - **The default branch received direct commits** (for example a hotfix) that are not in
   `scalar-next`. Land those commits on `scalar-next` (merge the default branch into it, or
@@ -75,12 +75,12 @@ be merged until its conflicts are resolved. The two causes have different fixes:
   released state back from the release workflow.
 - No Actions settings changes are required: the generated workflows declare their own
   permissions and never create pull requests.
-- This package publishes through npm OIDC trusted publishing. Register the
-  trusted publisher on npm against the **`release-please.yml`**
+- If this package publishes through OIDC trusted publishing (for example PyPI or npm),
+  register the trusted publisher on the registry against the **`release-please.yml`**
   workflow filename. Merging a release PR publishes from the `publish` job inside that
   same workflow run (checked out at the released tag), so the automated path's OIDC
-  claims name that file. This repository's release workflow runs on `main`.
-  `sdk-release.yml` exists for
+  claims name that file — and, because nothing is dispatched, releasing works from any
+  release branch, not only the repository default branch. `sdk-release.yml` exists for
   manual re-publishes at an existing tag; register it as an additional trusted publisher
   only if you use it. If the publish job is configured with a deployment environment,
   include that environment in the registration too.
