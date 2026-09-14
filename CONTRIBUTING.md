@@ -39,21 +39,11 @@ The SDK defaults to `https://api.tembo.io`; the optional dev smoke test override
 
 ## Automated updates
 
-`Update production OpenAPI` receives `production-api-deployed` from the monorepo after a successful API rollout. It compares production against the pending `scalar-next` snapshot, validates the normalization and operation mappings, then uploads the prepared schema. Key ordering and non-v1 routes are excluded from change detection; v1 descriptions, schemas, servers, and constraints are retained. New or removed operations stop the run for a mapping review rather than silently dropping routes.
+Production API deployments trigger schema validation and upload only when the contract changes. New or removed endpoints require a mapping review. Scalar follows registry versions `2.0.x` to generate release PRs; successful npm publication triggers a docs update PR. Neither PR is auto-merged.
 
-Configure credentials and Scalar document following before promoting these workflows to `main`; they run automatically without enable flags:
+Before merging the automation, configure the existing `CI_BOT_APP_ID` / `CI_BOT_PRIVATE_KEY` with contents write access to SDK/docs and pull requests write access to docs, plus `SCALAR_API_KEY` in SDK. Set `Tembo SDK` to follow `2.0.x` on registry API `tembo/tembo-eight-pr-verification`. Have the docs receiver on `main` before SDK publication, and the SDK receiver on `main` before the monorepo deployment hook.
 
-1. Install the CI bot GitHub App on `sdk` and `docs`. Configure `CI_BOT_APP_ID` and `CI_BOT_PRIVATE_KEY` in this repo. It needs contents write on both repositories and pull requests write on `docs`.
-2. Store a dedicated Scalar registry credential as `SCALAR_API_KEY`. Do not use a browser session or Tembo API key.
-3. Configure `Tembo SDK` (`tembo-sdk`) to follow `2.0.x` on registry API `tembo/tembo-eight-pr-verification`, instead of the pinned verification version. Uploads use `2.0.<GitHub run ID>`; these are API-document versions, not npm versions. Scalar's native following creates the SDK build and release PR; this workflow does not separately trigger a build.
-4. Run the OpenAPI workflow manually with `dry_run: true` and `force: true`. Then run with `dry_run: false` and `force: true` to seed the production series, and confirm Scalar generates a release PR with green contract checks.
-5. Have the docs receiver on `main` before an SDK publication, and the SDK receiver on `main` before merging the monorepo deployment hook. Automatic runs retain change detection and successful deployment/publication checks.
-
-The schema snapshot is saved only after registry upload succeeds. If synchronization fails after an upload, rerun the workflow; a rerun replaces only that run's registry version with the same production-series identifier. A new run can generate an additional SDK build. Failures appear in GitHub Actions and do not roll back production.
-
-`Update SDK documentation after release` checks that the generated release workflow's publish job succeeded, resolves npm's stable `latest`, and dispatches `sdk-published` to `tembo/docs`. A manual run retries notification. It does not publish packages. The docs workflow validates against npm and opens a review PR instead of merging automatically.
-
-`CODEOWNERS` requests review from `@cooper-gadd` on SDK changes once the ownership file reaches the PR's base branch. Configure required approval and contract/build checks in GitHub's `main` rules separately; ownership alone does not require approval before merging. Keep the Scalar integration branches compatible with the managed synchronization flow.
+Verify with a manual OpenAPI run using `force: true` and `dry_run: true`, then `dry_run: false` to seed generation. Manual workflow runs also recover missed events; no enable flags are needed.
 
 ## Why schema preparation exists
 
