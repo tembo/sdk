@@ -55,8 +55,6 @@ The schema snapshot is saved only after registry upload succeeds. If synchroniza
 
 Configure required approval and contract/build checks in GitHub's `main` rules separately. Keep the Scalar integration branches compatible with the managed synchronization flow.
 
-`Notify engineering of SDK release PR` mentions Cooper in Slack only when Scalar opens a new release PR against `main`. Store an incoming webhook configured for `#engineering` as `SLACK_ENGINEERING_WEBHOOK_URL` in both `sdk` and `docs`. The workflow must be present on `main`; it does not notify for updates, reopened PRs, releases, or failures. It reads event metadata only and never checks out PR code. A manual rerun can resend the notification.
-
 ## Why schema preparation exists
 
 Scalar 0.32.9 lost recursive `TipTapNode` union members in emitted TypeScript despite retaining them in its intermediate manifest. Inline model mappings alone did not fix it. `scripts/normalize-openapi.mjs` hoists the six structured variants into named components and flattens their nested union for generation only.
