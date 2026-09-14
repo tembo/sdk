@@ -132,13 +132,17 @@ test('HTTP failures become typed errors without retries', async () => {
   }
 });
 
-test('publishing stays disabled during migration', () => {
+test('publishing uses the Scalar release workflow and trusted publishing', () => {
   assert.equal(packageJson.name, '@tembo-io/sdk');
   assert.deepEqual(Object.keys(config.targets), ['typescript']);
   assert.deepEqual(config.targets.typescript.destinations.production, { repo: 'tembo/sdk', branch: 'main' });
-  assert.equal(config.targets.typescript.publish.npm, false);
+  assert.equal(config.targets.typescript.publish.npm, true);
   assert.equal(existsSync(new URL('../.github/workflows/publish-npm.yml', import.meta.url)), false);
-  assert.equal(existsSync(new URL('../.github/workflows/sdk-release.yml', import.meta.url)), false);
   const workflow = readFileSync(new URL('../.github/workflows/release-please.yml', import.meta.url), 'utf8');
-  assert.doesNotMatch(workflow, /^  publish:/m);
+  assert.match(workflow, /^  publish:/m);
+  assert.match(workflow, /id-token: write/);
+  assert.match(workflow, /needs\.release-please\.outputs\.release_created == 'true'/);
+  assert.match(workflow, /ref: \$\{\{ needs\.release-please\.outputs\.tag_name \}\}/);
+  assert.match(workflow, /npm install -g npm@11/);
+  assert.doesNotMatch(workflow, /secrets\.NPM_TOKEN/);
 });

@@ -530,7 +530,7 @@
         }
       },
       "publish": {
-        "npm": false
+        "npm": true
       }
     }
   },

@@ -1,6 +1,6 @@
 # Contributing to the Tembo SDK
 
-This repository follows [Scalar's managed GitHub workflow](https://scalar.com/products/sdk-generator/publishing/github). The TypeScript target is connected to `tembo/sdk`; Python is independent. Package publishing is explicitly disabled with `targets.typescript.publish.npm: false`.
+This repository follows [Scalar's managed GitHub workflow](https://scalar.com/products/sdk-generator/publishing/github). The TypeScript target is connected to `tembo/sdk`; Python is independent. npm trusted publishing is enabled with `targets.typescript.publish.npm: true`.
 
 ## Branches and ownership
 
@@ -35,7 +35,7 @@ For an authenticated, read-only dev check, export a dev `TEMBO_API_KEY` and run 
 4. Build that draft version in Scalar, or run `npx --yes --package=@scalar/cli@2.1.0 scalar sdk build --namespace tembo --slug tembo-sdk --version <draft-version>`. The CLI starts the build; wait for its completion and repository sync.
 5. Scalar updates `scalar-generated`, integrates into `scalar-next`, and refreshes the release PR against `main`. Add schema snapshot/config/test changes to `scalar-next` and review the combined code, diagnostics and checks in that one release PR. A separate custom-code PR is optional, not a required step.
 
-The production schema is uploaded as a reviewed snapshot, not automatically synchronized with every deployment. The SDK defaults to `https://api.tembo.io`; the optional dev smoke test overrides that default explicitly. Generation versions are independent of npm release versions. npm publishing remains disabled.
+The production schema is uploaded as a reviewed snapshot, not automatically synchronized with every deployment. The SDK defaults to `https://api.tembo.io`; the optional dev smoke test overrides that default explicitly. Generation versions are independent of npm release versions. Merging a release PR triggers npm publishing.
 
 ## Why schema preparation exists
 
@@ -47,6 +47,6 @@ This is a documented custom workaround, not a general Scalar requirement. Remove
 
 ## Release safety
 
-Scalar's npm switch is off. Its generated release workflow can create GitHub tags/releases when a release PR is merged, but currently contains no npm publish job. The previous standalone `Publish NPM` workflow on `main` has also been disabled; the Scalar replacement removes that obsolete file.
+Scalar's npm switch is enabled. The generated release workflow publishes after creating a release. npm trusts owner `tembo`, repository `sdk`, workflow `release-please.yml`, with no environment restriction. Authentication uses OIDC, not an npm token. The previous standalone `Publish NPM` workflow remains disabled. The generated manual `sdk-release.yml` fallback needs its own trusted publisher before use.
 
-Before a public release, review production defaults/schema parity, migration guidance, broader authenticated consumer testing and the intended version. Then separately approve npm publishing and configure Scalar's supported publishing settings. Do not merge a release PR merely to test generation. Do not enable an old publishing workflow or add a parallel publishing pipeline.
+Before merging a release PR, review production defaults/schema parity, migration guidance, consumer tests and the intended version. Merging authorizes publication; do not merge merely to test generation. A package dry run does not verify OIDC authentication: the first successful release provides that end-to-end verification. Do not enable an old publishing workflow or add a parallel publishing pipeline.
