@@ -17,7 +17,6 @@ const document = {
 function mockClient(response = { data: [], nextCursor: null }, status = 200, options = {}) {
   const requests = [];
   const client = new Tembo({
-    baseURL: config.environments.development,
     apiKey: 'test-key',
     maxRetries: 0,
     ...options,
@@ -83,10 +82,11 @@ test('ESM and CommonJS entry points load with generated version metadata', async
   assert.match(VERSION, /^\d+\.\d+\.\d+/);
 });
 
-test('dev URL, bearer authentication and pagination query are serialized', async () => {
+test('production default URL, bearer authentication and pagination query are serialized', async () => {
   const { client, requests } = mockClient();
   await client.models.list({ limit: '2' });
-  assert.equal(requests[0].url, `${config.environments.development}/v1/models?limit=2`);
+  assert.equal(config.environments.production, 'https://api.tembo.io');
+  assert.equal(requests[0].url, 'https://api.tembo.io/v1/models?limit=2');
   assert.equal(requests[0].headers.get('authorization'), 'Bearer test-key');
   assert.equal(requests[0].method, 'GET');
 });

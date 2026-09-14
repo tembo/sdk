@@ -29,13 +29,13 @@ For an authenticated, read-only dev check, export a dev `TEMBO_API_KEY` and run 
 
 ## Update the schema and regenerate
 
-1. Run `npm run schema:fetch`. Review `openapi/openapi.json`, the source snapshot from the public dev schema endpoint. `TEMBO_OPENAPI_URL` can override the source explicitly.
+1. Run `npm run schema:fetch`. Review `openapi/openapi.json`, the source snapshot from `https://api.tembo.io/public-api/openapi/public`. `TEMBO_OPENAPI_URL` can override the source explicitly.
 2. Run `npm run schema:prepare`. This creates ignored `openapi/scalar.openapi.json` for Scalar. Validate it with `npx --yes --package=@scalar/cli@2.1.0 scalar document validate openapi/scalar.openapi.json`.
 3. Upload the prepared document to the linked registry API `tembo/tembo-eight-pr-verification` as a new version. For test versions, use `--no-current` to avoid changing its current API version. Apply the reviewed `scalar.config.json` and API version to SDK `tembo/tembo-v1-sdk-test` in Scalar. The local config is not automatically uploaded when committed.
 4. Build that draft version in Scalar, or run `npx --yes --package=@scalar/cli@2.1.0 scalar sdk build --namespace tembo --slug tembo-v1-sdk-test --version <draft-version>`. The CLI starts the build; wait for its completion and repository sync.
 5. Scalar updates `scalar-generated`, integrates into `scalar-next`, and refreshes the release PR against `main`. Add schema snapshot/config/test changes to `scalar-next` and review the combined code, diagnostics and checks in that one release PR. A separate custom-code PR is optional, not a required step.
 
-The connected build uses the reviewed prepared API version `1.0.2-devverify.20260911`; SDK build `0.2.1` uses generator `0.32.9`. These are generation identifiers, not a requested npm release version. The remote SDK currently defaults to development and does not automatically track every deployment.
+The production schema is uploaded as a reviewed snapshot, not automatically synchronized with every deployment. The SDK defaults to `https://api.tembo.io`; the optional dev smoke test overrides that default explicitly. Generation versions are independent of npm release versions. npm publishing remains disabled.
 
 ## Why schema preparation exists
 

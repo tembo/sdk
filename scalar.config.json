@@ -535,9 +535,9 @@
     }
   },
   "environments": {
-    "development": "https://internal.tembo-development.com/public-api"
+    "production": "https://api.tembo.io"
   },
-  "environmentOrder": ["development"],
+  "environmentOrder": ["production"],
   "clientSettings": {
     "opts": {
       "apiKey": {

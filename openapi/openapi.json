@@ -5378,7 +5378,7 @@
                     },
                     "createdAt": {
                       "type": "string",
-                      "default": "2026-09-11T19:24:55.398Z"
+                      "default": "2026-09-14T13:07:00.414Z"
                     },
                     "updatedAt": {
                       "type": "string"
@@ -5459,7 +5459,7 @@
                         "string",
                         "null"
                       ],
-                      "default": "2026-09-11T19:24:55.398Z"
+                      "default": "2026-09-14T13:07:00.414Z"
                     },
                     "artifactType": {
                       "type": [
