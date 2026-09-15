@@ -146,3 +146,14 @@ test('publishing uses the Scalar release workflow and trusted publishing', () =>
   assert.match(workflow, /npm install -g npm@11/);
   assert.doesNotMatch(workflow, /secrets\.NPM_TOKEN/);
 });
+
+test('docs notification uses the published run commit, not npm latest', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/notify-docs.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /github\.event\.workflow_run\.head_sha/);
+  assert.match(workflow, /contents\/package\.json\?ref=\$RELEASE_SHA/);
+  assert.match(workflow, /releases\/tags\/v\$VERSION/);
+  assert.match(workflow, /\.draft == false and \.prerelease == false/);
+  assert.match(workflow, /REQUESTED_VERSION: \$\{\{ inputs\.version \}\}/);
+  assert.match(workflow, /select\(\.name == "publish" and \.conclusion == "success"\)/);
+  assert.doesNotMatch(workflow, /npm view|dist-tags\.latest|actions\/checkout/);
+});
