@@ -1,12 +1,20 @@
 name: Release Please
 
 on:
-  # Fires when a human merges the platform-managed release PR into main
-  # (the PR's base, so its diff shows the full pending release). Regenerations and
-  # custom-code pushes only touch scalar-next and never run this workflow.
+  # A release is cut when a human merges the platform-managed release PR into
+  # main (the PR's base, so its diff shows the full pending release).
+  # Every other push here runs release-please as well — commits written straight to
+  # this branch included — and cuts nothing, there being no release commit at the tip.
   push:
     branches:
       - main
+    # The Scalar platform pushes these workflow files straight to main to keep them
+    # current between releases; that is bookkeeping, never a release. Running anyway is worse
+    # than pointless on a branch that has not been handed a .release-please-manifest.json yet —
+    # release-please fails the run outright when it cannot read one. A release commit always
+    # rewrites the manifest and the changelog, so this filter can never swallow one.
+    paths-ignore:
+      - '.github/workflows/**'
   # Manual fallback only; nothing in the automated chain depends on dispatch.
   workflow_dispatch:
 
