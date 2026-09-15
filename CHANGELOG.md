@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.1](https://github.com/tembo/sdk/compare/v0.4.0...v0.4.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* **ci:** notify docs with the exact released SDK version ([6b852c3](https://github.com/tembo/sdk/commit/6b852c339615f48ad2fcd4bf68a6cbad8b7de59b))
+* **ci:** notify docs with the exact released SDK version ([edcd2e8](https://github.com/tembo/sdk/commit/edcd2e8b41659e15b9ad7c30ff3c52ce699d00d2))
+
 ## [0.4.0](https://github.com/tembo/sdk/compare/v0.3.1...v0.4.0) (2026-09-15)
 
 
