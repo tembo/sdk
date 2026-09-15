@@ -209,6 +209,7 @@ export interface SessionEventData {
    * @maxLength 1000
    */
   toolName?: string;
+  toolResult?: SessionEventData.ToolResult;
   snapshotId?: string;
   snapshotCreatedAt?: string;
 }
@@ -243,6 +244,13 @@ export namespace SessionEventData {
      * @maxLength 1000
      */
     messageId?: string;
+  }
+
+  export interface ToolResult {
+    status: 'running' | 'completed' | 'error';
+    output?: string;
+    exitCode?: number;
+    error?: string;
   }
 }
 
