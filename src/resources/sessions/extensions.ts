@@ -54,6 +54,29 @@ export type SessionComputer = {
   viewerUrl: string | null;
   error?: string;
 };
+export type SessionRecording = {
+  id: string;
+  sessionId: string;
+  status: 'recording' | 'processing' | 'ready' | 'submitted' | 'failed';
+  startedAt: string;
+  stoppedAt: string | null;
+  durationSeconds: number;
+  error: string | null;
+  messageId: string | null;
+};
+export type SessionRecordingList = {
+  items: Array<{
+    id: string;
+    sessionId: string;
+    status: 'recording' | 'processing' | 'ready' | 'submitted' | 'failed';
+    startedAt: string;
+    stoppedAt: string | null;
+    durationSeconds: number;
+    error: string | null;
+    messageId: string | null;
+  }>;
+};
+export type SessionRecordingInput = { id: string };
 export class Automations extends APIResource {
   list(sessionId: string, options?: RequestOptions): APIPromise<SessionAutomationList> {
     return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/automations`, { ...options });
@@ -108,7 +131,29 @@ export class Automations extends APIResource {
     );
   }
 }
+export class Recordings extends APIResource {
+  list(sessionId: string, options?: RequestOptions): APIPromise<SessionRecordingList> {
+    return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/computer/recordings`, options);
+  }
+  start(
+    sessionId: string,
+    body: SessionRecordingInput,
+    options?: RequestOptions,
+  ): APIPromise<SessionRecording> {
+    return this._client.post(`/v1/sessions/${encodeURIComponent(sessionId)}/computer/recordings`, {
+      body,
+      ...options,
+    });
+  }
+  stop(sessionId: string, recordingId: string, options?: RequestOptions): APIPromise<SessionRecording> {
+    return this._client.post(
+      `/v1/sessions/${encodeURIComponent(sessionId)}/computer/recordings/${encodeURIComponent(recordingId)}/stop`,
+      options,
+    );
+  }
+}
 export class Computer extends APIResource {
+  recordings: Recordings = new Recordings(this._client);
   retrieve(sessionId: string, options?: RequestOptions): APIPromise<SessionComputer> {
     return this._client.get(`/v1/sessions/${encodeURIComponent(sessionId)}/computer`, options);
   }

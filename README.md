@@ -161,3 +161,5 @@ The local session API additions and regeneration workflow are documented in [SES
 - Node.js 20+, a modern browser, or any runtime with `fetch` support
 
 Powered by Scalar.
+
+The session prerelease also includes `client.sessions.computer.recordings.list(sessionId)`, `.start(sessionId, { id })` and `.stop(sessionId, recordingId)`. Reuse a client-generated recording UUID when retrying Start. Stop finalizes the VM capture and queues its demonstration-learning turn. Enable the deployment's recording readiness flag only after the API, manager, worker, scheduler and guest runtime are deployed.

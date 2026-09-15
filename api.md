@@ -1888,3 +1888,13 @@ const billing = await client.billing.listUsage({
   limit: '50',
 });
 ```
+
+## Session desktop recordings
+
+```ts
+const recording = await client.sessions.computer.recordings.start(sessionId, { id: crypto.randomUUID() });
+const recordings = await client.sessions.computer.recordings.list(sessionId);
+await client.sessions.computer.recordings.stop(sessionId, recording.id);
+```
+
+Start captures the remote session desktop. Keep the returned/client-generated ID for retries. Stop may return `processing` while the video finalizes; poll the list until `submitted` or `failed`. Submitted demonstrations learn in the existing session queue. The API does not return the recording itself.

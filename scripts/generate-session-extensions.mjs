@@ -39,6 +39,9 @@ for (const [name, path, method, kind] of [
   ['SessionAutomationDeleteInput', `${base}/automations/{automationId}`, 'delete', 'body'],
   ['SessionAutomationRunInput', `${base}/automations/{automationId}/run`, 'post', 'body'],
   ['SessionComputer', `${base}/computer`, 'get'],
+  ['SessionRecording', `${base}/computer/recordings`, 'post'],
+  ['SessionRecordingList', `${base}/computer/recordings`, 'get'],
+  ['SessionRecordingInput', `${base}/computer/recordings`, 'post', 'body'],
 ])
   output += `export type ${name} = ${type(schema(path, method, kind))};\n`;
 output += `export class Automations extends APIResource {\n`;
@@ -57,7 +60,11 @@ for (const [method, verb, suffix, result, body] of [
     .replace('{automationId}', '${encodeURIComponent(automationId)}');
   output += `  ${method}(sessionId:string,${suffix ? 'automationId:string,' : ''}${body ? `body:${body},` : ''}options?:RequestOptions):APIPromise<${result}> { return this._client.${verb}(\`${template}\`,{${body ? 'body,' : ''}...options}); }\n`;
 }
-output += `}\nexport class Computer extends APIResource {\n`;
+output += `}\nexport class Recordings extends APIResource {
+ list(sessionId:string,options?:RequestOptions):APIPromise<SessionRecordingList> {return this._client.get(\`/v1/sessions/\${encodeURIComponent(sessionId)}/computer/recordings\`,options);}
+ start(sessionId:string,body:SessionRecordingInput,options?:RequestOptions):APIPromise<SessionRecording> {return this._client.post(\`/v1/sessions/\${encodeURIComponent(sessionId)}/computer/recordings\`,{body,...options});}
+ stop(sessionId:string,recordingId:string,options?:RequestOptions):APIPromise<SessionRecording> {return this._client.post(\`/v1/sessions/\${encodeURIComponent(sessionId)}/computer/recordings/\${encodeURIComponent(recordingId)}/stop\`,options);}
+}\nexport class Computer extends APIResource {\n recordings: Recordings = new Recordings(this._client);\n`;
 for (const [method, verb, suffix] of [
   ['retrieve', 'get', ''],
   ['start', 'post', '/start'],
@@ -163,6 +170,24 @@ for (const [resource, entries] of Object.entries({
         publicOperation: method,
       });
   }
+}
+config.resources.sessions.subresources.computer.subresources = { recordings: { methods: {} } };
+for (const [method, verb, suffix] of [
+  ['list', 'get', ''],
+  ['start', 'post', ''],
+  ['stop', 'post', '/{recordingId}/stop'],
+]) {
+  const path = `${base}/computer/recordings${suffix}`;
+  if (!spec.paths[path]?.[verb]) throw new Error(`Missing recording operation ${method}`);
+  config.resources.sessions.subresources.computer.subresources.recordings.methods[method] = `${verb} ${path}`;
+  if (!manifest.operations.some((o) => o.path === path && o.method === verb.toUpperCase()))
+    manifest.operations.push({
+      method: verb.toUpperCase(),
+      path,
+      operationId: spec.paths[path][verb].operationId,
+      publicResource: 'sessions.computer.recordings',
+      publicOperation: method,
+    });
 }
 config.resources.sessions.methods.streamEvents = `get ${base}/events/stream`;
 if (!manifest.operations.some((o) => o.path === `${base}/events/stream`))

@@ -77,3 +77,33 @@ test('session extensions preserve authenticated paths, bodies and resume headers
   assert.equal(requests[5].method, 'DELETE');
   assert.deepEqual(JSON.parse(requests[5].body), { requestId: 'stable-delete', expectedRevision: 2 });
 });
+
+test('recordings target the session computer with stable IDs and authenticated requests', async () => {
+  const requests = [];
+  const client = new Tembo({
+    apiKey: 'test',
+    maxRetries: 0,
+    fetch: async (url, init) => {
+      const request = new Request(url, init);
+      requests.push({
+        url: request.url,
+        method: request.method,
+        authorization: request.headers.get('authorization'),
+        body: await request.text(),
+      });
+      return Response.json({ items: [] });
+    },
+  });
+  await client.sessions.computer.recordings.start('session/one', { id: 'stable-recording' });
+  await client.sessions.computer.recordings.list('session/one');
+  await client.sessions.computer.recordings.stop('session/one', 'recording/one');
+  assert.equal(requests[0].url, 'https://api.tembo.io/v1/sessions/session%2Fone/computer/recordings');
+  assert.deepEqual(JSON.parse(requests[0].body), { id: 'stable-recording' });
+  assert.equal(requests[1].method, 'GET');
+  assert.equal(requests[2].method, 'POST');
+  assert.equal(
+    requests[2].url,
+    'https://api.tembo.io/v1/sessions/session%2Fone/computer/recordings/recording%2Fone/stop',
+  );
+  assert.ok(requests.every((request) => request.authorization === 'Bearer test'));
+});

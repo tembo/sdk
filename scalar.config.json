@@ -287,6 +287,15 @@
             "retrieve": "get /v1/sessions/{sessionId}/computer",
             "start": "post /v1/sessions/{sessionId}/computer/start",
             "reconnect": "post /v1/sessions/{sessionId}/computer/reconnect"
+          },
+          "subresources": {
+            "recordings": {
+              "methods": {
+                "list": "get /v1/sessions/{sessionId}/computer/recordings",
+                "start": "post /v1/sessions/{sessionId}/computer/recordings",
+                "stop": "post /v1/sessions/{sessionId}/computer/recordings/{recordingId}/stop"
+              }
+            }
           }
         },
         "automations": {

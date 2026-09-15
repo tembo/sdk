@@ -22770,6 +22770,27 @@
       "operationId": "runSessionAutomation",
       "publicResource": "sessions.automations",
       "publicOperation": "run"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/computer/recordings",
+      "operationId": "listSessionRecordings",
+      "publicResource": "sessions.computer.recordings",
+      "publicOperation": "list"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/computer/recordings",
+      "operationId": "startSessionRecording",
+      "publicResource": "sessions.computer.recordings",
+      "publicOperation": "start"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/computer/recordings/{recordingId}/stop",
+      "operationId": "stopSessionRecording",
+      "publicResource": "sessions.computer.recordings",
+      "publicOperation": "stop"
     }
   ],
   "webhooks": []
