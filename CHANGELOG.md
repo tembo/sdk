@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.4.0](https://github.com/tembo/sdk/compare/v0.3.1...v0.4.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** update schema trigger_filters (+3 more changes) ([45adef7](https://github.com/tembo/sdk/commit/45adef7cddb05f36177e4968a8b0b74fe2f489f7))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([bf8cdbb](https://github.com/tembo/sdk/commit/bf8cdbb815afe64ff53607d5d804bdcf700eb85b))
+* **api:** sync production OpenAPI snapshot ([6701a02](https://github.com/tembo/sdk/commit/6701a0272a892dfa676363e0615beb40eaa680ff))
+* release 0.3.2 ([a35ba72](https://github.com/tembo/sdk/commit/a35ba7287b532854184ba60b64f6d53b59945dbc))
+* release 0.4.0 ([e8f4490](https://github.com/tembo/sdk/commit/e8f44900a4b86e54fba06f6a2f515774c1be9782))
+
 ## [0.3.1](https://github.com/tembo/sdk/compare/v0.3.0...v0.3.1) (2026-09-14)
 
 
