@@ -142,7 +142,9 @@ Generated clients support request timeouts and retry temporary failures such as 
 ## Helpers
 
 - Use `.withResponse()` on any request to inspect both parsed data and the raw `Response` object.
-- Every operation returns an `APIPromise`, so you can `await` it directly or chain `.withResponse()`.
+- JSON operations return an `APIPromise`, so you can `await` them directly or chain `.withResponse()`. The local `sessions.streamEvents` extension returns a raw `Promise<Response>` for reading SSE.
+
+The local session API additions and regeneration workflow are documented in [SESSION_EXTENSIONS.md](./SESSION_EXTENSIONS.md).
 
 <br />
 
@@ -159,3 +161,5 @@ Generated clients support request timeouts and retry temporary failures such as 
 - Node.js 20+, a modern browser, or any runtime with `fetch` support
 
 Powered by Scalar.
+
+The session prerelease also includes `client.sessions.computer.recordings.list(sessionId)`, `.start(sessionId, { id })` and `.stop(sessionId, recordingId)`. Reuse a client-generated recording UUID when retrying Start. Stop finalizes the VM capture and queues its demonstration-learning turn. Enable the deployment's recording readiness flag only after the API, manager, worker, scheduler and guest runtime are deployed.
