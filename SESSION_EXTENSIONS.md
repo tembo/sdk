@@ -1,6 +1,6 @@
 # Session files and computer APIs
 
-These additive methods require the reviewed session-files backend deployment. `0.3.2-session.1` is a local prerelease, not an npm publication. Tembo Bot keeps one Bot per Session and waits for OpenAPI `x-tembo-session-files-ready: true` before using memory/routines.
+These additive methods require the reviewed session-files backend deployment. `0.3.2-session.2` is a local prerelease, not an npm publication. Tembo Bot keeps one Bot per Session and waits for OpenAPI `x-tembo-session-files-ready: true` before using memory/routines.
 
 ```ts
 import Tembo from '@tembo-io/sdk';
@@ -42,3 +42,9 @@ Computer exposes `retrieve`, `start` (including resume), and `reconnect`. Missin
 1. From the backend root, run `bun apps/api/scripts/exportSessionApi.ts ../bot-sdk/openapi/session-extensions.json`.
 2. Run `npm run generate:sessions` and `npm test` here. The deterministic generator updates session/message contracts, child resources, SSE, merged OpenAPI, Scalar config, and operation manifest from actual Hono routes.
 3. Build/pack using the existing SDK scripts. The base SDK remains Scalar-generated. Deploy platform dependencies before enabling app integration.
+
+## Desktop demonstrations
+
+The generated `sessions.computer.recordings` resource provides `list(sessionId)`, `start(sessionId, { id })`, and `stop(sessionId, recordingId)`. Keep the Start UUID for retries. Stop finalizes the recording in the VM and queues one learning turn in the same Session; poll the list when it returns `processing`.
+
+The Mac app owns the toolbar and viewer. The guest owns ffmpeg, the finalized capture and the managed learning skill. Deploy the recording API, manager, scheduler, worker and guest image before enabling `TEMBO_SESSION_TEACHING_ENABLED`, advertised as `x-tembo-session-teaching-ready` in OpenAPI.
