@@ -1,7 +1,7 @@
 {
   "name": "TemboPublicApi",
   "slug": "temboPublicApi",
-  "generatorVersion": "0.32.13",
+  "generatorVersion": "0.32.14",
   "servers": [
     "https://api.tembo.io/"
   ],

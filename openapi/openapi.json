@@ -5435,7 +5435,7 @@
                     },
                     "createdAt": {
                       "type": "string",
-                      "default": "2026-09-15T13:11:58.670Z"
+                      "default": "2026-09-16T00:12:01.319Z"
                     },
                     "updatedAt": {
                       "type": "string"
@@ -5516,7 +5516,7 @@
                         "string",
                         "null"
                       ],
-                      "default": "2026-09-15T13:11:58.670Z"
+                      "default": "2026-09-16T00:12:01.319Z"
                     },
                     "artifactType": {
                       "type": [
@@ -21309,7 +21309,19 @@
                 "required": [
                   "description"
                 ],
-                "additionalProperties": false
+                "additionalProperties": false,
+                "example": {
+                  "description": "Fix the authentication bug in the login component",
+                  "projectId": "your-project-id",
+                  "agent": "claudeCode:claude-fable-5-1",
+                  "codeRepositoryIds": [
+                    "123e4567-e89b-12d3-a456-426614174000"
+                  ],
+                  "baseBranch": "main",
+                  "targetBranch": "main",
+                  "visibility": "private",
+                  "mcpServers": []
+                }
               }
             }
           }

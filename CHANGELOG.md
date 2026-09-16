@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.2](https://github.com/tembo/sdk/compare/v0.4.1...v0.4.2) (2026-09-16)
+
+
+### Chores
+
+* **api:** regenerate SDK ([55a51f4](https://github.com/tembo/sdk/commit/55a51f48224c466de10bd235a64bcd41db03e21e))
+* **api:** sync production OpenAPI snapshot ([cfd1e6e](https://github.com/tembo/sdk/commit/cfd1e6ed23bfc7c86a0d32b05b9b653783ca1527))
+
 ## [0.4.1](https://github.com/tembo/sdk/compare/v0.4.0...v0.4.1) (2026-09-15)
 
 
