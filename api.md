@@ -976,8 +976,14 @@ Create a session for a task. Provide the initial prompt in description and optio
 
 ```ts
 const session = await client.sessions.create({
+  description: 'Fix the authentication bug in the login component',
+  projectId: 'your-project-id',
+  agent: 'claudeCode:claude-fable-5-1',
+  codeRepositoryIds: ['123e4567-e89b-12d3-a456-426614174000'],
+  baseBranch: 'main',
+  targetBranch: 'main',
+  visibility: 'private',
   mcpServers: [],
-  description: 'x',
 });
 ```
 
