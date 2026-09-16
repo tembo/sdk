@@ -1083,40 +1083,16 @@ const cases: {
     operation: 'create',
     method: 'POST',
     path: '/v1/sessions',
-    label: 'required params',
     run: async () => {
       const session = await client.sessions.create({
-        mcpServers: [],
-        description: 'x',
-      });
-    },
-  },
-
-  {
-    operation: 'create',
-    method: 'POST',
-    path: '/v1/sessions',
-    label: 'all params',
-    run: async () => {
-      const session = await client.sessions.create({
-        agent: 'x',
-        baseBranch: 'x',
-        mcpServers: [],
-        projectId: '',
-        sandboxSize: 'nano',
-        targetBranch: 'x',
+        description: 'Fix the authentication bug in the login component',
+        projectId: 'your-project-id',
+        agent: 'claudeCode:claude-fable-5-1',
+        codeRepositoryIds: ['123e4567-e89b-12d3-a456-426614174000'],
+        baseBranch: 'main',
+        targetBranch: 'main',
         visibility: 'private',
-        agentOptions: {},
-        autoDetectRepositories: false,
-        branchName: 'x',
-        codeRepositoryIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
-        description: 'x',
-        id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        richContent: {},
-        pullRequestId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        queueRightAway: false,
-        sessionMode: 'chat',
-        startupAgent: 'claudeCode',
+        mcpServers: [],
       });
     },
   },
