@@ -81,7 +81,7 @@ export class Snapshots extends APIResource {
   }
 
   /**
-   * Archive a project snapshot.
+   * Delete a project snapshot.
    *
    * @param {string} snapshotID
    * @param {SnapshotDeleteParams} params - The parameters to send with the request.

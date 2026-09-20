@@ -89,7 +89,7 @@ export class McpConnections extends APIResource {
   }
 
   /**
-   * Delete an MCP connection from the current organization.
+   * Delete an MCP connection in the current organization.
    *
    * @param {string} mcpConnectionID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.

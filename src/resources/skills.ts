@@ -91,7 +91,7 @@ export class Skills extends APIResource {
   }
 
   /**
-   * Delete an organization skill and all of its files.
+   * Delete an organization skill.
    *
    * @param {string} skillID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.

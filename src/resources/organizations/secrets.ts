@@ -105,7 +105,7 @@ export class Secrets extends APIResource {
   }
 
   /**
-   * Permanently delete an organization secret.
+   * Delete an organization secret.
    *
    * @param {string} secretID
    * @param {SecretDeleteParams} params - The parameters to send with the request.
