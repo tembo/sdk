@@ -159,7 +159,7 @@ export class Projects extends APIResource {
   }
 
   /**
-   * Archive a project and disable its schedule.
+   * Delete a project and disable its schedule.
    *
    * @param {string} projectID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
