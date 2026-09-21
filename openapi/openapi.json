@@ -5435,7 +5435,7 @@
                     },
                     "createdAt": {
                       "type": "string",
-                      "default": "2026-09-16T00:12:01.319Z"
+                      "default": "2026-09-20T17:02:55.895Z"
                     },
                     "updatedAt": {
                       "type": "string"
@@ -5516,7 +5516,7 @@
                         "string",
                         "null"
                       ],
-                      "default": "2026-09-16T00:12:01.319Z"
+                      "default": "2026-09-20T17:02:55.896Z"
                     },
                     "artifactType": {
                       "type": [
@@ -5904,6 +5904,13 @@
                             "type": "string",
                             "format": "uuid"
                           },
+                          "lastUsedAt": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "date-time"
+                          },
                           "name": {
                             "type": [
                               "string",
@@ -5927,6 +5934,7 @@
                         "required": [
                           "createdAt",
                           "id",
+                          "lastUsedAt",
                           "name",
                           "updatedAt",
                           "userId",
@@ -6057,6 +6065,13 @@
                       "type": "string",
                       "format": "uuid"
                     },
+                    "lastUsedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
                     "name": {
                       "type": [
                         "string",
@@ -6083,6 +6098,7 @@
                   "required": [
                     "createdAt",
                     "id",
+                    "lastUsedAt",
                     "name",
                     "updatedAt",
                     "userId",
@@ -6201,6 +6217,13 @@
                       "type": "string",
                       "format": "uuid"
                     },
+                    "lastUsedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
                     "name": {
                       "type": [
                         "string",
@@ -6224,6 +6247,7 @@
                   "required": [
                     "createdAt",
                     "id",
+                    "lastUsedAt",
                     "name",
                     "updatedAt",
                     "userId",
@@ -6332,6 +6356,13 @@
                       "type": "string",
                       "format": "uuid"
                     },
+                    "lastUsedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
                     "name": {
                       "type": [
                         "string",
@@ -6355,6 +6386,7 @@
                   "required": [
                     "createdAt",
                     "id",
+                    "lastUsedAt",
                     "name",
                     "updatedAt",
                     "userId",
@@ -7297,7 +7329,7 @@
       "delete": {
         "operationId": "deleteSkill",
         "summary": "Delete a skill",
-        "description": "Delete an organization skill and all of its files.",
+        "description": "Delete an organization skill.",
         "tags": [
           "Skills"
         ],
@@ -8874,7 +8906,7 @@
       "delete": {
         "operationId": "deleteOrganization",
         "summary": "Delete an organization",
-        "description": "Permanently delete an organization and its related data.",
+        "description": "Delete the organization from the identity provider and Tembo.",
         "tags": [
           "Organizations"
         ],
@@ -10056,7 +10088,7 @@
       },
       "delete": {
         "operationId": "deleteOrganizationMember",
-        "summary": "Delete an organization member",
+        "summary": "Remove an organization member",
         "description": "Remove an active member or revoke a pending invitation.",
         "tags": [
           "Organizations"
@@ -10068,7 +10100,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete an organization member",
+            "description": "Remove an organization member",
             "content": {
               "application/json": {
                 "schema": {
@@ -11057,7 +11089,7 @@
       "delete": {
         "operationId": "deleteOrganizationSecret",
         "summary": "Delete an organization secret",
-        "description": "Permanently delete an organization secret.",
+        "description": "Delete an organization secret.",
         "tags": [
           "Organizations"
         ],
@@ -13293,7 +13325,7 @@
       "delete": {
         "operationId": "deleteMcpConnection",
         "summary": "Delete an MCP connection",
-        "description": "Delete an MCP connection from the current organization.",
+        "description": "Delete an MCP connection in the current organization.",
         "tags": [
           "MCP Connections"
         ],
@@ -26536,7 +26568,7 @@
       "delete": {
         "operationId": "deleteProject",
         "summary": "Delete a project",
-        "description": "Archive a project and disable its schedule.",
+        "description": "Delete a project and disable its schedule.",
         "tags": [
           "Projects"
         ],
@@ -28230,7 +28262,7 @@
       "delete": {
         "operationId": "deleteProjectSnapshot",
         "summary": "Delete a project snapshot",
-        "description": "Archive a project snapshot.",
+        "description": "Delete a project snapshot.",
         "tags": [
           "Projects"
         ],
@@ -34333,7 +34365,7 @@
       "delete": {
         "operationId": "deleteAgent",
         "summary": "Delete an agent",
-        "description": "Delete an agent and its scheduled and triggered jobs.",
+        "description": "Delete an agent and disable its scheduled and triggered jobs.",
         "tags": [
           "Agents"
         ],
