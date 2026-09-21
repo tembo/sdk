@@ -101,7 +101,7 @@ export class Organizations extends APIResource {
   }
 
   /**
-   * Permanently delete an organization and its related data.
+   * Delete the organization from the identity provider and Tembo.
    *
    * @param {string} organizationID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.

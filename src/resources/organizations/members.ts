@@ -112,7 +112,7 @@ export class Members extends APIResource {
    * @param {string} memberID
    * @param {MemberDeleteParams} params - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<MemberDeleteResponse>} Delete an organization member
+   * @returns {APIPromise<MemberDeleteResponse>} Remove an organization member
    *
    * @example
    * ```ts

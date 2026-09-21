@@ -128,6 +128,10 @@ export namespace APIKeyListResponse {
      * @format uuid
      */
     id: string;
+    /**
+     * @format date-time
+     */
+    lastUsedAt: string | null;
     name: string | null;
     /**
      * @format date-time
@@ -155,6 +159,10 @@ export interface APIKeyCreateResponse {
    * @format uuid
    */
   id: string;
+  /**
+   * @format date-time
+   */
+  lastUsedAt: string | null;
   name: string | null;
   /**
    * @format date-time
@@ -174,6 +182,10 @@ export interface APIKeyRetrieveResponse {
    * @format uuid
    */
   id: string;
+  /**
+   * @format date-time
+   */
+  lastUsedAt: string | null;
   name: string | null;
   /**
    * @format date-time
@@ -200,6 +212,10 @@ export interface APIKeyUpdateResponse {
    * @format uuid
    */
   id: string;
+  /**
+   * @format date-time
+   */
+  lastUsedAt: string | null;
   name: string | null;
   /**
    * @format date-time

@@ -1,5 +1,48 @@
 # Changelog
 
+## [0.4.3](https://github.com/tembo/sdk/compare/v0.4.2...v0.4.3) (2026-09-20)
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([2035971](https://github.com/tembo/sdk/commit/2035971dad00043c607d2091ef4f85ea0555146f))
+* **api:** update generated SDK content ([226b0a1](https://github.com/tembo/sdk/commit/226b0a1cab92f09d9419da318bccf94e770051b4))
+
+## [0.4.2](https://github.com/tembo/sdk/compare/v0.4.1...v0.4.2) (2026-09-16)
+
+
+### Chores
+
+* **api:** regenerate SDK ([55a51f4](https://github.com/tembo/sdk/commit/55a51f48224c466de10bd235a64bcd41db03e21e))
+* **api:** sync production OpenAPI snapshot ([cfd1e6e](https://github.com/tembo/sdk/commit/cfd1e6ed23bfc7c86a0d32b05b9b653783ca1527))
+
+## [0.4.1](https://github.com/tembo/sdk/compare/v0.4.0...v0.4.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* **ci:** notify docs with the exact released SDK version ([6b852c3](https://github.com/tembo/sdk/commit/6b852c339615f48ad2fcd4bf68a6cbad8b7de59b))
+* **ci:** notify docs with the exact released SDK version ([edcd2e8](https://github.com/tembo/sdk/commit/edcd2e8b41659e15b9ad7c30ff3c52ce699d00d2))
+
+## [0.4.0](https://github.com/tembo/sdk/compare/v0.3.1...v0.4.0) (2026-09-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** update schema trigger_filters (+3 more changes) ([45adef7](https://github.com/tembo/sdk/commit/45adef7cddb05f36177e4968a8b0b74fe2f489f7))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([bf8cdbb](https://github.com/tembo/sdk/commit/bf8cdbb815afe64ff53607d5d804bdcf700eb85b))
+* **api:** sync production OpenAPI snapshot ([6701a02](https://github.com/tembo/sdk/commit/6701a0272a892dfa676363e0615beb40eaa680ff))
+* release 0.3.2 ([a35ba72](https://github.com/tembo/sdk/commit/a35ba7287b532854184ba60b64f6d53b59945dbc))
+* release 0.4.0 ([e8f4490](https://github.com/tembo/sdk/commit/e8f44900a4b86e54fba06f6a2f515774c1be9782))
+
 ## [0.3.1](https://github.com/tembo/sdk/compare/v0.3.0...v0.3.1) (2026-09-14)
 
 

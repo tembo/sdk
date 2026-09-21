@@ -168,7 +168,7 @@ export class Agents extends APIResource {
   }
 
   /**
-   * Delete an agent and its scheduled and triggered jobs.
+   * Delete an agent and disable its scheduled and triggered jobs.
    *
    * @param {string} agentID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.

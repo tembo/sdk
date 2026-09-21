@@ -1,6 +1,6 @@
 # Session files and computer APIs
 
-These additive methods require the reviewed session-files backend deployment. `0.3.2-session.2` is a local prerelease, not an npm publication. Tembo Bot keeps one Bot per Session and waits for OpenAPI `x-tembo-session-files-ready: true` before using memory/routines.
+These additive methods require the reviewed session-files backend deployment. `0.4.4-session.1` is a local prerelease, not an npm publication. Tembo Bot keeps one Bot per Session and waits for OpenAPI `x-tembo-session-files-ready: true` before using memory/routines.
 
 ```ts
 import Tembo from '@tembo-io/sdk';

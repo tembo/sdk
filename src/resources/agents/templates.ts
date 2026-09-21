@@ -814,6 +814,10 @@ export interface SlackMessageSentInChannelFilters {
    * Only trigger if the message contains one of these substrings
    */
   messageContains?: Array<string>;
+  /**
+   * Skip messages containing any of these case-sensitive substrings (for example, On-call handover:)
+   */
+  messageNotContains?: Array<string>;
 }
 
 export type EmptyTriggerFilters = Record<string, unknown>;

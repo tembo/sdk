@@ -1,7 +1,7 @@
 {
   "name": "TemboPublicApi",
   "slug": "temboPublicApi",
-  "generatorVersion": "0.32.9",
+  "generatorVersion": "0.32.14",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -1409,6 +1409,72 @@
               "validation": {
                 "maxLength": 1000
               }
+            }
+          },
+          {
+            "name": "toolResult",
+            "publicName": "toolResult",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "object",
+              "properties": [
+                {
+                  "name": "status",
+                  "publicName": "status",
+                  "required": true,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "enum",
+                    "values": [
+                      "running",
+                      "completed",
+                      "error"
+                    ],
+                    "names": [
+                      "Running",
+                      "Completed",
+                      "Error"
+                    ],
+                    "deprecations": [
+                      false,
+                      false,
+                      false
+                    ]
+                  }
+                },
+                {
+                  "name": "output",
+                  "publicName": "output",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                },
+                {
+                  "name": "exitCode",
+                  "publicName": "exitCode",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "primitive",
+                    "type": "number"
+                  }
+                },
+                {
+                  "name": "error",
+                  "publicName": "error",
+                  "required": false,
+                  "deprecated": false,
+                  "type": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              ],
+              "additionalProperties": false
             }
           },
           {
@@ -3207,6 +3273,19 @@
               {
                 "name": "messageContains",
                 "publicName": "messageContains",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "name": "messageNotContains",
+                "publicName": "messageNotContains",
                 "required": false,
                 "deprecated": false,
                 "type": {
@@ -5487,6 +5566,19 @@
           {
             "name": "messageContains",
             "publicName": "messageContains",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "messageNotContains",
+            "publicName": "messageNotContains",
             "required": false,
             "deprecated": false,
             "type": {

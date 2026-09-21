@@ -31,7 +31,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Create an organization member](#create-an-organization-member)
     - [Retrieve an organization member](#retrieve-an-organization-member)
     - [Update an organization member](#update-an-organization-member)
-    - [Delete an organization member](#delete-an-organization-member)
+    - [Remove an organization member](#remove-an-organization-member)
   - [`Organizations Secrets`](#organizations-secrets)
     - [List organization secrets](#list-organization-secrets)
     - [Create an organization secret](#create-an-organization-secret)
@@ -298,7 +298,7 @@ const skill = await client.skills.update('7c9e6679-7425-40de-944b-e07fc1f90ae7',
 
 ### Delete a skill
 
-Delete an organization skill and all of its files.
+Delete an organization skill.
 
 | Direction | Type |
 | --- | --- |
@@ -411,7 +411,7 @@ const organization = await client.organizations.update('organizationId', {});
 
 ### Delete an organization
 
-Permanently delete an organization and its related data.
+Delete the organization from the identity provider and Tembo.
 
 | Direction | Type |
 | --- | --- |
@@ -486,7 +486,7 @@ const member = await client.organizations.members.update('memberId', {
 });
 ```
 
-#### Delete an organization member
+#### Remove an organization member
 
 Remove an active member or revoke a pending invitation.
 
@@ -566,7 +566,7 @@ const secret = await client.organizations.secrets.update('7c9e6679-7425-40de-944
 
 #### Delete an organization secret
 
-Permanently delete an organization secret.
+Delete an organization secret.
 
 | Direction | Type |
 | --- | --- |
@@ -671,7 +671,7 @@ const mcpConnection = await client.mcpConnections.update('7c9e6679-7425-40de-944
 
 ### Delete an MCP connection
 
-Delete an MCP connection from the current organization.
+Delete an MCP connection in the current organization.
 
 | Direction | Type |
 | --- | --- |
@@ -976,8 +976,14 @@ Create a session for a task. Provide the initial prompt in description and optio
 
 ```ts
 const session = await client.sessions.create({
+  description: 'Fix the authentication bug in the login component',
+  projectId: 'your-project-id',
+  agent: 'claudeCode:claude-fable-5-1',
+  codeRepositoryIds: ['123e4567-e89b-12d3-a456-426614174000'],
+  baseBranch: 'main',
+  targetBranch: 'main',
+  visibility: 'private',
   mcpServers: [],
-  description: 'x',
 });
 ```
 
@@ -1216,7 +1222,7 @@ const project = await client.projects.update('projectId', {});
 
 ### Delete a project
 
-Archive a project and disable its schedule.
+Delete a project and disable its schedule.
 
 | Direction | Type |
 | --- | --- |
@@ -1324,7 +1330,7 @@ const snapshot = await client.projects.snapshots.update('snapshotId', {
 
 #### Delete a project snapshot
 
-Archive a project snapshot.
+Delete a project snapshot.
 
 | Direction | Type |
 | --- | --- |
@@ -1560,7 +1566,7 @@ const agent = await client.agents.update('7c9e6679-7425-40de-944b-e07fc1f90ae7',
 
 ### Delete an agent
 
-Delete an agent and its scheduled and triggered jobs.
+Delete an agent and disable its scheduled and triggered jobs.
 
 | Direction | Type |
 | --- | --- |

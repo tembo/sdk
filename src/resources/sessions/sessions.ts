@@ -78,8 +78,14 @@ export class Sessions extends APIResource {
    * @example
    * ```ts
    * const session = await client.sessions.create({
+   *   description: 'Fix the authentication bug in the login component',
+   *   projectId: 'your-project-id',
+   *   agent: 'claudeCode:claude-fable-5-1',
+   *   codeRepositoryIds: ['123e4567-e89b-12d3-a456-426614174000'],
+   *   baseBranch: 'main',
+   *   targetBranch: 'main',
+   *   visibility: 'private',
    *   mcpServers: [],
-   *   description: 'x',
    * });
    * ```
    */
@@ -218,6 +224,7 @@ export interface SessionEventData {
    * @maxLength 1000
    */
   toolName?: string;
+  toolResult?: SessionEventData.ToolResult;
   snapshotId?: string;
   snapshotCreatedAt?: string;
 }
@@ -252,6 +259,13 @@ export namespace SessionEventData {
      * @maxLength 1000
      */
     messageId?: string;
+  }
+
+  export interface ToolResult {
+    status: 'running' | 'completed' | 'error';
+    output?: string;
+    exitCode?: number;
+    error?: string;
   }
 }
 
