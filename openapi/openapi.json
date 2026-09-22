@@ -956,16 +956,14 @@
                 "enum": [
                   "normal",
                   "planning"
-                ],
-                "description": "Whether the agent executes tasks normally or plans the work."
+                ]
               },
               "speed": {
                 "type": "string",
                 "enum": [
                   "normal",
                   "fast"
-                ],
-                "description": "Preferred execution speed when supported by the selected runtime."
+                ]
               },
               "goal": {
                 "type": "object",
@@ -1002,16 +1000,14 @@
             "enum": [
               "normal",
               "planning"
-            ],
-            "description": "Whether the agent executes tasks normally or plans the work."
+            ]
           },
           "speed": {
             "type": "string",
             "enum": [
               "normal",
               "fast"
-            ],
-            "description": "Preferred execution speed when supported by the selected runtime."
+            ]
           },
           "goal": {
             "type": "object",
@@ -41317,6 +41313,519 @@
             "required": true
           }
         ]
+      }
+    },
+    "/v1/user-memory": {
+      "get": {
+        "operationId": "retrieveUserMemory",
+        "summary": "Read your shared profile and setting",
+        "tags": [
+          "user-memory"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read your shared profile and setting",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "profile",
+                    "revision",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User ownership required, or shared memory is disabled"
+          },
+          "409": {
+            "description": "Revision conflict; reload before saving"
+          },
+          "503": {
+            "description": "Shared memory is not enabled on this deployment"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateUserMemory",
+        "summary": "Edit your shared profile or enable or disable sharing",
+        "tags": [
+          "user-memory"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Edit your shared profile or enable or disable sharing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "profile",
+                    "revision",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User ownership required, or shared memory is disabled"
+          },
+          "409": {
+            "description": "Revision conflict; reload before saving"
+          },
+          "503": {
+            "description": "Shared memory is not enabled on this deployment"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "profile": {
+                    "type": "string"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "requestId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "clearUserMemory",
+        "summary": "Clear the shared profile without changing the sharing setting",
+        "tags": [
+          "user-memory"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Clear the shared profile without changing the sharing setting",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "profile",
+                    "revision",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User ownership required, or shared memory is disabled"
+          },
+          "409": {
+            "description": "Revision conflict; reload before saving"
+          },
+          "503": {
+            "description": "Shared memory is not enabled on this deployment"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "requestId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/{sessionId}/user-memory": {
+      "get": {
+        "operationId": "retrieveSessionUserMemory",
+        "summary": "Read shared memory as the current personal session",
+        "tags": [
+          "user-memory"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read shared memory as the current personal session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "profile",
+                    "revision",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User ownership required, or shared memory is disabled"
+          },
+          "409": {
+            "description": "Revision conflict; reload before saving"
+          },
+          "503": {
+            "description": "Shared memory is not enabled on this deployment"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateSessionUserMemory",
+        "summary": "Remember, correct, or forget shared facts from the current session",
+        "tags": [
+          "user-memory"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remember, correct, or forget shared facts from the current session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "profile",
+                    "revision",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User ownership required, or shared memory is disabled"
+          },
+          "409": {
+            "description": "Revision conflict; reload before saving"
+          },
+          "503": {
+            "description": "Shared memory is not enabled on this deployment"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "profile": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "requestId",
+                  "profile"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
       }
     }
   }

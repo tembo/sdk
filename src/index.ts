@@ -33,3 +33,10 @@ export type {
   SessionAutomationDeleteInput,
   SessionAutomationRunInput,
 } from './resources/sessions/extensions';
+
+export type {
+  UserMemory,
+  UserMemoryUpdateParams,
+  UserMemoryClearParams,
+  SessionUserMemoryUpdateParams,
+} from './resources/user-memory';

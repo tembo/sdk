@@ -22883,6 +22883,41 @@
       "operationId": "stopSessionRecording",
       "publicResource": "sessions.computer.recordings",
       "publicOperation": "stop"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/user-memory",
+      "operationId": "retrieveUserMemory",
+      "publicResource": "userMemory",
+      "publicOperation": "retrieve"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/user-memory",
+      "operationId": "updateUserMemory",
+      "publicResource": "userMemory",
+      "publicOperation": "update"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/user-memory",
+      "operationId": "clearUserMemory",
+      "publicResource": "userMemory",
+      "publicOperation": "clear"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/user-memory",
+      "operationId": "retrieveSessionUserMemory",
+      "publicResource": "sessions.userMemory",
+      "publicOperation": "retrieve"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/sessions/{sessionId}/user-memory",
+      "operationId": "updateSessionUserMemory",
+      "publicResource": "sessions.userMemory",
+      "publicOperation": "update"
     }
   ],
   "webhooks": []

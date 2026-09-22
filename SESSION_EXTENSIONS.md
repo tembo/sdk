@@ -48,3 +48,11 @@ Computer exposes `retrieve`, `start` (including resume), and `reconnect`. Missin
 The generated `sessions.computer.recordings` resource provides `list(sessionId)`, `start(sessionId, { id })`, and `stop(sessionId, recordingId)`. Keep the Start UUID for retries. Stop finalizes the recording in the VM and queues one learning turn in the same Session; poll the list when it returns `processing`.
 
 The Mac app owns the toolbar and viewer. The guest owns ffmpeg, the finalized capture and the managed learning skill. Deploy the recording API, manager, scheduler, worker and guest image before enabling `TEMBO_SESSION_TEACHING_ENABLED`, advertised as `x-tembo-session-teaching-ready` in OpenAPI.
+
+## Shared user memory
+
+`client.userMemory.retrieve()`, `.update({ expectedRevision, requestId, profile?, enabled? })`, and `.clear({ expectedRevision, requestId })` manage the connected user's shared profile in the current organization. Setting `enabled: false` blocks Bot reads and writes while retaining the profile; clear removes its facts without re-enabling it. Use a UUID request ID for safe retries and reload/reapply the intended change after a 409 revision conflict.
+
+`client.sessions.userMemory.retrieve(sessionId)` and `.update(sessionId, { profile, expectedRevision, requestId })` provide session-scoped access. Only the owner of a private, memory-enabled personal Chat session (or its current runtime credential) can use these endpoints. Runtime callers cannot re-enable sharing. The shared profile is limited to 6 KiB of UTF-8; bot-specific memory and logs remain in the session's workspace.
+
+Deploy the database migration, API, workers, and guest runtime before enabling `TEMBO_SHARED_MEMORY_ENABLED=true` on API and workers. OpenAPI advertises `x-tembo-shared-memory-ready`. Version `0.4.4-session.2` is a local prerelease vendored by Tembo Bot; it is not published to npm.

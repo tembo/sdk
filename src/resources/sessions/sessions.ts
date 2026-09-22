@@ -1,3 +1,4 @@
+import { SessionUserMemory } from '../user-memory';
 import { Automations, Computer } from './extensions';
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
@@ -31,6 +32,7 @@ import {
 } from './diffs';
 
 export class Sessions extends APIResource {
+  userMemory: SessionUserMemory = new SessionUserMemory(this._client);
   automations: Automations = new Automations(this._client);
   computer: Computer = new Computer(this._client);
   /** SSE response. Pass Last-Event-ID in headers to resume. */

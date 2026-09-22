@@ -307,6 +307,12 @@
             "delete": "delete /v1/sessions/{sessionId}/automations/{automationId}",
             "run": "post /v1/sessions/{sessionId}/automations/{automationId}/run"
           }
+        },
+        "userMemory": {
+          "methods": {
+            "retrieve": "get /v1/sessions/{sessionId}/user-memory",
+            "update": "patch /v1/sessions/{sessionId}/user-memory"
+          }
         }
       }
     },
@@ -544,6 +550,13 @@
       "methods": {
         "retrieve": "get /v1/billing",
         "list_usage": "get /v1/billing/usage"
+      }
+    },
+    "userMemory": {
+      "methods": {
+        "retrieve": "get /v1/user-memory",
+        "update": "patch /v1/user-memory",
+        "clear": "delete /v1/user-memory"
       }
     }
   },

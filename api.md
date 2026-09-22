@@ -1904,3 +1904,11 @@ await client.sessions.computer.recordings.stop(sessionId, recording.id);
 ```
 
 Start captures the remote session desktop. Keep the returned/client-generated ID for retries. Stop may return `processing` while the video finalizes; poll the list until `submitted` or `failed`. Submitted demonstrations learn in the existing session queue. The API does not return the recording itself.
+
+## Shared user memory
+
+- `client.userMemory.retrieve()` — read your shared profile and enabled setting.
+- `client.userMemory.update({ expectedRevision, requestId, profile?, enabled? })` — edit or disable sharing.
+- `client.userMemory.clear({ expectedRevision, requestId })` — forget shared facts, retaining the setting.
+- `client.sessions.userMemory.retrieve(sessionId)` — read the eligible session owner's enabled profile.
+- `client.sessions.userMemory.update(sessionId, { expectedRevision, requestId, profile })` — revision-checked runtime memory edit.

@@ -107,3 +107,44 @@ test('recordings target the session computer with stable IDs and authenticated r
   );
   assert.ok(requests.every((request) => request.authorization === 'Bearer test'));
 });
+
+test('shared memory uses owner and session routes with revision-safe bodies', async () => {
+  const requests = [];
+  const client = new Tembo({
+    apiKey: 'fixture',
+    maxRetries: 0,
+    fetch: async (url, init) => {
+      const request = new Request(url, init);
+      requests.push({
+        path: new URL(request.url).pathname,
+        method: request.method,
+        auth: request.headers.get('authorization'),
+        body: request.method === 'GET' ? null : await request.json(),
+      });
+      return Response.json({ enabled: false, profile: '', revision: 3, updatedAt: null });
+    },
+  });
+  const input = { expectedRevision: 2, requestId: '00000000-0000-4000-8000-000000000001' };
+  await client.userMemory.retrieve();
+  assert.equal((await client.userMemory.update({ ...input, enabled: false })).enabled, false);
+  await client.userMemory.clear(input);
+  await client.sessions.userMemory.retrieve('session/one');
+  await client.sessions.userMemory.update('session/one', { ...input, profile: 'Celsius' });
+  assert.deepEqual(
+    requests.map((r) => [r.method, r.path]),
+    [
+      ['GET', '/v1/user-memory'],
+      ['PATCH', '/v1/user-memory'],
+      ['DELETE', '/v1/user-memory'],
+      ['GET', '/v1/sessions/session%2Fone/user-memory'],
+      ['PATCH', '/v1/sessions/session%2Fone/user-memory'],
+    ],
+  );
+  assert.equal(
+    requests.every((r) => r.auth === 'Bearer fixture'),
+    true,
+  );
+  assert.deepEqual(requests[1].body, { ...input, enabled: false });
+  assert.deepEqual(requests[2].body, input);
+  assert.deepEqual(requests[4].body, { ...input, profile: 'Celsius' });
+});
