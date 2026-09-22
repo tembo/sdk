@@ -6,6 +6,12 @@ import type { RequestOptions } from '../internal/request-options';
 import { path as __scalarPath } from '../internal/utils/path';
 
 export class McpConnections extends APIResource {
+  // BEGIN SUGGESTED METHOD
+  /** List Tembo's suggested MCP servers and their connection status. */
+  suggested(options?: RequestOptions): APIPromise<McpSuggestedServers> {
+    return this._client.get('/v1/mcp-connections/suggested', options);
+  }
+  // END SUGGESTED METHOD
   /**
    * List MCP connections for the current organization with cursor pagination and optional search by name or URL. Command arguments, headers, and environment configuration are omitted.
    *
@@ -478,3 +484,7 @@ export declare namespace McpConnections {
     type McpConnectionUpdateParams as McpConnectionUpdateParams,
   };
 }
+
+// BEGIN SUGGESTED TYPE
+export type McpSuggestedServers = Array<{type: string;name: string;description: string;serverUrl: string;requiresHeaders?: boolean;comingSoon?: boolean;connectionId: string | null;connectionStatus: "connected" | "pending" | null}>;
+// END SUGGESTED TYPE

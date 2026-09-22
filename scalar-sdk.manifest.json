@@ -22918,6 +22918,122 @@
       "operationId": "updateSessionUserMemory",
       "publicResource": "sessions.userMemory",
       "publicOperation": "update"
+    },
+    {
+      "resource": "mcpConnections",
+      "publicResource": "mcpConnections",
+      "operation": "suggested",
+      "publicOperation": "suggested",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/mcp-connections/suggested",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "403",
+          "404",
+          "409",
+          "500",
+          "502"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
     }
   ],
   "webhooks": []
