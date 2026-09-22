@@ -207,7 +207,8 @@
           "verb": "patch",
           "path": "/v1/models/{modelName}",
           "bodyParamName": "body"
-        }
+        },
+        "inference": "get /v1/inference"
       }
     },
     "users": {

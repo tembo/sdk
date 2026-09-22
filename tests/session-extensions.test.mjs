@@ -148,3 +148,17 @@ test('shared memory uses owner and session routes with revision-safe bodies', as
   assert.deepEqual(requests[2].body, input);
   assert.deepEqual(requests[4].body, { ...input, profile: 'Celsius' });
 });
+
+test('inference sends the selected CLI/model and usage flag with authentication', async () => {
+  let request;
+  const client = new Tembo({apiKey: 'test', fetch: async (input, init) => {
+    request = new Request(input, init);
+    return Response.json({ selected: null });
+  }});
+  await client.models.inference({agent: 'codex:gpt-5.6-sol', usage: 'true'});
+  const url = new URL(request.url);
+  assert.equal(url.pathname, '/v1/inference');
+  assert.equal(url.searchParams.get('agent'), 'codex:gpt-5.6-sol');
+  assert.equal(url.searchParams.get('usage'), 'true');
+  assert.equal(request.headers.get('authorization'), 'Bearer test');
+});

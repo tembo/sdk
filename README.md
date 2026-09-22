@@ -163,3 +163,8 @@ The local session API additions and regeneration workflow are documented in [SES
 Powered by Scalar.
 
 The session prerelease also includes `client.sessions.computer.recordings.list(sessionId)`, `.start(sessionId, { id })` and `.stop(sessionId, recordingId)`. Reuse a client-generated recording UUID when retrying Start. Stop finalizes the VM capture and queues its demonstration-learning turn. Enable the deployment's recording readiness flag only after the API, manager, worker, scheduler and guest runtime are deployed.
+
+The session preview SDK also exposes `client.models.inference({ agent, usage: 'true' })`.
+It returns available CLI/model pairs, the selected subscription or API source, and
+subscription usage windows when Tembo can retrieve them. Missing usage is explicitly
+marked unavailable; credentials are never returned.

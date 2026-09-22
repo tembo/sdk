@@ -1,6 +1,6 @@
 {
   "name": "@tembo-io/sdk",
-  "version": "0.4.4-session.3",
+  "version": "0.4.4-session.4",
   "description": "Manage agents, sessions, repositories, and organization resources with the Tembo API.",
   "author": "Tembo Public API",
   "repository": {
@@ -52,7 +52,8 @@
     "schema:fetch": "node scripts/fetch-schema.mjs",
     "schema:prepare": "node scripts/prepare-schema.mjs",
     "generate:sessions": "node scripts/generate-session-extensions.mjs",
-    "generate:mcp": "node scripts/generate-mcp-catalog.mjs"
+    "generate:mcp": "node scripts/generate-mcp-catalog.mjs",
+    "generate:inference": "node scripts/generate-inference.mjs"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.7",

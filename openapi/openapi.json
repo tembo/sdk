@@ -41897,6 +41897,252 @@
           }
         }
       }
+    },
+    "/v1/inference": {
+      "get": {
+        "operationId": "getInferenceConfiguration",
+        "summary": "Get CLI, model, subscription and usage information",
+        "description": "Available CLI/model choices and the selected billing source for the authenticated user and organization. Subscription credentials are never returned.",
+        "tags": [
+          "Inference"
+        ],
+        "responses": {
+          "200": {
+            "description": "Inference configuration and optional subscription usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "defaultAgent": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "options": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "key": {
+                            "type": "string"
+                          },
+                          "cli": {
+                            "type": "string"
+                          },
+                          "cliLabel": {
+                            "type": "string"
+                          },
+                          "model": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "subscriptionConnected": {
+                            "type": "boolean"
+                          },
+                          "subscriptionScope": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "organization",
+                              "user",
+                              null
+                            ]
+                          }
+                        },
+                        "required": [
+                          "key",
+                          "cli",
+                          "cliLabel",
+                          "model",
+                          "label",
+                          "source",
+                          "subscriptionConnected",
+                          "subscriptionScope"
+                        ]
+                      }
+                    },
+                    "selected": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "key": {
+                          "type": "string"
+                        },
+                        "cli": {
+                          "type": "string"
+                        },
+                        "cliLabel": {
+                          "type": "string"
+                        },
+                        "model": {
+                          "type": "string"
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string"
+                        },
+                        "subscriptionConnected": {
+                          "type": "boolean"
+                        },
+                        "subscriptionScope": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "organization",
+                            "user",
+                            null
+                          ]
+                        }
+                      },
+                      "required": [
+                        "key",
+                        "cli",
+                        "cliLabel",
+                        "model",
+                        "label",
+                        "source",
+                        "subscriptionConnected",
+                        "subscriptionScope"
+                      ]
+                    },
+                    "usage": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "not_requested",
+                            "available",
+                            "unavailable",
+                            "not_applicable",
+                            "reconnect_required"
+                          ]
+                        },
+                        "plan": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "fetchedAt": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "windows": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "remainingPercent": {
+                                "type": "number"
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "remainingPercent",
+                              "resetsAt"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "plan",
+                        "fetchedAt",
+                        "windows"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "defaultAgent",
+                    "options",
+                    "selected",
+                    "usage"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "User API authentication required"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "agent",
+            "schema": {
+              "type": "string",
+              "maxLength": 250
+            }
+          },
+          {
+            "in": "query",
+            "name": "usage",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          }
+        ]
+      }
     }
   }
 }
