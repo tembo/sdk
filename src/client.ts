@@ -1,3 +1,4 @@
+import { UserMemories } from './resources/user-memory';
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { APIPromise, type APIResponseProps } from './api-promise';
@@ -991,6 +992,7 @@ export class Tembo {
   artifacts: Artifacts = new Artifacts(this);
   messages: Messages = new Messages(this);
   models: Models = new Models(this);
+  userMemory: UserMemories = new UserMemories(this);
   users: Users = new Users(this);
   sessions: Sessions = new Sessions(this);
   projects: Projects = new Projects(this);

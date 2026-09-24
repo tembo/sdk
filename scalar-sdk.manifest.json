@@ -22792,6 +22792,254 @@
       ],
       "responseLinks": [],
       "transport": "http"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/computer",
+      "operationId": "retrieveSessionComputer",
+      "publicResource": "sessions.computer",
+      "publicOperation": "retrieve"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/computer/start",
+      "operationId": "startSessionComputer",
+      "publicResource": "sessions.computer",
+      "publicOperation": "start"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/computer/reconnect",
+      "operationId": "reconnectSessionComputer",
+      "publicResource": "sessions.computer",
+      "publicOperation": "reconnect"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/events/stream",
+      "operationId": "streamSessionEvents",
+      "publicResource": "sessions",
+      "publicOperation": "streamEvents"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/automations",
+      "operationId": "listSessionAutomations",
+      "publicResource": "sessions.automations",
+      "publicOperation": "list"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/automations",
+      "operationId": "createSessionAutomation",
+      "publicResource": "sessions.automations",
+      "publicOperation": "create"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/automations/{automationId}",
+      "operationId": "retrieveSessionAutomation",
+      "publicResource": "sessions.automations",
+      "publicOperation": "retrieve"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/sessions/{sessionId}/automations/{automationId}",
+      "operationId": "updateSessionAutomation",
+      "publicResource": "sessions.automations",
+      "publicOperation": "update"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/sessions/{sessionId}/automations/{automationId}",
+      "operationId": "deleteSessionAutomation",
+      "publicResource": "sessions.automations",
+      "publicOperation": "delete"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/automations/{automationId}/run",
+      "operationId": "runSessionAutomation",
+      "publicResource": "sessions.automations",
+      "publicOperation": "run"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/computer/recordings",
+      "operationId": "listSessionRecordings",
+      "publicResource": "sessions.computer.recordings",
+      "publicOperation": "list"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/computer/recordings",
+      "operationId": "startSessionRecording",
+      "publicResource": "sessions.computer.recordings",
+      "publicOperation": "start"
+    },
+    {
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/computer/recordings/{recordingId}/stop",
+      "operationId": "stopSessionRecording",
+      "publicResource": "sessions.computer.recordings",
+      "publicOperation": "stop"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/user-memory",
+      "operationId": "retrieveUserMemory",
+      "publicResource": "userMemory",
+      "publicOperation": "retrieve"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/user-memory",
+      "operationId": "updateUserMemory",
+      "publicResource": "userMemory",
+      "publicOperation": "update"
+    },
+    {
+      "method": "DELETE",
+      "path": "/v1/user-memory",
+      "operationId": "clearUserMemory",
+      "publicResource": "userMemory",
+      "publicOperation": "clear"
+    },
+    {
+      "method": "GET",
+      "path": "/v1/sessions/{sessionId}/user-memory",
+      "operationId": "retrieveSessionUserMemory",
+      "publicResource": "sessions.userMemory",
+      "publicOperation": "retrieve"
+    },
+    {
+      "method": "PATCH",
+      "path": "/v1/sessions/{sessionId}/user-memory",
+      "operationId": "updateSessionUserMemory",
+      "publicResource": "sessions.userMemory",
+      "publicOperation": "update"
+    },
+    {
+      "resource": "models",
+      "publicResource": "models",
+      "operation": "inference",
+      "publicOperation": "inference",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/inference",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [
+        "agent",
+        "usage"
+      ],
+      "publicQueryParams": [
+        "agent",
+        "usage"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "403",
+          "404",
+          "409",
+          "500",
+          "502"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
     }
   ],
   "webhooks": []
