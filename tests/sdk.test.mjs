@@ -157,11 +157,3 @@ test('docs notification uses the published run commit, not npm latest', () => {
   assert.match(workflow, /select\(\.name == "publish" and \.conclusion == "success"\)/);
   assert.doesNotMatch(workflow, /npm view|dist-tags\.latest|actions\/checkout/);
 });
-
-test('suggested MCP library uses the authenticated public catalog endpoint', async () => {
-  const items = [{type: 'test', name: 'Test', description: 'A tool', serverUrl: 'https://example.com/mcp', connectionId: null, connectionStatus: null}];
-  const {client, requests} = mockClient(items);
-  assert.deepEqual(await client.mcpConnections.suggested(), items);
-  assert.equal(requests[0].url, 'https://api.tembo.io/v1/mcp-connections/suggested');
-  assert.equal(requests[0].headers.get('authorization'), 'Bearer test-key');
-});

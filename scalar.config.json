@@ -143,8 +143,7 @@
         "update": "patch /v1/mcp-connections/{mcpConnectionId}",
         "delete": "delete /v1/mcp-connections/{mcpConnectionId}",
         "authorize": "post /v1/mcp-connections/{mcpConnectionId}/authorize",
-        "test": "post /v1/mcp-connections/{mcpConnectionId}/test",
-        "suggested": "get /v1/mcp-connections/suggested"
+        "test": "post /v1/mcp-connections/{mcpConnectionId}/test"
       }
     },
     "artifacts": {
