@@ -27,9 +27,6 @@ export type {
   SessionAutomationList,
   SessionAutomationRun,
   SessionComputer,
-} from './resources/sessions/extensions';
-
-export type {
   SessionAutomationDeleteInput,
   SessionAutomationRunInput,
 } from './resources/sessions/extensions';

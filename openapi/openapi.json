@@ -1220,24 +1220,6 @@
           },
           "snapshotCreatedAt": {
             "type": "string"
-          },
-          "routineId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "occurrenceId": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "queued",
-              "running",
-              "completed",
-              "failed",
-              "cancelled"
-            ]
           }
         },
         "required": [
@@ -15579,8 +15561,7 @@
                           "updatedAt",
                           "richContent",
                           "slashCommand",
-                          "source",
-                          "isQueued"
+                          "source"
                         ],
                         "additionalProperties": false
                       }
@@ -16092,11 +16073,6 @@
                   "agentOptions": {
                     "$ref": "#/components/schemas/AgentOptionsInput"
                   },
-                  "id": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Client-generated message ID. Retry with the same ID and content for idempotent submission."
-                  },
                   "deliveryMode": {
                     "type": "string",
                     "enum": [
@@ -16125,6 +16101,11 @@
                       "command"
                     ],
                     "additionalProperties": false
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Client-generated message ID. Retry with the same ID and content for idempotent submission."
                   }
                 },
                 "required": [
@@ -20780,13 +20761,6 @@
                     "level": {
                       "type": "integer"
                     },
-                    "mcpServers": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
-                      "default": []
-                    },
                     "mode": {
                       "type": "string",
                       "enum": [
@@ -21062,9 +21036,6 @@
                         "null"
                       ]
                     },
-                    "memoryEnabled": {
-                      "type": "boolean"
-                    },
                     "diffSummary": {
                       "type": [
                         "object",
@@ -21278,6 +21249,16 @@
                         "inProgress"
                       ],
                       "additionalProperties": false
+                    },
+                    "memoryEnabled": {
+                      "type": "boolean"
+                    },
+                    "mcpServers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
                     }
                   },
                   "required": [
@@ -21294,7 +21275,6 @@
                     "lastQueuedAt",
                     "lastSeenAt",
                     "level",
-                    "mcpServers",
                     "mode",
                     "projectId",
                     "sandboxSize",
@@ -21472,6 +21452,16 @@
                     "minLength": 1,
                     "maxLength": 500
                   },
+                  "mcpServers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "maxItems": 100,
+                    "default": []
+                  },
                   "projectId": {
                     "type": [
                       "string",
@@ -21534,10 +21524,6 @@
                     "maxLength": 1000000,
                     "description": "Initial task or prompt for the session."
                   },
-                  "memoryEnabled": {
-                    "type": "boolean",
-                    "description": "Enable file-based memory on this session computer; defaults to false."
-                  },
                   "id": {
                     "type": "string",
                     "format": "uuid"
@@ -21545,16 +21531,6 @@
                   "richContent": {
                     "$ref": "#/components/schemas/SessionTipTapDocument",
                     "description": "Optional rich-text representation of the initial task. Provide description separately."
-                  },
-                  "mcpServers": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 500
-                    },
-                    "maxItems": 100,
-                    "default": []
                   },
                   "pullRequestId": {
                     "type": "string",
@@ -21580,6 +21556,10 @@
                       "amp",
                       "cursor"
                     ]
+                  },
+                  "memoryEnabled": {
+                    "type": "boolean",
+                    "description": "Enable file-based memory on this session computer; defaults to false."
                   }
                 },
                 "required": [
@@ -21702,13 +21682,6 @@
                     },
                     "level": {
                       "type": "integer"
-                    },
-                    "mcpServers": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
-                      "default": []
                     },
                     "mode": {
                       "type": "string",
@@ -21985,9 +21958,6 @@
                         "null"
                       ]
                     },
-                    "memoryEnabled": {
-                      "type": "boolean"
-                    },
                     "diffSummary": {
                       "type": [
                         "object",
@@ -22201,6 +22171,16 @@
                         "inProgress"
                       ],
                       "additionalProperties": false
+                    },
+                    "memoryEnabled": {
+                      "type": "boolean"
+                    },
+                    "mcpServers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
                     }
                   },
                   "required": [
@@ -22217,7 +22197,6 @@
                     "lastQueuedAt",
                     "lastSeenAt",
                     "level",
-                    "mcpServers",
                     "mode",
                     "projectId",
                     "sandboxSize",
@@ -22485,13 +22464,6 @@
                     "level": {
                       "type": "integer"
                     },
-                    "mcpServers": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      },
-                      "default": []
-                    },
                     "mode": {
                       "type": "string",
                       "enum": [
@@ -22767,9 +22739,6 @@
                         "null"
                       ]
                     },
-                    "memoryEnabled": {
-                      "type": "boolean"
-                    },
                     "diffSummary": {
                       "type": [
                         "object",
@@ -22983,6 +22952,16 @@
                         "inProgress"
                       ],
                       "additionalProperties": false
+                    },
+                    "memoryEnabled": {
+                      "type": "boolean"
+                    },
+                    "mcpServers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "default": []
                     }
                   },
                   "required": [
@@ -22999,7 +22978,6 @@
                     "lastQueuedAt",
                     "lastSeenAt",
                     "level",
-                    "mcpServers",
                     "mode",
                     "projectId",
                     "sandboxSize",
@@ -23207,9 +23185,6 @@
                     "minLength": 1,
                     "maxLength": 1000000
                   },
-                  "memoryEnabled": {
-                    "type": "boolean"
-                  },
                   "richContent": {
                     "oneOf": [
                       {
@@ -23283,6 +23258,9 @@
                       "private",
                       "public"
                     ]
+                  },
+                  "memoryEnabled": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false
@@ -38609,527 +38587,6 @@
         }
       }
     },
-    "/v1/sessions/{sessionId}/computer": {
-      "get": {
-        "operationId": "retrieveSessionComputer",
-        "summary": "Retrieve session computer status",
-        "tags": [
-          "sessions"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieve session computer status",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "unsupported",
-                        "stopped",
-                        "starting",
-                        "running",
-                        "suspended",
-                        "error"
-                      ]
-                    },
-                    "viewerUrl": {
-                      "type": [
-                        "string",
-                        "null"
-                      ],
-                      "format": "uri"
-                    },
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "status",
-                    "viewerUrl"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Session or automation not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Revision conflict, computer recovery, or synchronization pending",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Invalid or unrecoverable session files",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ]
-      }
-    },
-    "/v1/sessions/{sessionId}/computer/start": {
-      "post": {
-        "operationId": "startSessionComputer",
-        "summary": "Start or resume the session computer",
-        "tags": [
-          "sessions"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Start or resume the session computer",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "unsupported",
-                        "stopped",
-                        "starting",
-                        "running",
-                        "suspended",
-                        "error"
-                      ]
-                    },
-                    "viewerUrl": {
-                      "type": [
-                        "string",
-                        "null"
-                      ],
-                      "format": "uri"
-                    },
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "status",
-                    "viewerUrl"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Session or automation not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Revision conflict, computer recovery, or synchronization pending",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Invalid or unrecoverable session files",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ]
-      }
-    },
-    "/v1/sessions/{sessionId}/computer/reconnect": {
-      "post": {
-        "operationId": "reconnectSessionComputer",
-        "summary": "Reconnect the session computer",
-        "tags": [
-          "sessions"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Reconnect the session computer",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "unsupported",
-                        "stopped",
-                        "starting",
-                        "running",
-                        "suspended",
-                        "error"
-                      ]
-                    },
-                    "viewerUrl": {
-                      "type": [
-                        "string",
-                        "null"
-                      ],
-                      "format": "uri"
-                    },
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "status",
-                    "viewerUrl"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Session or automation not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Revision conflict, computer recovery, or synchronization pending",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Invalid or unrecoverable session files",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "code": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ]
-      }
-    },
-    "/v1/sessions/{sessionId}/events/stream": {
-      "get": {
-        "operationId": "streamSessionEvents",
-        "summary": "Stream session activity",
-        "description": "Authenticated SSE. Resume with Last-Event-ID. Activity IDs are durable; session frames request authoritative message/state reconciliation. Connections rotate after one minute to recheck credentials.",
-        "tags": [
-          "sessions"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "parameters": [
-          {
-            "in": "header",
-            "name": "Last-Event-ID",
-            "schema": {
-              "type": "integer",
-              "minimum": 0
-            }
-          },
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Server-sent events: activity (durable ID and SessionEvent), session (reconcile), heartbeat.",
-            "content": {
-              "text/event-stream": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "data": {}
-                  },
-                  "required": [
-                    "success",
-                    "error",
-                    "data"
-                  ]
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/sessions/{sessionId}/automations": {
       "get": {
         "operationId": "listSessionAutomations",
@@ -40476,6 +39933,453 @@
         }
       }
     },
+    "/v1/sessions/{sessionId}/computer": {
+      "get": {
+        "operationId": "retrieveSessionComputer",
+        "summary": "Retrieve session computer status",
+        "tags": [
+          "sessions"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve session computer status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "unsupported",
+                        "stopped",
+                        "starting",
+                        "running",
+                        "suspended",
+                        "error"
+                      ]
+                    },
+                    "viewerUrl": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uri"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "viewerUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session or automation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Revision conflict, computer recovery, or synchronization pending",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid or unrecoverable session files",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/sessions/{sessionId}/computer/start": {
+      "post": {
+        "operationId": "startSessionComputer",
+        "summary": "Start or resume the session computer",
+        "tags": [
+          "sessions"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Start or resume the session computer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "unsupported",
+                        "stopped",
+                        "starting",
+                        "running",
+                        "suspended",
+                        "error"
+                      ]
+                    },
+                    "viewerUrl": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uri"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "viewerUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session or automation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Revision conflict, computer recovery, or synchronization pending",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid or unrecoverable session files",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/sessions/{sessionId}/computer/reconnect": {
+      "post": {
+        "operationId": "reconnectSessionComputer",
+        "summary": "Reconnect the session computer",
+        "tags": [
+          "sessions"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reconnect the session computer",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "enum": [
+                        "unsupported",
+                        "stopped",
+                        "starting",
+                        "running",
+                        "suspended",
+                        "error"
+                      ]
+                    },
+                    "viewerUrl": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uri"
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "status",
+                    "viewerUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session or automation not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Revision conflict, computer recovery, or synchronization pending",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid or unrecoverable session files",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "code": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
     "/v1/sessions/{sessionId}/computer/recordings": {
       "get": {
         "operationId": "listSessionRecordings",
@@ -41051,6 +40955,305 @@
         ]
       }
     },
+    "/v1/sessions/{sessionId}/events/stream": {
+      "get": {
+        "operationId": "streamSessionEvents",
+        "summary": "Stream session activity",
+        "description": "Authenticated SSE. Resume with Last-Event-ID. Activity IDs are durable; session frames request authoritative message/state reconciliation. Connections rotate after one minute to recheck credentials.",
+        "tags": [
+          "sessions"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "Last-Event-ID",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Server-sent events: activity (durable ID and SessionEvent), session (reconcile), heartbeat.",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/{sessionId}/user-memory": {
+      "get": {
+        "operationId": "retrieveSessionUserMemory",
+        "summary": "Read shared memory as the current personal session",
+        "tags": [
+          "user-memory"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Read shared memory as the current personal session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "profile",
+                    "revision",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User ownership required, or shared memory is disabled"
+          },
+          "409": {
+            "description": "Revision conflict; reload before saving"
+          },
+          "503": {
+            "description": "Shared memory is not enabled on this deployment"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateSessionUserMemory",
+        "summary": "Remember, correct, or forget shared facts from the current session",
+        "tags": [
+          "user-memory"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remember, correct, or forget shared facts from the current session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "profile": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "updatedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "enabled",
+                    "profile",
+                    "revision",
+                    "updatedAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "error": {
+                      "type": "array",
+                      "items": {}
+                    },
+                    "data": {}
+                  },
+                  "required": [
+                    "success",
+                    "error",
+                    "data"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "User ownership required, or shared memory is disabled"
+          },
+          "409": {
+            "description": "Revision conflict; reload before saving"
+          },
+          "503": {
+            "description": "Shared memory is not enabled on this deployment"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedRevision": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "requestId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "profile": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "expectedRevision",
+                  "requestId",
+                  "profile"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/user-memory": {
       "get": {
         "operationId": "retrieveUserMemory",
@@ -41331,231 +41534,6 @@
                 "required": [
                   "expectedRevision",
                   "requestId"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/sessions/{sessionId}/user-memory": {
-      "get": {
-        "operationId": "retrieveSessionUserMemory",
-        "summary": "Read shared memory as the current personal session",
-        "tags": [
-          "user-memory"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Read shared memory as the current personal session",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "enabled": {
-                      "type": "boolean"
-                    },
-                    "profile": {
-                      "type": "string"
-                    },
-                    "revision": {
-                      "type": "integer",
-                      "minimum": 0
-                    },
-                    "updatedAt": {
-                      "type": [
-                        "string",
-                        "null"
-                      ],
-                      "format": "date-time"
-                    }
-                  },
-                  "required": [
-                    "enabled",
-                    "profile",
-                    "revision",
-                    "updatedAt"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "data": {}
-                  },
-                  "required": [
-                    "success",
-                    "error",
-                    "data"
-                  ]
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User ownership required, or shared memory is disabled"
-          },
-          "409": {
-            "description": "Revision conflict; reload before saving"
-          },
-          "503": {
-            "description": "Shared memory is not enabled on this deployment"
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ]
-      },
-      "patch": {
-        "operationId": "updateSessionUserMemory",
-        "summary": "Remember, correct, or forget shared facts from the current session",
-        "tags": [
-          "user-memory"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Remember, correct, or forget shared facts from the current session",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "enabled": {
-                      "type": "boolean"
-                    },
-                    "profile": {
-                      "type": "string"
-                    },
-                    "revision": {
-                      "type": "integer",
-                      "minimum": 0
-                    },
-                    "updatedAt": {
-                      "type": [
-                        "string",
-                        "null"
-                      ],
-                      "format": "date-time"
-                    }
-                  },
-                  "required": [
-                    "enabled",
-                    "profile",
-                    "revision",
-                    "updatedAt"
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean",
-                      "enum": [
-                        false
-                      ]
-                    },
-                    "error": {
-                      "type": "array",
-                      "items": {}
-                    },
-                    "data": {}
-                  },
-                  "required": [
-                    "success",
-                    "error",
-                    "data"
-                  ]
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "User ownership required, or shared memory is disabled"
-          },
-          "409": {
-            "description": "Revision conflict; reload before saving"
-          },
-          "503": {
-            "description": "Shared memory is not enabled on this deployment"
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "expectedRevision": {
-                    "type": "integer",
-                    "minimum": 0
-                  },
-                  "requestId": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "profile": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "expectedRevision",
-                  "requestId",
-                  "profile"
                 ],
                 "additionalProperties": false
               }

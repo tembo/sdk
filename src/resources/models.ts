@@ -8,8 +8,11 @@ import { path as __scalarPath } from '../internal/utils/path';
 export class Models extends APIResource {
   // BEGIN INFERENCE METHOD
   /** Read CLI/model choices and the selected inference source and usage. */
-  inference(query: {agent?: string; usage?: 'true' | 'false'} = {}, options?: RequestOptions): APIPromise<InferenceConfiguration> {
-    return this._client.get('/v1/inference', {query, ...options});
+  inference(
+    query: { agent?: string; usage?: 'true' | 'false' } = {},
+    options?: RequestOptions,
+  ): APIPromise<InferenceConfiguration> {
+    return this._client.get('/v1/inference', { query, ...options });
   }
   // END INFERENCE METHOD
   /**
@@ -550,5 +553,33 @@ export declare namespace Models {
 }
 
 // BEGIN INFERENCE TYPE
-export type InferenceConfiguration = {defaultAgent: string | null;options: Array<{key: string;cli: string;cliLabel: string;model: string;label: string;source: string;subscriptionConnected: boolean;subscriptionScope: "organization" | "user" | null}>;selected: {key: string;cli: string;cliLabel: string;model: string;label: string;source: string;subscriptionConnected: boolean;subscriptionScope: "organization" | "user" | null} | null;usage: {status: "not_requested" | "available" | "unavailable" | "not_applicable" | "reconnect_required";plan: string | null;fetchedAt: string | null;windows: Array<{name: string;remainingPercent: number;resetsAt: number | null}>}};
+export type InferenceConfiguration = {
+  defaultAgent: string | null;
+  options: Array<{
+    key: string;
+    cli: string;
+    cliLabel: string;
+    model: string;
+    label: string;
+    source: string;
+    subscriptionConnected: boolean;
+    subscriptionScope: 'organization' | 'user' | null;
+  }>;
+  selected: {
+    key: string;
+    cli: string;
+    cliLabel: string;
+    model: string;
+    label: string;
+    source: string;
+    subscriptionConnected: boolean;
+    subscriptionScope: 'organization' | 'user' | null;
+  } | null;
+  usage: {
+    status: 'not_requested' | 'available' | 'unavailable' | 'not_applicable' | 'reconnect_required';
+    plan: string | null;
+    fetchedAt: string | null;
+    windows: Array<{ name: string; remainingPercent: number; resetsAt: number | null }>;
+  };
+};
 // END INFERENCE TYPE

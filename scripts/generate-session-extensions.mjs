@@ -114,6 +114,18 @@ if (!client.includes('userMemory: UserMemories'))
   );
 await writeFile(new URL('src/client.ts', root), client);
 let index = await readFile(new URL('src/index.ts', root), 'utf8');
+if (!index.includes('SessionAutomation,'))
+  index += `
+export type {
+  SessionAutomation,
+  SessionAutomationInput,
+  SessionAutomationList,
+  SessionAutomationRun,
+  SessionComputer,
+  SessionAutomationDeleteInput,
+  SessionAutomationRunInput,
+} from './resources/sessions/extensions';
+`;
 if (!index.includes("from './resources/user-memory'"))
   index +=
     "\nexport type { UserMemory, UserMemoryUpdateParams, UserMemoryClearParams, SessionUserMemoryUpdateParams } from './resources/user-memory';\n";
@@ -181,9 +193,92 @@ if (
 await writeFile(new URL('src/resources/messages.ts', root), messages);
 const main = JSON.parse(await readFile(new URL('openapi/openapi.json', root), 'utf8'));
 for (const path of Object.keys(main.paths)) if (path.startsWith(base + '/schedules')) delete main.paths[path];
-Object.assign(main.paths, spec.paths);
+const extensionPaths = [
+  `${base}/automations`,
+  `${base}/automations/{automationId}`,
+  `${base}/automations/{automationId}/run`,
+  `${base}/computer`,
+  `${base}/computer/start`,
+  `${base}/computer/reconnect`,
+  `${base}/computer/recordings`,
+  `${base}/computer/recordings/{recordingId}/stop`,
+  `${base}/events/stream`,
+  `${base}/user-memory`,
+  '/v1/user-memory',
+];
+
+const componentRefs = new Set();
+function collectComponentRefs(value) {
+  if (Array.isArray(value)) {
+    for (const item of value) collectComponentRefs(item);
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+  if (typeof value.$ref === 'string' && value.$ref.startsWith('#/components/')) {
+    const [, , section, name] = value.$ref.split('/');
+    const key = `${section}/${name}`;
+    if (!componentRefs.has(key)) {
+      componentRefs.add(key);
+      const component = spec.components?.[section]?.[name];
+      if (!component) throw new Error(`Missing extension component ${value.$ref}`);
+      collectComponentRefs(component);
+    }
+  }
+  for (const child of Object.values(value)) collectComponentRefs(child);
+}
+
+for (const path of extensionPaths) {
+  const pathItem = spec.paths[path];
+  if (!pathItem) throw new Error(`Missing extension path ${path}`);
+  main.paths[path] = pathItem;
+  collectComponentRefs(pathItem);
+}
+
+function copyProperty(target, source, name) {
+  const property = source?.properties?.[name];
+  if (!target?.properties || !property) throw new Error(`Missing extension property ${name}`);
+  target.properties[name] = property;
+  collectComponentRefs(property);
+}
+
+const mediaType = 'application/json';
+const mainSessionCreate = main.paths['/v1/sessions'].post.requestBody.content[mediaType].schema;
+const extensionSessionCreate = spec.paths['/v1/sessions'].post.requestBody.content[mediaType].schema;
+copyProperty(mainSessionCreate, extensionSessionCreate, 'memoryEnabled');
+
+const mainSessionUpdate = main.paths[base].patch.requestBody.content[mediaType].schema;
+const extensionSessionUpdate = spec.paths[base].patch.requestBody.content[mediaType].schema;
+copyProperty(mainSessionUpdate, extensionSessionUpdate, 'memoryEnabled');
+
+for (const [method, status] of [
+  ['get', '200'],
+  ['patch', '200'],
+]) {
+  const target = main.paths[base][method].responses[status].content[mediaType].schema;
+  const source = spec.paths[base][method].responses[status].content[mediaType].schema;
+  copyProperty(target, source, 'memoryEnabled');
+  copyProperty(target, source, 'mcpServers');
+}
+const mainSessionCreated = main.paths['/v1/sessions'].post.responses['201'].content[mediaType].schema;
+const extensionSessionCreated = spec.paths['/v1/sessions'].post.responses['201'].content[mediaType].schema;
+copyProperty(mainSessionCreated, extensionSessionCreated, 'memoryEnabled');
+copyProperty(mainSessionCreated, extensionSessionCreated, 'mcpServers');
+
+const mainMessageCreate = main.paths['/v1/messages'].post.requestBody.content[mediaType].schema;
+const extensionMessageCreate = spec.paths['/v1/messages'].post.requestBody.content[mediaType].schema;
+copyProperty(mainMessageCreate, extensionMessageCreate, 'id');
+const mainMessageItem =
+  main.paths['/v1/messages'].get.responses['200'].content[mediaType].schema.properties.items.items;
+const extensionMessageItem =
+  spec.paths['/v1/messages'].get.responses['200'].content[mediaType].schema.properties.items.items;
+copyProperty(mainMessageItem, extensionMessageItem, 'isQueued');
+
 main.components ??= {};
-main.components.schemas = { ...main.components.schemas, ...spec.components.schemas };
+for (const key of componentRefs) {
+  const [section, name] = key.split('/');
+  main.components[section] ??= {};
+  main.components[section][name] = spec.components[section][name];
+}
 await writeFile(new URL('openapi/openapi.json', root), JSON.stringify(main, null, 2) + '\n');
 const config = JSON.parse(await readFile(new URL('scalar.config.json', root), 'utf8'));
 const manifest = JSON.parse(await readFile(new URL('scalar-sdk.manifest.json', root), 'utf8'));
