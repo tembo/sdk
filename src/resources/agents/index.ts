@@ -85,6 +85,7 @@ export { Runs } from './runs';
 export type {
   RunListParams,
   RunListResponse,
+  RunCreateParams,
   RunCreateResponse,
   RunRetrieveParams,
   RunRetrieveResponse,

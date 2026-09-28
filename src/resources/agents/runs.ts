@@ -30,9 +30,10 @@ export class Runs extends APIResource {
   }
 
   /**
-   * Queue an agent run with optional event input. The response confirms queuing, not completed execution.
+   * Queue an agent run. The entire JSON object body is passed to the agent as event input, just like the legacy /trigger endpoint; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
    *
    * @param {string} agentID
+   * @param {RunCreateParams} [body] - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<RunCreateResponse>} Create an agent run
    *
@@ -41,8 +42,12 @@ export class Runs extends APIResource {
    * const run = await client.agents.runs.create('7c9e6679-7425-40de-944b-e07fc1f90ae7');
    * ```
    */
-  create(agentID: string, options?: RequestOptions): APIPromise<RunCreateResponse> {
-    return this._client.post(__scalarPath`/v1/agents/${agentID}/runs`, options);
+  create(
+    agentID: string,
+    body: RunCreateParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<RunCreateResponse> {
+    return this._client.post(__scalarPath`/v1/agents/${agentID}/runs`, { body, ...options });
   }
 
   /**
@@ -113,6 +118,8 @@ export namespace RunListResponse {
   }
 }
 
+export type RunCreateParams = Record<string, unknown>;
+
 export interface RunCreateResponse {
   /**
    * @format uuid
@@ -159,6 +166,7 @@ export declare namespace Runs {
     type RunCreateResponse as RunCreateResponse,
     type RunRetrieveResponse as RunRetrieveResponse,
     type RunListParams as RunListParams,
+    type RunCreateParams as RunCreateParams,
     type RunRetrieveParams as RunRetrieveParams,
   };
 }

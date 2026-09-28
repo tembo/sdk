@@ -1406,6 +1406,14 @@
           {
             "allOf": [
               {
+                "$ref": "#/components/schemas/GithubWorkflowRunCompletedFilters"
+              }
+            ],
+            "additionalProperties": {}
+          },
+          {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/GitlabBotMergeRequestCommentFilters"
               }
             ],
@@ -2218,6 +2226,57 @@
           }
         }
       },
+      "GithubWorkflowRunCompletedFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the workflow run is in one of the repositories"
+          },
+          "workflowNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger for specific workflow names"
+          },
+          "branches": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger for specific branches"
+          },
+          "conclusions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "success",
+                "failure",
+                "neutral",
+                "cancelled",
+                "timed_out",
+                "action_required",
+                "stale",
+                "skipped"
+              ]
+            },
+            "description": "Only trigger for these completed workflow results, such as success"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Only trigger for these originating GitHub events; use schedule for cron runs, not push or pull_request"
+          }
+        }
+      },
       "GitlabBotMergeRequestCommentFilters": {
         "type": "object",
         "properties": {
@@ -2662,6 +2721,11 @@
       "EmptyTriggerFilters": {
         "type": "object"
       },
+      "AgentRunEventPayload": {
+        "type": "object",
+        "additionalProperties": {},
+        "description": "Custom webhook input. Arbitrary keys and nested JSON values are preserved and passed to the agent."
+      },
       "GlobalMcpServers": {
         "type": "object",
         "properties": {
@@ -2765,11 +2829,6 @@
         "type": "object",
         "additionalProperties": {},
         "description": "Additional metadata associated with the agent run."
-      },
-      "AgentRunEventPayload": {
-        "type": "object",
-        "additionalProperties": {},
-        "description": "Custom webhook input. Arbitrary keys and nested JSON values are preserved and passed to the agent."
       },
       "AgentRunFailure": {
         "anyOf": [
@@ -5429,6 +5488,160 @@
         }
       }
     },
+    "/oauth/context": {
+      "get": {
+        "operationId": "retrieveOAuthContext",
+        "summary": "Get the authenticated OAuth identity",
+        "description": "Returns the user, organization, OAuth client, granted scopes, and expiration for the supplied access token. The token must include the user:org:read scope.",
+        "tags": [
+          "OAuth"
+        ],
+        "responses": {
+          "200": {
+            "description": "The identity and authorization details for the access token.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "string"
+                    },
+                    "organizationId": {
+                      "type": "string"
+                    },
+                    "clientId": {
+                      "type": "string"
+                    },
+                    "scopes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "expiresAt": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "userId",
+                    "organizationId",
+                    "clientId",
+                    "scopes",
+                    "expiresAt"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "The Authorization header does not use the Bearer scheme."
+          },
+          "401": {
+            "description": "The access token is missing or invalid."
+          },
+          "403": {
+            "description": "The token lacks a required scope or the user cannot access the organization."
+          },
+          "503": {
+            "description": "The authentication provider is unavailable."
+          }
+        }
+      }
+    },
+    "/auth/context": {
+      "get": {
+        "operationId": "retrieveMcpAuthContext",
+        "summary": "Get the authenticated principal",
+        "description": "Returns the user or service identity and organization associated with the supplied OAuth access token, API key, or agent credential. Agent requests must specify the organization in the X-Agent-Org-Id header.",
+        "tags": [
+          "Authentication"
+        ],
+        "responses": {
+          "200": {
+            "description": "The authenticated principal and organization. OAuth responses also include the client, granted scopes, and token expiration.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "string"
+                        },
+                        "organizationId": {
+                          "type": "string"
+                        },
+                        "clientId": {
+                          "type": "string"
+                        },
+                        "scopes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "expiresAt": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "userId",
+                        "organizationId",
+                        "clientId",
+                        "scopes",
+                        "expiresAt"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "userId": {
+                          "type": "string"
+                        },
+                        "organizationId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "userId",
+                        "organizationId"
+                      ]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "principal": {
+                          "type": "string",
+                          "const": "agent"
+                        },
+                        "organizationId": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "principal",
+                        "organizationId"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The credential is missing or invalid."
+          },
+          "403": {
+            "description": "The credential does not grant access to the requested organization."
+          },
+          "503": {
+            "description": "The authentication provider is unavailable."
+          }
+        }
+      }
+    },
     "/agent": {
       "post": {
         "operationId": "postPublic-apiAgent",
@@ -5453,7 +5666,7 @@
                     },
                     "createdAt": {
                       "type": "string",
-                      "default": "2026-09-20T17:02:55.895Z"
+                      "default": "2026-09-28T18:46:23.957Z"
                     },
                     "updatedAt": {
                       "type": "string"
@@ -5534,7 +5747,7 @@
                         "string",
                         "null"
                       ],
-                      "default": "2026-09-20T17:02:55.896Z"
+                      "default": "2026-09-28T18:46:23.958Z"
                     },
                     "artifactType": {
                       "type": [
@@ -5940,10 +6153,7 @@
                             "format": "date-time"
                           },
                           "userId": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                            "type": "string"
                           },
                           "tokenPreview": {
                             "type": "string"
@@ -6101,10 +6311,7 @@
                       "format": "date-time"
                     },
                     "userId": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
+                      "type": "string"
                     },
                     "tokenPreview": {
                       "type": "string"
@@ -6253,10 +6460,7 @@
                       "format": "date-time"
                     },
                     "userId": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
+                      "type": "string"
                     },
                     "tokenPreview": {
                       "type": "string"
@@ -6392,10 +6596,7 @@
                       "format": "date-time"
                     },
                     "userId": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
+                      "type": "string"
                     },
                     "tokenPreview": {
                       "type": "string"
@@ -11364,10 +11565,6 @@
                         "featureMentionAuthor": {
                           "type": "boolean"
                         },
-                        "freePrPeriod": {
-                          "type": "number",
-                          "minimum": 0
-                        },
                         "maxBotReviews": {
                           "type": "integer",
                           "minimum": 0
@@ -11433,7 +11630,6 @@
                         "enableGreptileBot",
                         "experimentalMcp",
                         "featureMentionAuthor",
-                        "freePrPeriod",
                         "maxBotReviews",
                         "maxSolutions",
                         "onDemandMaxCreditUsage",
@@ -11671,10 +11867,6 @@
                         "featureMentionAuthor": {
                           "type": "boolean"
                         },
-                        "freePrPeriod": {
-                          "type": "number",
-                          "minimum": 0
-                        },
                         "maxBotReviews": {
                           "type": "integer",
                           "minimum": 0
@@ -11740,7 +11932,6 @@
                         "enableGreptileBot",
                         "experimentalMcp",
                         "featureMentionAuthor",
-                        "freePrPeriod",
                         "maxBotReviews",
                         "maxSolutions",
                         "onDemandMaxCreditUsage",
@@ -11981,10 +12172,6 @@
                   },
                   "featureMentionAuthor": {
                     "type": "boolean"
-                  },
-                  "freePrPeriod": {
-                    "type": "number",
-                    "minimum": 0
                   },
                   "gcpVertexAiLocation": {
                     "type": "string",
@@ -16640,6 +16827,7 @@
                           "name": {
                             "type": "string",
                             "enum": [
+                              "claude-opus-5-5",
                               "claude-fable-5-1",
                               "claude-fable-5",
                               "claude-opus-5",
@@ -16651,6 +16839,8 @@
                               "claude-opus-4-5",
                               "claude-4-5-haiku",
                               "gpt-6-astra",
+                              "gpt-6-sol",
+                              "gpt-6-luna",
                               "gpt-5.6-sol",
                               "gpt-5.6-terra",
                               "gpt-5.6-luna",
@@ -16671,7 +16861,7 @@
                               "composer-2.5",
                               "gemini-3.1-pro",
                               "gemini-3.5-flash",
-                              "grok-4.6",
+                              "grok-4.7",
                               "grok",
                               "kimi-k3",
                               "minimax-m2p7",
@@ -17083,6 +17273,7 @@
                         "null"
                       ],
                       "enum": [
+                        "claude-opus-5-5",
                         "claude-fable-5-1",
                         "claude-fable-5",
                         "claude-opus-5",
@@ -17094,6 +17285,8 @@
                         "claude-opus-4-5",
                         "claude-4-5-haiku",
                         "gpt-6-astra",
+                        "gpt-6-sol",
+                        "gpt-6-luna",
                         "gpt-5.6-sol",
                         "gpt-5.6-terra",
                         "gpt-5.6-luna",
@@ -17114,7 +17307,7 @@
                         "composer-2.5",
                         "gemini-3.1-pro",
                         "gemini-3.5-flash",
-                        "grok-4.6",
+                        "grok-4.7",
                         "grok",
                         "kimi-k3",
                         "minimax-m2p7",
@@ -17218,6 +17411,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "claude-opus-5-5",
                 "claude-fable-5-1",
                 "claude-fable-5",
                 "claude-opus-5",
@@ -17229,6 +17423,8 @@
                 "claude-opus-4-5",
                 "claude-4-5-haiku",
                 "gpt-6-astra",
+                "gpt-6-sol",
+                "gpt-6-luna",
                 "gpt-5.6-sol",
                 "gpt-5.6-terra",
                 "gpt-5.6-luna",
@@ -17249,7 +17445,7 @@
                 "composer-2.5",
                 "gemini-3.1-pro",
                 "gemini-3.5-flash",
-                "grok-4.6",
+                "grok-4.7",
                 "grok",
                 "kimi-k3",
                 "minimax-m2p7",
@@ -17294,6 +17490,7 @@
                     "name": {
                       "type": "string",
                       "enum": [
+                        "claude-opus-5-5",
                         "claude-fable-5-1",
                         "claude-fable-5",
                         "claude-opus-5",
@@ -17305,6 +17502,8 @@
                         "claude-opus-4-5",
                         "claude-4-5-haiku",
                         "gpt-6-astra",
+                        "gpt-6-sol",
+                        "gpt-6-luna",
                         "gpt-5.6-sol",
                         "gpt-5.6-terra",
                         "gpt-5.6-luna",
@@ -17325,7 +17524,7 @@
                         "composer-2.5",
                         "gemini-3.1-pro",
                         "gemini-3.5-flash",
-                        "grok-4.6",
+                        "grok-4.7",
                         "grok",
                         "kimi-k3",
                         "minimax-m2p7",
@@ -17817,6 +18016,7 @@
             "schema": {
               "type": "string",
               "enum": [
+                "claude-opus-5-5",
                 "claude-fable-5-1",
                 "claude-fable-5",
                 "claude-opus-5",
@@ -17828,6 +18028,8 @@
                 "claude-opus-4-5",
                 "claude-4-5-haiku",
                 "gpt-6-astra",
+                "gpt-6-sol",
+                "gpt-6-luna",
                 "gpt-5.6-sol",
                 "gpt-5.6-terra",
                 "gpt-5.6-luna",
@@ -17848,7 +18050,7 @@
                 "composer-2.5",
                 "gemini-3.1-pro",
                 "gemini-3.5-flash",
-                "grok-4.6",
+                "grok-4.7",
                 "grok",
                 "kimi-k3",
                 "minimax-m2p7",
@@ -23760,472 +23962,6 @@
         ]
       }
     },
-    "/v1/sessions/{sessionId}/files": {
-      "get": {
-        "operationId": "listSessionFiles",
-        "summary": "List session files",
-        "description": "List recorded session files without returning file contents.",
-        "tags": [
-          "Sessions"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List session files",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "items": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "createdAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "id": {
-                            "type": "string",
-                            "format": "uuid"
-                          },
-                          "path": {
-                            "type": "string"
-                          },
-                          "sessionId": {
-                            "type": "string",
-                            "format": "uuid"
-                          },
-                          "updatedAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          }
-                        },
-                        "required": [
-                          "createdAt",
-                          "id",
-                          "path",
-                          "sessionId",
-                          "updatedAt"
-                        ],
-                        "additionalProperties": false
-                      }
-                    },
-                    "nextCursor": {
-                      "type": [
-                        "string",
-                        "null"
-                      ],
-                      "format": "uuid"
-                    }
-                  },
-                  "required": [
-                    "items",
-                    "nextCursor"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request or missing required organization or user information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "The session is private",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "The caller is not permitted to perform this operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Session resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Session operation conflicts with existing data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Session operation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Session runtime or provider operation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          },
-          {
-            "in": "query",
-            "name": "cursor",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
-              "default": 50
-            }
-          },
-          {
-            "in": "query",
-            "name": "search",
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 1000
-            }
-          }
-        ]
-      }
-    },
-    "/v1/sessions/{sessionId}/files/{fileId}": {
-      "get": {
-        "operationId": "retrieveSessionFile",
-        "summary": "Retrieve a session file",
-        "description": "Retrieve one recorded session file and its content.",
-        "tags": [
-          "Sessions"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Retrieve a session file",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "id": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "path": {
-                      "type": "string"
-                    },
-                    "sessionId": {
-                      "type": "string",
-                      "format": "uuid"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "content": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "createdAt",
-                    "id",
-                    "path",
-                    "sessionId",
-                    "updatedAt",
-                    "content"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request or missing required organization or user information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "The session is private",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "The caller is not permitted to perform this operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Session resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Session operation conflicts with existing data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Session operation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "Session runtime or provider operation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sessionId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          },
-          {
-            "in": "path",
-            "name": "fileId",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true
-          }
-        ]
-      }
-    },
     "/v1/sessions/{sessionId}/diffs": {
       "get": {
         "operationId": "listSessionDiffs",
@@ -29019,7 +28755,7 @@
       "get": {
         "operationId": "retrieveProjectBuild",
         "summary": "Retrieve a project build",
-        "description": "Retrieve project build status and captured logs.",
+        "description": "Retrieve project build status.",
         "tags": [
           "Projects"
         ],
@@ -29070,9 +28806,6 @@
                     },
                     "includeSkills": {
                       "type": "boolean"
-                    },
-                    "logs": {
-                      "type": "string"
                     },
                     "name": {
                       "type": [
@@ -29191,7 +28924,6 @@
                     "failure",
                     "includeDeps",
                     "includeSkills",
-                    "logs",
                     "name",
                     "progress",
                     "projectId",
@@ -32829,6 +32561,7 @@
                       "skillProgressionMap",
                       "slackChannelListener",
                       "slopCop",
+                      "testPruner",
                       "staleCodeComments",
                       "stalePullRequestNotifier",
                       "summarizeChangesDaily",
@@ -32907,6 +32640,7 @@
                               "skillProgressionMap",
                               "slackChannelListener",
                               "slopCop",
+                              "testPruner",
                               "staleCodeComments",
                               "stalePullRequestNotifier",
                               "summarizeChangesDaily",
@@ -33048,6 +32782,7 @@
                         "skillProgressionMap",
                         "slackChannelListener",
                         "slopCop",
+                        "testPruner",
                         "staleCodeComments",
                         "stalePullRequestNotifier",
                         "summarizeChangesDaily",
@@ -33180,6 +32915,7 @@
                 "skillProgressionMap",
                 "slackChannelListener",
                 "slopCop",
+                "testPruner",
                 "staleCodeComments",
                 "stalePullRequestNotifier",
                 "summarizeChangesDaily",
@@ -33253,6 +32989,7 @@
                         "skillProgressionMap",
                         "slackChannelListener",
                         "slopCop",
+                        "testPruner",
                         "staleCodeComments",
                         "stalePullRequestNotifier",
                         "summarizeChangesDaily",
@@ -36599,7 +36336,7 @@
       "post": {
         "operationId": "createAgentRun",
         "summary": "Create an agent run",
-        "description": "Queue an agent run with optional event input. The response confirms queuing, not completed execution.",
+        "description": "Queue an agent run. The entire JSON object body is passed to the agent as event input, just like the legacy /trigger endpoint; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.",
         "tags": [
           "Agents"
         ],
@@ -36712,6 +36449,16 @@
                   ],
                   "additionalProperties": false
                 }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentRunEventPayload"
               }
             }
           }
@@ -37898,7 +37645,7 @@
                     "maxLength": 100
                   },
                   "minItems": 1,
-                  "maxItems": 19
+                  "maxItems": 18
                 }
               ]
             }
@@ -38201,6 +37948,80 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "access": {
+                      "type": "object",
+                      "properties": {
+                        "state": {
+                          "type": "string",
+                          "enum": [
+                            "blocked",
+                            "grace",
+                            "trial",
+                            "paid"
+                          ]
+                        },
+                        "canExecute": {
+                          "type": "boolean"
+                        },
+                        "blockedReason": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "enum": [
+                            "awaiting_demo",
+                            "trial_expired",
+                            "trial_allowance_exhausted",
+                            "subscription_ended",
+                            null
+                          ],
+                          "default": null
+                        }
+                      },
+                      "required": [
+                        "state",
+                        "canExecute",
+                        "blockedReason"
+                      ]
+                    },
+                    "trial": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "const": "Trialing"
+                        },
+                        "startedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "endsAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "allowance": {
+                          "type": "number"
+                        },
+                        "remainingAllowance": {
+                          "type": "number"
+                        },
+                        "exhausted": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "status",
+                        "startedAt",
+                        "endsAt",
+                        "allowance",
+                        "remainingAllowance",
+                        "exhausted"
+                      ],
+                      "default": null
+                    },
                     "billingEnabled": {
                       "type": "boolean"
                     },
@@ -38271,247 +38092,162 @@
                       "additionalProperties": false
                     },
                     "subscription": {
-                      "oneOf": [
-                        {
-                          "type": "object",
-                          "properties": {
-                            "type": {
-                              "type": "string",
-                              "const": "free"
-                            },
-                            "status": {
-                              "type": "null"
-                            },
-                            "canceledAt": {
-                              "type": "null"
-                            },
-                            "periodEnd": {
-                              "type": "null"
-                            },
-                            "plan": {
-                              "type": "null"
-                            },
-                            "currentTier": {
-                              "type": "number",
-                              "const": 0
-                            },
-                            "upgradablePlans": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "minLength": 1,
-                                    "maxLength": 255
-                                  },
-                                  "title": {
-                                    "type": "string",
-                                    "maxLength": 255
-                                  },
-                                  "tier": {
-                                    "type": "integer",
-                                    "minimum": 0
-                                  },
-                                  "description": {
-                                    "type": "string",
-                                    "maxLength": 2000
-                                  },
-                                  "includedCredits": {
-                                    "type": "number",
-                                    "minimum": 0
-                                  },
-                                  "monthlyPrice": {
-                                    "type": "number",
-                                    "minimum": 0
-                                  },
-                                  "yearlyPrice": {
-                                    "type": [
-                                      "number",
-                                      "null"
-                                    ],
-                                    "minimum": 0
-                                  }
-                                },
-                                "required": [
-                                  "id",
-                                  "title",
-                                  "tier",
-                                  "description",
-                                  "includedCredits",
-                                  "monthlyPrice",
-                                  "yearlyPrice"
-                                ],
-                                "additionalProperties": false
-                              },
-                              "maxItems": 20
-                            }
-                          },
-                          "required": [
-                            "type",
-                            "status",
-                            "canceledAt",
-                            "periodEnd",
-                            "plan",
-                            "currentTier",
-                            "upgradablePlans"
-                          ],
-                          "additionalProperties": false
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "Active",
+                            "PastDue",
+                            "Unpaid",
+                            "Canceled",
+                            "Trialing",
+                            "Incomplete",
+                            "IncompleteExpired"
+                          ]
                         },
-                        {
-                          "type": "object",
+                        "canceledAt": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date-time"
+                        },
+                        "periodEnd": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "date-time"
+                        },
+                        "type": {
+                          "type": "string",
+                          "const": "paid"
+                        },
+                        "plan": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
                           "properties": {
-                            "status": {
+                            "id": {
                               "type": "string",
-                              "enum": [
-                                "Active",
-                                "PastDue",
-                                "Unpaid",
-                                "Canceled",
-                                "Trialing",
-                                "Incomplete",
-                                "IncompleteExpired"
-                              ]
+                              "minLength": 1,
+                              "maxLength": 255
                             },
-                            "canceledAt": {
-                              "type": [
-                                "string",
-                                "null"
-                              ],
-                              "format": "date-time"
-                            },
-                            "periodEnd": {
-                              "type": [
-                                "string",
-                                "null"
-                              ],
-                              "format": "date-time"
-                            },
-                            "type": {
+                            "title": {
                               "type": "string",
-                              "const": "paid"
+                              "maxLength": 255
                             },
-                            "plan": {
-                              "type": [
-                                "object",
-                                "null"
-                              ],
-                              "properties": {
-                                "id": {
-                                  "type": "string",
-                                  "minLength": 1,
-                                  "maxLength": 255
-                                },
-                                "title": {
-                                  "type": "string",
-                                  "maxLength": 255
-                                },
-                                "tier": {
-                                  "type": "integer",
-                                  "minimum": 0
-                                },
-                                "description": {
-                                  "type": "string",
-                                  "maxLength": 2000
-                                },
-                                "includedCredits": {
-                                  "type": "number",
-                                  "minimum": 0
-                                },
-                                "monthlyPrice": {
-                                  "type": "number",
-                                  "minimum": 0
-                                },
-                                "yearlyPrice": {
-                                  "type": [
-                                    "number",
-                                    "null"
-                                  ],
-                                  "minimum": 0
-                                }
-                              },
-                              "required": [
-                                "id",
-                                "title",
-                                "tier",
-                                "description",
-                                "includedCredits",
-                                "monthlyPrice",
-                                "yearlyPrice"
-                              ],
-                              "additionalProperties": false
-                            },
-                            "currentTier": {
+                            "tier": {
                               "type": "integer",
                               "minimum": 0
                             },
-                            "upgradablePlans": {
-                              "type": "array",
-                              "items": {
-                                "type": "object",
-                                "properties": {
-                                  "id": {
-                                    "type": "string",
-                                    "minLength": 1,
-                                    "maxLength": 255
-                                  },
-                                  "title": {
-                                    "type": "string",
-                                    "maxLength": 255
-                                  },
-                                  "tier": {
-                                    "type": "integer",
-                                    "minimum": 0
-                                  },
-                                  "description": {
-                                    "type": "string",
-                                    "maxLength": 2000
-                                  },
-                                  "includedCredits": {
-                                    "type": "number",
-                                    "minimum": 0
-                                  },
-                                  "monthlyPrice": {
-                                    "type": "number",
-                                    "minimum": 0
-                                  },
-                                  "yearlyPrice": {
-                                    "type": [
-                                      "number",
-                                      "null"
-                                    ],
-                                    "minimum": 0
-                                  }
-                                },
-                                "required": [
-                                  "id",
-                                  "title",
-                                  "tier",
-                                  "description",
-                                  "includedCredits",
-                                  "monthlyPrice",
-                                  "yearlyPrice"
-                                ],
-                                "additionalProperties": false
-                              },
-                              "maxItems": 20
+                            "description": {
+                              "type": "string",
+                              "maxLength": 2000
+                            },
+                            "includedCredits": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "monthlyPrice": {
+                              "type": "number",
+                              "minimum": 0
+                            },
+                            "yearlyPrice": {
+                              "type": [
+                                "number",
+                                "null"
+                              ],
+                              "minimum": 0
                             }
                           },
                           "required": [
-                            "status",
-                            "canceledAt",
-                            "periodEnd",
-                            "type",
-                            "plan",
-                            "currentTier",
-                            "upgradablePlans"
+                            "id",
+                            "title",
+                            "tier",
+                            "description",
+                            "includedCredits",
+                            "monthlyPrice",
+                            "yearlyPrice"
                           ],
                           "additionalProperties": false
+                        },
+                        "currentTier": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "upgradablePlans": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "title": {
+                                "type": "string",
+                                "maxLength": 255
+                              },
+                              "tier": {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              "description": {
+                                "type": "string",
+                                "maxLength": 2000
+                              },
+                              "includedCredits": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "monthlyPrice": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "yearlyPrice": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "title",
+                              "tier",
+                              "description",
+                              "includedCredits",
+                              "monthlyPrice",
+                              "yearlyPrice"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "maxItems": 20
                         }
-                      ]
+                      },
+                      "required": [
+                        "status",
+                        "canceledAt",
+                        "periodEnd",
+                        "type",
+                        "plan",
+                        "currentTier",
+                        "upgradablePlans"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": [
+                    "access",
+                    "trial",
                     "billingEnabled",
                     "balance",
                     "onDemand",

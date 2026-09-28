@@ -1,7 +1,7 @@
 {
   "name": "TemboPublicApi",
   "slug": "temboPublicApi",
-  "generatorVersion": "0.32.14",
+  "generatorVersion": "0.33.3",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -2510,6 +2510,109 @@
                 }
               },
               {
+                "name": "workflowNames",
+                "publicName": "workflowNames",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "name": "branches",
+                "publicName": "branches",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "name": "conclusions",
+                "publicName": "conclusions",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "enum",
+                    "values": [
+                      "success",
+                      "failure",
+                      "neutral",
+                      "cancelled",
+                      "timed_out",
+                      "action_required",
+                      "stale",
+                      "skipped"
+                    ],
+                    "names": [
+                      "Success",
+                      "Failure",
+                      "Neutral",
+                      "Cancelled",
+                      "TimedOut",
+                      "ActionRequired",
+                      "Stale",
+                      "Skipped"
+                    ],
+                    "deprecations": [
+                      false,
+                      false,
+                      false,
+                      false,
+                      false,
+                      false,
+                      false,
+                      false
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "events",
+                "publicName": "events",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string",
+                    "validation": {
+                      "minLength": 1
+                    }
+                  }
+                }
+              }
+            ],
+            "additionalProperties": false
+          },
+          {
+            "kind": "object",
+            "properties": [
+              {
+                "name": "repositories",
+                "publicName": "repositories",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
                 "name": "botUsernames",
                 "publicName": "botUsernames",
                 "required": false,
@@ -3565,6 +3668,7 @@
           }
         ],
         "variantNames": [
+          null,
           null,
           null,
           null,
@@ -4692,6 +4796,115 @@
       }
     },
     {
+      "name": "github_workflow_run_completed_filters",
+      "source": "github_workflow_run_completed_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "workflowNames",
+            "publicName": "workflowNames",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "branches",
+            "publicName": "branches",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "conclusions",
+            "publicName": "conclusions",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "enum",
+                "values": [
+                  "success",
+                  "failure",
+                  "neutral",
+                  "cancelled",
+                  "timed_out",
+                  "action_required",
+                  "stale",
+                  "skipped"
+                ],
+                "names": [
+                  "Success",
+                  "Failure",
+                  "Neutral",
+                  "Cancelled",
+                  "TimedOut",
+                  "ActionRequired",
+                  "Stale",
+                  "Skipped"
+                ],
+                "deprecations": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ]
+              }
+            }
+          },
+          {
+            "name": "events",
+            "publicName": "events",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string",
+                "validation": {
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "gitlab_bot_merge_request_comment_filters",
       "source": "gitlab_bot_merge_request_comment_filters",
       "publicAliases": [],
@@ -5605,6 +5818,22 @@
       }
     },
     {
+      "name": "agent_run_event_payload",
+      "source": "agent_run_event_payload",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "record",
+        "value": {
+          "kind": "unknown"
+        },
+        "propertyNames": {
+          "kind": "primitive",
+          "type": "string"
+        }
+      }
+    },
+    {
       "name": "tip_tap_image_node",
       "source": "tip_tap_image_node",
       "publicAliases": [],
@@ -6259,7 +6488,6 @@
     "users.connectedAccounts",
     "sessions",
     "sessions.sources",
-    "sessions.files",
     "sessions.diffs",
     "projects",
     "projects.environmentVariables",
@@ -6292,7 +6520,6 @@
     "users.connectedAccounts",
     "sessions",
     "sessions.sources",
-    "sessions.files",
     "sessions.diffs",
     "projects",
     "projects.environmentVariables",
@@ -10048,7 +10275,6 @@
         "enableGreptileBot",
         "experimentalMcp",
         "featureMentionAuthor",
-        "freePrPeriod",
         "gcpVertexAiLocation",
         "gcpVertexAiProject",
         "gcpVertexAiServiceAccountJson",
@@ -10090,7 +10316,6 @@
         "enableGreptileBot",
         "experimentalMcp",
         "featureMentionAuthor",
-        "freePrPeriod",
         "gcpVertexAiLocation",
         "gcpVertexAiProject",
         "gcpVertexAiServiceAccountJson",
@@ -10193,10 +10418,6 @@
         },
         {
           "name": "featureMentionAuthor",
-          "required": false
-        },
-        {
-          "name": "freePrPeriod",
           "required": false
         },
         {
@@ -14956,326 +15177,6 @@
       "cookieParamDetails": [],
       "paramsModel": {
         "publicName": "SourceRetrieveParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "401",
-          "403",
-          "404",
-          "409",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "sessions.files",
-      "publicResource": "sessions.files",
-      "operation": "list",
-      "publicOperation": "list",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/sessions/{sessionId}/files",
-      "pathParams": [
-        "sessionId"
-      ],
-      "publicPathParams": [
-        "sessionId"
-      ],
-      "queryParams": [
-        "cursor",
-        "limit",
-        "search"
-      ],
-      "publicQueryParams": [
-        "cursor",
-        "limit",
-        "search"
-      ],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "sessionId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [
-        {
-          "name": "cursor",
-          "required": false,
-          "style": "form",
-          "explode": true
-        },
-        {
-          "name": "limit",
-          "required": false,
-          "style": "form",
-          "explode": true,
-          "defaultValue": 50
-        },
-        {
-          "name": "search",
-          "required": false,
-          "style": "form",
-          "explode": true
-        }
-      ],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "FileListParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "401",
-          "403",
-          "404",
-          "409",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "sessions.files",
-      "publicResource": "sessions.files",
-      "operation": "retrieve",
-      "publicOperation": "retrieve",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/sessions/{sessionId}/files/{fileId}",
-      "pathParams": [
-        "sessionId",
-        "fileId"
-      ],
-      "publicPathParams": [
-        "sessionId",
-        "fileId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "sessionId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        },
-        {
-          "name": "fileId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "FileRetrieveParams"
       },
       "response": {
         "status": "200",
@@ -21619,9 +21520,18 @@
       "publicQueryParams": [],
       "headerParams": [],
       "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
+      "bodyParams": [
+        "body"
+      ],
+      "publicBodyParams": [
+        "body"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "body",
+          "required": false
+        }
+      ],
       "pathParamDetails": [
         {
           "name": "agentId",
@@ -21637,6 +21547,19 @@
       "cookieParamDetails": [],
       "paramsModel": {
         "publicName": "RunCreateParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": false,
+        "publicName": "body",
+        "publicIdentifier": "body"
       },
       "response": {
         "status": "201",
