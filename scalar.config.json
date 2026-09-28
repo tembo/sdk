@@ -269,12 +269,6 @@
             "retrieve": "get /v1/sessions/sources/{sourceId}"
           }
         },
-        "files": {
-          "methods": {
-            "list": "get /v1/sessions/{sessionId}/files",
-            "retrieve": "get /v1/sessions/{sessionId}/files/{fileId}"
-          }
-        },
         "diffs": {
           "methods": {
             "list": "get /v1/sessions/{sessionId}/diffs",
