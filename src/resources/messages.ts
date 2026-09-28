@@ -376,6 +376,7 @@ export interface MessageListResponse {
 
 export namespace MessageListResponse {
   export interface Item {
+    isQueued?: boolean;
     /**
      * @format uuid
      */
@@ -437,6 +438,8 @@ export namespace MessageListResponse {
 }
 
 export interface MessageCreateParams {
+  /** Client-generated idempotent message ID. */
+  id?: string;
   /**
    * @minLength 1
    * @maxLength 1000000

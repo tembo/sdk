@@ -206,7 +206,8 @@
           "verb": "patch",
           "path": "/v1/models/{modelName}",
           "bodyParamName": "body"
-        }
+        },
+        "inference": "get /v1/inference"
       }
     },
     "users": {
@@ -260,7 +261,8 @@
         },
         "delete": "delete /v1/sessions/{sessionId}",
         "stop": "post /v1/sessions/{sessionId}/stop",
-        "list_events": "get /v1/sessions/{sessionId}/events"
+        "list_events": "get /v1/sessions/{sessionId}/events",
+        "streamEvents": "get /v1/sessions/{sessionId}/events/stream"
       },
       "subresources": {
         "sources": {
@@ -273,6 +275,38 @@
           "methods": {
             "list": "get /v1/sessions/{sessionId}/diffs",
             "retrieve": "get /v1/sessions/{sessionId}/diffs/{diffId}"
+          }
+        },
+        "automations": {
+          "methods": {
+            "list": "get /v1/sessions/{sessionId}/automations",
+            "create": "post /v1/sessions/{sessionId}/automations",
+            "retrieve": "get /v1/sessions/{sessionId}/automations/{automationId}",
+            "update": "patch /v1/sessions/{sessionId}/automations/{automationId}",
+            "delete": "delete /v1/sessions/{sessionId}/automations/{automationId}",
+            "run": "post /v1/sessions/{sessionId}/automations/{automationId}/run"
+          }
+        },
+        "computer": {
+          "methods": {
+            "retrieve": "get /v1/sessions/{sessionId}/computer",
+            "start": "post /v1/sessions/{sessionId}/computer/start",
+            "reconnect": "post /v1/sessions/{sessionId}/computer/reconnect"
+          },
+          "subresources": {
+            "recordings": {
+              "methods": {
+                "list": "get /v1/sessions/{sessionId}/computer/recordings",
+                "start": "post /v1/sessions/{sessionId}/computer/recordings",
+                "stop": "post /v1/sessions/{sessionId}/computer/recordings/{recordingId}/stop"
+              }
+            }
+          }
+        },
+        "userMemory": {
+          "methods": {
+            "retrieve": "get /v1/sessions/{sessionId}/user-memory",
+            "update": "patch /v1/sessions/{sessionId}/user-memory"
           }
         }
       }
@@ -511,6 +545,13 @@
       "methods": {
         "retrieve": "get /v1/billing",
         "list_usage": "get /v1/billing/usage"
+      }
+    },
+    "userMemory": {
+      "methods": {
+        "retrieve": "get /v1/user-memory",
+        "update": "patch /v1/user-memory",
+        "clear": "delete /v1/user-memory"
       }
     }
   },
