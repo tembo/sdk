@@ -16,7 +16,7 @@ import { writeFileSync } from 'node:fs';
 import Tembo from '@tembo-io/sdk';
 
 // One shared client runs every case.
-const client = new Tembo();
+const client = new Tembo({ maxRetries: 2, timeout: 10_000 });
 
 // The result of running one case, collected for the JSON report or the printed table.
 type SmokeResult = {
@@ -557,7 +557,6 @@ const cases: {
         enableGreptileBot: false,
         experimentalMcp: false,
         featureMentionAuthor: false,
-        freePrPeriod: 0,
         gcpVertexAiLocation: '',
         gcpVertexAiProject: '',
         gcpVertexAiServiceAccountJson: '',
@@ -884,7 +883,8 @@ const cases: {
       const message = await client.messages.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         content: 'x',
         richContent: {
-          type: 'image',
+          type: 'doc',
+          content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hello' }] }],
         },
       });
     },
@@ -918,7 +918,7 @@ const cases: {
     label: 'all params',
     run: async () => {
       const model = await client.models.list({
-        cursor: 'claude-fable-5-1',
+        cursor: 'claude-opus-5-5',
         limit: '50',
       });
     },
@@ -930,7 +930,7 @@ const cases: {
     path: '/v1/models/{modelName}',
     label: 'required params',
     run: async () => {
-      const model = await client.models.update('claude-fable-5-1', {});
+      const model = await client.models.update('claude-opus-5-5', {});
     },
   },
 
@@ -940,7 +940,7 @@ const cases: {
     path: '/v1/models/{modelName}',
     label: 'all params',
     run: async () => {
-      const model = await client.models.update('claude-fable-5-1', {
+      const model = await client.models.update('claude-opus-5-5', {
         enabled: false,
         inferenceProvider: 'TemboManagedInference',
       });
@@ -1236,43 +1236,6 @@ const cases: {
     path: '/v1/sessions/sources/{sourceId}',
     run: async () => {
       const source = await client.sessions.sources.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
-    },
-  },
-
-  {
-    operation: 'list',
-    method: 'GET',
-    path: '/v1/sessions/{sessionId}/files',
-    label: 'required params',
-    run: async () => {
-      const file = await client.sessions.files.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        limit: 50,
-      });
-    },
-  },
-
-  {
-    operation: 'list',
-    method: 'GET',
-    path: '/v1/sessions/{sessionId}/files',
-    label: 'all params',
-    run: async () => {
-      const file = await client.sessions.files.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: 50,
-        search: 'search',
-      });
-    },
-  },
-
-  {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/sessions/{sessionId}/files/{fileId}',
-    run: async () => {
-      const file = await client.sessions.files.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-      });
     },
   },
 
@@ -1879,7 +1842,8 @@ const cases: {
         name: 'x',
         key: 'x',
         instructions: {
-          type: 'image',
+          type: 'doc',
+          content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hello' }] }],
         },
         mcpServers: ['x'],
         agent: 'x',
@@ -2149,8 +2113,19 @@ const cases: {
     operation: 'create',
     method: 'POST',
     path: '/v1/agents/{agentId}/runs',
+    label: 'required params',
     run: async () => {
       const run = await client.agents.runs.create('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/agents/{agentId}/runs',
+    label: 'all params',
+    run: async () => {
+      const run = await client.agents.runs.create('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
     },
   },
 

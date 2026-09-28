@@ -84,10 +84,6 @@ export namespace SettingRetrieveResponse {
     /**
      * @minimum 0
      */
-    freePrPeriod: number;
-    /**
-     * @minimum 0
-     */
     maxBotReviews: number;
     /**
      * @minimum 0
@@ -180,10 +176,6 @@ export interface SettingUpdateParams {
   enableGreptileBot?: boolean;
   experimentalMcp?: boolean;
   featureMentionAuthor?: boolean;
-  /**
-   * @minimum 0
-   */
-  freePrPeriod?: number;
   /**
    * @maxLength 64000
    */
@@ -280,10 +272,6 @@ export namespace SettingUpdateResponse {
     enableGreptileBot: boolean;
     experimentalMcp: boolean;
     featureMentionAuthor: boolean;
-    /**
-     * @minimum 0
-     */
-    freePrPeriod: number;
     /**
      * @minimum 0
      */

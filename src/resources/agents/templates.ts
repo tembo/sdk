@@ -89,6 +89,7 @@ export type TriggerFilters =
   | TriggerFilters.TriggerFiltersItem38
   | TriggerFilters.TriggerFiltersItem39
   | TriggerFilters.TriggerFiltersItem40
+  | TriggerFilters.TriggerFiltersItem41
   | Record<string, unknown>;
 
 export namespace TriggerFilters {
@@ -135,39 +136,64 @@ export namespace TriggerFilters {
 
   export interface TriggerFiltersItem19 extends GithubWorkflowRunFailedFilters {}
 
-  export interface TriggerFiltersItem20 extends GitlabBotMergeRequestCommentFilters {}
+  export interface TriggerFiltersItem20 {
+    /**
+     * Only trigger if the workflow run is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger for specific workflow names
+     */
+    workflowNames?: Array<string>;
+    /**
+     * Only trigger for specific branches
+     */
+    branches?: Array<string>;
+    /**
+     * Only trigger for these completed workflow results, such as success
+     */
+    conclusions?: Array<
+      'success' | 'failure' | 'neutral' | 'cancelled' | 'timed_out' | 'action_required' | 'stale' | 'skipped'
+    >;
+    /**
+     * Only trigger for these originating GitHub events; use schedule for cron runs, not push or pull_request
+     */
+    events?: Array<string>;
+  }
 
-  export interface TriggerFiltersItem21 extends GitlabIssueClosedFilters {}
+  export interface TriggerFiltersItem21 extends GitlabBotMergeRequestCommentFilters {}
 
-  export interface TriggerFiltersItem22 extends GitlabIssueOpenedFilters {}
+  export interface TriggerFiltersItem22 extends GitlabIssueClosedFilters {}
 
-  export interface TriggerFiltersItem23 extends GitlabMergeRequestClosedFilters {}
+  export interface TriggerFiltersItem23 extends GitlabIssueOpenedFilters {}
 
-  export interface TriggerFiltersItem24 extends GitlabMergeRequestMergedFilters {}
+  export interface TriggerFiltersItem24 extends GitlabMergeRequestClosedFilters {}
 
-  export interface TriggerFiltersItem25 extends GitlabMergeRequestOpenedFilters {}
+  export interface TriggerFiltersItem25 extends GitlabMergeRequestMergedFilters {}
 
-  export interface TriggerFiltersItem26 extends GitlabMergeRequestUpdatedFilters {}
+  export interface TriggerFiltersItem26 extends GitlabMergeRequestOpenedFilters {}
 
-  export interface TriggerFiltersItem27 extends GitlabPipelineFailedFilters {}
+  export interface TriggerFiltersItem27 extends GitlabMergeRequestUpdatedFilters {}
 
-  export interface TriggerFiltersItem28 extends GitlabRefCreatedFilters {}
+  export interface TriggerFiltersItem28 extends GitlabPipelineFailedFilters {}
 
-  export interface TriggerFiltersItem29 extends LinearIssueCreateFilters {}
+  export interface TriggerFiltersItem29 extends GitlabRefCreatedFilters {}
 
-  export interface TriggerFiltersItem30 extends LinearIssueLabelAddedFilters {}
+  export interface TriggerFiltersItem30 extends LinearIssueCreateFilters {}
 
-  export interface TriggerFiltersItem31 extends LinearIssueStatusChangedFilters {}
+  export interface TriggerFiltersItem31 extends LinearIssueLabelAddedFilters {}
 
-  export interface TriggerFiltersItem32 extends LinearIssueUpdatedFilters {}
+  export interface TriggerFiltersItem32 extends LinearIssueStatusChangedFilters {}
 
-  export interface TriggerFiltersItem33 extends SentryIssueCreatedFilters {}
+  export interface TriggerFiltersItem33 extends LinearIssueUpdatedFilters {}
 
-  export interface TriggerFiltersItem34 extends SlackMessageReactionAddedFilters {}
+  export interface TriggerFiltersItem34 extends SentryIssueCreatedFilters {}
 
-  export interface TriggerFiltersItem35 extends SlackMessageSentInChannelFilters {}
+  export interface TriggerFiltersItem35 extends SlackMessageReactionAddedFilters {}
 
-  export interface TriggerFiltersItem36 {
+  export interface TriggerFiltersItem36 extends SlackMessageSentInChannelFilters {}
+
+  export interface TriggerFiltersItem37 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -179,7 +205,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem37 {
+  export interface TriggerFiltersItem38 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -195,7 +221,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem38 {
+  export interface TriggerFiltersItem39 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -211,7 +237,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem39 {
+  export interface TriggerFiltersItem40 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -231,7 +257,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem40 {
+  export interface TriggerFiltersItem41 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -855,6 +881,7 @@ export interface TemplateListParams {
     | 'skillProgressionMap'
     | 'slackChannelListener'
     | 'slopCop'
+    | 'testPruner'
     | 'staleCodeComments'
     | 'stalePullRequestNotifier'
     | 'summarizeChangesDaily'
@@ -899,6 +926,7 @@ export interface TemplateListResponse {
     | 'skillProgressionMap'
     | 'slackChannelListener'
     | 'slopCop'
+    | 'testPruner'
     | 'staleCodeComments'
     | 'stalePullRequestNotifier'
     | 'summarizeChangesDaily'
@@ -940,6 +968,7 @@ export namespace TemplateListResponse {
       | 'skillProgressionMap'
       | 'slackChannelListener'
       | 'slopCop'
+      | 'testPruner'
       | 'staleCodeComments'
       | 'stalePullRequestNotifier'
       | 'summarizeChangesDaily'
@@ -1005,6 +1034,7 @@ export interface TemplateRetrieveResponse {
     | 'skillProgressionMap'
     | 'slackChannelListener'
     | 'slopCop'
+    | 'testPruner'
     | 'staleCodeComments'
     | 'stalePullRequestNotifier'
     | 'summarizeChangesDaily'
