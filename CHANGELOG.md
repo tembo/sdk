@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.5.0](https://github.com/tembo/sdk/compare/v0.4.3...v0.5.0) (2026-09-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 4 breaking changes to the SDK surface.
+    - Removed body field `freePrPeriod` from `organizations.settings.update`.
+    - Removed operation `sessions.files.list` (`GET /v1/sessions/{sessionId}/files`).
+    - Removed operation `sessions.files.retrieve` (`GET /v1/sessions/{sessionId}/files/{fileId}`).
+    - Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** update SDK surface (8 changes) ([b37d083](https://github.com/tembo/sdk/commit/b37d083104238cd69795630a1ef5754ed6e623d8))
+
+
+### Bug Fixes
+
+* **sdk:** remove stale session file mappings ([a3e6ba4](https://github.com/tembo/sdk/commit/a3e6ba4aaaeb72125aaac1139220812d31f025b1))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([8232eff](https://github.com/tembo/sdk/commit/8232effea817a574319a9aaf3b706361b2066ec1))
+
 ## [0.4.3](https://github.com/tembo/sdk/compare/v0.4.2...v0.4.3) (2026-09-20)
 
 
