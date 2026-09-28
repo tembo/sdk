@@ -12,14 +12,6 @@ import {
   type SourceRetrieveResponse,
   type SourceListParams,
 } from './sources';
-import * as FilesAPI from './files';
-import {
-  Files,
-  type FileListResponse,
-  type FileRetrieveResponse,
-  type FileListParams,
-  type FileRetrieveParams,
-} from './files';
 import * as DiffsAPI from './diffs';
 import {
   Diffs,
@@ -31,7 +23,6 @@ import {
 
 export class Sessions extends APIResource {
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
-  files: FilesAPI.Files = new FilesAPI.Files(this._client);
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
 
   /**
@@ -1430,7 +1421,6 @@ export namespace SessionListEventsResponse {
   }
 }
 Sessions.Sources = Sources;
-Sessions.Files = Files;
 Sessions.Diffs = Diffs;
 
 export declare namespace Sessions {
@@ -1456,14 +1446,6 @@ export declare namespace Sessions {
     type SourceListResponse as SourceListResponse,
     type SourceRetrieveResponse as SourceRetrieveResponse,
     type SourceListParams as SourceListParams,
-  };
-
-  export {
-    Files as Files,
-    type FileListResponse as FileListResponse,
-    type FileRetrieveResponse as FileRetrieveResponse,
-    type FileListParams as FileListParams,
-    type FileRetrieveParams as FileRetrieveParams,
   };
 
   export {
