@@ -43,13 +43,41 @@ export class Billing extends APIResource {
 }
 
 export interface BillingRetrieveResponse {
+  access: BillingRetrieveResponse.Access;
+  trial: BillingRetrieveResponse.Trial | null;
   billingEnabled: boolean;
   balance: BillingRetrieveResponse.Balance;
   onDemand: BillingRetrieveResponse.OnDemand;
-  subscription: BillingRetrieveResponse.Subscription | BillingRetrieveResponse.Subscription2;
+  subscription: BillingRetrieveResponse.Subscription | null;
 }
 
 export namespace BillingRetrieveResponse {
+  export interface Access {
+    state: 'blocked' | 'grace' | 'trial' | 'paid';
+    canExecute: boolean;
+    blockedReason:
+      | 'awaiting_demo'
+      | 'trial_expired'
+      | 'trial_allowance_exhausted'
+      | 'subscription_ended'
+      | null;
+  }
+
+  export interface Trial {
+    status: 'Trialing';
+    /**
+     * @format date-time
+     */
+    startedAt: string;
+    /**
+     * @format date-time
+     */
+    endsAt: string;
+    allowance: number;
+    remainingAllowance: number;
+    exhausted: boolean;
+  }
+
   export interface Balance {
     calculatedBalance: number;
     availableBalance: number;
@@ -78,53 +106,6 @@ export namespace BillingRetrieveResponse {
   }
 
   export interface Subscription {
-    type: 'free';
-    status: null;
-    canceledAt: null;
-    periodEnd: null;
-    plan: null;
-    currentTier: 0;
-    /**
-     * @maxItems 20
-     */
-    upgradablePlans: Array<Subscription.UpgradablePlan>;
-  }
-
-  export namespace Subscription {
-    export interface UpgradablePlan {
-      /**
-       * @minLength 1
-       * @maxLength 255
-       */
-      id: string;
-      /**
-       * @maxLength 255
-       */
-      title: string;
-      /**
-       * @minimum 0
-       */
-      tier: number;
-      /**
-       * @maxLength 2000
-       */
-      description: string;
-      /**
-       * @minimum 0
-       */
-      includedCredits: number;
-      /**
-       * @minimum 0
-       */
-      monthlyPrice: number;
-      /**
-       * @minimum 0
-       */
-      yearlyPrice: number | null;
-    }
-  }
-
-  export interface Subscription2 {
     status: 'Active' | 'PastDue' | 'Unpaid' | 'Canceled' | 'Trialing' | 'Incomplete' | 'IncompleteExpired';
     /**
      * @format date-time
@@ -135,7 +116,7 @@ export namespace BillingRetrieveResponse {
      */
     periodEnd: string | null;
     type: 'paid';
-    plan: Subscription2.Plan | null;
+    plan: Subscription.Plan | null;
     /**
      * @minimum 0
      */
@@ -143,10 +124,10 @@ export namespace BillingRetrieveResponse {
     /**
      * @maxItems 20
      */
-    upgradablePlans: Array<Subscription2.UpgradablePlan>;
+    upgradablePlans: Array<Subscription.UpgradablePlan>;
   }
 
-  export namespace Subscription2 {
+  export namespace Subscription {
     export interface Plan {
       /**
        * @minLength 1

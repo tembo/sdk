@@ -137,7 +137,7 @@ export namespace APIKeyListResponse {
      * @format date-time
      */
     updatedAt: string;
-    userId: string | null;
+    userId: string;
     tokenPreview: string;
   }
 }
@@ -168,7 +168,7 @@ export interface APIKeyCreateResponse {
    * @format date-time
    */
   updatedAt: string;
-  userId: string | null;
+  userId: string;
   tokenPreview: string;
   token: string;
 }
@@ -191,7 +191,7 @@ export interface APIKeyRetrieveResponse {
    * @format date-time
    */
   updatedAt: string;
-  userId: string | null;
+  userId: string;
   tokenPreview: string;
 }
 
@@ -221,7 +221,7 @@ export interface APIKeyUpdateResponse {
    * @format date-time
    */
   updatedAt: string;
-  userId: string | null;
+  userId: string;
   tokenPreview: string;
 }
 

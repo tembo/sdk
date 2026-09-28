@@ -51,7 +51,7 @@ export class Builds extends APIResource {
   }
 
   /**
-   * Retrieve project build status and captured logs.
+   * Retrieve project build status.
    *
    * @param {string} buildID
    * @param {BuildRetrieveParams} params - The parameters to send with the request.
@@ -228,7 +228,6 @@ export interface BuildRetrieveResponse {
   failure: string | null;
   includeDeps: boolean;
   includeSkills: boolean;
-  logs: string;
   name: string | null;
   progress: BuildRetrieveResponse.Progress | null;
   /**

@@ -644,6 +644,9 @@ export interface MessageUpdateParams {
    * @maxLength 1000000
    */
   content?: string;
+  /**
+   * Rich-text document containing text, formatting, images, and mentions. A document typically has a "doc" root with nested content nodes.
+   */
   richContent?: TipTapDocument | null;
 }
 

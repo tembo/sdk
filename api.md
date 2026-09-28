@@ -81,9 +81,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Sessions Sources`](#sessions-sources)
     - [List session sources](#list-session-sources)
     - [Retrieve a session source](#retrieve-a-session-source)
-  - [`Sessions Files`](#sessions-files)
-    - [List session files](#list-session-files)
-    - [Retrieve a session file](#retrieve-a-session-file)
   - [`Sessions Diffs`](#sessions-diffs)
     - [List session diffs](#list-session-diffs)
     - [Retrieve a session diff](#retrieve-a-session-diff)
@@ -863,7 +860,7 @@ Enable or disable an organization model, or select its inference provider.
 | Response | [`ModelUpdateResponse`](./src/resources/models.ts) |
 
 ```ts
-const model = await client.models.update('claude-fable-5-1', {});
+const model = await client.models.update('claude-opus-5-5', {});
 ```
 
 ## `Users`
@@ -1080,38 +1077,6 @@ Retrieve one session source.
 
 ```ts
 const source = await client.sessions.sources.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
-```
-
-### `Sessions Files`
-
-#### List session files
-
-List recorded session files without returning file contents.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`FileListParams`](./src/resources/sessions/files.ts) |
-| Response | [`FileListResponse`](./src/resources/sessions/files.ts) |
-
-```ts
-const file = await client.sessions.files.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  limit: 50,
-});
-```
-
-#### Retrieve a session file
-
-Retrieve one recorded session file and its content.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`FileRetrieveParams`](./src/resources/sessions/files.ts) |
-| Response | [`FileRetrieveResponse`](./src/resources/sessions/files.ts) |
-
-```ts
-const file = await client.sessions.files.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-});
 ```
 
 ### `Sessions Diffs`
@@ -1375,7 +1340,7 @@ const build = await client.projects.builds.create('projectId', {});
 
 #### Retrieve a project build
 
-Retrieve project build status and captured logs.
+Retrieve project build status.
 
 | Direction | Type |
 | --- | --- |
@@ -1780,10 +1745,11 @@ const run = await client.agents.runs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7'
 
 #### Create an agent run
 
-Queue an agent run with optional event input. The response confirms queuing, not completed execution.
+Queue an agent run. The entire JSON object body is passed to the agent as event input, just like the legacy /trigger endpoint; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
 
 | Direction | Type |
 | --- | --- |
+| Request | [`RunCreateParams`](./src/resources/agents/runs.ts) |
 | Response | [`RunCreateResponse`](./src/resources/agents/runs.ts) |
 
 ```ts

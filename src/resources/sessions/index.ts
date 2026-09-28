@@ -19,7 +19,5 @@ export type {
 } from './sessions';
 export { Sources } from './sources';
 export type { SourceListParams, SourceListResponse, SourceRetrieveResponse } from './sources';
-export { Files } from './files';
-export type { FileListParams, FileListResponse, FileRetrieveParams, FileRetrieveResponse } from './files';
 export { Diffs } from './diffs';
 export type { DiffListParams, DiffListResponse, DiffRetrieveParams, DiffRetrieveResponse } from './diffs';

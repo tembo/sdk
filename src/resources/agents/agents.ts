@@ -84,6 +84,7 @@ import {
   type RunCreateResponse,
   type RunRetrieveResponse,
   type RunListParams,
+  type RunCreateParams,
   type RunRetrieveParams,
 } from './runs';
 
@@ -272,6 +273,9 @@ export namespace AgentListResponse {
     organizationName: string | null;
     createdBy: string | null;
     name: string;
+    /**
+     * Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.
+     */
     instructions: MessagesAPI.TipTapDocument | null;
     /**
      * Runtime and model selection key; not the ID of an agent resource.
@@ -422,6 +426,7 @@ export interface AgentCreateParams {
     | 'skillProgressionMap'
     | 'slackChannelListener'
     | 'slopCop'
+    | 'testPruner'
     | 'staleCodeComments'
     | 'stalePullRequestNotifier'
     | 'summarizeChangesDaily'
@@ -499,6 +504,9 @@ export interface AgentCreateResponse {
   organizationId: string | null;
   organizationName: string | null;
   createdBy: string | null;
+  /**
+   * Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.
+   */
   instructions: MessagesAPI.TipTapDocument | null;
   /**
    * Runtime and model selection key; not the ID of an agent resource.
@@ -513,6 +521,9 @@ export interface AgentCreateResponse {
    * @maxItems 100
    */
   mcpServers: Array<string>;
+  /**
+   * User-defined state keyed by name. Values may be any JSON value, including nested objects and arrays. No application-specific keys are required.
+   */
   userState: AgentState | null;
   /**
    * @maxItems 250
@@ -611,6 +622,9 @@ export interface AgentRetrieveResponse {
   organizationId: string | null;
   organizationName: string | null;
   createdBy: string | null;
+  /**
+   * Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.
+   */
   instructions: MessagesAPI.TipTapDocument | null;
   /**
    * Runtime and model selection key; not the ID of an agent resource.
@@ -625,6 +639,9 @@ export interface AgentRetrieveResponse {
    * @maxItems 100
    */
   mcpServers: Array<string>;
+  /**
+   * User-defined state keyed by name. Values may be any JSON value, including nested objects and arrays. No application-specific keys are required.
+   */
   userState: AgentState | null;
   /**
    * @maxItems 250
@@ -703,6 +720,9 @@ export interface AgentUpdateParams {
    * @maxLength 200
    */
   key?: string | null;
+  /**
+   * Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.
+   */
   instructions?: MessagesAPI.TipTapDocument | null;
   /**
    * @maxItems 100
@@ -777,6 +797,9 @@ export interface AgentUpdateResponse {
   organizationId: string | null;
   organizationName: string | null;
   createdBy: string | null;
+  /**
+   * Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.
+   */
   instructions: MessagesAPI.TipTapDocument | null;
   /**
    * Runtime and model selection key; not the ID of an agent resource.
@@ -791,6 +814,9 @@ export interface AgentUpdateResponse {
    * @maxItems 100
    */
   mcpServers: Array<string>;
+  /**
+   * User-defined state keyed by name. Values may be any JSON value, including nested objects and arrays. No application-specific keys are required.
+   */
   userState: AgentState | null;
   /**
    * @maxItems 250
@@ -956,6 +982,7 @@ export declare namespace Agents {
     type RunCreateResponse as RunCreateResponse,
     type RunRetrieveResponse as RunRetrieveResponse,
     type RunListParams as RunListParams,
+    type RunCreateParams as RunCreateParams,
     type RunRetrieveParams as RunRetrieveParams,
   };
 }
