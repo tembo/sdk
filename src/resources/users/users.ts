@@ -4,6 +4,13 @@ import { APIResource } from '../../resource';
 import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
 import { path as __scalarPath } from '../../internal/utils/path';
+import * as SettingsAPI from './settings';
+import {
+  Settings,
+  type SettingRetrieveResponse,
+  type SettingUpdateResponse,
+  type SettingUpdateParams,
+} from './settings';
 import * as ConnectedAccountsAPI from './connected-accounts';
 import {
   ConnectedAccounts,
@@ -14,9 +21,25 @@ import {
 } from './connected-accounts';
 
 export class Users extends APIResource {
+  settings: SettingsAPI.Settings = new SettingsAPI.Settings(this._client);
   connectedAccounts: ConnectedAccountsAPI.ConnectedAccounts = new ConnectedAccountsAPI.ConnectedAccounts(
     this._client,
   );
+
+  /**
+   * Retrieve the authenticated user.
+   *
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<UserMeResponse>} Retrieve the current user
+   *
+   * @example
+   * ```ts
+   * const user = await client.users.me();
+   * ```
+   */
+  me(options?: RequestOptions): APIPromise<UserMeResponse> {
+    return this._client.get('/v1/users/me', options);
+  }
 
   /**
    * Retrieve a user profile visible to the caller.
@@ -50,6 +73,26 @@ export class Users extends APIResource {
   delete(userID: string, body: UserDeleteParams, options?: RequestOptions): APIPromise<UserDeleteResponse> {
     return this._client.delete(__scalarPath`/v1/users/${userID}`, { body, ...options });
   }
+}
+
+export interface UserMeResponse {
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  email: string | null;
+  emailVerified: boolean;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   */
+  id: string;
+  image: string | null;
+  name: string | null;
+  /**
+   * @format date-time
+   */
+  updatedAt: string;
 }
 
 export interface UserRetrieveResponse {
@@ -107,13 +150,22 @@ export interface UserDeleteResponse {
    */
   id: string;
 }
+Users.Settings = Settings;
 Users.ConnectedAccounts = ConnectedAccounts;
 
 export declare namespace Users {
   export {
+    type UserMeResponse as UserMeResponse,
     type UserRetrieveResponse as UserRetrieveResponse,
     type UserDeleteResponse as UserDeleteResponse,
     type UserDeleteParams as UserDeleteParams,
+  };
+
+  export {
+    Settings as Settings,
+    type SettingRetrieveResponse as SettingRetrieveResponse,
+    type SettingUpdateResponse as SettingUpdateResponse,
+    type SettingUpdateParams as SettingUpdateParams,
   };
 
   export {

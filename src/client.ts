@@ -123,6 +123,7 @@ import {
 } from './resources/models';
 import {
   Users,
+  type UserMeResponse,
   type UserRetrieveResponse,
   type UserDeleteResponse,
   type UserDeleteParams,
@@ -136,11 +137,13 @@ import {
   type SessionRetrieveResponse,
   type SessionUpdateResponse,
   type SessionDeleteResponse,
+  type SessionForkResponse,
   type SessionStopResponse,
   type SessionListEventsResponse,
   type SessionListParams,
   type SessionCreateParams,
   type SessionUpdateParams,
+  type SessionForkParams,
   type SessionStopParams,
   type SessionListEventsParams,
 } from './resources/sessions/sessions';
@@ -1127,6 +1130,7 @@ export declare namespace Tembo {
 
   export {
     Users as Users,
+    type UserMeResponse as UserMeResponse,
     type UserRetrieveResponse as UserRetrieveResponse,
     type UserDeleteResponse as UserDeleteResponse,
     type UserDeleteParams as UserDeleteParams,
@@ -1141,11 +1145,13 @@ export declare namespace Tembo {
     type SessionRetrieveResponse as SessionRetrieveResponse,
     type SessionUpdateResponse as SessionUpdateResponse,
     type SessionDeleteResponse as SessionDeleteResponse,
+    type SessionForkResponse as SessionForkResponse,
     type SessionStopResponse as SessionStopResponse,
     type SessionListEventsResponse as SessionListEventsResponse,
     type SessionListParams as SessionListParams,
     type SessionCreateParams as SessionCreateParams,
     type SessionUpdateParams as SessionUpdateParams,
+    type SessionForkParams as SessionForkParams,
     type SessionStopParams as SessionStopParams,
     type SessionListEventsParams as SessionListEventsParams,
   };
