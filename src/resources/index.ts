@@ -91,13 +91,7 @@ export type {
 export { Models } from './models';
 export type { ModelListParams, ModelListResponse, ModelUpdateParams, ModelUpdateResponse } from './models';
 export { Users } from './users/users';
-export type {
-  UserRetrieveResponse,
-  UserUpdateParams,
-  UserUpdateResponse,
-  UserDeleteParams,
-  UserDeleteResponse,
-} from './users/users';
+export type { UserRetrieveResponse, UserDeleteParams, UserDeleteResponse } from './users/users';
 export { Sessions } from './sessions/sessions';
 export type {
   SessionEventData,

@@ -30,7 +30,7 @@ export class Models extends APIResource {
   /**
    * Enable or disable an organization model, or select its inference provider.
    *
-   * @param {"claude-opus-5-5" | "claude-fable-5-1" | "claude-fable-5" | "claude-opus-5" | "claude-sonnet-5" | "claude-opus-4-8" | "claude-opus-4-7" | "claude-opus-4-6" | "claude-sonnet-4-6" | "claude-opus-4-5" | "claude-4-5-haiku" | "gpt-6-astra" | "gpt-6-sol" | "gpt-6-luna" | "gpt-5.6-sol" | "gpt-5.6-terra" | "gpt-5.6-luna" | "gpt-5.5-pro" | "gpt-5.5" | "gpt-5.4" | "gpt-5.4-mini" | "gpt-5.4-nano" | "gpt-5.3-codex" | "gpt-5.3-codex-spark" | "gpt-5.2-codex" | "gpt-5.2" | "glm-5p3" | "glm-5p3-flash" | "composer-1.5" | "composer-2" | "composer-2-fast" | "composer-2.5" | "gemini-3.1-pro" | "gemini-3.5-flash" | "grok-4.7" | "grok" | "kimi-k3" | "minimax-m2p7" | "minimax-m3" | "deepseek-v4-pro" | "deepseek-v4p1-flash"} modelName
+   * @param {"claude-opus-5-5" | "claude-fable-5-1" | "claude-fable-5" | "claude-opus-5" | "claude-sonnet-5-5" | "claude-opus-4-8" | "claude-opus-4-7" | "claude-opus-4-6" | "claude-opus-4-5" | "claude-4-5-haiku" | "gpt-6.1-sol" | "gpt-6-astra" | "gpt-6-sol" | "gpt-6-luna" | "gpt-5.6-sol" | "gpt-5.6-terra" | "gpt-5.6-luna" | "gpt-5.5-pro" | "gpt-5.5" | "gpt-5.4" | "gpt-5.4-mini" | "gpt-5.4-nano" | "gpt-5.3-codex" | "gpt-5.3-codex-spark" | "gpt-5.2-codex" | "gpt-5.2" | "glm-5p3" | "glm-5p3-flash" | "composer-1.5" | "composer-2" | "composer-2-fast" | "composer-2.5" | "gemini-3.1-pro" | "gemini-3.5-flash" | "grok-4.7" | "grok" | "kimi-k3" | "minimax-m2p7" | "minimax-m3" | "deepseek-v4-pro" | "deepseek-v4p1-flash"} modelName
    * @param {ModelUpdateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<ModelUpdateResponse>} Update a model
@@ -46,13 +46,13 @@ export class Models extends APIResource {
       | 'claude-fable-5-1'
       | 'claude-fable-5'
       | 'claude-opus-5'
-      | 'claude-sonnet-5'
+      | 'claude-sonnet-5-5'
       | 'claude-opus-4-8'
       | 'claude-opus-4-7'
       | 'claude-opus-4-6'
-      | 'claude-sonnet-4-6'
       | 'claude-opus-4-5'
       | 'claude-4-5-haiku'
+      | 'gpt-6.1-sol'
       | 'gpt-6-astra'
       | 'gpt-6-sol'
       | 'gpt-6-luna'
@@ -96,13 +96,13 @@ export interface ModelListParams {
     | 'claude-fable-5-1'
     | 'claude-fable-5'
     | 'claude-opus-5'
-    | 'claude-sonnet-5'
+    | 'claude-sonnet-5-5'
     | 'claude-opus-4-8'
     | 'claude-opus-4-7'
     | 'claude-opus-4-6'
-    | 'claude-sonnet-4-6'
     | 'claude-opus-4-5'
     | 'claude-4-5-haiku'
+    | 'gpt-6.1-sol'
     | 'gpt-6-astra'
     | 'gpt-6-sol'
     | 'gpt-6-luna'
@@ -146,13 +146,13 @@ export interface ModelListResponse {
     | 'claude-fable-5-1'
     | 'claude-fable-5'
     | 'claude-opus-5'
-    | 'claude-sonnet-5'
+    | 'claude-sonnet-5-5'
     | 'claude-opus-4-8'
     | 'claude-opus-4-7'
     | 'claude-opus-4-6'
-    | 'claude-sonnet-4-6'
     | 'claude-opus-4-5'
     | 'claude-4-5-haiku'
+    | 'gpt-6.1-sol'
     | 'gpt-6-astra'
     | 'gpt-6-sol'
     | 'gpt-6-luna'
@@ -193,13 +193,13 @@ export namespace ModelListResponse {
       | 'claude-fable-5-1'
       | 'claude-fable-5'
       | 'claude-opus-5'
-      | 'claude-sonnet-5'
+      | 'claude-sonnet-5-5'
       | 'claude-opus-4-8'
       | 'claude-opus-4-7'
       | 'claude-opus-4-6'
-      | 'claude-sonnet-4-6'
       | 'claude-opus-4-5'
       | 'claude-4-5-haiku'
+      | 'gpt-6.1-sol'
       | 'gpt-6-astra'
       | 'gpt-6-sol'
       | 'gpt-6-luna'
@@ -284,7 +284,8 @@ export namespace ModelListResponse {
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
-          | 'supergrok_not_connected';
+          | 'supergrok_not_connected'
+          | 'claude_subscription_not_connected';
         unavailableReason: string;
       }
 
@@ -301,7 +302,8 @@ export namespace ModelListResponse {
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
-          | 'supergrok_not_connected';
+          | 'supergrok_not_connected'
+          | 'claude_subscription_not_connected';
         unavailableReason: string;
       }
 
@@ -318,7 +320,8 @@ export namespace ModelListResponse {
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
-          | 'supergrok_not_connected';
+          | 'supergrok_not_connected'
+          | 'claude_subscription_not_connected';
         unavailableReason: string;
       }
 
@@ -335,7 +338,8 @@ export namespace ModelListResponse {
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
-          | 'supergrok_not_connected';
+          | 'supergrok_not_connected'
+          | 'claude_subscription_not_connected';
         unavailableReason: string;
       }
 
@@ -352,7 +356,8 @@ export namespace ModelListResponse {
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
-          | 'supergrok_not_connected';
+          | 'supergrok_not_connected'
+          | 'claude_subscription_not_connected';
         unavailableReason: string;
       }
     }
@@ -370,13 +375,13 @@ export interface ModelUpdateResponse {
     | 'claude-fable-5-1'
     | 'claude-fable-5'
     | 'claude-opus-5'
-    | 'claude-sonnet-5'
+    | 'claude-sonnet-5-5'
     | 'claude-opus-4-8'
     | 'claude-opus-4-7'
     | 'claude-opus-4-6'
-    | 'claude-sonnet-4-6'
     | 'claude-opus-4-5'
     | 'claude-4-5-haiku'
+    | 'gpt-6.1-sol'
     | 'gpt-6-astra'
     | 'gpt-6-sol'
     | 'gpt-6-luna'
@@ -461,7 +466,8 @@ export namespace ModelUpdateResponse {
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
-        | 'supergrok_not_connected';
+        | 'supergrok_not_connected'
+        | 'claude_subscription_not_connected';
       unavailableReason: string;
     }
 
@@ -478,7 +484,8 @@ export namespace ModelUpdateResponse {
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
-        | 'supergrok_not_connected';
+        | 'supergrok_not_connected'
+        | 'claude_subscription_not_connected';
       unavailableReason: string;
     }
 
@@ -495,7 +502,8 @@ export namespace ModelUpdateResponse {
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
-        | 'supergrok_not_connected';
+        | 'supergrok_not_connected'
+        | 'claude_subscription_not_connected';
       unavailableReason: string;
     }
 
@@ -512,7 +520,8 @@ export namespace ModelUpdateResponse {
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
-        | 'supergrok_not_connected';
+        | 'supergrok_not_connected'
+        | 'claude_subscription_not_connected';
       unavailableReason: string;
     }
 
@@ -529,7 +538,8 @@ export namespace ModelUpdateResponse {
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
-        | 'supergrok_not_connected';
+        | 'supergrok_not_connected'
+        | 'claude_subscription_not_connected';
       unavailableReason: string;
     }
   }

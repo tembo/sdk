@@ -1,7 +1,7 @@
 {
   "name": "TemboPublicApi",
   "slug": "temboPublicApi",
-  "generatorVersion": "0.33.3",
+  "generatorVersion": "0.36.0",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -8306,15 +8306,11 @@
       "publicHeaderParams": [],
       "bodyParams": [
         "name",
-        "slug",
-        "onboarding",
-        "onboardingCompleted"
+        "slug"
       ],
       "publicBodyParams": [
         "name",
-        "slug",
-        "onboarding",
-        "onboardingCompleted"
+        "slug"
       ],
       "bodyParamDetails": [
         {
@@ -8323,14 +8319,6 @@
         },
         {
           "name": "slug",
-          "required": false
-        },
-        {
-          "name": "onboarding",
-          "required": false
-        },
-        {
-          "name": "onboardingCompleted",
           "required": false
         }
       ],
@@ -12972,134 +12960,6 @@
       "cookieParamDetails": [],
       "paramsModel": {
         "publicName": "UserRetrieveParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "403",
-          "404",
-          "500"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "users",
-      "publicResource": "users",
-      "operation": "update",
-      "publicOperation": "update",
-      "deprecated": false,
-      "method": "PATCH",
-      "path": "/v1/users/{userId}",
-      "pathParams": [
-        "userId"
-      ],
-      "publicPathParams": [
-        "userId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [
-        "onboarding"
-      ],
-      "publicBodyParams": [
-        "onboarding"
-      ],
-      "bodyParamDetails": [
-        {
-          "name": "onboarding",
-          "required": true
-        }
-      ],
-      "pathParamDetails": [
-        {
-          "name": "userId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "UserUpdateParams"
-      },
-      "requestBody": {
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ],
-        "required": true,
-        "publicName": "body",
-        "publicIdentifier": "body"
       },
       "response": {
         "status": "200",

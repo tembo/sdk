@@ -335,8 +335,6 @@ const cases: {
       const organization = await client.organizations.update('organizationId', {
         name: 'x',
         slug: 'x',
-        onboarding: {},
-        onboardingCompleted: false,
       });
     },
   },
@@ -953,21 +951,6 @@ const cases: {
     path: '/v1/users/{userId}',
     run: async () => {
       const user = await client.users.retrieve('userId');
-    },
-  },
-
-  {
-    operation: 'update',
-    method: 'PATCH',
-    path: '/v1/users/{userId}',
-    run: async () => {
-      const user = await client.users.update('userId', {
-        onboarding: {
-          positionInCompany: 'x',
-          useCase: 'x',
-          howDidYouHear: 'x',
-        },
-      });
     },
   },
 

@@ -65,7 +65,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Update a model](#update-a-model)
 - [`Users`](#users)
   - [Retrieve a user](#retrieve-a-user)
-  - [Update a user](#update-a-user)
   - [Delete a user](#delete-a-user)
   - [`Users ConnectedAccounts`](#users-connectedaccounts)
     - [List user connected accounts](#list-user-connected-accounts)
@@ -875,25 +874,6 @@ Retrieve a user profile visible to the caller.
 
 ```ts
 const user = await client.users.retrieve('userId');
-```
-
-### Update a user
-
-Update your user profile and onboarding information.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`UserUpdateParams`](./src/resources/users/users.ts) |
-| Response | [`UserUpdateResponse`](./src/resources/users/users.ts) |
-
-```ts
-const user = await client.users.update('userId', {
-  onboarding: {
-    positionInCompany: 'x',
-    useCase: 'x',
-    howDidYouHear: 'x',
-  },
-});
 ```
 
 ### Delete a user
@@ -1745,7 +1725,7 @@ const run = await client.agents.runs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7'
 
 #### Create an agent run
 
-Queue an agent run. The entire JSON object body is passed to the agent as event input, just like the legacy /trigger endpoint; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
+Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
 
 | Direction | Type |
 | --- | --- |
