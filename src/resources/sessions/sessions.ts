@@ -1387,9 +1387,9 @@ export interface SessionListEventsParams {
    */
   limit?: string | number;
   /**
-   * @format uuid
+   * Filter by message ID, or "null" for session-level events.
    */
-  messageId?: string;
+  messageId?: string | 'null';
 }
 
 export interface SessionListEventsResponse {

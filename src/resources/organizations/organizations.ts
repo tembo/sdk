@@ -187,31 +187,6 @@ export interface OrganizationUpdateParams {
    * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
    */
   slug?: string;
-  onboarding?: OrganizationUpdateParams.Onboarding;
-  onboardingCompleted?: boolean;
-}
-
-export namespace OrganizationUpdateParams {
-  export interface Onboarding {
-    /**
-     * @minLength 1
-     * @maxLength 100
-     */
-    companySize?: string;
-    /**
-     * @maxItems 100
-     */
-    dismissedDashboardGetStartedCards?: Array<string>;
-    /**
-     * @minLength 1
-     * @maxLength 100
-     */
-    industry?: string;
-    /**
-     * @maxItems 100
-     */
-    stack?: Array<string>;
-  }
 }
 
 export interface OrganizationUpdateResponse {

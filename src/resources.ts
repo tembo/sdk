@@ -91,8 +91,6 @@ export type {
   ModelUpdateParams,
   ModelUpdateResponse,
   UserRetrieveResponse,
-  UserUpdateParams,
-  UserUpdateResponse,
   UserDeleteParams,
   UserDeleteResponse,
   SessionEventData,

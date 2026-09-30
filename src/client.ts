@@ -124,9 +124,7 @@ import {
 import {
   Users,
   type UserRetrieveResponse,
-  type UserUpdateResponse,
   type UserDeleteResponse,
-  type UserUpdateParams,
   type UserDeleteParams,
 } from './resources/users/users';
 import {
@@ -675,7 +673,7 @@ export class Tembo {
     }
 
     try {
-      // use undefined this binding; fetch errors if bound to something else in browser/cloudflare
+      // use undefined this binding; fetch errors if bound to something else in browsers and edge runtimes / workers
       return await this.fetch.call(undefined, url, fetchOptions);
     } finally {
       clearTimeout(timeout);
@@ -862,18 +860,20 @@ export class Tembo {
     if (body == null) {
       return { bodyHeaders: undefined, body: undefined };
     }
-    const headers = buildHeaders([rawHeaders]);
+    // A `content-type` from either header bag says how the body is already encoded; the request's
+    // own wins over the client-wide default, as it does on the wire.
+    const headers = buildHeaders([this._options.defaultHeaders, rawHeaders]);
     if (
       // Pass raw type verbatim
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      // Always pass strings through verbatim. The previous guard required a caller-set
-      // `content-type` and otherwise fell through to `FallbackEncoder`, which JSON.stringifies
-      // the value and labels it `application/json` — silently quoting plain-text payloads and
-      // mislabeling them as JSON. fetch defaults a string body to `text/plain;charset=UTF-8`
-      // when no `content-type` is set, which is a safer default than misclaiming JSON.
-      typeof body === 'string' ||
+      // A string is only already-encoded when something has said what it is encoded as.
+      // Generated call sites state the declared request media type, so a `text/plain` or
+      // ndjson payload reaches the wire byte-for-byte. A string with no `content-type` came
+      // from a body the document declared as JSON — `{ "type": "string" }` — and encoding it
+      // below is what puts the quotes the server parses for around it.
+      (typeof body === 'string' && headers.values.has('content-type')) ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -1128,9 +1128,7 @@ export declare namespace Tembo {
   export {
     Users as Users,
     type UserRetrieveResponse as UserRetrieveResponse,
-    type UserUpdateResponse as UserUpdateResponse,
     type UserDeleteResponse as UserDeleteResponse,
-    type UserUpdateParams as UserUpdateParams,
     type UserDeleteParams as UserDeleteParams,
   };
 

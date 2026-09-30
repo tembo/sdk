@@ -35,29 +35,6 @@ export class Users extends APIResource {
   }
 
   /**
-   * Update your user profile and onboarding information.
-   *
-   * @param {string} userID
-   * @param {UserUpdateParams} body - The request body to send.
-   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<UserUpdateResponse>} Update a user
-   *
-   * @example
-   * ```ts
-   * const user = await client.users.update('userId', {
-   *   onboarding: {
-   *     positionInCompany: 'x',
-   *     useCase: 'x',
-   *     howDidYouHear: 'x',
-   *   },
-   * });
-   * ```
-   */
-  update(userID: string, body: UserUpdateParams, options?: RequestOptions): APIPromise<UserUpdateResponse> {
-    return this._client.patch(__scalarPath`/v1/users/${userID}`, { body, ...options });
-  }
-
-  /**
    * Queue permanent deletion of your user account.
    *
    * @param {string} userID
@@ -93,92 +70,6 @@ export interface UserRetrieveResponse {
    * @format date-time
    */
   updatedAt: string;
-  onboarding: UserRetrieveResponse.Onboarding | null;
-}
-
-export namespace UserRetrieveResponse {
-  export interface Onboarding {
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    positionInCompany: string;
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    useCase: string;
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    howDidYouHear: string;
-  }
-}
-
-export interface UserUpdateParams {
-  onboarding: UserUpdateParams.Onboarding;
-}
-
-export namespace UserUpdateParams {
-  export interface Onboarding {
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    positionInCompany: string;
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    useCase: string;
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    howDidYouHear: string;
-  }
-}
-
-export interface UserUpdateResponse {
-  /**
-   * @format date-time
-   */
-  createdAt: string;
-  email: string | null;
-  emailVerified: boolean;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   */
-  id: string;
-  image: string | null;
-  name: string | null;
-  /**
-   * @format date-time
-   */
-  updatedAt: string;
-  onboarding: UserUpdateResponse.Onboarding | null;
-}
-
-export namespace UserUpdateResponse {
-  export interface Onboarding {
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    positionInCompany: string;
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    useCase: string;
-    /**
-     * @minLength 1
-     * @maxLength 255
-     */
-    howDidYouHear: string;
-  }
 }
 
 export interface UserDeleteParams {
@@ -221,9 +112,7 @@ Users.ConnectedAccounts = ConnectedAccounts;
 export declare namespace Users {
   export {
     type UserRetrieveResponse as UserRetrieveResponse,
-    type UserUpdateResponse as UserUpdateResponse,
     type UserDeleteResponse as UserDeleteResponse,
-    type UserUpdateParams as UserUpdateParams,
     type UserDeleteParams as UserDeleteParams,
   };
 
