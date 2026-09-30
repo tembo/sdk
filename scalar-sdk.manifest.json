@@ -6485,6 +6485,7 @@
     "messages",
     "models",
     "users",
+    "users.settings",
     "users.connectedAccounts",
     "sessions",
     "sessions.sources",
@@ -6517,6 +6518,7 @@
     "messages",
     "models",
     "users",
+    "users.settings",
     "users.connectedAccounts",
     "sessions",
     "sessions.sources",
@@ -12927,6 +12929,98 @@
     {
       "resource": "users",
       "publicResource": "users",
+      "operation": "me",
+      "publicOperation": "me",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/users/me",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "403",
+          "404",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "users",
+      "publicResource": "users",
       "operation": "retrieve",
       "publicOperation": "retrieve",
       "deprecated": false,
@@ -13075,6 +13169,330 @@
       "cookieParamDetails": [],
       "paramsModel": {
         "publicName": "UserDeleteParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "403",
+          "404",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "users.settings",
+      "publicResource": "users.settings",
+      "operation": "retrieve",
+      "publicOperation": "retrieve",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/users/{userId}/settings",
+      "pathParams": [
+        "userId"
+      ],
+      "publicPathParams": [
+        "userId"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "userId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "SettingRetrieveParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "403",
+          "404",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "users.settings",
+      "publicResource": "users.settings",
+      "operation": "update",
+      "publicOperation": "update",
+      "deprecated": false,
+      "method": "PATCH",
+      "path": "/v1/users/{userId}/settings",
+      "pathParams": [
+        "userId"
+      ],
+      "publicPathParams": [
+        "userId"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [
+        "autoRestartVm",
+        "defaultProjectId",
+        "gpgKey",
+        "includeTemboCommitAttribution",
+        "desktopNotificationsEnabled",
+        "desktopNotificationPreferences",
+        "appearancePreferences",
+        "appSidebarPreferences",
+        "diffPreferences",
+        "dashboardPreferences",
+        "composerPreferences",
+        "reviewPreferences",
+        "diffLightTheme",
+        "diffDarkTheme",
+        "defaultAgent",
+        "followUpBehavior"
+      ],
+      "publicBodyParams": [
+        "autoRestartVm",
+        "defaultProjectId",
+        "gpgKey",
+        "includeTemboCommitAttribution",
+        "desktopNotificationsEnabled",
+        "desktopNotificationPreferences",
+        "appearancePreferences",
+        "appSidebarPreferences",
+        "diffPreferences",
+        "dashboardPreferences",
+        "composerPreferences",
+        "reviewPreferences",
+        "diffLightTheme",
+        "diffDarkTheme",
+        "defaultAgent",
+        "followUpBehavior"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "autoRestartVm",
+          "required": false
+        },
+        {
+          "name": "defaultProjectId",
+          "required": false
+        },
+        {
+          "name": "gpgKey",
+          "required": false
+        },
+        {
+          "name": "includeTemboCommitAttribution",
+          "required": false
+        },
+        {
+          "name": "desktopNotificationsEnabled",
+          "required": false
+        },
+        {
+          "name": "desktopNotificationPreferences",
+          "required": false
+        },
+        {
+          "name": "appearancePreferences",
+          "required": false
+        },
+        {
+          "name": "appSidebarPreferences",
+          "required": false
+        },
+        {
+          "name": "diffPreferences",
+          "required": false
+        },
+        {
+          "name": "dashboardPreferences",
+          "required": false
+        },
+        {
+          "name": "composerPreferences",
+          "required": false
+        },
+        {
+          "name": "reviewPreferences",
+          "required": false
+        },
+        {
+          "name": "diffLightTheme",
+          "required": false
+        },
+        {
+          "name": "diffDarkTheme",
+          "required": false
+        },
+        {
+          "name": "defaultAgent",
+          "required": false
+        },
+        {
+          "name": "followUpBehavior",
+          "required": false
+        }
+      ],
+      "pathParamDetails": [
+        {
+          "name": "userId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "SettingUpdateParams"
       },
       "requestBody": {
         "contentType": "application/json",
@@ -14386,6 +14804,182 @@
       },
       "result": {
         "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "401",
+          "403",
+          "404",
+          "409",
+          "500",
+          "502"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "sessions",
+      "publicResource": "sessions",
+      "operation": "fork",
+      "publicOperation": "fork",
+      "deprecated": false,
+      "method": "POST",
+      "path": "/v1/sessions/{sessionId}/fork",
+      "pathParams": [
+        "sessionId"
+      ],
+      "publicPathParams": [
+        "sessionId"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [
+        "prompt",
+        "title",
+        "queueRightAway"
+      ],
+      "publicBodyParams": [
+        "prompt",
+        "title",
+        "queueRightAway"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "prompt",
+          "required": false
+        },
+        {
+          "name": "title",
+          "required": false
+        },
+        {
+          "name": "queueRightAway",
+          "required": false
+        }
+      ],
+      "pathParamDetails": [
+        {
+          "name": "sessionId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "SessionForkParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
+      },
+      "response": {
+        "status": "201",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "201",
         "errorStatuses": [
           "400",
           "401",
