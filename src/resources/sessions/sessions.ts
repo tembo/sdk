@@ -129,6 +129,29 @@ export class Sessions extends APIResource {
   }
 
   /**
+   * Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context.
+   *
+   * @param {string} sessionID
+   * @param {SessionForkParams} body - The request body to send.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<SessionForkResponse>} Fork a session
+   *
+   * @example
+   * ```ts
+   * const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   queueRightAway: true,
+   * });
+   * ```
+   */
+  fork(
+    sessionID: string,
+    body: SessionForkParams,
+    options?: RequestOptions,
+  ): APIPromise<SessionForkResponse> {
+    return this._client.post(__scalarPath`/v1/sessions/${sessionID}/fork`, { body, ...options });
+  }
+
+  /**
    * Interrupt active session work and continue with the next queued message.
    *
    * @param {string} sessionID
@@ -1353,6 +1376,254 @@ export interface SessionDeleteResponse {
   id: string;
 }
 
+export interface SessionForkParams {
+  /**
+   * @minLength 1
+   * @maxLength 1000000
+   */
+  prompt?: string;
+  /**
+   * @minLength 1
+   * @maxLength 1000
+   */
+  title?: string;
+  /**
+   * Start the supplied prompt immediately. Without a prompt, the fork waits for a new message.
+   * @default true
+   */
+  queueRightAway?: boolean;
+}
+
+export interface SessionForkResponse {
+  agent: string | null;
+  /**
+   * @format uuid
+   */
+  agentId: string | null;
+  artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
+  baseBranch: string | null;
+  branchName: string | null;
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  externalId: string | null;
+  externalUrl: string | null;
+  /**
+   * @format uuid
+   */
+  id: string;
+  kind: string;
+  /**
+   * @format date-time
+   */
+  lastQueuedAt: string | null;
+  /**
+   * @format date-time
+   */
+  lastSeenAt: string;
+  level: number;
+  mode: 'normal' | 'planning';
+  projectId: string | null;
+  sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
+  sessionType: 'Chat' | 'Terminal';
+  targetBranch: string | null;
+  title: string;
+  /**
+   * @format date-time
+   */
+  updatedAt: string;
+  visibility: 'public' | 'private';
+  artifacts: Array<SessionForkResponse.Artifact>;
+  description: string | null;
+  diffSummary: SessionForkResponse.DiffSummary | null;
+  /**
+   * @format uri
+   */
+  htmlUrl: string;
+  isPinned: boolean;
+  project: SessionForkResponse.Project | null;
+  sessionSource: SessionForkResponse.SessionSource;
+  sourcePullRequest: SessionForkResponse.SourcePullRequest | null;
+  state: SessionForkResponse.State;
+}
+
+export namespace SessionForkResponse {
+  export interface Artifact {
+    /**
+     * @format uuid
+     */
+    id: string;
+    type: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source';
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    pullRequests: Array<Artifact.PullRequest>;
+  }
+
+  export namespace Artifact {
+    export interface PullRequest {
+      /**
+       * @format uuid
+       */
+      id: string;
+      /**
+       * @format uri
+       */
+      url: string;
+      title: string | null;
+      status: 'open' | 'merged' | 'closed';
+      isDraft: boolean;
+      sourceBranch: string | null;
+      /**
+       * @format date-time
+       */
+      createdAt: string;
+      agent: string | null;
+      diff: PullRequest.Diff | null;
+      /**
+       * @format date-time
+       */
+      updatedAt: string;
+      /**
+       * @maxLength 500
+       */
+      baseBranch: string | null;
+      /**
+       * @maxLength 200
+       */
+      headSha: string | null;
+      author: PullRequest.Author | null;
+      codeRepository: PullRequest.CodeRepository | null;
+    }
+
+    export namespace PullRequest {
+      export interface Diff {
+        /**
+         * @minimum 0
+         */
+        additions?: number;
+        /**
+         * @minimum 0
+         */
+        deletions?: number;
+        /**
+         * @maxLength 1000000
+         */
+        data?: string;
+      }
+
+      export interface Author {
+        /**
+         * @format uri
+         */
+        avatarUrl: string | null;
+        /**
+         * @maxLength 500
+         */
+        login: string | null;
+      }
+
+      export interface CodeRepository {
+        /**
+         * @format uuid
+         */
+        id: string;
+        name: string;
+        owner: string | null;
+        baseBranch: string | null;
+        provider: string;
+      }
+    }
+  }
+
+  export interface DiffSummary {
+    additions: number;
+    deletions: number;
+  }
+
+  export interface Project {
+    /**
+     * @format uuid
+     */
+    id: string;
+    name: string;
+    icon:
+      | 'folder'
+      | 'code'
+      | 'terminal'
+      | 'book'
+      | 'brain'
+      | 'bug'
+      | 'building'
+      | 'cloud'
+      | 'globe'
+      | 'idea'
+      | 'tools'
+      | 'magic'
+      | 'processor'
+      | 'sandbox'
+      | 'server'
+      | 'tasks'
+      | 'tactics'
+      | 'images'
+      | 'database'
+      | 'api'
+      | 'mobile'
+      | 'package';
+    color: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+  }
+
+  export interface SessionSource {
+    /**
+     * @format uuid
+     */
+    id: string;
+    name: string;
+    type: string;
+    repositories: Array<SessionSource.Repository>;
+  }
+
+  export namespace SessionSource {
+    export interface Repository {
+      /**
+       * @format uuid
+       */
+      id: string;
+      name: string;
+      provider: string;
+    }
+  }
+
+  export interface SourcePullRequest {
+    /**
+     * @format uuid
+     */
+    id: string;
+    /**
+     * @format uri
+     */
+    url: string;
+    title: string | null;
+    status: 'open' | 'merged' | 'closed';
+    isDraft: boolean;
+  }
+
+  export interface State {
+    isQueued: boolean;
+    isCancelled: boolean;
+    isCompleted: boolean;
+    isFailed: boolean;
+    inProgress: boolean;
+    current?: 'inProgress' | 'queued' | 'completed' | 'failed' | 'cancelled';
+  }
+}
+
 export interface SessionStopParams {
   cancelQueued?: 'true';
 }
@@ -1387,9 +1658,9 @@ export interface SessionListEventsParams {
    */
   limit?: string | number;
   /**
-   * @format uuid
+   * Filter by message ID, or "null" for session-level events.
    */
-  messageId?: string;
+  messageId?: string | 'null';
 }
 
 export interface SessionListEventsResponse {
@@ -1432,11 +1703,13 @@ export declare namespace Sessions {
     type SessionRetrieveResponse as SessionRetrieveResponse,
     type SessionUpdateResponse as SessionUpdateResponse,
     type SessionDeleteResponse as SessionDeleteResponse,
+    type SessionForkResponse as SessionForkResponse,
     type SessionStopResponse as SessionStopResponse,
     type SessionListEventsResponse as SessionListEventsResponse,
     type SessionListParams as SessionListParams,
     type SessionCreateParams as SessionCreateParams,
     type SessionUpdateParams as SessionUpdateParams,
+    type SessionForkParams as SessionForkParams,
     type SessionStopParams as SessionStopParams,
     type SessionListEventsParams as SessionListEventsParams,
   };

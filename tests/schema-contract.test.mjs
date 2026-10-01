@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import test from 'node:test';
 import { contractHash, validateCoverage } from '../scripts/schema-contract.mjs';
 
@@ -40,4 +41,26 @@ test('unmapped or removed operations stop generation instead of dropping endpoin
   added.paths['/v1/models'].post = {};
   assert.throws(() => validateCoverage(added, config));
   assert.throws(() => validateCoverage({ paths: {} }, config));
+});
+
+test('SDK mappings cover current user settings and session fork operations', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const publicOperations = {
+    paths: {
+      '/v1/users/me': { get: {} },
+      '/v1/users/{userId}': { get: {}, delete: {} },
+      '/v1/users/{userId}/settings': { get: {}, patch: {} },
+      '/v1/users/{userId}/connected-accounts': { get: {} },
+      '/v1/users/{userId}/connected-accounts/{connectedAccountId}': { get: {} },
+      '/v1/sessions/{sessionId}/fork': { post: {} },
+    },
+  };
+  validateCoverage(publicOperations, {
+    resources: {
+      users: sdkConfig.resources.users,
+      sessions: { methods: { fork: sdkConfig.resources.sessions.methods.fork } },
+    },
+  });
+  assert.equal(sdkConfig.resources.users.subresources.settings.methods.update.bodyParamName, 'body');
+  assert.equal(sdkConfig.resources.sessions.methods.fork.bodyParamName, 'body');
 });

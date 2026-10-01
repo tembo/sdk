@@ -426,7 +426,7 @@ export interface AgentCreateParams {
     | 'skillProgressionMap'
     | 'slackChannelListener'
     | 'slopCop'
-    | 'testPruner'
+    | 'testAudit'
     | 'staleCodeComments'
     | 'stalePullRequestNotifier'
     | 'summarizeChangesDaily'

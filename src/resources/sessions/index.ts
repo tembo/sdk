@@ -12,6 +12,8 @@ export type {
   SessionUpdateParams,
   SessionUpdateResponse,
   SessionDeleteResponse,
+  SessionForkParams,
+  SessionForkResponse,
   SessionStopParams,
   SessionStopResponse,
   SessionListEventsParams,

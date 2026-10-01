@@ -1,5 +1,38 @@
 # Changelog
 
+## [0.6.0](https://github.com/tembo/sdk/compare/v0.5.0...v0.6.0) (2026-10-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 3 breaking changes to the SDK surface.
+    - Removed body field `onboarding` from `organizations.update`.
+    - Removed body field `onboardingCompleted` from `organizations.update`.
+    - Removed operation `users.update` (`PATCH /v1/users/{userId}`).
+
+### Features
+
+* **api:** add operation users.me (+3 more changes) ([5eae66e](https://github.com/tembo/sdk/commit/5eae66e7a814b57173e35a7f558fcf444b9bac5b))
+* **api:** update SDK surface (4 changes) ([ff861e1](https://github.com/tembo/sdk/commit/ff861e1a7c8b729fe05588793e76d77b5bd3c9e1))
+* **sdk:** automate OpenAPI resource mapping updates ([89dde7b](https://github.com/tembo/sdk/commit/89dde7b39a4b7c46ffa71850c2cd550b03b20bca))
+
+
+### Bug Fixes
+
+* **sdk:** align public user and session resource mappings ([861e406](https://github.com/tembo/sdk/commit/861e40682b60776764f423ea3e1f473206abeafb))
+* **sdk:** guard resource names and support named model refs ([68f1ce3](https://github.com/tembo/sdk/commit/68f1ce36ccba715cfb37e49e3b2538356c47c79f))
+* **sdk:** keep OpenAPI synchronization self-contained ([647df69](https://github.com/tembo/sdk/commit/647df69463b4b4e53f2a2cd53bb0c4a5fd8fad0d))
+
+
+### Reverts
+
+* **sdk:** remove automatic OpenAPI mapping sync ([e4da8f2](https://github.com/tembo/sdk/commit/e4da8f26232ccab45e64fde351e2fbd2f055be97))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([b7f1db7](https://github.com/tembo/sdk/commit/b7f1db73e1f2299d4001cbb67e85cfff665120e8))
+
 ## [0.5.0](https://github.com/tembo/sdk/compare/v0.4.3...v0.5.0) (2026-09-28)
 
 

@@ -64,9 +64,12 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [List models](#list-models)
   - [Update a model](#update-a-model)
 - [`Users`](#users)
+  - [Retrieve the current user](#retrieve-the-current-user)
   - [Retrieve a user](#retrieve-a-user)
-  - [Update a user](#update-a-user)
   - [Delete a user](#delete-a-user)
+  - [`Users Settings`](#users-settings)
+    - [Retrieve user settings](#retrieve-user-settings)
+    - [Update user settings](#update-user-settings)
   - [`Users ConnectedAccounts`](#users-connectedaccounts)
     - [List user connected accounts](#list-user-connected-accounts)
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
@@ -76,6 +79,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Retrieve a session](#retrieve-a-session)
   - [Update a session](#update-a-session)
   - [Delete a session](#delete-a-session)
+  - [Fork a session](#fork-a-session)
   - [Stop a session](#stop-a-session)
   - [List session events](#list-session-events)
   - [`Sessions Sources`](#sessions-sources)
@@ -865,6 +869,18 @@ const model = await client.models.update('claude-opus-5-5', {});
 
 ## `Users`
 
+### Retrieve the current user
+
+Retrieve the authenticated user.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`UserMeResponse`](./src/resources/users/users.ts) |
+
+```ts
+const user = await client.users.me();
+```
+
 ### Retrieve a user
 
 Retrieve a user profile visible to the caller.
@@ -875,25 +891,6 @@ Retrieve a user profile visible to the caller.
 
 ```ts
 const user = await client.users.retrieve('userId');
-```
-
-### Update a user
-
-Update your user profile and onboarding information.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`UserUpdateParams`](./src/resources/users/users.ts) |
-| Response | [`UserUpdateResponse`](./src/resources/users/users.ts) |
-
-```ts
-const user = await client.users.update('userId', {
-  onboarding: {
-    positionInCompany: 'x',
-    useCase: 'x',
-    howDidYouHear: 'x',
-  },
-});
 ```
 
 ### Delete a user
@@ -907,6 +904,33 @@ Queue permanent deletion of your user account.
 
 ```ts
 const user = await client.users.delete('userId', {});
+```
+
+### `Users Settings`
+
+#### Retrieve user settings
+
+Retrieve user preferences without exposing stored credentials.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`SettingRetrieveResponse`](./src/resources/users/settings.ts) |
+
+```ts
+const setting = await client.users.settings.retrieve('userId');
+```
+
+#### Update user settings
+
+Merge user preference updates while preserving unrelated settings.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`SettingUpdateParams`](./src/resources/users/settings.ts) |
+| Response | [`SettingUpdateResponse`](./src/resources/users/settings.ts) |
+
+```ts
+const setting = await client.users.settings.update('userId', {});
 ```
 
 ### `Users ConnectedAccounts`
@@ -1019,6 +1043,21 @@ Delete a session you have permission to access.
 
 ```ts
 const session = await client.sessions.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Fork a session
+
+Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`SessionForkParams`](./src/resources/sessions/sessions.ts) |
+| Response | [`SessionForkResponse`](./src/resources/sessions/sessions.ts) |
+
+```ts
+const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  queueRightAway: true,
+});
 ```
 
 ### Stop a session
@@ -1745,7 +1784,7 @@ const run = await client.agents.runs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7'
 
 #### Create an agent run
 
-Queue an agent run. The entire JSON object body is passed to the agent as event input, just like the legacy /trigger endpoint; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
+Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
 
 | Direction | Type |
 | --- | --- |

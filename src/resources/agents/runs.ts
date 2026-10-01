@@ -30,7 +30,7 @@ export class Runs extends APIResource {
   }
 
   /**
-   * Queue an agent run. The entire JSON object body is passed to the agent as event input, just like the legacy /trigger endpoint; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
+   * Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
    *
    * @param {string} agentID
    * @param {RunCreateParams} [body] - The request body to send.

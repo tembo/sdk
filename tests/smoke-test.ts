@@ -335,8 +335,6 @@ const cases: {
       const organization = await client.organizations.update('organizationId', {
         name: 'x',
         slug: 'x',
-        onboarding: {},
-        onboardingCompleted: false,
       });
     },
   },
@@ -948,26 +946,20 @@ const cases: {
   },
 
   {
+    operation: 'me',
+    method: 'GET',
+    path: '/v1/users/me',
+    run: async () => {
+      const user = await client.users.me();
+    },
+  },
+
+  {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/users/{userId}',
     run: async () => {
       const user = await client.users.retrieve('userId');
-    },
-  },
-
-  {
-    operation: 'update',
-    method: 'PATCH',
-    path: '/v1/users/{userId}',
-    run: async () => {
-      const user = await client.users.update('userId', {
-        onboarding: {
-          positionInCompany: 'x',
-          useCase: 'x',
-          howDidYouHear: 'x',
-        },
-      });
     },
   },
 
@@ -992,6 +984,52 @@ const cases: {
           reasons: ['x'],
           submittedAt: '2024-01-01T00:00:00.000Z',
         },
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/settings',
+    run: async () => {
+      const setting = await client.users.settings.retrieve('userId');
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/users/{userId}/settings',
+    label: 'required params',
+    run: async () => {
+      const setting = await client.users.settings.update('userId', {});
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/users/{userId}/settings',
+    label: 'all params',
+    run: async () => {
+      const setting = await client.users.settings.update('userId', {
+        autoRestartVm: false,
+        defaultProjectId: 'x',
+        gpgKey: '',
+        includeTemboCommitAttribution: false,
+        desktopNotificationsEnabled: false,
+        desktopNotificationPreferences: {},
+        appearancePreferences: {},
+        appSidebarPreferences: {},
+        diffPreferences: {},
+        dashboardPreferences: {},
+        composerPreferences: {},
+        reviewPreferences: {},
+        diffLightTheme: '',
+        diffDarkTheme: '',
+        defaultAgent: '',
+        followUpBehavior: 'queue',
       });
     },
   },
@@ -1147,6 +1185,32 @@ const cases: {
     path: '/v1/sessions/{sessionId}',
     run: async () => {
       const session = await client.sessions.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'fork',
+    method: 'POST',
+    path: '/v1/sessions/{sessionId}/fork',
+    label: 'required params',
+    run: async () => {
+      const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        queueRightAway: true,
+      });
+    },
+  },
+
+  {
+    operation: 'fork',
+    method: 'POST',
+    path: '/v1/sessions/{sessionId}/fork',
+    label: 'all params',
+    run: async () => {
+      const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        prompt: 'x',
+        title: 'x',
+        queueRightAway: true,
+      });
     },
   },
 

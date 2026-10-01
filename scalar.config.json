@@ -211,14 +211,8 @@
     },
     "users": {
       "methods": {
+        "me": "get /v1/users/me",
         "retrieve": "get /v1/users/{userId}",
-        "update": {
-          "kind": "http",
-          "endpoint": "patch /v1/users/{userId}",
-          "verb": "patch",
-          "path": "/v1/users/{userId}",
-          "bodyParamName": "body"
-        },
         "delete": {
           "kind": "http",
           "endpoint": "delete /v1/users/{userId}",
@@ -228,6 +222,18 @@
         }
       },
       "subresources": {
+        "settings": {
+          "methods": {
+            "retrieve": "get /v1/users/{userId}/settings",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/users/{userId}/settings",
+              "verb": "patch",
+              "path": "/v1/users/{userId}/settings",
+              "bodyParamName": "body"
+            }
+          }
+        },
         "connected_accounts": {
           "methods": {
             "list": "get /v1/users/{userId}/connected-accounts",
@@ -259,6 +265,13 @@
           "bodyParamName": "body"
         },
         "delete": "delete /v1/sessions/{sessionId}",
+        "fork": {
+          "kind": "http",
+          "endpoint": "post /v1/sessions/{sessionId}/fork",
+          "verb": "post",
+          "path": "/v1/sessions/{sessionId}/fork",
+          "bodyParamName": "body"
+        },
         "stop": "post /v1/sessions/{sessionId}/stop",
         "list_events": "get /v1/sessions/{sessionId}/events"
       },
