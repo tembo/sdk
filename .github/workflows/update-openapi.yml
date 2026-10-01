@@ -39,18 +39,10 @@ jobs:
           node-version: '24'
       - run: npm ci --ignore-scripts
       - name: Read pending SDK schema and mappings
-        env:
-          SDK_CONFIG_SHA: ${{ github.event.client_payload.sdk_sha || (github.event_name == 'push' && github.sha) || '' }}
         run: |
           set -euo pipefail
-          SDK_REF=origin/scalar-next
-          if [ -n "$SDK_CONFIG_SHA" ]; then
-            [[ "$SDK_CONFIG_SHA" =~ ^[0-9a-f]{40}$ ]] || { echo 'Invalid SDK mapping commit'; exit 1; }
-            git merge-base --is-ancestor "$SDK_CONFIG_SHA" origin/scalar-next
-            SDK_REF="$SDK_CONFIG_SHA"
-          fi
           git show origin/scalar-next:openapi/openapi.json > openapi/openapi.json
-          git show "$SDK_REF:scalar.config.json" > scalar.config.json
+          git show origin/scalar-next:scalar.config.json > scalar.config.json
           cp scalar.config.json "$RUNNER_TEMP/sdk-original-config.json"
       - id: schema
         run: node scripts/refresh-schema.mjs

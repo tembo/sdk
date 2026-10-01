@@ -207,8 +207,9 @@ test('workflow reconciles before registry publication, persists both snapshots a
   assert.match(workflow, /paths: \[scalar\.config\.json\]/);
   assert.match(workflow, /steps\.scalar\.outputs\.changed == 'true'/);
   assert.match(workflow, /if: inputs\.dry_run != true\n        id: scalar/);
-  assert.match(workflow, /github\.event\.client_payload\.sdk_sha/);
-  assert.match(workflow, /git merge-base --is-ancestor "\$SDK_CONFIG_SHA" origin\/scalar-next/);
+  assert.match(workflow, /types: \[production-api-deployed\]/);
+  assert.match(workflow, /git show origin\/scalar-next:scalar\.config\.json/);
+  assert.doesNotMatch(workflow, /SDK_CONFIG_SHA|client_payload\.sdk_sha/);
   assert.match(workflow, /git merge-file --stdout/);
   assert.match(workflow, /git add openapi\/openapi\.json scalar\.config\.json/);
   assert.match(workflow, /FORCE_SCHEMA_UPLOAD: \$\{\{ inputs\.force \|\| false \}\}/);
