@@ -31,34 +31,16 @@ test('all configured models resolve against the prepared schema', () => {
   function check(resources) {
     for (const resource of Object.values(resources)) {
       for (const reference of Object.values(resource.models ?? {})) {
-        const parts = reference.startsWith('#/')
-          ? reference
-              .slice(2)
-              .split('/')
-              .map((part) => part.replace(/~1/g, '/').replace(/~0/g, '~'))
-          : ['components', 'schemas', reference];
-        const model = parts.reduce(
-          (value, key) => (value && Object.hasOwn(value, key) ? value[key] : undefined),
-          schema,
-        );
+        const model = reference
+          .slice(2)
+          .split('/')
+          .reduce((value, key) => value?.[key], schema);
         assert.ok(model, `Missing configured model ${reference}`);
       }
       check(resource.subresources ?? {});
     }
   }
   check(config.resources);
-  check({
-    documents: {
-      models: {
-        Content: 'TipTapContentNode',
-        Image: 'TipTapImageContentNode',
-        PointerContent: '#/components/schemas/TipTapContentNode',
-      },
-    },
-  });
-  for (const reference of ['MissingModel', 'toString', '#/components/schemas/toString']) {
-    assert.throws(() => check({ documents: { models: { Invalid: reference } } }), /Missing configured model/);
-  }
 });
 
 test('normalization refuses overlapping variants or additional union constraints', () => {

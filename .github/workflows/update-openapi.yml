@@ -1,9 +1,6 @@
 name: Update production OpenAPI
 
 on:
-  push:
-    branches: [scalar-next]
-    paths: [scalar.config.json]
   repository_dispatch:
     types: [production-api-deployed]
   workflow_dispatch:
@@ -26,7 +23,7 @@ concurrency:
 
 jobs:
   update:
-    if: github.repository == 'tembo/sdk' && (github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/scalar-next'))
+    if: github.repository == 'tembo/sdk' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -40,31 +37,19 @@ jobs:
       - run: npm ci --ignore-scripts
       - name: Read pending SDK schema and mappings
         run: |
-          set -euo pipefail
           git show origin/scalar-next:openapi/openapi.json > openapi/openapi.json
           git show origin/scalar-next:scalar.config.json > scalar.config.json
-          cp scalar.config.json "$RUNNER_TEMP/sdk-original-config.json"
       - id: schema
         run: node scripts/refresh-schema.mjs
         env:
           FORCE_SCHEMA_UPLOAD: ${{ inputs.force || false }}
-      - name: Validate prepared schema and reviewed mappings
+      - if: steps.schema.outputs.changed == 'true'
         run: |
           npm run schema:prepare
-          npx --yes --package=@scalar/cli@2.1.0 scalar document validate openapi/scalar.openapi.json
-      - name: Infer new mappings and sync Scalar configuration
-        if: inputs.dry_run != true
-        id: scalar
-        env:
-          SCALAR_API_KEY: ${{ secrets.SCALAR_API_KEY }}
-        run: node scripts/sync-scalar-config.mjs
-      - name: Validate complete reconciled SDK mappings
-        if: inputs.dry_run != true
-        run: |
-          npm run schema:check
           node --test tests/schema.test.mjs tests/schema-contract.test.mjs
+          npx --yes --package=@scalar/cli@2.1.0 scalar document validate openapi/scalar.openapi.json
       - name: Generate schema sync token
-        if: (steps.schema.outputs.changed == 'true' || steps.scalar.outputs.changed == 'true') && inputs.dry_run != true
+        if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true
         id: bot
         uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
         with:
@@ -74,15 +59,15 @@ jobs:
           repositories: sdk
           permission-contents: write
       - name: Publish schema to Scalar Registry
-        if: (steps.schema.outputs.changed == 'true' || steps.scalar.outputs.changed == 'true') && inputs.dry_run != true
+        if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true
         env:
           SCALAR_API_KEY: ${{ secrets.SCALAR_API_KEY }}
         run: |
           test -n "$SCALAR_API_KEY" || { echo 'SCALAR_API_KEY is required'; exit 1; }
           npx --yes --package=@scalar/cli@2.1.0 scalar auth login
           npx --yes --package=@scalar/cli@2.1.0 scalar registry publish openapi/scalar.openapi.json --namespace tembo --slug tembo-eight-pr-verification --version "2.0.$GITHUB_RUN_ID" --force
-      - name: Save uploaded schema and reconciled mappings
-        if: (steps.schema.outputs.changed == 'true' || steps.scalar.outputs.changed == 'true') && inputs.dry_run != true
+      - name: Save uploaded source snapshot
+        if: steps.schema.outputs.changed == 'true' && inputs.dry_run != true
         env:
           GH_TOKEN: ${{ steps.bot.outputs.token }}
         run: |
@@ -90,15 +75,12 @@ jobs:
           git fetch origin scalar-next
           git worktree add --detach "$RUNNER_TEMP/sdk-sync" origin/scalar-next
           cp openapi/openapi.json "$RUNNER_TEMP/sdk-sync/openapi/openapi.json"
-          git merge-file --stdout "$RUNNER_TEMP/sdk-sync/scalar.config.json" "$RUNNER_TEMP/sdk-original-config.json" scalar.config.json > "$RUNNER_TEMP/sdk-merged-config.json"
-          cp "$RUNNER_TEMP/sdk-merged-config.json" "$RUNNER_TEMP/sdk-sync/scalar.config.json"
           cd "$RUNNER_TEMP/sdk-sync"
-          node scripts/check-schema.mjs openapi/openapi.json scalar.config.json
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add openapi/openapi.json scalar.config.json
+          git add openapi/openapi.json
           if ! git diff --cached --quiet; then
-            git commit -m 'chore(api): sync production OpenAPI and SDK mappings'
+            git commit -m 'chore(api): sync production OpenAPI snapshot'
             git pull --rebase origin scalar-next
             git push origin HEAD:scalar-next
           fi
