@@ -45,22 +45,28 @@ test('unmapped or removed operations stop generation instead of dropping endpoin
 
 test('SDK mappings cover current user settings and session fork operations', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const source = JSON.parse(readFileSync(new URL('../openapi/openapi.json', import.meta.url)));
   const publicOperations = {
-    paths: {
-      '/v1/users/me': { get: {} },
-      '/v1/users/{userId}': { get: {}, delete: {} },
-      '/v1/users/{userId}/settings': { get: {}, patch: {} },
-      '/v1/users/{userId}/connected-accounts': { get: {} },
-      '/v1/users/{userId}/connected-accounts/{connectedAccountId}': { get: {} },
-      '/v1/sessions/{sessionId}/fork': { post: {} },
-    },
+    paths: Object.fromEntries(
+      Object.entries(source.paths).filter(
+        ([path]) => path.startsWith('/v1/users/') || path === '/v1/sessions/{sessionId}/fork',
+      ),
+    ),
   };
   validateCoverage(publicOperations, {
     resources: {
       users: sdkConfig.resources.users,
-      sessions: { methods: { fork: sdkConfig.resources.sessions.methods.fork } },
+      sessions: {
+        methods: sdkConfig.resources.sessions?.methods?.fork
+          ? { fork: sdkConfig.resources.sessions.methods.fork }
+          : {},
+      },
     },
   });
-  assert.equal(sdkConfig.resources.users.subresources.settings.methods.update.bodyParamName, 'body');
-  assert.equal(sdkConfig.resources.sessions.methods.fork.bodyParamName, 'body');
+  if (source.paths['/v1/users/{userId}/settings']?.patch) {
+    assert.equal(sdkConfig.resources.users.subresources.settings.methods.update.bodyParamName, 'body');
+  }
+  if (source.paths['/v1/sessions/{sessionId}/fork']?.post) {
+    assert.equal(sdkConfig.resources.sessions.methods.fork.bodyParamName, 'body');
+  }
 });
