@@ -34,7 +34,8 @@ function ensureResource(resources, path) {
 }
 
 function referenceExists(schema, reference) {
-  assert.ok(typeof reference === 'string' && reference.startsWith('#/'), 'Expected a local model reference');
+  assert.ok(typeof reference === 'string', 'Expected a model reference');
+  if (!reference.startsWith('#/')) return Object.hasOwn(schema.components?.schemas ?? {}, reference);
   return (
     reference
       .slice(2)
@@ -109,6 +110,14 @@ export function reconcileResources(schema, config, inferredConfig) {
     }
   }
   pruneEmptyResources(result.resources);
+  for (const { path, resource } of resourceEntries(result.resources)) {
+    for (const name of Object.keys(resource.subresources ?? {})) {
+      assert.ok(
+        !Object.hasOwn(resource.methods ?? {}, name),
+        `SDK name collision: ${[...path, name].join('.')}. A method and subresource cannot share a name.`,
+      );
+    }
+  }
   validateCoverage(schema, result);
   return result;
 }

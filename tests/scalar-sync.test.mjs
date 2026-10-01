@@ -192,6 +192,64 @@ test('incomplete generated mappings fail coverage before any hosted SDK mutation
   );
 });
 
+test('new subresources cannot collide with retained methods before any hosted SDK mutation', async () => {
+  const candidate = structuredClone(schema);
+  candidate.paths['/v1/users/{userId}/settings'] = {
+    get: source.paths['/v1/users/{userId}/settings'].get,
+  };
+  const generated = structuredClone(inferred);
+  generated.resources.users.subresources = {
+    me: { methods: { retrieve: 'get /v1/users/{userId}/settings' } },
+  };
+  const { requests, fetchImpl } = fixture({ generated });
+  await assert.rejects(synchronize(fetchImpl, { schema: candidate }), /SDK name collision: users.me/);
+  assert.equal(
+    requests.some((request) => request.method === 'PATCH'),
+    false,
+  );
+});
+
+test('new methods cannot collide with retained subresources before any hosted SDK mutation', async () => {
+  const candidate = structuredClone(schema);
+  candidate.paths['/v1/users/{userId}/settings'] = {
+    get: source.paths['/v1/users/{userId}/settings'].get,
+  };
+  const baseline = {
+    resources: { users: { subresources: { me: { methods: { current: 'get /v1/users/me' } } } } },
+  };
+  const generated = structuredClone(inferred);
+  generated.resources.users.methods.me = 'get /v1/users/{userId}/settings';
+  const { requests, fetchImpl } = fixture({ generated });
+  await assert.rejects(
+    synchronize(fetchImpl, { config: baseline, schema: candidate }),
+    /SDK name collision: users.me/,
+  );
+  assert.equal(
+    requests.some((request) => request.method === 'PATCH'),
+    false,
+  );
+});
+
+test('sync preserves existing and inferred named model aliases through hosted readback', async () => {
+  const baseline = structuredClone(config);
+  baseline.resources.users.models = {
+    AgentOptions: 'AgentOptionsInput',
+    PointerDocument: '#/components/schemas/TipTapContentNode',
+  };
+  const generated = structuredClone(inferred);
+  generated.resources.users.models = { Document: 'TipTapContentNode', Stale: 'MissingModel' };
+  const { requests, fetchImpl } = fixture({ generated });
+  const result = await synchronize(fetchImpl, { config: baseline });
+  const models = {
+    AgentOptions: 'AgentOptionsInput',
+    PointerDocument: '#/components/schemas/TipTapContentNode',
+    Document: 'TipTapContentNode',
+  };
+  assert.deepEqual(result.config.resources.users.models, models);
+  const payload = JSON.parse(requests.find((request) => request.method === 'PATCH').body);
+  assert.deepEqual(JSON.parse(payload.config).resources.users.models, models);
+});
+
 test('sync verifies that Scalar persisted the complete reconciled mappings', async () => {
   const { fetchImpl } = fixture({ persist: false });
   await assert.rejects(synchronize(fetchImpl), /did not persist/);

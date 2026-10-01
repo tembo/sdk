@@ -86,6 +86,42 @@ test('a new inferred method cannot overwrite an existing published SDK name', ()
   assert.throws(() => reconcileResources(schema, config, collision), /SDK name collision: users.me/);
 });
 
+test('a new inferred subresource cannot collide with a retained method', () => {
+  const collision = structuredClone(inferred);
+  delete collision.resources.widgets;
+  collision.resources.users.subresources.me = { methods: { list: 'get /v1/widgets' } };
+  assert.throws(() => reconcileResources(schema, config, collision), /SDK name collision: users.me/);
+});
+
+test('a new inferred method cannot collide with a retained subresource', () => {
+  const collision = structuredClone(inferred);
+  delete collision.resources.widgets;
+  collision.resources.users.methods.preferences = 'get /v1/widgets';
+  assert.throws(() => reconcileResources(schema, config, collision), /SDK name collision: users.preferences/);
+});
+
+test('a deleted subresource does not block reuse of its name by a new method', () => {
+  const baseline = structuredClone(config);
+  baseline.resources.users.subresources.widgets = { methods: { list: 'get /v1/obsolete' } };
+  const generated = structuredClone(inferred);
+  delete generated.resources.widgets;
+  generated.resources.users.methods.widgets = 'get /v1/widgets';
+  const result = reconcileResources(schema, baseline, generated);
+  assert.equal(result.resources.users.methods.widgets, 'get /v1/widgets');
+  assert.equal(result.resources.users.subresources.widgets, undefined);
+});
+
+test('a deleted method does not block reuse of its name by a new subresource', () => {
+  const baseline = structuredClone(config);
+  baseline.resources.users.methods.widgets = 'get /v1/obsolete';
+  const generated = structuredClone(inferred);
+  delete generated.resources.widgets;
+  generated.resources.users.subresources.widgets = { methods: { list: 'get /v1/widgets' } };
+  const result = reconcileResources(schema, baseline, generated);
+  assert.equal(result.resources.users.methods.widgets, undefined);
+  assert.equal(result.resources.users.subresources.widgets.methods.list, 'get /v1/widgets');
+});
+
 test('duplicate existing or inferred mappings are rejected', () => {
   const duplicateConfig = structuredClone(config);
   duplicateConfig.resources.users.methods.current = 'get /v1/users/me';
@@ -109,6 +145,22 @@ test('escaped model pointers are preserved and existing model aliases win over i
   const result = reconcileResources(schema, mapped, generated);
   assert.equal(result.resources.users.models.complex, '#/components/schemas/A~1B~0C');
   assert.equal(result.resources.users.models.Preferences, '#/components/schemas/Settings');
+});
+
+test('named model references are preserved and inferred aliases added while missing names are removed', () => {
+  const baseline = structuredClone(config);
+  baseline.resources.users.models.NamedPreferences = 'Settings';
+  baseline.resources.users.models.staleName = 'Missing';
+  baseline.resources.users.models.inherited = 'constructor';
+  const generated = structuredClone(inferred);
+  generated.resources.users.models = { NamedPreferences: 'Widget' };
+  generated.resources.widgets.models = { widget: 'Widget', staleName: 'Missing', inherited: 'toString' };
+  const result = reconcileResources(schema, baseline, generated);
+  assert.equal(result.resources.users.models.NamedPreferences, 'Settings');
+  assert.equal(result.resources.users.models.Preferences, '#/components/schemas/Settings');
+  assert.equal(result.resources.users.models.staleName, undefined);
+  assert.equal(result.resources.users.models.inherited, undefined);
+  assert.deepEqual(result.resources.widgets.models, { widget: 'Widget' });
 });
 
 test('resource and method keys from config cannot mutate object prototypes', () => {
