@@ -43,7 +43,7 @@ test('unmapped or removed operations stop generation instead of dropping endpoin
   assert.throws(() => validateCoverage({ paths: {} }, config));
 });
 
-test('SDK mappings cover current user settings and session fork operations', () => {
+test('SDK mappings cover current manually reviewed operations', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
   const publicOperations = {
     paths: {
@@ -53,12 +53,14 @@ test('SDK mappings cover current user settings and session fork operations', () 
       '/v1/users/{userId}/connected-accounts': { get: {} },
       '/v1/users/{userId}/connected-accounts/{connectedAccountId}': { get: {} },
       '/v1/sessions/{sessionId}/fork': { post: {} },
+      '/v1/runtimes': { get: {} },
     },
   };
   validateCoverage(publicOperations, {
     resources: {
       users: sdkConfig.resources.users,
       sessions: { methods: { fork: sdkConfig.resources.sessions.methods.fork } },
+      runtimes: sdkConfig.resources.runtimes,
     },
   });
   assert.equal(sdkConfig.resources.users.subresources.settings.methods.update.bodyParamName, 'body');

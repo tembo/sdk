@@ -63,6 +63,8 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Models`](#models)
   - [List models](#list-models)
   - [Update a model](#update-a-model)
+- [`Runtimes`](#runtimes)
+  - [List runtimes](#list-runtimes)
 - [`Users`](#users)
   - [Retrieve the current user](#retrieve-the-current-user)
   - [Retrieve a user](#retrieve-a-user)
@@ -865,6 +867,23 @@ Enable or disable an organization model, or select its inference provider.
 
 ```ts
 const model = await client.models.update('claude-opus-5-5', {});
+```
+
+## `Runtimes`
+
+### List runtimes
+
+List execution runtimes and their compatible model references for the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RuntimeListParams`](./src/resources/runtimes.ts) |
+| Response | [`RuntimeListResponse`](./src/resources/runtimes.ts) |
+
+```ts
+const runtime = await client.runtimes.list({
+  limit: '50',
+});
 ```
 
 ## `Users`

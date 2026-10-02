@@ -1,5 +1,32 @@
 # Changelog
 
+## [0.7.0](https://github.com/tembo/sdk/compare/v0.6.0...v0.7.0) (2026-10-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 2 breaking changes to the SDK surface.
+    - Schema `agent_options_input` shape changed.
+    - Property `agent_options.speed` type changed from `enum(normal | fast)` to `enum(normal | fast | ultrafast)`.
+
+### Features
+
+* **api:** add operation runtimes.list ([d773116](https://github.com/tembo/sdk/commit/d77311632e2dd8ed18492434a31bea49b090091b))
+* **api:** update schema agent_options_input (+5 more changes) ([9d60a0a](https://github.com/tembo/sdk/commit/9d60a0a50bdb53508b4c4eacfa54a7c84636cff3))
+
+
+### Bug Fixes
+
+* **ci:** avoid duplicate SDK branch checks ([0163580](https://github.com/tembo/sdk/commit/01635806c23ead586be651137320b3d9be6fa975))
+* **ci:** validate pending SDK mappings safely ([7e6a69d](https://github.com/tembo/sdk/commit/7e6a69dd6974207032b82167a6151aa24bf1a203))
+* **sdk:** map runtimes API resource ([6f452f7](https://github.com/tembo/sdk/commit/6f452f7330e18aecb093b3655a4077da84d998bc))
+* **sdk:** map runtimes API resource ([d22a415](https://github.com/tembo/sdk/commit/d22a415723d5f89d024bbf3d836d7958bf5d08b2))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([a355bb5](https://github.com/tembo/sdk/commit/a355bb549502fdf1db555778caa41f7d023baf97))
+
 ## [0.6.0](https://github.com/tembo/sdk/compare/v0.5.0...v0.6.0) (2026-10-01)
 
 

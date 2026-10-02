@@ -2,6 +2,7 @@ name: SDK Contract Tests
 
 on:
   push:
+    branches: [main, scalar-next]
   pull_request:
 
 permissions:
@@ -11,6 +12,8 @@ jobs:
   contracts:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      ALLOW_PENDING_SCALAR_MAPPINGS: ${{ (github.event_name == 'pull_request' && github.base_ref == 'scalar-next') || github.ref == 'refs/heads/scalar-next' }}
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
         with:
@@ -23,3 +26,6 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm pack --dry-run
+      - name: Validate pending mappings against production
+        if: env.ALLOW_PENDING_SCALAR_MAPPINGS == 'true'
+        run: node scripts/refresh-schema.mjs

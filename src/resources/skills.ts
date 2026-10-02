@@ -120,6 +120,15 @@ export interface SkillListParams {
   repositoryIds?: string | Array<string>;
   /**
    * @minLength 1
+   * @maxLength 255
+   */
+  projectId?: string;
+  /**
+   * @format uuid
+   */
+  sessionId?: string;
+  /**
+   * @minLength 1
    */
   search?: string;
   /**

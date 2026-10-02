@@ -209,6 +209,11 @@
         }
       }
     },
+    "runtimes": {
+      "methods": {
+        "list": "get /v1/runtimes"
+      }
+    },
     "users": {
       "methods": {
         "me": "get /v1/users/me",
