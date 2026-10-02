@@ -141,6 +141,8 @@ const cases: {
         limit: '50',
         names: 'names',
         repositoryIds: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        projectId: 'projectId',
+        sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         search: 'search',
         source: 'organization',
       });
@@ -1030,6 +1032,7 @@ const cases: {
         diffDarkTheme: '',
         defaultAgent: '',
         followUpBehavior: 'queue',
+        customSystemPrompt: '',
       });
     },
   },
@@ -2318,6 +2321,7 @@ const cases: {
       const billing = await client.billing.listUsage({
         cursor: 'cursor',
         limit: '50',
+        sessionId: 'sessionId',
       });
     },
   },
