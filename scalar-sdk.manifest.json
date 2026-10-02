@@ -6490,6 +6490,7 @@
     "artifacts",
     "messages",
     "models",
+    "runtimes",
     "users",
     "users.settings",
     "users.connectedAccounts",
@@ -6523,6 +6524,7 @@
     "artifacts",
     "messages",
     "models",
+    "runtimes",
     "users",
     "users.settings",
     "users.connectedAccounts",
@@ -12935,6 +12937,85 @@
         },
         {
           "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "runtimes",
+      "publicResource": "runtimes",
+      "operation": "list",
+      "publicOperation": "list",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/runtimes",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [
+        "cursor",
+        "limit"
+      ],
+      "publicQueryParams": [
+        "cursor",
+        "limit"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "cursor",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "50"
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "RuntimeListParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [

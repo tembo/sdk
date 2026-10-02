@@ -948,6 +948,31 @@ const cases: {
   },
 
   {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/runtimes',
+    label: 'required params',
+    run: async () => {
+      const runtime = await client.runtimes.list({
+        limit: '50',
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/runtimes',
+    label: 'all params',
+    run: async () => {
+      const runtime = await client.runtimes.list({
+        cursor: 'claudeCode',
+        limit: '50',
+      });
+    },
+  },
+
+  {
     operation: 'me',
     method: 'GET',
     path: '/v1/users/me',

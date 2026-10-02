@@ -121,6 +121,7 @@ import {
   type ModelListParams,
   type ModelUpdateParams,
 } from './resources/models';
+import { Runtimes, type RuntimeListResponse, type RuntimeListParams } from './resources/runtimes';
 import {
   Users,
   type UserMeResponse,
@@ -996,6 +997,7 @@ export class Tembo {
   artifacts: Artifacts = new Artifacts(this);
   messages: Messages = new Messages(this);
   models: Models = new Models(this);
+  runtimes: Runtimes = new Runtimes(this);
   users: Users = new Users(this);
   sessions: Sessions = new Sessions(this);
   projects: Projects = new Projects(this);
@@ -1014,6 +1016,7 @@ Tembo.McpConnections = McpConnections;
 Tembo.Artifacts = Artifacts;
 Tembo.Messages = Messages;
 Tembo.Models = Models;
+Tembo.Runtimes = Runtimes;
 Tembo.Users = Users;
 Tembo.Sessions = Sessions;
 Tembo.Projects = Projects;
@@ -1126,6 +1129,12 @@ export declare namespace Tembo {
     type ModelUpdateResponse as ModelUpdateResponse,
     type ModelListParams as ModelListParams,
     type ModelUpdateParams as ModelUpdateParams,
+  };
+
+  export {
+    Runtimes as Runtimes,
+    type RuntimeListResponse as RuntimeListResponse,
+    type RuntimeListParams as RuntimeListParams,
   };
 
   export {
