@@ -198,7 +198,7 @@ export namespace AgentOptionsInput {
      */
     reasoningLevel?: string;
     mode?: 'normal' | 'planning';
-    speed?: 'normal' | 'fast';
+    speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptionsInputItem.Goal;
     [k: string]: unknown;
   }

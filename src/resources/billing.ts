@@ -46,6 +46,10 @@ export interface BillingRetrieveResponse {
   access: BillingRetrieveResponse.Access;
   trial: BillingRetrieveResponse.Trial | null;
   billingEnabled: boolean;
+  /**
+   * @maxItems 20
+   */
+  availablePlans: Array<BillingRetrieveResponse.AvailablePlan>;
   balance: BillingRetrieveResponse.Balance;
   onDemand: BillingRetrieveResponse.OnDemand;
   subscription: BillingRetrieveResponse.Subscription | null;
@@ -53,7 +57,7 @@ export interface BillingRetrieveResponse {
 
 export namespace BillingRetrieveResponse {
   export interface Access {
-    state: 'blocked' | 'grace' | 'trial' | 'paid';
+    state: 'blocked' | 'trial' | 'paid';
     canExecute: boolean;
     blockedReason:
       | 'awaiting_demo'
@@ -76,6 +80,38 @@ export namespace BillingRetrieveResponse {
     allowance: number;
     remainingAllowance: number;
     exhausted: boolean;
+  }
+
+  export interface AvailablePlan {
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @maxLength 255
+     */
+    title: string;
+    /**
+     * @minimum 0
+     */
+    tier: number;
+    /**
+     * @maxLength 2000
+     */
+    description: string;
+    /**
+     * @minimum 0
+     */
+    includedCredits: number;
+    /**
+     * @minimum 0
+     */
+    monthlyPrice: number;
+    /**
+     * @minimum 0
+     */
+    yearlyPrice: number | null;
   }
 
   export interface Balance {
@@ -204,6 +240,11 @@ export interface BillingListUsageParams {
    * @default 50
    */
   limit?: string;
+  /**
+   * @minLength 1
+   * @maxLength 255
+   */
+  sessionId?: string;
 }
 
 export interface BillingListUsageResponse {

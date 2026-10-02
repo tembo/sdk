@@ -799,13 +799,16 @@
                   "kind": "enum",
                   "values": [
                     "normal",
-                    "fast"
+                    "fast",
+                    "ultrafast"
                   ],
                   "names": [
                     "Normal",
-                    "Fast"
+                    "Fast",
+                    "Ultrafast"
                   ],
                   "deprecations": [
+                    false,
                     false,
                     false
                   ]
@@ -914,13 +917,16 @@
               "kind": "enum",
               "values": [
                 "normal",
-                "fast"
+                "fast",
+                "ultrafast"
               ],
               "names": [
                 "Normal",
-                "Fast"
+                "Fast",
+                "Ultrafast"
               ],
               "deprecations": [
+                false,
                 false,
                 false
               ]
@@ -7066,6 +7072,8 @@
         "limit",
         "names",
         "repositoryIds",
+        "projectId",
+        "sessionId",
         "search",
         "source"
       ],
@@ -7074,6 +7082,8 @@
         "limit",
         "names",
         "repositoryIds",
+        "projectId",
+        "sessionId",
         "search",
         "source"
       ],
@@ -7105,6 +7115,18 @@
         },
         {
           "name": "repositoryIds",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "projectId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "sessionId",
           "required": false,
           "style": "form",
           "explode": true
@@ -13392,7 +13414,8 @@
         "diffLightTheme",
         "diffDarkTheme",
         "defaultAgent",
-        "followUpBehavior"
+        "followUpBehavior",
+        "customSystemPrompt"
       ],
       "publicBodyParams": [
         "autoRestartVm",
@@ -13410,7 +13433,8 @@
         "diffLightTheme",
         "diffDarkTheme",
         "defaultAgent",
-        "followUpBehavior"
+        "followUpBehavior",
+        "customSystemPrompt"
       ],
       "bodyParamDetails": [
         {
@@ -13475,6 +13499,10 @@
         },
         {
           "name": "followUpBehavior",
+          "required": false
+        },
+        {
+          "name": "customSystemPrompt",
           "required": false
         }
       ],
@@ -23055,11 +23083,13 @@
       "publicPathParams": [],
       "queryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "sessionId"
       ],
       "publicQueryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "sessionId"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -23080,6 +23110,12 @@
           "style": "form",
           "explode": true,
           "defaultValue": "50"
+        },
+        {
+          "name": "sessionId",
+          "required": false,
+          "style": "form",
+          "explode": true
         }
       ],
       "headerParamDetails": [],

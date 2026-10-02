@@ -64,6 +64,10 @@ export interface SettingRetrieveResponse {
    */
   defaultAgent?: string;
   followUpBehavior?: 'queue' | 'steer';
+  /**
+   * @maxLength 4096
+   */
+  customSystemPrompt?: string;
   codexConnected?: boolean;
   superGrokConnected?: boolean;
 }
@@ -208,6 +212,10 @@ export interface SettingUpdateParams {
    */
   defaultAgent?: string | null;
   followUpBehavior?: 'queue' | 'steer';
+  /**
+   * @maxLength 4096
+   */
+  customSystemPrompt?: string;
 }
 
 export namespace SettingUpdateParams {
@@ -425,6 +433,10 @@ export interface SettingUpdateResponse {
    */
   defaultAgent?: string;
   followUpBehavior?: 'queue' | 'steer';
+  /**
+   * @maxLength 4096
+   */
+  customSystemPrompt?: string;
   codexConnected?: boolean;
   superGrokConnected?: boolean;
 }

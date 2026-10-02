@@ -592,7 +592,7 @@ export namespace SessionCreateParams {
      */
     reasoningLevel?: string;
     mode?: 'normal' | 'planning';
-    speed?: 'normal' | 'fast';
+    speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptions.Goal;
   }
 
@@ -1123,7 +1123,7 @@ export namespace SessionUpdateParams {
      */
     reasoningLevel?: string;
     mode?: 'normal' | 'planning';
-    speed?: 'normal' | 'fast';
+    speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptions.Goal;
   }
 
