@@ -90,6 +90,8 @@ export type {
 } from './messages';
 export { Models } from './models';
 export type { ModelListParams, ModelListResponse, ModelUpdateParams, ModelUpdateResponse } from './models';
+export { Runtimes } from './runtimes';
+export type { RuntimeListParams, RuntimeListResponse } from './runtimes';
 export { Users } from './users/users';
 export type {
   UserMeResponse,
