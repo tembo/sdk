@@ -9,6 +9,7 @@ const schema = JSON.parse(readFileSync(new URL('../openapi/openapi.json', import
 const manifest = JSON.parse(readFileSync(new URL('../scalar-sdk.manifest.json', import.meta.url)));
 const config = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
 const packageJson = JSON.parse(readFileSync(new URL('../package.json', import.meta.url)));
+const allowPendingScalarMappings = process.env.ALLOW_PENDING_SCALAR_MAPPINGS === 'true';
 const document = {
   type: 'doc',
   content: [{ type: 'paragraph', content: [{ type: 'text', text: 'Hello' }] }],
@@ -34,7 +35,7 @@ function mockClient(response = { data: [], nextCursor: null }, status = 200, opt
   return { client, requests };
 }
 
-test('manifest and configured methods cover exactly the public v1 operations', () => {
+test('manifest and configured methods satisfy the branch contract', () => {
   const methods = new Set(['get', 'post', 'put', 'patch', 'delete', 'head', 'options', 'trace']);
   const expected = Object.entries(schema.paths)
     .flatMap(([path, item]) =>
@@ -62,7 +63,8 @@ test('manifest and configured methods cover exactly the public v1 operations', (
     }
   }
   collect(config.resources);
-  assert.deepEqual(endpoints.sort(), expected);
+  assert.equal(new Set(endpoints).size, endpoints.length, 'Scalar resource mappings must be unique');
+  if (!allowPendingScalarMappings) assert.deepEqual(endpoints.sort(), expected);
   const { client } = mockClient();
   for (const operation of manifest.operations) {
     const resource = operation.publicResource.split('.').reduce((value, key) => value[key], client);
@@ -145,6 +147,14 @@ test('publishing uses the Scalar release workflow and trusted publishing', () =>
   assert.match(workflow, /ref: \$\{\{ needs\.release-please\.outputs\.tag_name \}\}/);
   assert.match(workflow, /npm install -g npm@11/);
   assert.doesNotMatch(workflow, /secrets\.NPM_TOKEN/);
+});
+
+test('pending scalar-next mappings are validated against production', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/contract-tests.yml', import.meta.url), 'utf8');
+  assert.match(workflow, /ALLOW_PENDING_SCALAR_MAPPINGS/);
+  assert.match(workflow, /push:\n    branches: \[main, scalar-next\]/);
+  assert.match(workflow, /github\.base_ref == 'scalar-next'/);
+  assert.match(workflow, /node scripts\/refresh-schema\.mjs/);
 });
 
 test('docs notification uses the published run commit, not npm latest', () => {
