@@ -152,6 +152,7 @@ test('publishing uses the Scalar release workflow and trusted publishing', () =>
 test('pending scalar-next mappings are validated against production', () => {
   const workflow = readFileSync(new URL('../.github/workflows/contract-tests.yml', import.meta.url), 'utf8');
   assert.match(workflow, /ALLOW_PENDING_SCALAR_MAPPINGS/);
+  assert.match(workflow, /push:\n    branches: \[main, scalar-next\]/);
   assert.match(workflow, /github\.base_ref == 'scalar-next'/);
   assert.match(workflow, /node scripts\/refresh-schema\.mjs/);
 });

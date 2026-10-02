@@ -2,6 +2,7 @@ name: SDK Contract Tests
 
 on:
   push:
+    branches: [main, scalar-next]
   pull_request:
 
 permissions:
