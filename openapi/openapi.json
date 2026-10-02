@@ -962,7 +962,8 @@
                 "type": "string",
                 "enum": [
                   "normal",
-                  "fast"
+                  "fast",
+                  "ultrafast"
                 ]
               },
               "goal": {
@@ -1006,7 +1007,8 @@
             "type": "string",
             "enum": [
               "normal",
-              "fast"
+              "fast",
+              "ultrafast"
             ]
           },
           "goal": {
@@ -3868,6 +3870,23 @@
                 }
               ],
               "default": []
+            }
+          },
+          {
+            "in": "query",
+            "name": "projectId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            }
+          },
+          {
+            "in": "query",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
             }
           },
           {
@@ -14921,6 +14940,393 @@
         }
       }
     },
+    "/v1/runtimes": {
+      "get": {
+        "operationId": "listRuntimes",
+        "summary": "List runtimes",
+        "description": "List execution runtimes and their compatible model references for the current organization.",
+        "tags": [
+          "Runtimes"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List runtimes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "enum": [
+                              "claudeCode",
+                              "codex",
+                              "opencode",
+                              "cursor",
+                              "amp",
+                              "fx",
+                              "pi"
+                            ]
+                          },
+                          "displayName": {
+                            "type": "string"
+                          },
+                          "defaultModelName": {
+                            "type": "string",
+                            "enum": [
+                              "claude-opus-5-5",
+                              "claude-fable-5-1",
+                              "claude-fable-5",
+                              "claude-opus-5",
+                              "claude-sonnet-5-5",
+                              "claude-opus-4-8",
+                              "claude-opus-4-7",
+                              "claude-opus-4-6",
+                              "claude-opus-4-5",
+                              "claude-4-5-haiku",
+                              "gpt-6.1-sol",
+                              "gpt-6-astra",
+                              "gpt-6-sol",
+                              "gpt-6-luna",
+                              "gpt-5.6-sol",
+                              "gpt-5.6-terra",
+                              "gpt-5.6-luna",
+                              "gpt-5.5-pro",
+                              "gpt-5.5",
+                              "gpt-5.4",
+                              "gpt-5.4-mini",
+                              "gpt-5.4-nano",
+                              "gpt-5.3-codex",
+                              "gpt-5.3-codex-spark",
+                              "gpt-5.2-codex",
+                              "gpt-5.2",
+                              "glm-5p3",
+                              "glm-5p3-flash",
+                              "composer-1.5",
+                              "composer-2",
+                              "composer-2-fast",
+                              "composer-2.5",
+                              "gemini-3.1-pro",
+                              "gemini-3.5-flash",
+                              "grok-4.7",
+                              "grok",
+                              "kimi-k3",
+                              "minimax-m2p7",
+                              "minimax-m3",
+                              "deepseek-v4-pro",
+                              "deepseek-v4p1-flash"
+                            ]
+                          },
+                          "requiresApiKey": {
+                            "type": "boolean"
+                          },
+                          "hasApiKey": {
+                            "type": "boolean"
+                          },
+                          "runCapabilities": {
+                            "type": "object",
+                            "properties": {
+                              "modes": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "normal",
+                                    "planning"
+                                  ]
+                                }
+                              },
+                              "speeds": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "enum": [
+                                    "normal",
+                                    "fast",
+                                    "ultrafast"
+                                  ]
+                                }
+                              },
+                              "supportsGoals": {
+                                "type": "boolean"
+                              }
+                            },
+                            "required": [
+                              "modes",
+                              "speeds",
+                              "supportsGoals"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "availability": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "type": "string",
+                                    "const": "available"
+                                  }
+                                },
+                                "required": [
+                                  "status"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "type": "string",
+                                    "const": "unavailable"
+                                  },
+                                  "code": {
+                                    "type": "string",
+                                    "enum": [
+                                      "plan_required",
+                                      "missing_credentials"
+                                    ]
+                                  },
+                                  "reason": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "code",
+                                  "reason"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "compatibleModels": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string",
+                                  "enum": [
+                                    "claude-opus-5-5",
+                                    "claude-fable-5-1",
+                                    "claude-fable-5",
+                                    "claude-opus-5",
+                                    "claude-sonnet-5-5",
+                                    "claude-opus-4-8",
+                                    "claude-opus-4-7",
+                                    "claude-opus-4-6",
+                                    "claude-opus-4-5",
+                                    "claude-4-5-haiku",
+                                    "gpt-6.1-sol",
+                                    "gpt-6-astra",
+                                    "gpt-6-sol",
+                                    "gpt-6-luna",
+                                    "gpt-5.6-sol",
+                                    "gpt-5.6-terra",
+                                    "gpt-5.6-luna",
+                                    "gpt-5.5-pro",
+                                    "gpt-5.5",
+                                    "gpt-5.4",
+                                    "gpt-5.4-mini",
+                                    "gpt-5.4-nano",
+                                    "gpt-5.3-codex",
+                                    "gpt-5.3-codex-spark",
+                                    "gpt-5.2-codex",
+                                    "gpt-5.2",
+                                    "glm-5p3",
+                                    "glm-5p3-flash",
+                                    "composer-1.5",
+                                    "composer-2",
+                                    "composer-2-fast",
+                                    "composer-2.5",
+                                    "gemini-3.1-pro",
+                                    "gemini-3.5-flash",
+                                    "grok-4.7",
+                                    "grok",
+                                    "kimi-k3",
+                                    "minimax-m2p7",
+                                    "minimax-m3",
+                                    "deepseek-v4-pro",
+                                    "deepseek-v4p1-flash"
+                                  ]
+                                },
+                                "label": {
+                                  "type": "string"
+                                },
+                                "provider": {
+                                  "type": "string"
+                                },
+                                "isDefault": {
+                                  "type": "boolean"
+                                },
+                                "isPlatformDefault": {
+                                  "type": "boolean"
+                                },
+                                "reasoningLevels": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                },
+                                "availability": {
+                                  "oneOf": [
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "status": {
+                                          "type": "string",
+                                          "const": "available"
+                                        }
+                                      },
+                                      "required": [
+                                        "status"
+                                      ],
+                                      "additionalProperties": false
+                                    },
+                                    {
+                                      "type": "object",
+                                      "properties": {
+                                        "status": {
+                                          "type": "string",
+                                          "const": "unavailable"
+                                        },
+                                        "code": {
+                                          "type": "string",
+                                          "enum": [
+                                            "model_disabled",
+                                            "plan_required",
+                                            "missing_credentials",
+                                            "unsupported_provider",
+                                            "chatgpt_not_connected",
+                                            "supergrok_not_connected",
+                                            "claude_subscription_not_connected"
+                                          ]
+                                        },
+                                        "reason": {
+                                          "type": "string"
+                                        }
+                                      },
+                                      "required": [
+                                        "status",
+                                        "code",
+                                        "reason"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "name",
+                                "label",
+                                "provider",
+                                "isDefault",
+                                "isPlatformDefault",
+                                "reasoningLevels",
+                                "availability"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "displayName",
+                          "defaultModelName",
+                          "requiresApiKey",
+                          "hasApiKey",
+                          "runCapabilities",
+                          "availability",
+                          "compatibleModels"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "claudeCode",
+                        "codex",
+                        "opencode",
+                        "cursor",
+                        "amp",
+                        "fx",
+                        "pi",
+                        null
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, cursor, or caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "claudeCode",
+                "codex",
+                "opencode",
+                "cursor",
+                "amp",
+                "fx",
+                "pi"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "string",
+              "default": "50"
+            }
+          }
+        ]
+      }
+    },
     "/v1/users/me": {
       "get": {
         "operationId": "retrieveCurrentUser",
@@ -16174,6 +16580,10 @@
                         "steer"
                       ]
                     },
+                    "customSystemPrompt": {
+                      "type": "string",
+                      "maxLength": 4096
+                    },
                     "codexConnected": {
                       "type": "boolean"
                     },
@@ -16649,6 +17059,10 @@
                         "queue",
                         "steer"
                       ]
+                    },
+                    "customSystemPrompt": {
+                      "type": "string",
+                      "maxLength": 4096
                     },
                     "codexConnected": {
                       "type": "boolean"
@@ -17171,6 +17585,10 @@
                       "queue",
                       "steer"
                     ]
+                  },
+                  "customSystemPrompt": {
+                    "type": "string",
+                    "maxLength": 4096
                   }
                 },
                 "additionalProperties": false
@@ -36821,7 +37239,6 @@
                           "type": "string",
                           "enum": [
                             "blocked",
-                            "grace",
                             "trial",
                             "paid"
                           ]
@@ -36890,6 +37307,57 @@
                     },
                     "billingEnabled": {
                       "type": "boolean"
+                    },
+                    "availablePlans": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 255
+                          },
+                          "title": {
+                            "type": "string",
+                            "maxLength": 255
+                          },
+                          "tier": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "description": {
+                            "type": "string",
+                            "maxLength": 2000
+                          },
+                          "includedCredits": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "monthlyPrice": {
+                            "type": "number",
+                            "minimum": 0
+                          },
+                          "yearlyPrice": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "title",
+                          "tier",
+                          "description",
+                          "includedCredits",
+                          "monthlyPrice",
+                          "yearlyPrice"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 20
                     },
                     "balance": {
                       "type": "object",
@@ -37115,6 +37583,7 @@
                     "access",
                     "trial",
                     "billingEnabled",
+                    "availablePlans",
                     "balance",
                     "onDemand",
                     "subscription"
@@ -37424,6 +37893,15 @@
             "schema": {
               "type": "string",
               "default": "50"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sessionId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
             }
           }
         ]
