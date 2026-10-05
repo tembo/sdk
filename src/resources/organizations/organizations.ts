@@ -187,6 +187,7 @@ export interface OrganizationUpdateParams {
    * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
    */
   slug?: string;
+  onboardingCompleted?: boolean;
 }
 
 export interface OrganizationUpdateResponse {
