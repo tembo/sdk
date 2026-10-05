@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.8.0](https://github.com/tembo/sdk/compare/v0.7.0...v0.8.0) (2026-10-05)
+
+
+### Features
+
+* **api:** update SDK surface (2 changes) ([5bf614f](https://github.com/tembo/sdk/commit/5bf614f24a7383c194a6f3a43e1aebd1a903a503))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([506801c](https://github.com/tembo/sdk/commit/506801ccdb7da81c84732752257917533ee9241c))
+
 ## [0.7.0](https://github.com/tembo/sdk/compare/v0.6.0...v0.7.0) (2026-10-02)
 
 

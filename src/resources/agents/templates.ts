@@ -480,7 +480,8 @@ export interface GithubPullRequestClosedFilters {
    */
   openedBy?: Array<string>;
   /**
-   * Enable agent for Tembo-created pull requests (disabled by default)
+   * Enable agent for Tembo-created pull requests (enabled by default)
+   * @default true
    */
   temboPrs?: boolean;
 }
@@ -495,7 +496,8 @@ export interface GithubPullRequestMergedFilters {
    */
   mergedBy?: Array<string>;
   /**
-   * Enable agent for Tembo-created pull requests (disabled by default)
+   * Enable agent for Tembo-created pull requests (enabled by default)
+   * @default true
    */
   temboPrs?: boolean;
 }
@@ -522,7 +524,8 @@ export interface GithubPullRequestOpenedFilters {
    */
   draftPrs?: boolean;
   /**
-   * Enable agent for Tembo-created pull requests (disabled by default)
+   * Enable agent for Tembo-created pull requests (enabled by default)
+   * @default true
    */
   temboPrs?: boolean;
 }
@@ -537,7 +540,8 @@ export interface GithubPullRequestReadyForReviewFilters {
    */
   openedBy?: Array<string>;
   /**
-   * Enable agent for Tembo-created pull requests (disabled by default)
+   * Enable agent for Tembo-created pull requests (enabled by default)
+   * @default true
    */
   temboPrs?: boolean;
 }
@@ -556,7 +560,8 @@ export interface GithubPullRequestSynchronizeFilters {
    */
   draftPrs?: boolean;
   /**
-   * Enable agent for Tembo-created pull requests (disabled by default)
+   * Enable agent for Tembo-created pull requests (enabled by default)
+   * @default true
    */
   temboPrs?: boolean;
 }

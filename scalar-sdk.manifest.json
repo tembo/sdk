@@ -1,7 +1,7 @@
 {
   "name": "TemboPublicApi",
   "slug": "temboPublicApi",
-  "generatorVersion": "0.36.0",
+  "generatorVersion": "0.36.1",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -8332,11 +8332,13 @@
       "publicHeaderParams": [],
       "bodyParams": [
         "name",
-        "slug"
+        "slug",
+        "onboardingCompleted"
       ],
       "publicBodyParams": [
         "name",
-        "slug"
+        "slug",
+        "onboardingCompleted"
       ],
       "bodyParamDetails": [
         {
@@ -8345,6 +8347,10 @@
         },
         {
           "name": "slug",
+          "required": false
+        },
+        {
+          "name": "onboardingCompleted",
           "required": false
         }
       ],

@@ -337,6 +337,7 @@ const cases: {
       const organization = await client.organizations.update('organizationId', {
         name: 'x',
         slug: 'x',
+        onboardingCompleted: false,
       });
     },
   },

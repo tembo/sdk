@@ -2038,7 +2038,8 @@
           },
           "temboPrs": {
             "type": "boolean",
-            "description": "Enable agent for Tembo-created pull requests (disabled by default)"
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)"
           }
         }
       },
@@ -2061,7 +2062,8 @@
           },
           "temboPrs": {
             "type": "boolean",
-            "description": "Enable agent for Tembo-created pull requests (disabled by default)"
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)"
           }
         }
       },
@@ -2102,7 +2104,8 @@
           },
           "temboPrs": {
             "type": "boolean",
-            "description": "Enable agent for Tembo-created pull requests (disabled by default)"
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)"
           }
         }
       },
@@ -2125,7 +2128,8 @@
           },
           "temboPrs": {
             "type": "boolean",
-            "description": "Enable agent for Tembo-created pull requests (disabled by default)"
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)"
           }
         }
       },
@@ -2164,7 +2168,8 @@
           },
           "temboPrs": {
             "type": "boolean",
-            "description": "Enable agent for Tembo-created pull requests (disabled by default)"
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)"
           }
         }
       },
@@ -5959,6 +5964,9 @@
                     "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
                     "minLength": 1,
                     "maxLength": 100
+                  },
+                  "onboardingCompleted": {
+                    "type": "boolean"
                   }
                 },
                 "additionalProperties": false
