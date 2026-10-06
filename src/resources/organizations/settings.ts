@@ -106,10 +106,6 @@ export namespace SettingRetrieveResponse {
      */
     prTitleInstructions: string;
     pullRequestInsightsEnabled: boolean;
-    /**
-     * @maxLength 64000
-     */
-    repositoryDetectionHint: string;
     shouldSignCommits: boolean;
     slackReviewOnTembo: boolean;
     /**
@@ -221,10 +217,6 @@ export interface SettingUpdateParams {
    */
   prTitleInstructions?: string;
   pullRequestInsightsEnabled?: boolean;
-  /**
-   * @maxLength 64000
-   */
-  repositoryDetectionHint?: string;
   shouldSignCommits?: boolean;
   slackReviewOnTembo?: boolean;
   /**
@@ -297,10 +289,6 @@ export namespace SettingUpdateResponse {
      */
     prTitleInstructions: string;
     pullRequestInsightsEnabled: boolean;
-    /**
-     * @maxLength 64000
-     */
-    repositoryDetectionHint: string;
     shouldSignCommits: boolean;
     slackReviewOnTembo: boolean;
     /**

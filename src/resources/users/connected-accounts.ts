@@ -17,7 +17,7 @@ export class ConnectedAccounts extends APIResource {
    * @example
    * ```ts
    * const connectedAccount = await client.users.connectedAccounts.list('userId', {
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -65,8 +65,10 @@ export interface ConnectedAccountListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface ConnectedAccountListResponse {

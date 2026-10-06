@@ -311,7 +311,7 @@ export interface SessionListParams {
    * @format uuid
    */
   agentId?: string;
-  createdBy?: string | Array<string>;
+  createdBy?: Array<string>;
   /**
    * @format date-time
    */
@@ -322,24 +322,26 @@ export interface SessionListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string | number;
-  excludePinned?: 'true' | 'false' | boolean;
-  externalIds?: string | Array<string>;
-  hasProject?: 'true' | 'false' | boolean;
+  limit?: number;
+  excludePinned?: boolean;
+  externalIds?: Array<string>;
+  hasProject?: boolean;
   /**
    * @default true
    */
-  includeArchived?: 'true' | 'false' | boolean;
+  includeArchived?: boolean;
   /**
    * @default false
    */
-  includeTotal?: 'true' | 'false' | boolean;
-  participant?: string | Array<string>;
-  pendingReviewerKeys?: string | Array<string>;
-  projectIds?: string | Array<string>;
-  pullRequestStatuses?: string | Array<string>;
-  repositoryIds?: string | Array<string>;
+  includeTotal?: boolean;
+  participant?: Array<string>;
+  pendingReviewerKeys?: Array<string>;
+  projectIds?: Array<string>;
+  pullRequestStatuses?: Array<'open' | 'merged' | 'closed'>;
+  repositoryIds?: Array<string>;
   /**
    * @minLength 1
    * @maxLength 1000
@@ -349,8 +351,8 @@ export interface SessionListParams {
    * @default lastQueuedAt
    */
   sortBy?: 'lastQueuedAt' | 'createdAt' | 'updatedAt';
-  sourceIds?: string | Array<string>;
-  sourceTypes?: string | Array<string>;
+  sourceIds?: Array<string>;
+  sourceTypes?: Array<string>;
   /**
    * @default all
    */
@@ -557,7 +559,6 @@ export interface SessionCreateParams {
   targetBranch?: string | null;
   visibility?: 'private' | 'public';
   agentOptions?: SessionCreateParams.AgentOptions;
-  autoDetectRepositories?: boolean;
   /**
    * @minLength 1
    * @maxLength 500
@@ -1625,7 +1626,7 @@ export namespace SessionForkResponse {
 }
 
 export interface SessionStopParams {
-  cancelQueued?: 'true';
+  cancelQueued?: boolean;
 }
 
 export interface SessionStopResponse {
@@ -1655,8 +1656,10 @@ export interface SessionListEventsParams {
   cursor?: string | number;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string | number;
+  limit?: number;
   /**
    * Filter by message ID, or "null" for session-level events.
    */

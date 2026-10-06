@@ -30,7 +30,7 @@ export class Billing extends APIResource {
    * @example
    * ```ts
    * const billing = await client.billing.listUsage({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -238,8 +238,10 @@ export interface BillingListUsageParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
   /**
    * @minLength 1
    * @maxLength 255
@@ -265,6 +267,7 @@ export interface BillingListUsageResponse {
 
 export namespace BillingListUsageResponse {
   export interface Item {
+    agent: string | null;
     /**
      * @minLength 1
      * @maxLength 255
