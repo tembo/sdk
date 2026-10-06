@@ -52,6 +52,12 @@ test('SDK mappings cover current manually reviewed operations', () => {
       '/v1/users/{userId}/settings': { get: {}, patch: {} },
       '/v1/users/{userId}/connected-accounts': { get: {} },
       '/v1/users/{userId}/connected-accounts/{connectedAccountId}': { get: {} },
+      '/v1/users/{userId}/subscriptions/chatgpt': { get: {} },
+      '/v1/users/{userId}/subscriptions/chatgpt/usage': { get: {} },
+      '/v1/users/{userId}/subscriptions/chatgpt/usage/reset': { post: {} },
+      '/v1/users/{userId}/subscriptions/claude': { get: {} },
+      '/v1/users/{userId}/subscriptions/claude/usage': { get: {} },
+      '/v1/users/{userId}/subscriptions/supergrok': { get: {} },
       '/v1/sessions/{sessionId}/fork': { post: {} },
       '/v1/runtimes': { get: {} },
     },
@@ -65,4 +71,35 @@ test('SDK mappings cover current manually reviewed operations', () => {
   });
   assert.equal(sdkConfig.resources.users.subresources.settings.methods.update.bodyParamName, 'body');
   assert.equal(sdkConfig.resources.sessions.methods.fork.bodyParamName, 'body');
+});
+
+test('subscription mappings cover user and organization reads and preserve reset request bodies', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  for (const { resourceName, identifier } of [
+    { resourceName: 'organizations', identifier: 'organizationId' },
+    { resourceName: 'users', identifier: 'userId' },
+  ]) {
+    const subscriptions = sdkConfig.resources[resourceName].subresources.subscriptions;
+    const prefix = `/v1/${resourceName}/{${identifier}}/subscriptions`;
+    validateCoverage(
+      {
+        paths: {
+          [`${prefix}/chatgpt`]: { get: {} },
+          [`${prefix}/chatgpt/usage`]: { get: {} },
+          [`${prefix}/chatgpt/usage/reset`]: { post: {} },
+          [`${prefix}/claude`]: { get: {} },
+          [`${prefix}/claude/usage`]: { get: {} },
+          [`${prefix}/supergrok`]: { get: {} },
+        },
+      },
+      { resources: { subscriptions } },
+    );
+    assert.equal(subscriptions.subresources.chatgpt.methods.reset_usage.bodyParamName, 'body');
+    assert.equal(subscriptions.subresources.chatgpt.methods.reset_usage.kind, 'http');
+    assert.equal(subscriptions.subresources.chatgpt.methods.reset_usage.verb, 'post');
+    assert.equal(
+      subscriptions.subresources.chatgpt.methods.reset_usage.path,
+      `${prefix}/chatgpt/usage/reset`,
+    );
+  }
 });
