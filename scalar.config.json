@@ -132,6 +132,34 @@
               "bodyParamName": "body"
             }
           }
+        },
+        "subscriptions": {
+          "subresources": {
+            "chatgpt": {
+              "methods": {
+                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/chatgpt",
+                "retrieve_usage": "get /v1/organizations/{organizationId}/subscriptions/chatgpt/usage",
+                "reset_usage": {
+                  "kind": "http",
+                  "endpoint": "post /v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset",
+                  "verb": "post",
+                  "path": "/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset",
+                  "bodyParamName": "body"
+                }
+              }
+            },
+            "claude": {
+              "methods": {
+                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/claude",
+                "retrieve_usage": "get /v1/organizations/{organizationId}/subscriptions/claude/usage"
+              }
+            },
+            "supergrok": {
+              "methods": {
+                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/supergrok"
+              }
+            }
+          }
         }
       }
     },
@@ -243,6 +271,34 @@
           "methods": {
             "list": "get /v1/users/{userId}/connected-accounts",
             "retrieve": "get /v1/users/{userId}/connected-accounts/{connectedAccountId}"
+          }
+        },
+        "subscriptions": {
+          "subresources": {
+            "chatgpt": {
+              "methods": {
+                "retrieve": "get /v1/users/{userId}/subscriptions/chatgpt",
+                "retrieve_usage": "get /v1/users/{userId}/subscriptions/chatgpt/usage",
+                "reset_usage": {
+                  "kind": "http",
+                  "endpoint": "post /v1/users/{userId}/subscriptions/chatgpt/usage/reset",
+                  "verb": "post",
+                  "path": "/v1/users/{userId}/subscriptions/chatgpt/usage/reset",
+                  "bodyParamName": "body"
+                }
+              }
+            },
+            "claude": {
+              "methods": {
+                "retrieve": "get /v1/users/{userId}/subscriptions/claude",
+                "retrieve_usage": "get /v1/users/{userId}/subscriptions/claude/usage"
+              }
+            },
+            "supergrok": {
+              "methods": {
+                "retrieve": "get /v1/users/{userId}/subscriptions/supergrok"
+              }
+            }
           }
         }
       }
