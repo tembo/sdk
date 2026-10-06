@@ -61,9 +61,11 @@ export interface DiffListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string | number;
-  hasChanges?: 'true' | 'false' | boolean;
+  limit?: number;
+  hasChanges?: boolean;
 }
 
 export interface DiffListResponse {

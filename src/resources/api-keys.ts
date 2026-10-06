@@ -16,7 +16,7 @@ export class APIKeys extends APIResource {
    * @example
    * ```ts
    * const apiKey = await client.apiKeys.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -106,8 +106,10 @@ export interface APIKeyListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface APIKeyListResponse {

@@ -16,7 +16,7 @@ export class McpConnections extends APIResource {
    * @example
    * ```ts
    * const mcpConnection = await client.mcpConnections.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -138,15 +138,17 @@ export class McpConnections extends APIResource {
 }
 
 export interface McpConnectionListParams {
-  connected?: 'true' | 'false';
+  connected?: boolean;
   /**
    * @format uuid
    */
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
   /**
    * @minLength 1
    * @maxLength 200

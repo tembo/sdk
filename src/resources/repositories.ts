@@ -53,9 +53,15 @@ export interface RepositoryListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string | number;
-  ids?: string | Array<string>;
+  limit?: number;
+  /**
+   * @minItems 1
+   * @maxItems 100
+   */
+  ids?: Array<string>;
   /**
    * @format uuid
    */

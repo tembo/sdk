@@ -18,7 +18,7 @@ export class Triggers extends APIResource {
    * @example
    * ```ts
    * const trigger = await client.agents.triggers.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -137,8 +137,10 @@ export interface TriggerListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface TriggerListResponse {

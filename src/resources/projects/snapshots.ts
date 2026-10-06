@@ -113,8 +113,10 @@ export interface SnapshotListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string | number;
+  limit?: number;
 }
 
 export interface SnapshotListResponse {

@@ -40,7 +40,7 @@ const client = new Tembo({
 });
 
 const apiKey = await client.apiKeys.list({
-  limit: '50',
+  limit: 50,
 });
 
 console.log(apiKey);
@@ -58,7 +58,7 @@ Pass credentials to the generated client constructor. Environment variables are 
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `apiKey` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to TEMBO_API_KEY. |
+| `apiKey` | `string \| AuthTokenProvider` | - | Credential for the apiKey scheme. Defaults to TEMBO_API_KEY. |
 
 Declared schemes:
 
@@ -75,7 +75,7 @@ import { APIError } from '@tembo-io/sdk';
 
 try {
   const apiKey = await client.apiKeys.list({
-    limit: '50',
+    limit: 50,
   });
 } catch (err) {
   if (err instanceof APIError) {

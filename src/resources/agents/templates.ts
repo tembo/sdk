@@ -17,7 +17,7 @@ export class Templates extends APIResource {
    * @example
    * ```ts
    * const template = await client.agents.templates.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -344,6 +344,14 @@ export interface AtlassianIssueCreatedFilters {
 }
 
 export interface AtlassianIssueLabelAddedFilters {
+  /**
+   * Only trigger if the issue is in one of the specified projects
+   */
+  projects?: Array<string>;
+  /**
+   * Only trigger if the issue belongs to one of these Jira teams. Enter exact team names or team IDs (from the team profile URL).
+   */
+  teams?: Array<string>;
   /**
    * Only trigger if one of the specified labels was added
    */
@@ -893,8 +901,10 @@ export interface TemplateListParams {
     | 'triageNewJiraBug';
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface TemplateListResponse {

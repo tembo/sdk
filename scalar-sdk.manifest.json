@@ -1,7 +1,7 @@
 {
   "name": "TemboPublicApi",
   "slug": "temboPublicApi",
-  "generatorVersion": "0.36.1",
+  "generatorVersion": "0.36.3",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -1728,6 +1728,32 @@
           {
             "kind": "object",
             "properties": [
+              {
+                "name": "projects",
+                "publicName": "projects",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "name": "teams",
+                "publicName": "teams",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
               {
                 "name": "labels",
                 "publicName": "labels",
@@ -3939,6 +3965,32 @@
       "type": {
         "kind": "object",
         "properties": [
+          {
+            "name": "projects",
+            "publicName": "projects",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "teams",
+            "publicName": "teams",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
           {
             "name": "labels",
             "publicName": "labels",
@@ -6583,7 +6635,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -7107,7 +7159,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "names",
@@ -7865,7 +7917,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -7968,7 +8020,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -10307,7 +10359,6 @@
         "pmSystemPrompt",
         "prTitleInstructions",
         "pullRequestInsightsEnabled",
-        "repositoryDetectionHint",
         "shouldSignCommits",
         "slackReviewOnTembo",
         "slowQueryThresholdMs",
@@ -10348,7 +10399,6 @@
         "pmSystemPrompt",
         "prTitleInstructions",
         "pullRequestInsightsEnabled",
-        "repositoryDetectionHint",
         "shouldSignCommits",
         "slackReviewOnTembo",
         "slowQueryThresholdMs",
@@ -10486,10 +10536,6 @@
         },
         {
           "name": "pullRequestInsightsEnabled",
-          "required": false
-        },
-        {
-          "name": "repositoryDetectionHint",
           "required": false
         },
         {
@@ -10681,7 +10727,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "search",
@@ -11645,7 +11691,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "jobId",
@@ -12093,7 +12139,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "sessionId",
@@ -12743,7 +12789,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -12992,7 +13038,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -13738,7 +13784,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -14253,7 +14299,6 @@
         "targetBranch",
         "visibility",
         "agentOptions",
-        "autoDetectRepositories",
         "branchName",
         "codeRepositoryIds",
         "description",
@@ -14273,7 +14318,6 @@
         "targetBranch",
         "visibility",
         "agentOptions",
-        "autoDetectRepositories",
         "branchName",
         "codeRepositoryIds",
         "description",
@@ -14315,10 +14359,6 @@
         },
         {
           "name": "agentOptions",
-          "required": false
-        },
-        {
-          "name": "autoDetectRepositories",
           "required": false
         },
         {
@@ -19339,7 +19379,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "excludeAuthorIds",
@@ -19706,7 +19746,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "ids",
@@ -19850,7 +19890,6 @@
         "sandboxSize",
         "projectId",
         "artifactType",
-        "autoDetectRepositories",
         "repositoryIds",
         "triggers",
         "schedules",
@@ -19866,7 +19905,6 @@
         "sandboxSize",
         "projectId",
         "artifactType",
-        "autoDetectRepositories",
         "repositoryIds",
         "triggers",
         "schedules",
@@ -19904,10 +19942,6 @@
         },
         {
           "name": "artifactType",
-          "required": false
-        },
-        {
-          "name": "autoDetectRepositories",
           "required": false
         },
         {
@@ -20160,7 +20194,6 @@
         "templateId",
         "script",
         "artifactType",
-        "autoDetectRepositories",
         "repositoryIds",
         "enabled",
         "archived"
@@ -20179,7 +20212,6 @@
         "templateId",
         "script",
         "artifactType",
-        "autoDetectRepositories",
         "repositoryIds",
         "enabled",
         "archived"
@@ -20235,10 +20267,6 @@
         },
         {
           "name": "artifactType",
-          "required": false
-        },
-        {
-          "name": "autoDetectRepositories",
           "required": false
         },
         {
@@ -20494,7 +20522,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -20726,7 +20754,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -21344,7 +21372,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -21992,7 +22020,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         }
       ],
       "headerParamDetails": [],
@@ -22724,7 +22752,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "enabled",
@@ -22773,7 +22801,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "false"
+          "defaultValue": false
         }
       ],
       "headerParamDetails": [],
@@ -23196,7 +23224,7 @@
           "required": false,
           "style": "form",
           "explode": true,
-          "defaultValue": "50"
+          "defaultValue": 50
         },
         {
           "name": "sessionId",

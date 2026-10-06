@@ -178,7 +178,7 @@ List active API keys for the current organization.
 
 ```ts
 const apiKey = await client.apiKeys.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -247,7 +247,7 @@ List organization skills or skills checked into a repository.
 
 ```ts
 const skill = await client.skills.list({
-  limit: '50',
+  limit: 50,
   source: 'organization',
 });
 ```
@@ -351,7 +351,7 @@ List organization members included in pull request insights.
 
 ```ts
 const insight = await client.insights.listMembers({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -366,7 +366,7 @@ List repositories included in pull request insights for the current organization
 
 ```ts
 const insight = await client.insights.listRepositories({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -622,7 +622,7 @@ List MCP connections for the current organization with cursor pagination and opt
 
 ```ts
 const mcpConnection = await client.mcpConnections.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -721,7 +721,7 @@ List organization artifacts with optional session and type filters.
 
 ```ts
 const artifact = await client.artifacts.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -782,7 +782,7 @@ List organization messages with optional session and thread filters.
 
 ```ts
 const message = await client.messages.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -852,7 +852,7 @@ List the models available to the current organization, including enablement and 
 
 ```ts
 const model = await client.models.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -882,7 +882,7 @@ List execution runtimes and their compatible model references for the current or
 
 ```ts
 const runtime = await client.runtimes.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -965,7 +965,7 @@ List the user identity-provider accounts without returning credentials.
 
 ```ts
 const connectedAccount = await client.users.connectedAccounts.list('userId', {
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -1516,7 +1516,7 @@ List pull requests for the authenticated organization with cursor pagination.
 
 ```ts
 const pullRequest = await client.pullRequests.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -1545,7 +1545,7 @@ List agents available in your organization, with optional search, status, integr
 
 ```ts
 const agent = await client.agents.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -1612,7 +1612,7 @@ List reusable agent templates and their configuration requirements.
 
 ```ts
 const template = await client.agents.templates.list({
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -1641,7 +1641,7 @@ List the schedules configured for an agent.
 
 ```ts
 const schedule = await client.agents.schedules.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -1719,7 +1719,7 @@ List the integration events configured to start runs of an agent.
 
 ```ts
 const trigger = await client.agents.triggers.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -1797,7 +1797,7 @@ List executions of an agent, including status, linked session, measured duration
 
 ```ts
 const run = await client.agents.runs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  limit: '50',
+  limit: 50,
 });
 ```
 
@@ -1873,8 +1873,8 @@ List integrations for the authenticated organization.
 
 ```ts
 const integration = await client.integrations.list({
-  limit: '50',
-  includeTotal: 'false',
+  limit: 50,
+  includeTotal: false,
 });
 ```
 
@@ -1915,6 +1915,6 @@ List session usage with cursor pagination.
 
 ```ts
 const billing = await client.billing.listUsage({
-  limit: '50',
+  limit: 50,
 });
 ```

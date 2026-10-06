@@ -48,7 +48,7 @@ export class Insights extends APIResource {
    * @example
    * ```ts
    * const insight = await client.insights.listMembers({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -69,7 +69,7 @@ export class Insights extends APIResource {
    * @example
    * ```ts
    * const insight = await client.insights.listRepositories({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -206,8 +206,10 @@ export interface InsightListMembersParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface InsightListMembersResponse {
@@ -237,8 +239,10 @@ export interface InsightListRepositoriesParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface InsightListRepositoriesResponse {
