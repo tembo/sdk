@@ -580,6 +580,62 @@ const cases: {
   },
 
   {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt',
+    run: async () => {
+      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieve('organizationId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage',
+    run: async () => {
+      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieveUsage('organizationId');
+    },
+  },
+
+  {
+    operation: 'resetUsage',
+    method: 'POST',
+    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset',
+    run: async () => {
+      const chatgpt = await client.organizations.subscriptions.chatgpt.resetUsage('organizationId', {
+        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/claude',
+    run: async () => {
+      const claude = await client.organizations.subscriptions.claude.retrieve('organizationId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/claude/usage',
+    run: async () => {
+      const claude = await client.organizations.subscriptions.claude.retrieveUsage('organizationId');
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/supergrok',
+    run: async () => {
+      const supergrok = await client.organizations.subscriptions.supergrok.retrieve('organizationId');
+    },
+  },
+
+  {
     operation: 'list',
     method: 'GET',
     path: '/v1/mcp-connections',
@@ -1095,6 +1151,62 @@ const cases: {
       const connectedAccount = await client.users.connectedAccounts.retrieve('connectedAccountId', {
         userId: 'userId',
       });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/chatgpt',
+    run: async () => {
+      const chatgpt = await client.users.subscriptions.chatgpt.retrieve('userId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/chatgpt/usage',
+    run: async () => {
+      const chatgpt = await client.users.subscriptions.chatgpt.retrieveUsage('userId');
+    },
+  },
+
+  {
+    operation: 'resetUsage',
+    method: 'POST',
+    path: '/v1/users/{userId}/subscriptions/chatgpt/usage/reset',
+    run: async () => {
+      const chatgpt = await client.users.subscriptions.chatgpt.resetUsage('userId', {
+        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/claude',
+    run: async () => {
+      const claude = await client.users.subscriptions.claude.retrieve('userId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/claude/usage',
+    run: async () => {
+      const claude = await client.users.subscriptions.claude.retrieveUsage('userId');
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/supergrok',
+    run: async () => {
+      const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
     },
   },
 

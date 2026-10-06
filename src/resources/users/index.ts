@@ -11,3 +11,4 @@ export type {
   ConnectedAccountRetrieveParams,
   ConnectedAccountRetrieveResponse,
 } from './connected-accounts';
+export { Subscriptions } from './subscriptions/subscriptions';

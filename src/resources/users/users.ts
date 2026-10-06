@@ -19,12 +19,15 @@ import {
   type ConnectedAccountListParams,
   type ConnectedAccountRetrieveParams,
 } from './connected-accounts';
+import * as SubscriptionsAPI from './subscriptions/subscriptions';
+import { Subscriptions } from './subscriptions/subscriptions';
 
 export class Users extends APIResource {
   settings: SettingsAPI.Settings = new SettingsAPI.Settings(this._client);
   connectedAccounts: ConnectedAccountsAPI.ConnectedAccounts = new ConnectedAccountsAPI.ConnectedAccounts(
     this._client,
   );
+  subscriptions: SubscriptionsAPI.Subscriptions = new SubscriptionsAPI.Subscriptions(this._client);
 
   /**
    * Retrieve the authenticated user.
@@ -152,6 +155,7 @@ export interface UserDeleteResponse {
 }
 Users.Settings = Settings;
 Users.ConnectedAccounts = ConnectedAccounts;
+Users.Subscriptions = Subscriptions;
 
 export declare namespace Users {
   export {
@@ -175,4 +179,6 @@ export declare namespace Users {
     type ConnectedAccountListParams as ConnectedAccountListParams,
     type ConnectedAccountRetrieveParams as ConnectedAccountRetrieveParams,
   };
+
+  export { Subscriptions as Subscriptions };
 }
