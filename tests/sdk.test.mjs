@@ -157,6 +157,17 @@ test('pending scalar-next mappings are validated against production', () => {
   assert.match(workflow, /node scripts\/refresh-schema\.mjs/);
 });
 
+test('schema updates use matching pending mappings and fixtures', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/update-openapi.yml', import.meta.url), 'utf8');
+  for (const filename of ['openapi/openapi.json', 'scalar.config.json', 'tests/schema-contract.test.mjs']) {
+    assert.ok(workflow.includes(`git show origin/scalar-next:${filename} > ${filename}`));
+  }
+  assert.match(
+    workflow,
+    /github\.event_name == 'workflow_dispatch' && github\.ref == 'refs\/heads\/scalar-next'/,
+  );
+});
+
 test('docs notification uses the published run commit, not npm latest', () => {
   const workflow = readFileSync(new URL('../.github/workflows/notify-docs.yml', import.meta.url), 'utf8');
   assert.match(workflow, /github\.event\.workflow_run\.head_sha/);

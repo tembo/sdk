@@ -23,7 +23,10 @@ concurrency:
 
 jobs:
   update:
-    if: github.repository == 'tembo/sdk' && github.ref == 'refs/heads/main'
+    if: >-
+      github.repository == 'tembo/sdk' &&
+      (github.ref == 'refs/heads/main' ||
+      (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/scalar-next'))
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -39,6 +42,7 @@ jobs:
         run: |
           git show origin/scalar-next:openapi/openapi.json > openapi/openapi.json
           git show origin/scalar-next:scalar.config.json > scalar.config.json
+          git show origin/scalar-next:tests/schema-contract.test.mjs > tests/schema-contract.test.mjs
       - id: schema
         run: node scripts/refresh-schema.mjs
         env:
