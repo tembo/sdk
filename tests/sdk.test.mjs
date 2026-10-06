@@ -86,7 +86,7 @@ test('ESM and CommonJS entry points load with generated version metadata', async
 
 test('production default URL, bearer authentication and pagination query are serialized', async () => {
   const { client, requests } = mockClient();
-  await client.models.list({ limit: '2' });
+  await client.models.list({ limit: 2 });
   assert.equal(config.environments.production, 'https://api.tembo.io');
   assert.equal(requests[0].url, 'https://api.tembo.io/v1/models?limit=2');
   assert.equal(requests[0].headers.get('authorization'), 'Bearer test-key');
@@ -165,6 +165,14 @@ test('schema updates use matching pending mappings and fixtures', () => {
   assert.match(
     workflow,
     /github\.event_name == 'workflow_dispatch' && github\.ref == 'refs\/heads\/scalar-next'/,
+  );
+  assert.match(
+    workflow,
+    /apply_mappings:\n        description: [^\n]+\n        type: boolean\n        default: false/,
+  );
+  assert.match(
+    workflow,
+    /github\.event_name == 'workflow_dispatch' && inputs\.apply_mappings == true && inputs\.dry_run != true/,
   );
 });
 

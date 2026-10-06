@@ -13,6 +13,10 @@ on:
         description: Upload even if unchanged (initial setup or recovery)
         type: boolean
         default: false
+      apply_mappings:
+        description: Apply reviewed scalar.config.json to Scalar and rebuild
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -88,6 +92,51 @@ jobs:
             git pull --rebase origin scalar-next
             git push origin HEAD:scalar-next
           fi
+      - name: Apply reviewed Scalar mappings
+        if: github.event_name == 'workflow_dispatch' && inputs.apply_mappings == true && inputs.dry_run != true
+        env:
+          SCALAR_API_KEY: ${{ secrets.SCALAR_API_KEY }}
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFile } from 'node:fs/promises';
+
+          assert.ok(process.env.SCALAR_API_KEY, 'SCALAR_API_KEY is required');
+          const config = await readFile('scalar.config.json', 'utf8');
+          JSON.parse(config);
+          async function request(path, body, accessToken) {
+            const response = await fetch(`https://services.scalar.com/${path}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+              },
+              body: JSON.stringify(body),
+              signal: AbortSignal.timeout(30000),
+            });
+            assert.ok(response.ok, `Scalar ${path} failed: HTTP ${response.status}`);
+            return response.json();
+          }
+          const { accessToken } = await request('core/login/personal-token/access', {
+            personalToken: process.env.SCALAR_API_KEY,
+          });
+          const { teamUid } = JSON.parse(Buffer.from(accessToken.split('.')[1], 'base64url').toString());
+          assert.ok(teamUid, 'Scalar team is required');
+          const sdks = await request('rtdb/database/get-many', {
+            collectionPath: `team/${teamUid}/sdks`,
+            query: { namespace: 'tembo', slug: 'tembo-sdk' },
+          }, accessToken);
+          assert.equal(sdks.length, 1, 'Expected exactly one tembo/tembo-sdk');
+          const response = await fetch(`https://services.scalar.com/core/v1/sdks/${sdks[0].uid}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${accessToken}` },
+            body: JSON.stringify({ config }),
+            signal: AbortSignal.timeout(30000),
+          });
+          assert.ok(response.ok, `Scalar configuration update failed: HTTP ${response.status}`);
+          const build = await request('core/v1/sdks/build', { sdkUid: sdks[0].uid }, accessToken);
+          console.log(`Applied reviewed mappings and started SDK build ${build.version}.`);
+          NODE
       - name: Report failure
         if: failure()
         run: echo 'SDK generation update failed. Review schema mappings, Scalar diagnostics, and credentials. Production is unchanged.' >> "$GITHUB_STEP_SUMMARY"
