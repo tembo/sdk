@@ -1,5 +1,54 @@
 # Changelog
 
+## [0.9.0](https://github.com/tembo/sdk/compare/v0.8.0...v0.9.0) (2026-10-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 24 breaking changes to the SDK surface.
+    - Serialization or defaults of query param `limit` on `apiKeys.list` changed.
+    - Serialization or defaults of query param `limit` on `skills.list` changed.
+    - Serialization or defaults of query param `limit` on `insights.listMembers` changed.
+    - Serialization or defaults of query param `limit` on `insights.listRepositories` changed.
+    - Removed body field `repositoryDetectionHint` from `organizations.settings.update`.
+    - Serialization or defaults of query param `limit` on `mcpConnections.list` changed.
+    - Serialization or defaults of query param `limit` on `artifacts.list` changed.
+    - Serialization or defaults of query param `limit` on `messages.list` changed.
+    - Serialization or defaults of query param `limit` on `models.list` changed.
+    - Serialization or defaults of query param `limit` on `runtimes.list` changed.
+    - Serialization or defaults of query param `limit` on `users.connectedAccounts.list` changed.
+    - Removed body field `autoDetectRepositories` from `sessions.create`.
+    - Serialization or defaults of query param `limit` on `pullRequests.list` changed.
+    - Serialization or defaults of query param `limit` on `agents.list` changed.
+    - Removed body field `autoDetectRepositories` from `agents.create`.
+    - Removed body field `autoDetectRepositories` from `agents.update`.
+    - Serialization or defaults of query param `limit` on `agents.templates.list` changed.
+    - Serialization or defaults of query param `limit` on `agents.schedules.list` changed.
+    - Serialization or defaults of query param `limit` on `agents.triggers.list` changed.
+    - Serialization or defaults of query param `limit` on `agents.runs.list` changed.
+    - Serialization or defaults of query param `limit` on `integrations.list` changed.
+    - Serialization or defaults of query param `includeTotal` on `integrations.list` changed.
+    - Serialization or defaults of query param `limit` on `billing.listUsage` changed.
+    - Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** update query param limit on apiKeys.list (+26 more changes) ([6c308dd](https://github.com/tembo/sdk/commit/6c308dd35e3f6e4f0c3adf52f3dc2527a2b31f6c))
+* **api:** update SDK surface (12 changes) ([730f0fe](https://github.com/tembo/sdk/commit/730f0fe97d089799c9f65cc5569dd8ccd4db0eac))
+
+
+### Bug Fixes
+
+* **sdk:** apply reviewed mappings during manual recovery ([4ffa383](https://github.com/tembo/sdk/commit/4ffa3837c1400550f75cc8772b88dbbeb41f9040))
+* **sdk:** keep schema generation fixtures in sync ([ba61596](https://github.com/tembo/sdk/commit/ba61596c2bb787e3e8c31714e160263d75b7c520))
+* **sdk:** map subscription APIs ([618cdb8](https://github.com/tembo/sdk/commit/618cdb8ac71b533526003750026e5c51b8d0355f))
+* **sdk:** map user and organization subscription APIs ([8b0397b](https://github.com/tembo/sdk/commit/8b0397b0a26bf227c94dc4fac33db33b4fd3fb69))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([d330748](https://github.com/tembo/sdk/commit/d330748179d59498b53413f9f31b0fa37c764636))
+
 ## [0.8.0](https://github.com/tembo/sdk/compare/v0.7.0...v0.8.0) (2026-10-05)
 
 
