@@ -1790,6 +1790,20 @@
       "AtlassianIssueLabelAddedFilters": {
         "type": "object",
         "properties": {
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the issue is in one of the specified projects"
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the issue belongs to one of these Jira teams. Enter exact team names or team IDs (from the team profile URL)."
+          },
           "labels": {
             "type": "array",
             "items": {
@@ -3129,8 +3143,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -3834,46 +3850,32 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
             "in": "query",
             "name": "names",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
             }
           },
           {
             "in": "query",
             "name": "repositoryIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uuid"
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              },
               "default": []
             }
           },
@@ -5181,8 +5183,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -5336,8 +5340,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -6390,15 +6396,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -7540,15 +7540,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -8445,10 +8439,6 @@
                         "pullRequestInsightsEnabled": {
                           "type": "boolean"
                         },
-                        "repositoryDetectionHint": {
-                          "type": "string",
-                          "maxLength": 64000
-                        },
                         "shouldSignCommits": {
                           "type": "boolean"
                         },
@@ -8490,7 +8480,6 @@
                         "pmSystemPrompt",
                         "prTitleInstructions",
                         "pullRequestInsightsEnabled",
-                        "repositoryDetectionHint",
                         "shouldSignCommits",
                         "slackReviewOnTembo",
                         "slowQueryThresholdMs",
@@ -8747,10 +8736,6 @@
                         "pullRequestInsightsEnabled": {
                           "type": "boolean"
                         },
-                        "repositoryDetectionHint": {
-                          "type": "string",
-                          "maxLength": 64000
-                        },
                         "shouldSignCommits": {
                           "type": "boolean"
                         },
@@ -8792,7 +8777,6 @@
                         "pmSystemPrompt",
                         "prTitleInstructions",
                         "pullRequestInsightsEnabled",
-                        "repositoryDetectionHint",
                         "shouldSignCommits",
                         "slackReviewOnTembo",
                         "slowQueryThresholdMs",
@@ -9073,10 +9057,6 @@
                   "pullRequestInsightsEnabled": {
                     "type": "boolean"
                   },
-                  "repositoryDetectionHint": {
-                    "type": "string",
-                    "maxLength": 64000
-                  },
                   "shouldSignCommits": {
                     "type": "boolean"
                   },
@@ -9100,6 +9080,1790 @@
             }
           }
         }
+      }
+    },
+    "/v1/organizations/{organizationId}/subscriptions/chatgpt": {
+      "get": {
+        "operationId": "retrieveOrganizationChatgptSubscription",
+        "summary": "Retrieve an organization ChatGPT subscription",
+        "description": "Retrieve the connection status for an organization ChatGPT subscription.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve an organization ChatGPT subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "connected"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing organization information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Organization administrator access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Organization operation conflicts with existing state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Organization operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required organization storage is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/subscriptions/chatgpt/usage": {
+      "get": {
+        "operationId": "retrieveOrganizationChatgptSubscriptionUsage",
+        "summary": "Retrieve organization ChatGPT subscription usage",
+        "description": "Retrieve plan and rate-limit usage for an organization ChatGPT subscription.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve organization ChatGPT subscription usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "planType": {
+                      "type": "string",
+                      "enum": [
+                        "free",
+                        "go",
+                        "plus",
+                        "pro",
+                        "prolite",
+                        "team",
+                        "self_serve_business_prolite",
+                        "self_serve_business_usage_based",
+                        "business",
+                        "ent26",
+                        "enterprise_cbp_automation",
+                        "enterprise_cbp_usage_based",
+                        "enterprise",
+                        "edu",
+                        "edu_plus",
+                        "edu_pro",
+                        "unknown"
+                      ]
+                    },
+                    "rateLimits": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "limitId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "limitName": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "planType": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "free",
+                              "go",
+                              "plus",
+                              "pro",
+                              "prolite",
+                              "team",
+                              "self_serve_business_prolite",
+                              "self_serve_business_usage_based",
+                              "business",
+                              "ent26",
+                              "enterprise_cbp_automation",
+                              "enterprise_cbp_usage_based",
+                              "enterprise",
+                              "edu",
+                              "edu_plus",
+                              "edu_pro",
+                              "unknown",
+                              null
+                            ]
+                          },
+                          "primary": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "usedPercent": {
+                                "type": "number"
+                              },
+                              "windowDurationMins": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "exclusiveMinimum": 0
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "usedPercent",
+                              "windowDurationMins",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "secondary": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "usedPercent": {
+                                "type": "number"
+                              },
+                              "windowDurationMins": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "exclusiveMinimum": 0
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "usedPercent",
+                              "windowDurationMins",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "credits": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "hasCredits": {
+                                "type": "boolean"
+                              },
+                              "unlimited": {
+                                "type": "boolean"
+                              },
+                              "balance": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "hasCredits",
+                              "unlimited",
+                              "balance"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "individualLimit": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "limit": {
+                                "type": "string"
+                              },
+                              "used": {
+                                "type": "string"
+                              },
+                              "remainingPercent": {
+                                "type": "number"
+                              },
+                              "resetsAt": {
+                                "type": "integer",
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "limit",
+                              "used",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "spendControlReached": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "rateLimitReachedType": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "rate_limit_reached",
+                              "workspace_owner_credits_depleted",
+                              "workspace_member_credits_depleted",
+                              "workspace_owner_usage_limit_reached",
+                              "workspace_member_usage_limit_reached",
+                              "unknown",
+                              null
+                            ]
+                          }
+                        },
+                        "required": [
+                          "limitId",
+                          "limitName",
+                          "planType",
+                          "primary",
+                          "secondary",
+                          "credits",
+                          "individualLimit",
+                          "spendControlReached",
+                          "rateLimitReachedType"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "rateLimitResetCredits": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "availableCount": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "credits": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "resetType": {
+                                "type": "string",
+                                "enum": [
+                                  "codexRateLimits",
+                                  "unknown"
+                                ]
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "available",
+                                  "redeeming",
+                                  "redeemed",
+                                  "unknown"
+                                ]
+                              },
+                              "grantedAt": {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              "expiresAt": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              },
+                              "title": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "description": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "resetType",
+                              "status",
+                              "grantedAt",
+                              "expiresAt",
+                              "title",
+                              "description"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "availableCount",
+                        "credits"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "tokenUsage": {
+                      "type": "object",
+                      "properties": {
+                        "summary": {
+                          "type": "object",
+                          "properties": {
+                            "lifetimeTokens": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "peakDailyTokens": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "longestRunningTurnSec": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "currentStreakDays": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "longestStreakDays": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            }
+                          },
+                          "required": [
+                            "lifetimeTokens",
+                            "peakDailyTokens",
+                            "longestRunningTurnSec",
+                            "currentStreakDays",
+                            "longestStreakDays"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "dailyUsageBuckets": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "startDate": {
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "tokens": {
+                                "type": "integer",
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "startDate",
+                              "tokens"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "summary",
+                        "dailyUsageBuckets"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "fetchedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "planType",
+                    "rateLimits",
+                    "rateLimitResetCredits",
+                    "tokenUsage",
+                    "fetchedAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing organization information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The subscription connection must be refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Organization administrator access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Organization operation conflicts with existing state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Organization operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required organization storage is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset": {
+      "post": {
+        "operationId": "resetOrganizationChatgptSubscriptionUsage",
+        "summary": "Reset organization ChatGPT subscription usage",
+        "description": "Redeem one earned rate-limit reset for an organization ChatGPT subscription.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reset organization ChatGPT subscription usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "outcome": {
+                      "type": "string",
+                      "enum": [
+                        "reset",
+                        "alreadyRedeemed",
+                        "nothingToReset",
+                        "noCredit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "outcome"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing organization information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The subscription connection must be refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Organization administrator access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Organization operation conflicts with existing state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Organization operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required organization storage is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idempotencyKey": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "idempotencyKey"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/organizations/{organizationId}/subscriptions/claude": {
+      "get": {
+        "operationId": "retrieveOrganizationClaudeSubscription",
+        "summary": "Retrieve an organization Claude subscription",
+        "description": "Retrieve the connection status for an organization Claude subscription.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve an organization Claude subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connected": {
+                      "type": "boolean"
+                    },
+                    "reconnectRequired": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "connected",
+                    "reconnectRequired"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing organization information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Organization administrator access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Organization operation conflicts with existing state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Organization operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required organization storage is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/subscriptions/claude/usage": {
+      "get": {
+        "operationId": "retrieveOrganizationClaudeSubscriptionUsage",
+        "summary": "Retrieve organization Claude subscription usage",
+        "description": "Retrieve rate-limit usage for an organization Claude subscription.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve organization Claude subscription usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rateLimits": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "five_hour"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "5-hour limit"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_oauth_apps"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · OAuth apps"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_opus"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · Opus"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_sonnet"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · Sonnet"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_cowork"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · Cowork"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "rateLimits"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing organization information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The subscription connection must be refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Organization administrator access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Organization operation conflicts with existing state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The subscription provider rate limited the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Organization operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required organization storage is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/subscriptions/supergrok": {
+      "get": {
+        "operationId": "retrieveOrganizationSuperGrokSubscription",
+        "summary": "Retrieve an organization SuperGrok subscription",
+        "description": "Retrieve the connection status for an organization SuperGrok subscription.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve an organization SuperGrok subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "connected"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing organization information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Organization administrator access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Organization operation conflicts with existing state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Organization operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required organization storage is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "organizationId",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ]
       }
     },
     "/v1/mcp-connections": {
@@ -9311,11 +11075,7 @@
             "in": "query",
             "name": "connected",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "type": "boolean"
             }
           },
           {
@@ -9330,8 +11090,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
@@ -11296,8 +13058,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
@@ -11320,38 +13084,21 @@
             "in": "query",
             "name": "types",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "PullRequest",
-                    "ToolCall",
-                    "Plan",
-                    "Response",
-                    "File",
-                    "Service",
-                    "Source"
-                  ],
-                  "default": "PullRequest"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": [
-                      "PullRequest",
-                      "ToolCall",
-                      "Plan",
-                      "Response",
-                      "File",
-                      "Service",
-                      "Source"
-                    ],
-                    "default": "PullRequest"
-                  },
-                  "minItems": 1
-                }
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "PullRequest",
+                  "ToolCall",
+                  "Plan",
+                  "Response",
+                  "File",
+                  "Service",
+                  "Source"
+                ],
+                "default": "PullRequest"
+              },
+              "minItems": 1
             }
           }
         ]
@@ -12541,8 +14288,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
@@ -14086,6 +15835,12 @@
                           "workspaceChatgptAvailable": {
                             "type": "boolean"
                           },
+                          "claudeSubscriptionSupported": {
+                            "type": "boolean"
+                          },
+                          "workspaceClaudeSubscriptionAvailable": {
+                            "type": "boolean"
+                          },
                           "supergrokAvailable": {
                             "type": "boolean"
                           },
@@ -14110,6 +15865,8 @@
                           "chatgptAvailable",
                           "chatgptSupported",
                           "workspaceChatgptAvailable",
+                          "claudeSubscriptionSupported",
+                          "workspaceClaudeSubscriptionAvailable",
                           "supergrokAvailable",
                           "agentInferenceAvailable"
                         ],
@@ -14308,8 +16065,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -14754,6 +16513,12 @@
                     "workspaceChatgptAvailable": {
                       "type": "boolean"
                     },
+                    "claudeSubscriptionSupported": {
+                      "type": "boolean"
+                    },
+                    "workspaceClaudeSubscriptionAvailable": {
+                      "type": "boolean"
+                    },
                     "supergrokAvailable": {
                       "type": "boolean"
                     },
@@ -14778,6 +16543,8 @@
                     "chatgptAvailable",
                     "chatgptSupported",
                     "workspaceChatgptAvailable",
+                    "claudeSubscriptionSupported",
+                    "workspaceClaudeSubscriptionAvailable",
                     "supergrokAvailable",
                     "agentInferenceAvailable"
                   ],
@@ -15328,8 +17095,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -16024,8 +17793,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -16591,12 +18362,6 @@
                     "customSystemPrompt": {
                       "type": "string",
                       "maxLength": 4096
-                    },
-                    "codexConnected": {
-                      "type": "boolean"
-                    },
-                    "superGrokConnected": {
-                      "type": "boolean"
                     }
                   },
                   "additionalProperties": false
@@ -17071,12 +18836,6 @@
                     "customSystemPrompt": {
                       "type": "string",
                       "maxLength": 4096
-                    },
-                    "codexConnected": {
-                      "type": "boolean"
-                    },
-                    "superGrokConnected": {
-                      "type": "boolean"
                     }
                   },
                   "additionalProperties": false
@@ -17606,6 +19365,1574 @@
         }
       }
     },
+    "/v1/users/{userId}/subscriptions/chatgpt": {
+      "get": {
+        "operationId": "retrieveUserChatgptSubscription",
+        "summary": "Retrieve a user ChatGPT subscription",
+        "description": "Retrieve the connection status for a user ChatGPT subscription.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve a user ChatGPT subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "connected"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/users/{userId}/subscriptions/chatgpt/usage": {
+      "get": {
+        "operationId": "retrieveUserChatgptSubscriptionUsage",
+        "summary": "Retrieve user ChatGPT subscription usage",
+        "description": "Retrieve plan and rate-limit usage for a user ChatGPT subscription.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve user ChatGPT subscription usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "planType": {
+                      "type": "string",
+                      "enum": [
+                        "free",
+                        "go",
+                        "plus",
+                        "pro",
+                        "prolite",
+                        "team",
+                        "self_serve_business_prolite",
+                        "self_serve_business_usage_based",
+                        "business",
+                        "ent26",
+                        "enterprise_cbp_automation",
+                        "enterprise_cbp_usage_based",
+                        "enterprise",
+                        "edu",
+                        "edu_plus",
+                        "edu_pro",
+                        "unknown"
+                      ]
+                    },
+                    "rateLimits": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "limitId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "limitName": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "planType": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "free",
+                              "go",
+                              "plus",
+                              "pro",
+                              "prolite",
+                              "team",
+                              "self_serve_business_prolite",
+                              "self_serve_business_usage_based",
+                              "business",
+                              "ent26",
+                              "enterprise_cbp_automation",
+                              "enterprise_cbp_usage_based",
+                              "enterprise",
+                              "edu",
+                              "edu_plus",
+                              "edu_pro",
+                              "unknown",
+                              null
+                            ]
+                          },
+                          "primary": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "usedPercent": {
+                                "type": "number"
+                              },
+                              "windowDurationMins": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "exclusiveMinimum": 0
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "usedPercent",
+                              "windowDurationMins",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "secondary": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "usedPercent": {
+                                "type": "number"
+                              },
+                              "windowDurationMins": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "exclusiveMinimum": 0
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "usedPercent",
+                              "windowDurationMins",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "credits": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "hasCredits": {
+                                "type": "boolean"
+                              },
+                              "unlimited": {
+                                "type": "boolean"
+                              },
+                              "balance": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "hasCredits",
+                              "unlimited",
+                              "balance"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "individualLimit": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "limit": {
+                                "type": "string"
+                              },
+                              "used": {
+                                "type": "string"
+                              },
+                              "remainingPercent": {
+                                "type": "number"
+                              },
+                              "resetsAt": {
+                                "type": "integer",
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "limit",
+                              "used",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "spendControlReached": {
+                            "type": [
+                              "boolean",
+                              "null"
+                            ]
+                          },
+                          "rateLimitReachedType": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "enum": [
+                              "rate_limit_reached",
+                              "workspace_owner_credits_depleted",
+                              "workspace_member_credits_depleted",
+                              "workspace_owner_usage_limit_reached",
+                              "workspace_member_usage_limit_reached",
+                              "unknown",
+                              null
+                            ]
+                          }
+                        },
+                        "required": [
+                          "limitId",
+                          "limitName",
+                          "planType",
+                          "primary",
+                          "secondary",
+                          "credits",
+                          "individualLimit",
+                          "spendControlReached",
+                          "rateLimitReachedType"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "rateLimitResetCredits": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "availableCount": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "credits": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "resetType": {
+                                "type": "string",
+                                "enum": [
+                                  "codexRateLimits",
+                                  "unknown"
+                                ]
+                              },
+                              "status": {
+                                "type": "string",
+                                "enum": [
+                                  "available",
+                                  "redeeming",
+                                  "redeemed",
+                                  "unknown"
+                                ]
+                              },
+                              "grantedAt": {
+                                "type": "integer",
+                                "minimum": 0
+                              },
+                              "expiresAt": {
+                                "type": [
+                                  "integer",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              },
+                              "title": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "description": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "resetType",
+                              "status",
+                              "grantedAt",
+                              "expiresAt",
+                              "title",
+                              "description"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "availableCount",
+                        "credits"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "tokenUsage": {
+                      "type": "object",
+                      "properties": {
+                        "summary": {
+                          "type": "object",
+                          "properties": {
+                            "lifetimeTokens": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "peakDailyTokens": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "longestRunningTurnSec": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "currentStreakDays": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            },
+                            "longestStreakDays": {
+                              "type": [
+                                "integer",
+                                "null"
+                              ],
+                              "minimum": 0
+                            }
+                          },
+                          "required": [
+                            "lifetimeTokens",
+                            "peakDailyTokens",
+                            "longestRunningTurnSec",
+                            "currentStreakDays",
+                            "longestStreakDays"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "dailyUsageBuckets": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "startDate": {
+                                "type": "string",
+                                "format": "date"
+                              },
+                              "tokens": {
+                                "type": "integer",
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "startDate",
+                              "tokens"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "summary",
+                        "dailyUsageBuckets"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "fetchedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "planType",
+                    "rateLimits",
+                    "rateLimitResetCredits",
+                    "tokenUsage",
+                    "fetchedAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The subscription connection must be refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/users/{userId}/subscriptions/chatgpt/usage/reset": {
+      "post": {
+        "operationId": "resetUserChatgptSubscriptionUsage",
+        "summary": "Reset user ChatGPT subscription usage",
+        "description": "Redeem one earned rate-limit reset for a user ChatGPT subscription.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reset user ChatGPT subscription usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "outcome": {
+                      "type": "string",
+                      "enum": [
+                        "reset",
+                        "alreadyRedeemed",
+                        "nothingToReset",
+                        "noCredit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "outcome"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The subscription connection must be refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "idempotencyKey": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                },
+                "required": [
+                  "idempotencyKey"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/subscriptions/claude": {
+      "get": {
+        "operationId": "retrieveUserClaudeSubscription",
+        "summary": "Retrieve a user Claude subscription",
+        "description": "Retrieve the connection status for a user Claude subscription.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve a user Claude subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connected": {
+                      "type": "boolean"
+                    },
+                    "reconnectRequired": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "connected",
+                    "reconnectRequired"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/users/{userId}/subscriptions/claude/usage": {
+      "get": {
+        "operationId": "retrieveUserClaudeSubscriptionUsage",
+        "summary": "Retrieve user Claude subscription usage",
+        "description": "Retrieve rate-limit usage for a user Claude subscription.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve user Claude subscription usage",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "rateLimits": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "five_hour"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "5-hour limit"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_oauth_apps"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · OAuth apps"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_opus"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · Opus"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_sonnet"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · Sonnet"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "key": {
+                                "type": "string",
+                                "const": "seven_day_cowork"
+                              },
+                              "label": {
+                                "type": "string",
+                                "const": "Weekly limit · Cowork"
+                              },
+                              "detail": {
+                                "type": "null"
+                              },
+                              "remainingPercent": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 100
+                              },
+                              "resetsAt": {
+                                "type": [
+                                  "number",
+                                  "null"
+                                ],
+                                "minimum": 0
+                              }
+                            },
+                            "required": [
+                              "key",
+                              "label",
+                              "detail",
+                              "remainingPercent",
+                              "resetsAt"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "rateLimits"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The subscription connection must be refreshed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The subscription provider rate limited the request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/users/{userId}/subscriptions/supergrok": {
+      "get": {
+        "operationId": "retrieveUserSuperGrokSubscription",
+        "summary": "Retrieve a user SuperGrok subscription",
+        "description": "Retrieve the connection status for a user SuperGrok subscription.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve a user SuperGrok subscription",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "connected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "connected"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The subscription provider is unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ]
+      }
+    },
     "/v1/sessions/sources": {
       "get": {
         "operationId": "listSessionSources",
@@ -17921,15 +21248,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -17937,36 +21258,14 @@
             "in": "query",
             "name": "enabled",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "true",
-                    "false"
-                  ]
-                },
-                {
-                  "type": "boolean"
-                }
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "includeTotal",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "true",
-                    "false"
-                  ]
-                },
-                {
-                  "type": "boolean"
-                }
-              ],
+              "type": "boolean",
               "default": false
             }
           },
@@ -17999,19 +21298,11 @@
             "in": "query",
             "name": "types",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           }
@@ -18887,19 +22178,11 @@
             "in": "query",
             "name": "createdBy",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -18923,15 +22206,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -18939,37 +22216,18 @@
             "in": "query",
             "name": "excludePinned",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "true",
-                    "false"
-                  ]
-                },
-                {
-                  "type": "boolean"
-                }
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "externalIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -18977,36 +22235,14 @@
             "in": "query",
             "name": "hasProject",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "true",
-                    "false"
-                  ]
-                },
-                {
-                  "type": "boolean"
-                }
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "includeArchived",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "true",
-                    "false"
-                  ]
-                },
-                {
-                  "type": "boolean"
-                }
-              ],
+              "type": "boolean",
               "default": true
             }
           },
@@ -19014,18 +22250,7 @@
             "in": "query",
             "name": "includeTotal",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "true",
-                    "false"
-                  ]
-                },
-                {
-                  "type": "boolean"
-                }
-              ],
+              "type": "boolean",
               "default": false
             }
           },
@@ -19033,19 +22258,11 @@
             "in": "query",
             "name": "participant",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -19053,19 +22270,11 @@
             "in": "query",
             "name": "pendingReviewerKeys",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -19073,19 +22282,11 @@
             "in": "query",
             "name": "projectIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -19093,17 +22294,15 @@
             "in": "query",
             "name": "pullRequestStatuses",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "open",
+                  "merged",
+                  "closed"
+                ]
+              },
               "default": []
             }
           },
@@ -19111,19 +22310,11 @@
             "in": "query",
             "name": "repositoryIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -19153,19 +22344,11 @@
             "in": "query",
             "name": "sourceIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -19173,19 +22356,11 @@
             "in": "query",
             "name": "sourceTypes",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -20029,9 +23204,6 @@
                   },
                   "agentOptions": {
                     "$ref": "#/components/schemas/AgentOptions"
-                  },
-                  "autoDetectRepositories": {
-                    "type": "boolean"
                   },
                   "branchName": {
                     "type": [
@@ -22961,8 +26133,7 @@
             "in": "query",
             "name": "cancelQueued",
             "schema": {
-              "type": "string",
-              "const": "true"
+              "type": "boolean"
             }
           }
         ]
@@ -23222,15 +26393,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -23534,15 +26699,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -23550,18 +26709,7 @@
             "in": "query",
             "name": "hasChanges",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "enum": [
-                    "true",
-                    "false"
-                  ]
-                },
-                {
-                  "type": "boolean"
-                }
-              ]
+              "type": "boolean"
             }
           }
         ]
@@ -24364,15 +27512,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -26665,15 +29807,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           }
@@ -27847,15 +30983,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           }
@@ -28738,15 +31868,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           }
@@ -30112,19 +33236,11 @@
             "in": "query",
             "name": "authorIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -30148,27 +33264,21 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
             "in": "query",
             "name": "excludeAuthorIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -30184,19 +33294,11 @@
             "in": "query",
             "name": "excludeReturnedAuthorIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -30204,19 +33306,11 @@
             "in": "query",
             "name": "excludeReviewerIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -30224,52 +33318,32 @@
             "in": "query",
             "name": "hasTemboSession",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "includeAuthors",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "includeTotal",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "repositoryIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -30277,19 +33351,11 @@
             "in": "query",
             "name": "reviewerIds",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1
-                  }
-                }
-              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
               "default": []
             }
           },
@@ -31207,8 +34273,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
@@ -31232,11 +34300,7 @@
             "in": "query",
             "name": "archived",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "type": "boolean"
             }
           },
           {
@@ -31359,10 +34423,6 @@
                         "Source",
                         null
                       ]
-                    },
-                    "autoDetectRepositories": {
-                      "type": "boolean",
-                      "default": true
                     },
                     "createdAt": {
                       "type": "string",
@@ -31574,7 +34634,6 @@
                     "templateId",
                     "script",
                     "artifactType",
-                    "autoDetectRepositories",
                     "createdAt",
                     "updatedAt",
                     "archivedAt",
@@ -31759,9 +34818,6 @@
                       "Source",
                       null
                     ]
-                  },
-                  "autoDetectRepositories": {
-                    "type": "boolean"
                   },
                   "repositoryIds": {
                     "type": "array",
@@ -32219,8 +35275,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -32564,10 +35622,6 @@
                         null
                       ]
                     },
-                    "autoDetectRepositories": {
-                      "type": "boolean",
-                      "default": true
-                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -32778,7 +35832,6 @@
                     "templateId",
                     "script",
                     "artifactType",
-                    "autoDetectRepositories",
                     "createdAt",
                     "updatedAt",
                     "archivedAt",
@@ -32979,10 +36032,6 @@
                         null
                       ]
                     },
-                    "autoDetectRepositories": {
-                      "type": "boolean",
-                      "default": true
-                    },
                     "createdAt": {
                       "type": "string",
                       "format": "date-time"
@@ -33193,7 +36242,6 @@
                     "templateId",
                     "script",
                     "artifactType",
-                    "autoDetectRepositories",
                     "createdAt",
                     "updatedAt",
                     "archivedAt",
@@ -33433,9 +36481,6 @@
                       null,
                       null
                     ]
-                  },
-                  "autoDetectRepositories": {
-                    "type": "boolean"
                   },
                   "repositoryIds": {
                     "type": "array",
@@ -33782,8 +36827,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -34687,8 +37734,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -35619,8 +38668,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           }
         ]
@@ -36234,15 +39285,9 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "pattern": "^\\d+$"
-                },
-                {
-                  "type": "number"
-                }
-              ],
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
               "default": 50
             }
           },
@@ -36250,21 +39295,13 @@
             "in": "query",
             "name": "ids",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "minItems": 1,
-                  "maxItems": 100
-                }
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "minItems": 1,
+              "maxItems": 100
             }
           },
           {
@@ -36863,51 +39900,37 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
             "in": "query",
             "name": "enabled",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "hasEnabledRepositories",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ]
+              "type": "boolean"
             }
           },
           {
             "in": "query",
             "name": "ids",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "format": "uuid"
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "format": "uuid"
-                  },
-                  "minItems": 1,
-                  "maxItems": 100
-                }
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "minItems": 1,
+              "maxItems": 100
             }
           },
           {
@@ -36923,23 +39946,14 @@
             "in": "query",
             "name": "type",
             "schema": {
-              "anyOf": [
-                {
-                  "type": "string",
-                  "minLength": 1,
-                  "maxLength": 100
-                },
-                {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "minLength": 1,
-                    "maxLength": 100
-                  },
-                  "minItems": 1,
-                  "maxItems": 18
-                }
-              ]
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 100
+              },
+              "minItems": 1,
+              "maxItems": 18
             }
           },
           {
@@ -36963,12 +39977,8 @@
             "in": "query",
             "name": "includeTotal",
             "schema": {
-              "type": "string",
-              "enum": [
-                "true",
-                "false"
-              ],
-              "default": "false"
+              "type": "boolean",
+              "default": false
             }
           }
         ]
@@ -37725,6 +40735,12 @@
                       "items": {
                         "type": "object",
                         "properties": {
+                          "agent": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
                           "id": {
                             "type": "string",
                             "minLength": 1,
@@ -37754,6 +40770,7 @@
                           }
                         },
                         "required": [
+                          "agent",
                           "id",
                           "title",
                           "kind",
@@ -37899,8 +40916,10 @@
             "in": "query",
             "name": "limit",
             "schema": {
-              "type": "string",
-              "default": "50"
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
             }
           },
           {
