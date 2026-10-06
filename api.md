@@ -41,6 +41,16 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Organizations Settings`](#organizations-settings)
     - [Retrieve organization settings](#retrieve-organization-settings)
     - [Update organization settings](#update-organization-settings)
+  - [`Organizations Subscriptions`](#organizations-subscriptions)
+    - [`Organizations Subscriptions Chatgpt`](#organizations-subscriptions-chatgpt)
+      - [Retrieve an organization ChatGPT subscription](#retrieve-an-organization-chatgpt-subscription)
+      - [Retrieve organization ChatGPT subscription usage](#retrieve-organization-chatgpt-subscription-usage)
+      - [Reset organization ChatGPT subscription usage](#reset-organization-chatgpt-subscription-usage)
+    - [`Organizations Subscriptions Claude`](#organizations-subscriptions-claude)
+      - [Retrieve an organization Claude subscription](#retrieve-an-organization-claude-subscription)
+      - [Retrieve organization Claude subscription usage](#retrieve-organization-claude-subscription-usage)
+    - [`Organizations Subscriptions Supergrok`](#organizations-subscriptions-supergrok)
+      - [Retrieve an organization SuperGrok subscription](#retrieve-an-organization-supergrok-subscription)
 - [`McpConnections`](#mcpconnections)
   - [List MCP connections](#list-mcp-connections)
   - [Create an MCP connection](#create-an-mcp-connection)
@@ -75,6 +85,16 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Users ConnectedAccounts`](#users-connectedaccounts)
     - [List user connected accounts](#list-user-connected-accounts)
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
+  - [`Users Subscriptions`](#users-subscriptions)
+    - [`Users Subscriptions Chatgpt`](#users-subscriptions-chatgpt)
+      - [Retrieve a user ChatGPT subscription](#retrieve-a-user-chatgpt-subscription)
+      - [Retrieve user ChatGPT subscription usage](#retrieve-user-chatgpt-subscription-usage)
+      - [Reset user ChatGPT subscription usage](#reset-user-chatgpt-subscription-usage)
+    - [`Users Subscriptions Claude`](#users-subscriptions-claude)
+      - [Retrieve a user Claude subscription](#retrieve-a-user-claude-subscription)
+      - [Retrieve user Claude subscription usage](#retrieve-user-claude-subscription-usage)
+    - [`Users Subscriptions Supergrok`](#users-subscriptions-supergrok)
+      - [Retrieve a user SuperGrok subscription](#retrieve-a-user-supergrok-subscription)
 - [`Sessions`](#sessions)
   - [List sessions](#list-sessions)
   - [Create a session](#create-a-session)
@@ -609,6 +629,89 @@ Update one or more organization settings.
 const setting = await client.organizations.settings.update('organizationId', {});
 ```
 
+### `Organizations Subscriptions`
+
+#### `Organizations Subscriptions Chatgpt`
+
+##### Retrieve an organization ChatGPT subscription
+
+Retrieve the connection status for an organization ChatGPT subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ChatgptRetrieveResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
+
+```ts
+const chatgpt = await client.organizations.subscriptions.chatgpt.retrieve('organizationId');
+```
+
+##### Retrieve organization ChatGPT subscription usage
+
+Retrieve plan and rate-limit usage for an organization ChatGPT subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ChatgptRetrieveUsageResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
+
+```ts
+const chatgpt = await client.organizations.subscriptions.chatgpt.retrieveUsage('organizationId');
+```
+
+##### Reset organization ChatGPT subscription usage
+
+Redeem one earned rate-limit reset for an organization ChatGPT subscription.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ChatgptResetUsageParams`](./src/resources/organizations/subscriptions/chatgpt.ts) |
+| Response | [`ChatgptResetUsageResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
+
+```ts
+const chatgpt = await client.organizations.subscriptions.chatgpt.resetUsage('organizationId', {
+  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+});
+```
+
+#### `Organizations Subscriptions Claude`
+
+##### Retrieve an organization Claude subscription
+
+Retrieve the connection status for an organization Claude subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ClaudeRetrieveResponse`](./src/resources/organizations/subscriptions/claude.ts) |
+
+```ts
+const claude = await client.organizations.subscriptions.claude.retrieve('organizationId');
+```
+
+##### Retrieve organization Claude subscription usage
+
+Retrieve rate-limit usage for an organization Claude subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ClaudeRetrieveUsageResponse`](./src/resources/organizations/subscriptions/claude.ts) |
+
+```ts
+const claude = await client.organizations.subscriptions.claude.retrieveUsage('organizationId');
+```
+
+#### `Organizations Subscriptions Supergrok`
+
+##### Retrieve an organization SuperGrok subscription
+
+Retrieve the connection status for an organization SuperGrok subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`SupergrokRetrieveResponse`](./src/resources/organizations/subscriptions/supergrok.ts) |
+
+```ts
+const supergrok = await client.organizations.subscriptions.supergrok.retrieve('organizationId');
+```
+
 ## `McpConnections`
 
 ### List MCP connections
@@ -982,6 +1085,89 @@ Retrieve one identity-provider account without returning credentials.
 const connectedAccount = await client.users.connectedAccounts.retrieve('connectedAccountId', {
   userId: 'userId',
 });
+```
+
+### `Users Subscriptions`
+
+#### `Users Subscriptions Chatgpt`
+
+##### Retrieve a user ChatGPT subscription
+
+Retrieve the connection status for a user ChatGPT subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ChatgptRetrieveResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
+
+```ts
+const chatgpt = await client.users.subscriptions.chatgpt.retrieve('userId');
+```
+
+##### Retrieve user ChatGPT subscription usage
+
+Retrieve plan and rate-limit usage for a user ChatGPT subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ChatgptRetrieveUsageResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
+
+```ts
+const chatgpt = await client.users.subscriptions.chatgpt.retrieveUsage('userId');
+```
+
+##### Reset user ChatGPT subscription usage
+
+Redeem one earned rate-limit reset for a user ChatGPT subscription.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ChatgptResetUsageParams`](./src/resources/users/subscriptions/chatgpt.ts) |
+| Response | [`ChatgptResetUsageResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
+
+```ts
+const chatgpt = await client.users.subscriptions.chatgpt.resetUsage('userId', {
+  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+});
+```
+
+#### `Users Subscriptions Claude`
+
+##### Retrieve a user Claude subscription
+
+Retrieve the connection status for a user Claude subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ClaudeRetrieveResponse`](./src/resources/users/subscriptions/claude.ts) |
+
+```ts
+const claude = await client.users.subscriptions.claude.retrieve('userId');
+```
+
+##### Retrieve user Claude subscription usage
+
+Retrieve rate-limit usage for a user Claude subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ClaudeRetrieveUsageResponse`](./src/resources/users/subscriptions/claude.ts) |
+
+```ts
+const claude = await client.users.subscriptions.claude.retrieveUsage('userId');
+```
+
+#### `Users Subscriptions Supergrok`
+
+##### Retrieve a user SuperGrok subscription
+
+Retrieve the connection status for a user SuperGrok subscription.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`SupergrokRetrieveResponse`](./src/resources/users/subscriptions/supergrok.ts) |
+
+```ts
+const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
 ```
 
 ## `Sessions`
