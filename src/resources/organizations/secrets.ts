@@ -139,8 +139,10 @@ export interface SecretListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string | number;
+  limit?: number;
   /**
    * @minLength 1
    * @maxLength 255

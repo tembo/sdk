@@ -37,3 +37,4 @@ export type {
 } from './secrets';
 export { Settings } from './settings';
 export type { SettingRetrieveResponse, SettingUpdateParams, SettingUpdateResponse } from './settings';
+export { Subscriptions } from './subscriptions/subscriptions';

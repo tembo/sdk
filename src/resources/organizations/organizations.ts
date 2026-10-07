@@ -39,11 +39,14 @@ import {
   type SettingUpdateResponse,
   type SettingUpdateParams,
 } from './settings';
+import * as SubscriptionsAPI from './subscriptions/subscriptions';
+import { Subscriptions } from './subscriptions/subscriptions';
 
 export class Organizations extends APIResource {
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
   settings: SettingsAPI.Settings = new SettingsAPI.Settings(this._client);
+  subscriptions: SubscriptionsAPI.Subscriptions = new SubscriptionsAPI.Subscriptions(this._client);
 
   /**
    * Create an organization and make the authenticated user its administrator.
@@ -219,6 +222,7 @@ export interface OrganizationDeleteResponse {
 Organizations.Members = Members;
 Organizations.Secrets = Secrets;
 Organizations.Settings = Settings;
+Organizations.Subscriptions = Subscriptions;
 
 export declare namespace Organizations {
   export {
@@ -264,4 +268,6 @@ export declare namespace Organizations {
     type SettingUpdateResponse as SettingUpdateResponse,
     type SettingUpdateParams as SettingUpdateParams,
   };
+
+  export { Subscriptions as Subscriptions };
 }

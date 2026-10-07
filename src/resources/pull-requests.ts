@@ -16,7 +16,7 @@ export class PullRequests extends APIResource {
    * @example
    * ```ts
    * const pullRequest = await client.pullRequests.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -45,7 +45,7 @@ export class PullRequests extends APIResource {
 }
 
 export interface PullRequestListParams {
-  authorIds?: string | Array<string>;
+  authorIds?: Array<string>;
   /**
    * @format date-time
    */
@@ -56,20 +56,22 @@ export interface PullRequestListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
-  excludeAuthorIds?: string | Array<string>;
+  limit?: number;
+  excludeAuthorIds?: Array<string>;
   /**
    * @minLength 1
    */
   excludeOrganizationName?: string;
-  excludeReturnedAuthorIds?: string | Array<string>;
-  excludeReviewerIds?: string | Array<string>;
-  hasTemboSession?: 'true' | 'false';
-  includeAuthors?: 'true' | 'false';
-  includeTotal?: 'true' | 'false';
-  repositoryIds?: string | Array<string>;
-  reviewerIds?: string | Array<string>;
+  excludeReturnedAuthorIds?: Array<string>;
+  excludeReviewerIds?: Array<string>;
+  hasTemboSession?: boolean;
+  includeAuthors?: boolean;
+  includeTotal?: boolean;
+  repositoryIds?: Array<string>;
+  reviewerIds?: Array<string>;
   /**
    * @format date-time
    */

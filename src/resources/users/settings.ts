@@ -68,8 +68,6 @@ export interface SettingRetrieveResponse {
    * @maxLength 4096
    */
   customSystemPrompt?: string;
-  codexConnected?: boolean;
-  superGrokConnected?: boolean;
 }
 
 export namespace SettingRetrieveResponse {
@@ -437,8 +435,6 @@ export interface SettingUpdateResponse {
    * @maxLength 4096
    */
   customSystemPrompt?: string;
-  codexConnected?: boolean;
-  superGrokConnected?: boolean;
 }
 
 export namespace SettingUpdateResponse {

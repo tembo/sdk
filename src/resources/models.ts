@@ -16,7 +16,7 @@ export class Models extends APIResource {
    * @example
    * ```ts
    * const model = await client.models.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -135,8 +135,10 @@ export interface ModelListParams {
     | 'deepseek-v4p1-flash';
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface ModelListResponse {
@@ -255,6 +257,8 @@ export namespace ModelListResponse {
     chatgptAvailable: boolean;
     chatgptSupported: boolean;
     workspaceChatgptAvailable: boolean;
+    claudeSubscriptionSupported: boolean;
+    workspaceClaudeSubscriptionAvailable: boolean;
     supergrokAvailable: boolean;
     agentInferenceAvailable: boolean;
   }
@@ -437,6 +441,8 @@ export interface ModelUpdateResponse {
   chatgptAvailable: boolean;
   chatgptSupported: boolean;
   workspaceChatgptAvailable: boolean;
+  claudeSubscriptionSupported: boolean;
+  workspaceClaudeSubscriptionAvailable: boolean;
   supergrokAvailable: boolean;
   agentInferenceAvailable: boolean;
 }

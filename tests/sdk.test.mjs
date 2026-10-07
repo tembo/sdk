@@ -86,7 +86,7 @@ test('ESM and CommonJS entry points load with generated version metadata', async
 
 test('production default URL, bearer authentication and pagination query are serialized', async () => {
   const { client, requests } = mockClient();
-  await client.models.list({ limit: '2' });
+  await client.models.list({ limit: 2 });
   assert.equal(config.environments.production, 'https://api.tembo.io');
   assert.equal(requests[0].url, 'https://api.tembo.io/v1/models?limit=2');
   assert.equal(requests[0].headers.get('authorization'), 'Bearer test-key');
@@ -155,6 +155,25 @@ test('pending scalar-next mappings are validated against production', () => {
   assert.match(workflow, /push:\n    branches: \[main, scalar-next\]/);
   assert.match(workflow, /github\.base_ref == 'scalar-next'/);
   assert.match(workflow, /node scripts\/refresh-schema\.mjs/);
+});
+
+test('schema updates use matching pending mappings and fixtures', () => {
+  const workflow = readFileSync(new URL('../.github/workflows/update-openapi.yml', import.meta.url), 'utf8');
+  for (const filename of ['openapi/openapi.json', 'scalar.config.json', 'tests/schema-contract.test.mjs']) {
+    assert.ok(workflow.includes(`git show origin/scalar-next:${filename} > ${filename}`));
+  }
+  assert.match(
+    workflow,
+    /github\.event_name == 'workflow_dispatch' && github\.ref == 'refs\/heads\/scalar-next'/,
+  );
+  assert.match(
+    workflow,
+    /apply_mappings:\n        description: [^\n]+\n        type: boolean\n        default: false/,
+  );
+  assert.match(
+    workflow,
+    /github\.event_name == 'workflow_dispatch' && inputs\.apply_mappings == true && inputs\.dry_run != true/,
+  );
 });
 
 test('docs notification uses the published run commit, not npm latest', () => {

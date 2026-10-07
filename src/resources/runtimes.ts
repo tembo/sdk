@@ -15,7 +15,7 @@ export class Runtimes extends APIResource {
    * @example
    * ```ts
    * const runtime = await client.runtimes.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -31,8 +31,10 @@ export interface RuntimeListParams {
   cursor?: 'claudeCode' | 'codex' | 'opencode' | 'cursor' | 'amp' | 'fx' | 'pi';
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
 }
 
 export interface RuntimeListResponse {

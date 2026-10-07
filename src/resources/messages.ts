@@ -17,7 +17,7 @@ export class Messages extends APIResource {
    * @example
    * ```ts
    * const message = await client.messages.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -354,8 +354,10 @@ export interface MessageListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
   /**
    * @format uuid
    */

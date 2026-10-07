@@ -16,7 +16,7 @@ export class Skills extends APIResource {
    * @example
    * ```ts
    * const skill = await client.skills.list({
-   *   limit: '50',
+   *   limit: 50,
    *   source: 'organization',
    * });
    * ```
@@ -114,10 +114,12 @@ export interface SkillListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
-  names?: string | Array<string>;
-  repositoryIds?: string | Array<string>;
+  limit?: number;
+  names?: Array<string>;
+  repositoryIds?: Array<string>;
   /**
    * @minLength 1
    * @maxLength 255

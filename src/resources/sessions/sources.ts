@@ -52,13 +52,15 @@ export interface SourceListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string | number;
-  enabled?: 'true' | 'false' | boolean;
+  limit?: number;
+  enabled?: boolean;
   /**
    * @default false
    */
-  includeTotal?: 'true' | 'false' | boolean;
+  includeTotal?: boolean;
   /**
    * @format uuid
    */
@@ -72,7 +74,7 @@ export interface SourceListParams {
    * @format uuid
    */
   sessionId?: string;
-  types?: string | Array<string>;
+  types?: Array<string>;
 }
 
 export interface SourceListResponse {

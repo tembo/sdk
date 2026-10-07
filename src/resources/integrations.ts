@@ -16,8 +16,8 @@ export class Integrations extends APIResource {
    * @example
    * ```ts
    * const integration = await client.integrations.list({
-   *   limit: '50',
-   *   includeTotal: 'false',
+   *   limit: 50,
+   *   includeTotal: false,
    * });
    * ```
    */
@@ -52,17 +52,27 @@ export interface IntegrationListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
-  enabled?: 'true' | 'false';
-  hasEnabledRepositories?: 'true' | 'false';
-  ids?: string | Array<string>;
+  limit?: number;
+  enabled?: boolean;
+  hasEnabledRepositories?: boolean;
+  /**
+   * @minItems 1
+   * @maxItems 100
+   */
+  ids?: Array<string>;
   /**
    * @minLength 1
    * @maxLength 200
    */
   search?: string;
-  type?: string | Array<string>;
+  /**
+   * @minItems 1
+   * @maxItems 18
+   */
+  type?: Array<string>;
   /**
    * @format date-time
    */
@@ -75,7 +85,7 @@ export interface IntegrationListParams {
   /**
    * @default false
    */
-  includeTotal?: 'true' | 'false';
+  includeTotal?: boolean;
 }
 
 export interface IntegrationListResponse {

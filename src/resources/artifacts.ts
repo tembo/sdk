@@ -16,7 +16,7 @@ export class Artifacts extends APIResource {
    * @example
    * ```ts
    * const artifact = await client.artifacts.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -90,8 +90,10 @@ export interface ArtifactListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
   /**
    * @minLength 1
    */
@@ -100,15 +102,10 @@ export interface ArtifactListParams {
    * @format uuid
    */
   sessionId?: string;
-  types?:
-    | 'PullRequest'
-    | 'ToolCall'
-    | 'Plan'
-    | 'Response'
-    | 'File'
-    | 'Service'
-    | 'Source'
-    | Array<'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source'>;
+  /**
+   * @minItems 1
+   */
+  types?: Array<'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source'>;
 }
 
 export interface ArtifactListResponse {

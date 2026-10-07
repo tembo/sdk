@@ -37,7 +37,7 @@ const client = new Tembo({
 });
 
 const apiKey = await client.apiKeys.list({
-  limit: '50',
+  limit: 50,
 });
 
 console.log(apiKey);
@@ -54,7 +54,7 @@ import { APIError } from '@tembo-io/sdk';
 
 try {
   const apiKey = await client.apiKeys.list({
-    limit: '50',
+    limit: 50,
   });
 } catch (err) {
   if (err instanceof APIError) {

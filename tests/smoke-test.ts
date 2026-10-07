@@ -48,7 +48,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const apiKey = await client.apiKeys.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -61,7 +61,7 @@ const cases: {
     run: async () => {
       const apiKey = await client.apiKeys.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -124,7 +124,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const skill = await client.skills.list({
-        limit: '50',
+        limit: 50,
         source: 'organization',
       });
     },
@@ -138,9 +138,9 @@ const cases: {
     run: async () => {
       const skill = await client.skills.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
-        names: 'names',
-        repositoryIds: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        limit: 50,
+        names: ['name'],
+        repositoryIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         projectId: 'projectId',
         sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         search: 'search',
@@ -241,7 +241,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const insight = await client.insights.listMembers({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -254,7 +254,7 @@ const cases: {
     run: async () => {
       const insight = await client.insights.listMembers({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -266,7 +266,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const insight = await client.insights.listRepositories({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -279,7 +279,7 @@ const cases: {
     run: async () => {
       const insight = await client.insights.listRepositories({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -570,7 +570,6 @@ const cases: {
         pmSystemPrompt: '',
         prTitleInstructions: '',
         pullRequestInsightsEnabled: false,
-        repositoryDetectionHint: '',
         shouldSignCommits: false,
         slackReviewOnTembo: false,
         slowQueryThresholdMs: 0,
@@ -581,13 +580,69 @@ const cases: {
   },
 
   {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt',
+    run: async () => {
+      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieve('organizationId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage',
+    run: async () => {
+      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieveUsage('organizationId');
+    },
+  },
+
+  {
+    operation: 'resetUsage',
+    method: 'POST',
+    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset',
+    run: async () => {
+      const chatgpt = await client.organizations.subscriptions.chatgpt.resetUsage('organizationId', {
+        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/claude',
+    run: async () => {
+      const claude = await client.organizations.subscriptions.claude.retrieve('organizationId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/claude/usage',
+    run: async () => {
+      const claude = await client.organizations.subscriptions.claude.retrieveUsage('organizationId');
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/subscriptions/supergrok',
+    run: async () => {
+      const supergrok = await client.organizations.subscriptions.supergrok.retrieve('organizationId');
+    },
+  },
+
+  {
     operation: 'list',
     method: 'GET',
     path: '/v1/mcp-connections',
     label: 'required params',
     run: async () => {
       const mcpConnection = await client.mcpConnections.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -599,9 +654,9 @@ const cases: {
     label: 'all params',
     run: async () => {
       const mcpConnection = await client.mcpConnections.list({
-        connected: 'true',
+        connected: true,
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
         search: 'search',
       });
     },
@@ -715,7 +770,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const artifact = await client.artifacts.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -728,10 +783,10 @@ const cases: {
     run: async () => {
       const artifact = await client.artifacts.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
         jobId: 'jobId',
         sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        types: 'PullRequest',
+        types: ['PullRequest'],
       });
     },
   },
@@ -798,7 +853,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const message = await client.messages.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -811,7 +866,7 @@ const cases: {
     run: async () => {
       const message = await client.messages.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
         sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         threadId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
       });
@@ -907,7 +962,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const model = await client.models.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -920,7 +975,7 @@ const cases: {
     run: async () => {
       const model = await client.models.list({
         cursor: 'claude-opus-5-5',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -955,7 +1010,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const runtime = await client.runtimes.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -968,7 +1023,7 @@ const cases: {
     run: async () => {
       const runtime = await client.runtimes.list({
         cursor: 'claudeCode',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -1070,7 +1125,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const connectedAccount = await client.users.connectedAccounts.list('userId', {
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -1083,7 +1138,7 @@ const cases: {
     run: async () => {
       const connectedAccount = await client.users.connectedAccounts.list('userId', {
         cursor: 'cursor',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -1096,6 +1151,62 @@ const cases: {
       const connectedAccount = await client.users.connectedAccounts.retrieve('connectedAccountId', {
         userId: 'userId',
       });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/chatgpt',
+    run: async () => {
+      const chatgpt = await client.users.subscriptions.chatgpt.retrieve('userId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/chatgpt/usage',
+    run: async () => {
+      const chatgpt = await client.users.subscriptions.chatgpt.retrieveUsage('userId');
+    },
+  },
+
+  {
+    operation: 'resetUsage',
+    method: 'POST',
+    path: '/v1/users/{userId}/subscriptions/chatgpt/usage/reset',
+    run: async () => {
+      const chatgpt = await client.users.subscriptions.chatgpt.resetUsage('userId', {
+        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/claude',
+    run: async () => {
+      const claude = await client.users.subscriptions.claude.retrieve('userId');
+    },
+  },
+
+  {
+    operation: 'retrieveUsage',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/claude/usage',
+    run: async () => {
+      const claude = await client.users.subscriptions.claude.retrieveUsage('userId');
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/subscriptions/supergrok',
+    run: async () => {
+      const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
     },
   },
 
@@ -1123,24 +1234,24 @@ const cases: {
     run: async () => {
       const session = await client.sessions.list({
         agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        createdBy: 'createdBy',
+        createdBy: ['createdBy'],
         createdAfter: '2024-01-01T00:00:00.000Z',
         cursor: 'cursor',
         limit: 50,
-        excludePinned: 'true',
-        externalIds: 'externalIds',
-        hasProject: 'true',
+        excludePinned: true,
+        externalIds: ['externalId'],
+        hasProject: true,
         includeArchived: true,
         includeTotal: false,
-        participant: 'participant',
-        pendingReviewerKeys: 'pendingReviewerKeys',
-        projectIds: 'projectIds',
-        pullRequestStatuses: 'pullRequestStatuses',
-        repositoryIds: 'repositoryIds',
+        participant: ['participant'],
+        pendingReviewerKeys: ['pendingReviewerKey'],
+        projectIds: ['projectId'],
+        pullRequestStatuses: ['open'],
+        repositoryIds: ['repositoryId'],
         search: 'search',
         sortBy: 'lastQueuedAt',
-        sourceIds: 'sourceIds',
-        sourceTypes: 'sourceTypes',
+        sourceIds: ['sourceId'],
+        sourceTypes: ['sourceType'],
         state: 'all',
       });
     },
@@ -1260,7 +1371,7 @@ const cases: {
     label: 'all params',
     run: async () => {
       const session = await client.sessions.stop('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        cancelQueued: 'true',
+        cancelQueued: true,
       });
     },
   },
@@ -1313,12 +1424,12 @@ const cases: {
       const source = await client.sessions.sources.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
-        enabled: 'true',
+        enabled: true,
         includeTotal: false,
         integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         search: 'search',
         sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        types: 'types',
+        types: ['type'],
       });
     },
   },
@@ -1353,7 +1464,7 @@ const cases: {
       const diff = await client.sessions.diffs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
-        hasChanges: 'true',
+        hasChanges: true,
       });
     },
   },
@@ -1784,7 +1895,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const pullRequest = await client.pullRequests.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -1796,19 +1907,19 @@ const cases: {
     label: 'all params',
     run: async () => {
       const pullRequest = await client.pullRequests.list({
-        authorIds: 'authorIds',
+        authorIds: ['authorId'],
         createdAfter: '2024-01-01T00:00:00.000Z',
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
-        excludeAuthorIds: 'excludeAuthorIds',
+        limit: 50,
+        excludeAuthorIds: ['excludeAuthorId'],
         excludeOrganizationName: 'excludeOrganizationName',
-        excludeReturnedAuthorIds: 'excludeReturnedAuthorIds',
-        excludeReviewerIds: 'excludeReviewerIds',
-        hasTemboSession: 'true',
-        includeAuthors: 'true',
-        includeTotal: 'true',
-        repositoryIds: 'repositoryIds',
-        reviewerIds: 'reviewerIds',
+        excludeReturnedAuthorIds: ['excludeReturnedAuthorId'],
+        excludeReviewerIds: ['excludeReviewerId'],
+        hasTemboSession: true,
+        includeAuthors: true,
+        includeTotal: true,
+        repositoryIds: ['repositoryId'],
+        reviewerIds: ['reviewerId'],
         mergedAfter: '2024-01-01T00:00:00.000Z',
         search: 'search',
         sortBy: 'createdAt',
@@ -1834,7 +1945,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const agent = await client.agents.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -1847,10 +1958,10 @@ const cases: {
     run: async () => {
       const agent = await client.agents.list({
         cursor: 'cursor',
-        limit: '50',
+        limit: 50,
         ids: 'ids',
         search: 'search',
-        archived: 'true',
+        archived: true,
         sort: 'latestRun',
         status: 'status',
         integration: 'integration',
@@ -1887,7 +1998,6 @@ const cases: {
         sandboxSize: 'nano',
         projectId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         artifactType: 'PullRequest',
-        autoDetectRepositories: false,
         repositoryIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         triggers: [
           {
@@ -1947,7 +2057,6 @@ const cases: {
         templateId: '',
         script: '',
         artifactType: 'PullRequest',
-        autoDetectRepositories: false,
         repositoryIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         enabled: false,
         archived: false,
@@ -1971,7 +2080,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const template = await client.agents.templates.list({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -1984,7 +2093,7 @@ const cases: {
     run: async () => {
       const template = await client.agents.templates.list({
         cursor: 'addTestCoverage',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2005,7 +2114,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const schedule = await client.agents.schedules.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2018,7 +2127,7 @@ const cases: {
     run: async () => {
       const schedule = await client.agents.schedules.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2075,7 +2184,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const trigger = await client.agents.triggers.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2088,7 +2197,7 @@ const cases: {
     run: async () => {
       const trigger = await client.agents.triggers.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2184,7 +2293,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const run = await client.agents.runs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2197,7 +2306,7 @@ const cases: {
     run: async () => {
       const run = await client.agents.runs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2256,7 +2365,7 @@ const cases: {
       const repository = await client.repositories.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
-        ids: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        ids: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         order: 'desc',
         search: 'search',
@@ -2281,8 +2390,8 @@ const cases: {
     label: 'required params',
     run: async () => {
       const integration = await client.integrations.list({
-        limit: '50',
-        includeTotal: 'false',
+        limit: 50,
+        includeTotal: false,
       });
     },
   },
@@ -2295,15 +2404,15 @@ const cases: {
     run: async () => {
       const integration = await client.integrations.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        limit: '50',
-        enabled: 'true',
-        hasEnabledRepositories: 'true',
-        ids: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        limit: 50,
+        enabled: true,
+        hasEnabledRepositories: true,
+        ids: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         search: 'search',
-        type: 'type',
+        type: ['type'],
         createdAfter: '2024-01-01T00:00:00.000Z',
         excludeOrganizationName: 'excludeOrganizationName',
-        includeTotal: 'false',
+        includeTotal: false,
       });
     },
   },
@@ -2333,7 +2442,7 @@ const cases: {
     label: 'required params',
     run: async () => {
       const billing = await client.billing.listUsage({
-        limit: '50',
+        limit: 50,
       });
     },
   },
@@ -2346,7 +2455,7 @@ const cases: {
     run: async () => {
       const billing = await client.billing.listUsage({
         cursor: 'cursor',
-        limit: '50',
+        limit: 50,
         sessionId: 'sessionId',
       });
     },

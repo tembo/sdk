@@ -104,7 +104,7 @@ export class Agents extends APIResource {
    * @example
    * ```ts
    * const agent = await client.agents.list({
-   *   limit: '50',
+   *   limit: 50,
    * });
    * ```
    */
@@ -226,8 +226,10 @@ export interface AgentListParams {
   cursor?: string;
   /**
    * @default 50
+   * @minimum 1
+   * @maximum 100
    */
-  limit?: string;
+  limit?: number;
   /**
    * @maxLength 10000
    */
@@ -237,7 +239,7 @@ export interface AgentListParams {
    * @maxLength 200
    */
   search?: string;
-  archived?: 'true' | 'false';
+  archived?: boolean;
   sort?: 'latestRun' | 'runCount';
   /**
    * @maxLength 10000
@@ -381,7 +383,6 @@ export interface AgentCreateParams {
   sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   projectId?: string | 'tembo' | null;
   artifactType?: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
-  autoDetectRepositories?: boolean;
   /**
    * @maxItems 250
    */
@@ -480,7 +481,6 @@ export interface AgentCreateResponse {
   templateId: string | null;
   script: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
-  autoDetectRepositories: boolean;
   /**
    * @format date-time
    */
@@ -598,7 +598,6 @@ export interface AgentRetrieveResponse {
   templateId: string | null;
   script: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
-  autoDetectRepositories: boolean;
   /**
    * @format date-time
    */
@@ -752,7 +751,6 @@ export interface AgentUpdateParams {
    */
   script?: string | null;
   artifactType?: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
-  autoDetectRepositories?: boolean;
   /**
    * @maxItems 250
    */
@@ -773,7 +771,6 @@ export interface AgentUpdateResponse {
   templateId: string | null;
   script: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
-  autoDetectRepositories: boolean;
   /**
    * @format date-time
    */
