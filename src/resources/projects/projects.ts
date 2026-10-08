@@ -311,7 +311,7 @@ export interface ProjectCreateParams {
   includeDeps?: boolean;
   includeSkills?: boolean;
   /**
-   * @maxLength 20000
+   * @maxLength 100000
    */
   setupScript?: string | null;
   codeRepositoryIds?: Array<string> | null;
@@ -520,7 +520,7 @@ export interface ProjectUpdateParams {
    */
   name?: string;
   /**
-   * @maxLength 20000
+   * @maxLength 100000
    */
   setupScript?: string | null;
   codeRepositoryIds?: Array<string> | null;

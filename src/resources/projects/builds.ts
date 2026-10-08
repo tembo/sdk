@@ -154,7 +154,7 @@ export namespace BuildListResponse {
     repositoryIds: Array<string> | null;
     sandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     /**
-     * @maxLength 20000
+     * @maxLength 100000
      */
     setupScript: string | null;
     /**
@@ -240,7 +240,7 @@ export interface BuildRetrieveResponse {
   repositoryIds: Array<string> | null;
   sandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
   /**
-   * @maxLength 20000
+   * @maxLength 100000
    */
   setupScript: string | null;
   /**

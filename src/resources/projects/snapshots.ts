@@ -182,7 +182,7 @@ export namespace SnapshotListResponse {
     rebuildOfSnapshotId: string | null;
     repositoryIds: Array<string> | null;
     /**
-     * @maxLength 20000
+     * @maxLength 100000
      */
     setupScript: string | null;
     size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
@@ -255,7 +255,7 @@ export interface SnapshotRetrieveResponse {
   rebuildOfSnapshotId: string | null;
   repositoryIds: Array<string> | null;
   /**
-   * @maxLength 20000
+   * @maxLength 100000
    */
   setupScript: string | null;
   size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
@@ -337,7 +337,7 @@ export interface SnapshotUpdateResponse {
   rebuildOfSnapshotId: string | null;
   repositoryIds: Array<string> | null;
   /**
-   * @maxLength 20000
+   * @maxLength 100000
    */
   setupScript: string | null;
   size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
