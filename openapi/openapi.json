@@ -3702,6 +3702,381 @@
         ]
       }
     },
+    "/v1/skills/marketplace": {
+      "get": {
+        "operationId": "listMarketplaceSkills",
+        "summary": "List marketplace skills",
+        "description": "List popular marketplace skills or search the catalog. Results have no continuation cursor.",
+        "tags": [
+          "Skills"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List marketplace skills",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "source": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "pattern": "^[a-zA-Z0-9_-]+\\/[a-zA-Z0-9_.-]+$",
+                                "maxLength": 300
+                              },
+                              {
+                                "type": "string",
+                                "pattern": "^[a-zA-Z0-9_-]+(?:\\.[a-zA-Z0-9_-]+)+$",
+                                "maxLength": 253
+                              }
+                            ]
+                          },
+                          "skillId": {
+                            "type": "string",
+                            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$",
+                            "maxLength": 255
+                          },
+                          "name": {
+                            "type": "string",
+                            "minLength": 1
+                          },
+                          "installs": {
+                            "type": "integer",
+                            "minimum": 0
+                          }
+                        },
+                        "required": [
+                          "source",
+                          "skillId",
+                          "name",
+                          "installs"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": "null",
+                      "description": "Always null; marketplace results have no continuation page."
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Skill not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Skill operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The skill marketplace is unavailable or returned invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "const": ""
+            },
+            "description": "No continuation cursor is supported for marketplace results."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "description": "Search the marketplace catalog. Omit to list popular skills."
+          }
+        ]
+      }
+    },
+    "/v1/skills/marketplace/{skillId}": {
+      "get": {
+        "operationId": "retrieveMarketplaceSkill",
+        "summary": "Retrieve a marketplace skill",
+        "description": "Retrieve the files and content hash for a marketplace skill. This does not install the skill.",
+        "tags": [
+          "Skills"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve a marketplace skill",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "source": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9_-]+\\/[a-zA-Z0-9_.-]+$",
+                          "maxLength": 300
+                        },
+                        {
+                          "type": "string",
+                          "pattern": "^[a-zA-Z0-9_-]+(?:\\.[a-zA-Z0-9_-]+)+$",
+                          "maxLength": 253
+                        }
+                      ]
+                    },
+                    "skillId": {
+                      "type": "string",
+                      "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$",
+                      "maxLength": 255
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "content": {
+                            "type": "string"
+                          },
+                          "filename": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        },
+                        "required": [
+                          "content",
+                          "filename"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1
+                    },
+                    "hash": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "source",
+                    "skillId",
+                    "files",
+                    "hash"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Skill not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Skill operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The skill marketplace is unavailable or returned invalid data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "skillId",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9][a-zA-Z0-9_.-]*$",
+              "maxLength": 255
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "source",
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_-]+\\/[a-zA-Z0-9_.-]+$",
+                  "maxLength": 300
+                },
+                {
+                  "type": "string",
+                  "pattern": "^[a-zA-Z0-9_-]+(?:\\.[a-zA-Z0-9_-]+)+$",
+                  "maxLength": 253
+                }
+              ]
+            },
+            "required": true,
+            "description": "The source repository in owner/repo format. Domain-only sources cannot be downloaded and return 404."
+          }
+        ]
+      }
+    },
     "/v1/skills": {
       "get": {
         "operationId": "listSkills",
@@ -15425,6 +15800,7 @@
                               "claude-fable-5",
                               "claude-opus-5",
                               "claude-sonnet-5-5",
+                              "claude-haiku-5-5",
                               "claude-opus-4-8",
                               "claude-opus-4-7",
                               "claude-opus-4-6",
@@ -15884,6 +16260,7 @@
                         "claude-fable-5",
                         "claude-opus-5",
                         "claude-sonnet-5-5",
+                        "claude-haiku-5-5",
                         "claude-opus-4-8",
                         "claude-opus-4-7",
                         "claude-opus-4-6",
@@ -16022,6 +16399,7 @@
                 "claude-fable-5",
                 "claude-opus-5",
                 "claude-sonnet-5-5",
+                "claude-haiku-5-5",
                 "claude-opus-4-8",
                 "claude-opus-4-7",
                 "claude-opus-4-6",
@@ -16103,6 +16481,7 @@
                         "claude-fable-5",
                         "claude-opus-5",
                         "claude-sonnet-5-5",
+                        "claude-haiku-5-5",
                         "claude-opus-4-8",
                         "claude-opus-4-7",
                         "claude-opus-4-6",
@@ -16642,6 +17021,7 @@
                 "claude-fable-5",
                 "claude-opus-5",
                 "claude-sonnet-5-5",
+                "claude-haiku-5-5",
                 "claude-opus-4-8",
                 "claude-opus-4-7",
                 "claude-opus-4-6",
@@ -16764,6 +17144,7 @@
                               "claude-fable-5",
                               "claude-opus-5",
                               "claude-sonnet-5-5",
+                              "claude-haiku-5-5",
                               "claude-opus-4-8",
                               "claude-opus-4-7",
                               "claude-opus-4-6",
@@ -16898,6 +17279,7 @@
                                     "claude-fable-5",
                                     "claude-opus-5",
                                     "claude-sonnet-5-5",
+                                    "claude-haiku-5-5",
                                     "claude-opus-4-8",
                                     "claude-opus-4-7",
                                     "claude-opus-4-6",
@@ -27890,7 +28272,7 @@
                       "string",
                       "null"
                     ],
-                    "maxLength": 20000
+                    "maxLength": 100000
                   },
                   "codeRepositoryIds": {
                     "type": [
@@ -28667,7 +29049,7 @@
                       "string",
                       "null"
                     ],
-                    "maxLength": 20000
+                    "maxLength": 100000
                   },
                   "codeRepositoryIds": {
                     "type": [
@@ -29601,7 +29983,7 @@
                               "string",
                               "null"
                             ],
-                            "maxLength": 20000
+                            "maxLength": 100000
                           },
                           "size": {
                             "type": [
@@ -29953,7 +30335,7 @@
                         "string",
                         "null"
                       ],
-                      "maxLength": 20000
+                      "maxLength": 100000
                     },
                     "size": {
                       "type": [
@@ -30278,7 +30660,7 @@
                         "string",
                         "null"
                       ],
-                      "maxLength": 20000
+                      "maxLength": 100000
                     },
                     "size": {
                       "type": [
@@ -30796,7 +31178,7 @@
                               "string",
                               "null"
                             ],
-                            "maxLength": 20000
+                            "maxLength": 100000
                           },
                           "startedAt": {
                             "type": [
@@ -31310,7 +31692,7 @@
                         "string",
                         "null"
                       ],
-                      "maxLength": 20000
+                      "maxLength": 100000
                     },
                     "startedAt": {
                       "type": [
@@ -34402,6 +34784,10 @@
                         "null"
                       ]
                     },
+                    "contentVersion": {
+                      "type": "integer",
+                      "default": 1
+                    },
                     "script": {
                       "type": [
                         "string",
@@ -34632,6 +35018,7 @@
                     "sandboxSize",
                     "projectId",
                     "templateId",
+                    "contentVersion",
                     "script",
                     "artifactType",
                     "createdAt",
@@ -35600,6 +35987,10 @@
                         "null"
                       ]
                     },
+                    "contentVersion": {
+                      "type": "integer",
+                      "default": 1
+                    },
                     "script": {
                       "type": [
                         "string",
@@ -35830,6 +36221,7 @@
                     "sandboxSize",
                     "projectId",
                     "templateId",
+                    "contentVersion",
                     "script",
                     "artifactType",
                     "createdAt",
@@ -36010,6 +36402,10 @@
                         "null"
                       ]
                     },
+                    "contentVersion": {
+                      "type": "integer",
+                      "default": 1
+                    },
                     "script": {
                       "type": [
                         "string",
@@ -36240,6 +36636,7 @@
                     "sandboxSize",
                     "projectId",
                     "templateId",
+                    "contentVersion",
                     "script",
                     "artifactType",
                     "createdAt",
@@ -36629,6 +37026,823 @@
             "required": true
           }
         ]
+      }
+    },
+    "/v1/agents/{agentId}/content-revisions": {
+      "get": {
+        "operationId": "listAgentContentRevisions",
+        "summary": "List agent instruction revisions",
+        "description": "List saved revisions of an agent’s instruction JSON document, newest first. Revisions do not include other agent configuration. Author details are redacted from public API responses.",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List agent instruction revisions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "version": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0
+                          },
+                          "authorId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "authorName": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "restoredFromVersion": {
+                            "type": [
+                              "integer",
+                              "null"
+                            ],
+                            "exclusiveMinimum": 0
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "version",
+                          "authorId",
+                          "authorName",
+                          "source",
+                          "restoredFromVersion",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Resource conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Agent operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "pattern": "^[1-9]\\d*$"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ]
+      }
+    },
+    "/v1/agents/{agentId}/content-revisions/{version}": {
+      "get": {
+        "operationId": "retrieveAgentContentRevision",
+        "summary": "Retrieve an agent instruction revision",
+        "description": "Retrieve the instruction JSON document saved in one revision. Other agent configuration is not included. Author details are redacted from public API responses.",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve an agent instruction revision",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "version": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0
+                    },
+                    "authorId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "authorName": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "source": {
+                      "type": "string"
+                    },
+                    "restoredFromVersion": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ],
+                      "exclusiveMinimum": 0
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "instructions": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/TipTapDocument",
+                          "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The instruction JSON document saved in this revision. Other agent configuration is not versioned."
+                    }
+                  },
+                  "required": [
+                    "version",
+                    "authorId",
+                    "authorName",
+                    "source",
+                    "restoredFromVersion",
+                    "createdAt",
+                    "instructions"
+                  ],
+                  "additionalProperties": false,
+                  "description": "A saved revision of an agent’s instruction JSON document."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Resource conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Agent operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "version",
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/agents/{agentId}/content-revisions/{version}/restore": {
+      "post": {
+        "operationId": "restoreAgentContentRevision",
+        "summary": "Restore agent instructions",
+        "description": "Restore a saved instruction JSON document and its mentioned integrations, without reverting other agent configuration. A changed document creates a new revision attributed to the caller. Supply the agent’s current contentVersion as expectedContentVersion; a concurrent instruction change returns 409.",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Restore agent instructions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "key": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "sandboxSize": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "nano",
+                        "micro",
+                        "small",
+                        "medium",
+                        "large",
+                        "xl",
+                        "xxl",
+                        "ultra",
+                        null
+                      ]
+                    },
+                    "projectId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "templateId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "contentVersion": {
+                      "type": "integer",
+                      "default": 1
+                    },
+                    "script": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "artifactType": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "PullRequest",
+                        "ToolCall",
+                        "Plan",
+                        "Response",
+                        "File",
+                        "Service",
+                        "Source",
+                        null
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "archivedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
+                    "enabledAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
+                    "organizationId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "organizationName": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "instructions": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/TipTapDocument",
+                          "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent."
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "agent": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "description": "Runtime and model selection key; not the ID of an agent resource."
+                    },
+                    "agentOptions": {
+                      "$ref": "#/components/schemas/AgentOptionsInput"
+                    },
+                    "mcpServers": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 200
+                      },
+                      "maxItems": 100,
+                      "description": "Selected MCP server identifiers, including built-in server keys."
+                    },
+                    "userState": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/AgentState"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "codeRepositories": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "owner": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "integrationId": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "integrationType": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "owner",
+                          "integrationId",
+                          "integrationType"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 250
+                    },
+                    "lastRun": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "sessionId": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "durationMs": {
+                          "type": "integer",
+                          "description": "Measured duration of the agent run in milliseconds."
+                        },
+                        "errorMessage": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "sessionId",
+                        "status",
+                        "createdAt",
+                        "updatedAt",
+                        "durationMs",
+                        "errorMessage"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "runCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "scheduleCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "triggerCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "hasPausedSchedule": {
+                      "type": "boolean"
+                    },
+                    "hasPausedTrigger": {
+                      "type": "boolean"
+                    },
+                    "integrationIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    },
+                    "integrationTypes": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "key",
+                    "sandboxSize",
+                    "projectId",
+                    "templateId",
+                    "contentVersion",
+                    "script",
+                    "artifactType",
+                    "createdAt",
+                    "updatedAt",
+                    "archivedAt",
+                    "enabledAt",
+                    "organizationId",
+                    "organizationName",
+                    "createdBy",
+                    "instructions",
+                    "agent",
+                    "agentOptions",
+                    "mcpServers",
+                    "userState",
+                    "codeRepositories",
+                    "lastRun",
+                    "runCount",
+                    "scheduleCount",
+                    "triggerCount",
+                    "hasPausedSchedule",
+                    "hasPausedTrigger",
+                    "integrationIds",
+                    "integrationTypes"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Resource conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Agent operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "agentId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "version",
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expectedContentVersion": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "description": "The agent’s current instruction version, used to reject a restore if the instructions have changed."
+                  }
+                },
+                "required": [
+                  "expectedContentVersion"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
       }
     },
     "/v1/agents/{agentId}/schedules": {

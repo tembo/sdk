@@ -43,6 +43,14 @@
           "bodyParamName": "body"
         },
         "delete": "delete /v1/skills/{skillId}"
+      },
+      "subresources": {
+        "marketplace": {
+          "methods": {
+            "list": "get /v1/skills/marketplace",
+            "retrieve": "get /v1/skills/marketplace/{skillId}"
+          }
+        }
       }
     },
     "insights": {
@@ -565,6 +573,19 @@
             "list": "get /v1/agents/{agentId}/runs",
             "create": "post /v1/agents/{agentId}/runs",
             "retrieve": "get /v1/agents/{agentId}/runs/{runId}"
+          }
+        },
+        "content_revisions": {
+          "methods": {
+            "list": "get /v1/agents/{agentId}/content-revisions",
+            "retrieve": "get /v1/agents/{agentId}/content-revisions/{version}",
+            "restore": {
+              "kind": "http",
+              "endpoint": "post /v1/agents/{agentId}/content-revisions/{version}/restore",
+              "verb": "post",
+              "path": "/v1/agents/{agentId}/content-revisions/{version}/restore",
+              "bodyParamName": "body"
+            }
           }
         }
       }

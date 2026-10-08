@@ -1,5 +1,24 @@
 # Changelog
 
+## [0.10.0](https://github.com/tembo/sdk/compare/v0.9.0...v0.10.0) (2026-10-08)
+
+
+### Features
+
+* **api:** add operation skills.marketplace.list (+4 more changes) ([eb76b04](https://github.com/tembo/sdk/commit/eb76b048989cf1edd63038d4c2d5b3ad5ecb3ed1))
+
+
+### Bug Fixes
+
+* **sdk:** map agent revisions and skills marketplace ([b1af8f2](https://github.com/tembo/sdk/commit/b1af8f27953378aee1998661e331e5c453ee54a0))
+* **sdk:** map agent revisions and skills marketplace ([964b3f5](https://github.com/tembo/sdk/commit/964b3f52d28c6d3f07611e3b2536c4145f026a0c))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([37ba64b](https://github.com/tembo/sdk/commit/37ba64bdd59cdf8618d9705d34aea07b97084c1c))
+* **api:** update generated SDK content ([54f31b0](https://github.com/tembo/sdk/commit/54f31b00b5e80892c9414d1f8e1a8da68e0a403c))
+
 ## [0.9.0](https://github.com/tembo/sdk/compare/v0.8.0...v0.9.0) (2026-10-06)
 
 
