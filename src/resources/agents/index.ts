@@ -90,3 +90,12 @@ export type {
   RunRetrieveParams,
   RunRetrieveResponse,
 } from './runs';
+export { ContentRevisions } from './content-revisions';
+export type {
+  ContentRevisionListParams,
+  ContentRevisionListResponse,
+  ContentRevisionRetrieveParams,
+  ContentRevisionRetrieveResponse,
+  ContentRevisionRestoreParams,
+  ContentRevisionRestoreResponse,
+} from './content-revisions';

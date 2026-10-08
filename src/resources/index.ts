@@ -11,7 +11,7 @@ export type {
   APIKeyUpdateResponse,
   APIKeyDeleteResponse,
 } from './api-keys';
-export { Skills } from './skills';
+export { Skills } from './skills/skills';
 export type {
   SkillListParams,
   SkillListResponse,
@@ -21,7 +21,7 @@ export type {
   SkillUpdateParams,
   SkillUpdateResponse,
   SkillDeleteResponse,
-} from './skills';
+} from './skills/skills';
 export { Insights } from './insights';
 export type {
   InsightRetrieveResponse,
