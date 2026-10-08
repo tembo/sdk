@@ -479,6 +479,7 @@ export interface AgentCreateResponse {
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   projectId: string | null;
   templateId: string | null;
+  contentVersion: number;
   script: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   /**
@@ -596,6 +597,7 @@ export interface AgentRetrieveResponse {
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   projectId: string | null;
   templateId: string | null;
+  contentVersion: number;
   script: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   /**
@@ -769,6 +771,7 @@ export interface AgentUpdateResponse {
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   projectId: string | null;
   templateId: string | null;
+  contentVersion: number;
   script: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   /**
