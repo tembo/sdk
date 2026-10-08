@@ -103,3 +103,40 @@ test('subscription mappings cover user and organization reads and preserve reset
     );
   }
 });
+
+test('agent content revision mappings cover reads and preserve the restore request body', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const contentRevisions = sdkConfig.resources.agents.subresources.content_revisions;
+  assert.ok(contentRevisions);
+  const prefix = '/v1/agents/{agentId}/content-revisions';
+  validateCoverage(
+    {
+      paths: {
+        [prefix]: { get: {} },
+        [`${prefix}/{version}`]: { get: {} },
+        [`${prefix}/{version}/restore`]: { post: {} },
+      },
+    },
+    { resources: { contentRevisions } },
+  );
+  assert.equal(contentRevisions.methods.restore.kind, 'http');
+  assert.equal(contentRevisions.methods.restore.verb, 'post');
+  assert.equal(contentRevisions.methods.restore.path, `${prefix}/{version}/restore`);
+  assert.equal(contentRevisions.methods.restore.bodyParamName, 'body');
+});
+
+test('skills marketplace mappings cover catalog reads separately from organization skills', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const marketplace = sdkConfig.resources.skills.subresources?.marketplace;
+  assert.ok(marketplace);
+  validateCoverage(
+    {
+      paths: {
+        '/v1/skills/marketplace': { get: {} },
+        '/v1/skills/marketplace/{skillId}': { get: {} },
+      },
+    },
+    { resources: { marketplace } },
+  );
+  assert.equal(sdkConfig.resources.skills.methods.retrieve, 'get /v1/skills/{skillId}');
+});
