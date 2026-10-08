@@ -47,7 +47,7 @@ import {
   type SkillListParams,
   type SkillCreateParams,
   type SkillUpdateParams,
-} from './resources/skills';
+} from './resources/skills/skills';
 import {
   Insights,
   type InsightRetrieveResponse,

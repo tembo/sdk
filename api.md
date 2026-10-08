@@ -16,6 +16,9 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Retrieve a skill](#retrieve-a-skill)
   - [Update a skill](#update-a-skill)
   - [Delete a skill](#delete-a-skill)
+  - [`Skills Marketplace`](#skills-marketplace)
+    - [List marketplace skills](#list-marketplace-skills)
+    - [Retrieve a marketplace skill](#retrieve-a-marketplace-skill)
 - [`Insights`](#insights)
   - [Retrieve insights](#retrieve-insights)
   - [Update insights](#update-insights)
@@ -165,6 +168,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [List agent runs](#list-agent-runs)
     - [Create an agent run](#create-an-agent-run)
     - [Retrieve an agent run](#retrieve-an-agent-run)
+  - [`Agents ContentRevisions`](#agents-contentrevisions)
+    - [List agent instruction revisions](#list-agent-instruction-revisions)
+    - [Retrieve an agent instruction revision](#retrieve-an-agent-instruction-revision)
+    - [Restore agent instructions](#restore-agent-instructions)
 - [`Repositories`](#repositories)
   - [List repositories](#list-repositories)
   - [Retrieve a repository](#retrieve-a-repository)
@@ -262,8 +269,8 @@ List organization skills or skills checked into a repository.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SkillListParams`](./src/resources/skills.ts) |
-| Response | [`SkillListResponse`](./src/resources/skills.ts) |
+| Request | [`SkillListParams`](./src/resources/skills/skills.ts) |
+| Response | [`SkillListResponse`](./src/resources/skills/skills.ts) |
 
 ```ts
 const skill = await client.skills.list({
@@ -278,8 +285,8 @@ Create an organization skill with its files.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SkillCreateParams`](./src/resources/skills.ts) |
-| Response | [`SkillCreateResponse`](./src/resources/skills.ts) |
+| Request | [`SkillCreateParams`](./src/resources/skills/skills.ts) |
+| Response | [`SkillCreateResponse`](./src/resources/skills/skills.ts) |
 
 ```ts
 const skill = await client.skills.create({
@@ -300,7 +307,7 @@ Retrieve an organization skill and all of its files.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`SkillRetrieveResponse`](./src/resources/skills.ts) |
+| Response | [`SkillRetrieveResponse`](./src/resources/skills/skills.ts) |
 
 ```ts
 const skill = await client.skills.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
@@ -312,8 +319,8 @@ Update an organization skill. When files are provided, they replace the complete
 
 | Direction | Type |
 | --- | --- |
-| Request | [`SkillUpdateParams`](./src/resources/skills.ts) |
-| Response | [`SkillUpdateResponse`](./src/resources/skills.ts) |
+| Request | [`SkillUpdateParams`](./src/resources/skills/skills.ts) |
+| Response | [`SkillUpdateResponse`](./src/resources/skills/skills.ts) |
 
 ```ts
 const skill = await client.skills.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
@@ -325,10 +332,42 @@ Delete an organization skill.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`SkillDeleteResponse`](./src/resources/skills.ts) |
+| Response | [`SkillDeleteResponse`](./src/resources/skills/skills.ts) |
 
 ```ts
 const skill = await client.skills.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### `Skills Marketplace`
+
+#### List marketplace skills
+
+List popular marketplace skills or search the catalog. Results have no continuation cursor.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`MarketplaceListParams`](./src/resources/skills/marketplace.ts) |
+| Response | [`MarketplaceListResponse`](./src/resources/skills/marketplace.ts) |
+
+```ts
+const marketplace = await client.skills.marketplace.list({
+  limit: 50,
+});
+```
+
+#### Retrieve a marketplace skill
+
+Retrieve the files and content hash for a marketplace skill. This does not install the skill.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`MarketplaceRetrieveParams`](./src/resources/skills/marketplace.ts) |
+| Response | [`MarketplaceRetrieveResponse`](./src/resources/skills/marketplace.ts) |
+
+```ts
+const marketplace = await client.skills.marketplace.retrieve('skillId', {
+  source: 'source',
+});
 ```
 
 ## `Insights`
@@ -2012,6 +2051,54 @@ Retrieve the status, linked session, measured duration, and failure summary of a
 ```ts
 const run = await client.agents.runs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
   agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+});
+```
+
+### `Agents ContentRevisions`
+
+#### List agent instruction revisions
+
+List saved revisions of an agent’s instruction JSON document, newest first. Revisions do not include other agent configuration. Author details are redacted from public API responses.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ContentRevisionListParams`](./src/resources/agents/content-revisions.ts) |
+| Response | [`ContentRevisionListResponse`](./src/resources/agents/content-revisions.ts) |
+
+```ts
+const contentRevision = await client.agents.contentRevisions.list('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  limit: 50,
+});
+```
+
+#### Retrieve an agent instruction revision
+
+Retrieve the instruction JSON document saved in one revision. Other agent configuration is not included. Author details are redacted from public API responses.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ContentRevisionRetrieveParams`](./src/resources/agents/content-revisions.ts) |
+| Response | [`ContentRevisionRetrieveResponse`](./src/resources/agents/content-revisions.ts) |
+
+```ts
+const contentRevision = await client.agents.contentRevisions.retrieve(1, {
+  agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+});
+```
+
+#### Restore agent instructions
+
+Restore a saved instruction JSON document and its mentioned integrations, without reverting other agent configuration. A changed document creates a new revision attributed to the caller. Supply the agent’s current contentVersion as expectedContentVersion; a concurrent instruction change returns 409.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ContentRevisionRestoreParams`](./src/resources/agents/content-revisions.ts) |
+| Response | [`ContentRevisionRestoreResponse`](./src/resources/agents/content-revisions.ts) |
+
+```ts
+const contentRevision = await client.agents.contentRevisions.restore(1, {
+  agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  expectedContentVersion: 1,
 });
 ```
 

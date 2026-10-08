@@ -6533,6 +6533,7 @@
   "resources": [
     "apiKeys",
     "skills",
+    "skills.marketplace",
     "insights",
     "organizations",
     "organizations.members",
@@ -6568,6 +6569,7 @@
     "agents.schedules",
     "agents.triggers",
     "agents.runs",
+    "agents.contentRevisions",
     "repositories",
     "integrations",
     "billing"
@@ -6575,6 +6577,7 @@
   "publicResources": [
     "apiKeys",
     "skills",
+    "skills.marketplace",
     "insights",
     "organizations",
     "organizations.members",
@@ -6610,6 +6613,7 @@
     "agents.schedules",
     "agents.triggers",
     "agents.runs",
+    "agents.contentRevisions",
     "repositories",
     "integrations",
     "billing"
@@ -7699,6 +7703,246 @@
         },
         {
           "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "skills.marketplace",
+      "publicResource": "skills.marketplace",
+      "operation": "list",
+      "publicOperation": "list",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/skills/marketplace",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [
+        "cursor",
+        "limit",
+        "search"
+      ],
+      "publicQueryParams": [
+        "cursor",
+        "limit",
+        "search"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "cursor",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": 50
+        },
+        {
+          "name": "search",
+          "required": false,
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "MarketplaceListParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "500",
+          "502"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "skills.marketplace",
+      "publicResource": "skills.marketplace",
+      "operation": "retrieve",
+      "publicOperation": "retrieve",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/skills/marketplace/{skillId}",
+      "pathParams": [
+        "skillId"
+      ],
+      "publicPathParams": [
+        "skillId"
+      ],
+      "queryParams": [
+        "source"
+      ],
+      "publicQueryParams": [
+        "source"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "skillId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [
+        {
+          "name": "source",
+          "required": true,
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "MarketplaceRetrieveParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "500",
+          "502"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "502",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -23987,6 +24231,382 @@
       "cookieParamDetails": [],
       "paramsModel": {
         "publicName": "RunRetrieveParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "agents.contentRevisions",
+      "publicResource": "agents.contentRevisions",
+      "operation": "list",
+      "publicOperation": "list",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/agents/{agentId}/content-revisions",
+      "pathParams": [
+        "agentId"
+      ],
+      "publicPathParams": [
+        "agentId"
+      ],
+      "queryParams": [
+        "cursor",
+        "limit"
+      ],
+      "publicQueryParams": [
+        "cursor",
+        "limit"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "agentId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [
+        {
+          "name": "cursor",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": 50
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "ContentRevisionListParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "agents.contentRevisions",
+      "publicResource": "agents.contentRevisions",
+      "operation": "retrieve",
+      "publicOperation": "retrieve",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/agents/{agentId}/content-revisions/{version}",
+      "pathParams": [
+        "agentId",
+        "version"
+      ],
+      "publicPathParams": [
+        "agentId",
+        "version"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "agentId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        },
+        {
+          "name": "version",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "ContentRevisionRetrieveParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "agents.contentRevisions",
+      "publicResource": "agents.contentRevisions",
+      "operation": "restore",
+      "publicOperation": "restore",
+      "deprecated": false,
+      "method": "POST",
+      "path": "/v1/agents/{agentId}/content-revisions/{version}/restore",
+      "pathParams": [
+        "agentId",
+        "version"
+      ],
+      "publicPathParams": [
+        "agentId",
+        "version"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [
+        "expectedContentVersion"
+      ],
+      "publicBodyParams": [
+        "expectedContentVersion"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "expectedContentVersion",
+          "required": true
+        }
+      ],
+      "pathParamDetails": [
+        {
+          "name": "agentId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        },
+        {
+          "name": "version",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "ContentRevisionRestoreParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
       },
       "response": {
         "status": "200",

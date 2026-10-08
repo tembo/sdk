@@ -87,12 +87,25 @@ import {
   type RunCreateParams,
   type RunRetrieveParams,
 } from './runs';
+import * as ContentRevisionsAPI from './content-revisions';
+import {
+  ContentRevisions,
+  type ContentRevisionListResponse,
+  type ContentRevisionRetrieveResponse,
+  type ContentRevisionRestoreResponse,
+  type ContentRevisionListParams,
+  type ContentRevisionRetrieveParams,
+  type ContentRevisionRestoreParams,
+} from './content-revisions';
 
 export class Agents extends APIResource {
   templates: TemplatesAPI2.Templates = new TemplatesAPI2.Templates(this._client);
   schedules: SchedulesAPI.Schedules = new SchedulesAPI.Schedules(this._client);
   triggers: TriggersAPI.Triggers = new TriggersAPI.Triggers(this._client);
   runs: RunsAPI.Runs = new RunsAPI.Runs(this._client);
+  contentRevisions: ContentRevisionsAPI.ContentRevisions = new ContentRevisionsAPI.ContentRevisions(
+    this._client,
+  );
 
   /**
    * List agents available in your organization, with optional search, status, integration, and author filters.
@@ -890,6 +903,7 @@ Agents.Templates = Templates;
 Agents.Schedules = Schedules;
 Agents.Triggers = Triggers;
 Agents.Runs = Runs;
+Agents.ContentRevisions = ContentRevisions;
 
 export declare namespace Agents {
   export {
@@ -984,5 +998,15 @@ export declare namespace Agents {
     type RunListParams as RunListParams,
     type RunCreateParams as RunCreateParams,
     type RunRetrieveParams as RunRetrieveParams,
+  };
+
+  export {
+    ContentRevisions as ContentRevisions,
+    type ContentRevisionListResponse as ContentRevisionListResponse,
+    type ContentRevisionRetrieveResponse as ContentRevisionRetrieveResponse,
+    type ContentRevisionRestoreResponse as ContentRevisionRestoreResponse,
+    type ContentRevisionListParams as ContentRevisionListParams,
+    type ContentRevisionRetrieveParams as ContentRevisionRetrieveParams,
+    type ContentRevisionRestoreParams as ContentRevisionRestoreParams,
   };
 }

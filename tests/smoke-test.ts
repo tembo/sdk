@@ -215,6 +215,43 @@ const cases: {
   },
 
   {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/skills/marketplace',
+    label: 'required params',
+    run: async () => {
+      const marketplace = await client.skills.marketplace.list({
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/skills/marketplace',
+    label: 'all params',
+    run: async () => {
+      const marketplace = await client.skills.marketplace.list({
+        cursor: '',
+        limit: 50,
+        search: 'search',
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/skills/marketplace/{skillId}',
+    run: async () => {
+      const marketplace = await client.skills.marketplace.retrieve('skillId', {
+        source: 'source',
+      });
+    },
+  },
+
+  {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/insights',
@@ -2338,6 +2375,60 @@ const cases: {
     run: async () => {
       const run = await client.agents.runs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/agents/{agentId}/content-revisions',
+    label: 'required params',
+    run: async () => {
+      const contentRevision = await client.agents.contentRevisions.list(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/agents/{agentId}/content-revisions',
+    label: 'all params',
+    run: async () => {
+      const contentRevision = await client.agents.contentRevisions.list(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          cursor: 'cursor',
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/agents/{agentId}/content-revisions/{version}',
+    run: async () => {
+      const contentRevision = await client.agents.contentRevisions.retrieve(1, {
+        agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'restore',
+    method: 'POST',
+    path: '/v1/agents/{agentId}/content-revisions/{version}/restore',
+    run: async () => {
+      const contentRevision = await client.agents.contentRevisions.restore(1, {
+        agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        expectedContentVersion: 1,
       });
     },
   },
