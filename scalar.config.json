@@ -231,6 +231,20 @@
           "bodyParamName": "body"
         },
         "delete": "delete /v1/messages/{messageId}"
+      },
+      "subresources": {
+        "live": {
+          "methods": {
+            "authorize": {
+              "kind": "http",
+              "endpoint": "post /v1/messages/live",
+              "verb": "post",
+              "path": "/v1/messages/live",
+              "bodyParamName": "body"
+            },
+            "connect": "get /v1/messages/live"
+          }
+        }
       }
     },
     "models": {
@@ -593,13 +607,74 @@
     "repositories": {
       "methods": {
         "list": "get /v1/repositories",
-        "retrieve": "get /v1/repositories/{repositoryId}"
+        "retrieve": "get /v1/repositories/{repositoryId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/repositories/{repositoryId}",
+          "verb": "patch",
+          "path": "/v1/repositories/{repositoryId}",
+          "bodyParamName": "body"
+        }
       }
     },
     "integrations": {
       "methods": {
         "list": "get /v1/integrations",
-        "retrieve": "get /v1/integrations/{integrationId}"
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/integrations",
+          "verb": "post",
+          "path": "/v1/integrations",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/integrations/{integrationId}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/integrations/{integrationId}",
+          "verb": "patch",
+          "path": "/v1/integrations/{integrationId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/integrations/{integrationId}",
+        "authorize": "post /v1/integrations/{integrationId}/authorize",
+        "test": "post /v1/integrations/{integrationId}/test",
+        "sync": {
+          "kind": "http",
+          "endpoint": "post /v1/integrations/{integrationId}/sync",
+          "verb": "post",
+          "path": "/v1/integrations/{integrationId}/sync",
+          "bodyParamName": "body"
+        },
+        "sync_all": {
+          "kind": "http",
+          "endpoint": "post /v1/integrations/sync",
+          "verb": "post",
+          "path": "/v1/integrations/sync",
+          "bodyParamName": "body"
+        },
+        "retrieve_sync_status": "get /v1/integrations/sync/status",
+        "retrieve_rate_limit": "get /v1/integrations/{integrationId}/rate-limit",
+        "list_sentry_environments": "get /v1/integrations/{integrationId}/sentry-environments",
+        "list_slack_channels": "get /v1/integrations/{integrationId}/slack-channels"
+      },
+      "subresources": {
+        "providers": {
+          "methods": {
+            "list": "get /v1/integrations/providers",
+            "discover_snyk_organizations": {
+              "kind": "http",
+              "endpoint": "post /v1/integrations/providers/snyk/organizations",
+              "verb": "post",
+              "path": "/v1/integrations/providers/snyk/organizations",
+              "bodyParamName": "body"
+            }
+          }
+        },
+        "triggers": {
+          "methods": {
+            "list": "get /v1/integrations/triggers"
+          }
+        }
       }
     },
     "billing": {
