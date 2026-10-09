@@ -242,7 +242,12 @@
               "path": "/v1/messages/live",
               "bodyParamName": "body"
             },
-            "connect": "get /v1/messages/live"
+            "connect": {
+              "kind": "websocket",
+              "endpoint": "get /v1/messages/live",
+              "verb": "get",
+              "path": "/v1/messages/live"
+            }
           }
         }
       }

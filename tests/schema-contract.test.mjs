@@ -177,7 +177,7 @@ test('integration mappings cover management routes and preserve request bodies',
   }
 });
 
-test('live message and repository update mappings preserve request bodies', () => {
+test('live message mappings use a WebSocket handshake and repository updates preserve request bodies', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
   const live = sdkConfig.resources.messages.subresources.live;
   const repositories = sdkConfig.resources.repositories;
@@ -192,6 +192,8 @@ test('live message and repository update mappings preserve request bodies', () =
     { resources: { live, repositories } },
   );
   assert.equal(live.methods.authorize.bodyParamName, 'body');
+  assert.equal(live.methods.connect.kind, 'websocket');
+  assert.equal(live.methods.connect.verb, 'get');
   assert.equal(repositories.methods.update.verb, 'patch');
   assert.equal(repositories.methods.update.bodyParamName, 'body');
 });
