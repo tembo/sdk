@@ -63,7 +63,7 @@ export type {
   ArtifactRetrieveResponse,
   ArtifactDeleteResponse,
 } from './artifacts';
-export { Messages } from './messages';
+export { Messages } from './messages/messages';
 export type {
   TipTapDocument,
   TipTapNode,
@@ -87,7 +87,7 @@ export type {
   MessageUpdateParams,
   MessageUpdateResponse,
   MessageDeleteResponse,
-} from './messages';
+} from './messages/messages';
 export { Models } from './models';
 export type { ModelListParams, ModelListResponse, ModelUpdateParams, ModelUpdateResponse } from './models';
 export { Runtimes } from './runtimes';
@@ -155,12 +155,32 @@ export type {
   RepositoryListParams,
   RepositoryListResponse,
   RepositoryRetrieveResponse,
+  RepositoryUpdateParams,
+  RepositoryUpdateResponse,
 } from './repositories';
-export { Integrations } from './integrations';
+export { Integrations } from './integrations/integrations';
 export type {
   IntegrationListParams,
   IntegrationListResponse,
+  IntegrationCreateParams,
+  IntegrationCreateResponse,
   IntegrationRetrieveResponse,
-} from './integrations';
+  IntegrationUpdateParams,
+  IntegrationUpdateResponse,
+  IntegrationDeleteResponse,
+  IntegrationAuthorizeParams,
+  IntegrationAuthorizeResponse,
+  IntegrationTestResponse,
+  IntegrationSyncParams,
+  IntegrationSyncResponse,
+  IntegrationSyncAllParams,
+  IntegrationSyncAllResponse,
+  IntegrationRetrieveSyncStatusResponse,
+  IntegrationRetrieveRateLimitResponse,
+  IntegrationListSentryEnvironmentsParams,
+  IntegrationListSentryEnvironmentsResponse,
+  IntegrationListSlackChannelsParams,
+  IntegrationListSlackChannelsResponse,
+} from './integrations/integrations';
 export { Billing } from './billing';
 export type { BillingRetrieveResponse, BillingListUsageParams, BillingListUsageResponse } from './billing';

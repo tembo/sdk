@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [WebSockets](#websockets)
 - [Authentication](#authentication)
 - [Errors](#errors)
 - [Client Options](#client-options)
@@ -49,6 +50,26 @@ console.log(apiKey);
 The examples in the following sections assume a `client` configured as shown above.
 
 See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## WebSockets
+
+WebSocket endpoints open a persistent connection you can send messages to and receive messages from.
+
+```ts
+const connection = client.messages.live.connect({
+  ticket: 'ticket',
+});
+
+try {
+  for await (const message of connection) {
+    console.log(message);
+  }
+} finally {
+  connection.close();
+}
+```
 
 <br />
 

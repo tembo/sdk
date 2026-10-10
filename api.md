@@ -73,6 +73,9 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Retrieve a message](#retrieve-a-message)
   - [Update a message](#update-a-message)
   - [Delete a message](#delete-a-message)
+  - [`Messages Live`](#messages-live)
+    - [Authorize live message changes](#authorize-live-message-changes)
+    - [Live persisted message changes](#live-persisted-message-changes)
 - [`Models`](#models)
   - [List models](#list-models)
   - [Update a model](#update-a-model)
@@ -175,9 +178,26 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Repositories`](#repositories)
   - [List repositories](#list-repositories)
   - [Retrieve a repository](#retrieve-a-repository)
+  - [Update a repository](#update-a-repository)
 - [`Integrations`](#integrations)
   - [List integrations](#list-integrations)
+  - [Create an integration](#create-an-integration)
   - [Retrieve an integration](#retrieve-an-integration)
+  - [Update an integration](#update-an-integration)
+  - [Delete an integration](#delete-an-integration)
+  - [Authorize an integration](#authorize-an-integration)
+  - [Test an integration](#test-an-integration)
+  - [Sync an integration](#sync-an-integration)
+  - [Sync eligible integrations](#sync-eligible-integrations)
+  - [Retrieve eligible integration sync status](#retrieve-eligible-integration-sync-status)
+  - [Retrieve an integration rate limit](#retrieve-an-integration-rate-limit)
+  - [List Sentry environments](#list-sentry-environments)
+  - [List Slack channels](#list-slack-channels)
+  - [`Integrations Providers`](#integrations-providers)
+    - [List integration providers](#list-integration-providers)
+    - [Discover Snyk organizations](#discover-snyk-organizations)
+  - [`Integrations Triggers`](#integrations-triggers)
+    - [List integration triggers](#list-integration-triggers)
 - [`Billing`](#billing)
   - [Retrieve billing](#retrieve-billing)
   - [List billing usage](#list-billing-usage)
@@ -919,8 +939,8 @@ List organization messages with optional session and thread filters.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MessageListParams`](./src/resources/messages.ts) |
-| Response | [`MessageListResponse`](./src/resources/messages.ts) |
+| Request | [`MessageListParams`](./src/resources/messages/messages.ts) |
+| Response | [`MessageListResponse`](./src/resources/messages/messages.ts) |
 
 ```ts
 const message = await client.messages.list({
@@ -934,8 +954,8 @@ Create a user message for a session and submit it to the session agent.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MessageCreateParams`](./src/resources/messages.ts) |
-| Response | [`MessageCreateResponse`](./src/resources/messages.ts) |
+| Request | [`MessageCreateParams`](./src/resources/messages/messages.ts) |
+| Response | [`MessageCreateResponse`](./src/resources/messages/messages.ts) |
 
 ```ts
 const message = await client.messages.create({
@@ -950,7 +970,7 @@ Retrieve an organization message by ID.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`MessageRetrieveResponse`](./src/resources/messages.ts) |
+| Response | [`MessageRetrieveResponse`](./src/resources/messages/messages.ts) |
 
 ```ts
 const message = await client.messages.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
@@ -962,8 +982,8 @@ Update message content before its queued processing has started.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MessageUpdateParams`](./src/resources/messages.ts) |
-| Response | [`MessageUpdateResponse`](./src/resources/messages.ts) |
+| Request | [`MessageUpdateParams`](./src/resources/messages/messages.ts) |
+| Response | [`MessageUpdateResponse`](./src/resources/messages/messages.ts) |
 
 ```ts
 const message = await client.messages.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
@@ -975,10 +995,49 @@ Delete a message and cancel its queued jobs, runtime turns, and active sandbox s
 
 | Direction | Type |
 | --- | --- |
-| Response | [`MessageDeleteResponse`](./src/resources/messages.ts) |
+| Response | [`MessageDeleteResponse`](./src/resources/messages/messages.ts) |
 
 ```ts
 const message = await client.messages.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### `Messages Live`
+
+#### Authorize live message changes
+
+Issue a 30-second, session-bound WebSocket ticket.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`LiveAuthorizeParams`](./src/resources/messages/live/live.ts) |
+| Response | [`LiveAuthorizeResponse`](./src/resources/messages/live/live.ts) |
+
+```ts
+const live = await client.messages.live.authorize({
+  scope: {
+    sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  },
+});
+```
+
+#### Live persisted message changes
+
+| Direction | Type |
+| --- | --- |
+| Request | [`LiveConnectParams`](./src/resources/messages/live/live.ts) |
+
+```ts
+const connection = client.messages.live.connect({
+  ticket: 'ticket',
+});
+
+try {
+  for await (const message of connection) {
+    console.log(message);
+  }
+} finally {
+  connection.close();
+}
 ```
 
 ## `Models`
@@ -2134,6 +2193,21 @@ Retrieve a repository in the authenticated organization.
 const repository = await client.repositories.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
+### Update a repository
+
+Update repository configuration or enable or disable it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RepositoryUpdateParams`](./src/resources/repositories.ts) |
+| Response | [`RepositoryUpdateResponse`](./src/resources/repositories.ts) |
+
+```ts
+const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  enabled: false,
+});
+```
+
 ## `Integrations`
 
 ### List integrations
@@ -2142,13 +2216,30 @@ List integrations visible to the current organization or authenticated admin.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`IntegrationListParams`](./src/resources/integrations.ts) |
-| Response | [`IntegrationListResponse`](./src/resources/integrations.ts) |
+| Request | [`IntegrationListParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationListResponse`](./src/resources/integrations/integrations.ts) |
 
 ```ts
 const integration = await client.integrations.list({
   limit: 50,
   includeTotal: false,
+});
+```
+
+### Create an integration
+
+Create an integration that does not require an OAuth callback.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationCreateParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationCreateResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.create({
+  environment: 'x',
+  roleArn: 'x',
+  type: 'aws',
 });
 ```
 
@@ -2158,10 +2249,195 @@ Retrieve an integration and its configuration.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`IntegrationRetrieveResponse`](./src/resources/integrations.ts) |
+| Response | [`IntegrationRetrieveResponse`](./src/resources/integrations/integrations.ts) |
 
 ```ts
 const integration = await client.integrations.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Update an integration
+
+Update provider settings or an editable configuration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationUpdateParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationUpdateResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  settings: {},
+});
+```
+
+### Delete an integration
+
+Uninstall an integration from its provider when supported, then delete it from Tembo.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationDeleteResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Authorize an integration
+
+Return the provider authorization URL for an integration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationAuthorizeParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationAuthorizeResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.authorize('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Test an integration
+
+Test the saved provider connection.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationTestResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.test('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Sync an integration
+
+Queue or immediately perform an integration sync.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationSyncParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationSyncResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  mode: 'queued',
+});
+```
+
+### Sync eligible integrations
+
+Queue integration and pull-request sync jobs for integrations with enabled repositories.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationSyncAllParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationSyncAllResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.syncAll({});
+```
+
+### Retrieve eligible integration sync status
+
+Count active sync jobs for integrations with enabled repositories.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationRetrieveSyncStatusResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.retrieveSyncStatus();
+```
+
+### Retrieve an integration rate limit
+
+Retrieve the GitHub installation rate-limit state.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationRetrieveRateLimitResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.retrieveRateLimit('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### List Sentry environments
+
+List environments visible to a Sentry integration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationListSentryEnvironmentsParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationListSentryEnvironmentsResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.listSentryEnvironments('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  limit: 50,
+});
+```
+
+### List Slack channels
+
+List channels visible to a Slack integration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationListSlackChannelsParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationListSlackChannelsResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.listSlackChannels('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  limit: 50,
+});
+```
+
+### `Integrations Providers`
+
+#### List integration providers
+
+List providers available to the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ProviderListParams`](./src/resources/integrations/providers.ts) |
+| Response | [`ProviderListResponse`](./src/resources/integrations/providers.ts) |
+
+```ts
+const provider = await client.integrations.providers.list({
+  limit: 50,
+});
+```
+
+#### Discover Snyk organizations
+
+Validate Snyk service-account credentials and list accessible organizations.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ProviderDiscoverSnykOrganizationsParams`](./src/resources/integrations/providers.ts) |
+| Response | [`ProviderDiscoverSnykOrganizationsResponse`](./src/resources/integrations/providers.ts) |
+
+```ts
+const provider = await client.integrations.providers.discoverSnykOrganizations({
+  clientId: 'x',
+  clientSecret: 'x',
+  limit: 50,
+});
+```
+
+### `Integrations Triggers`
+
+#### List integration triggers
+
+List visible automation triggers grouped by provider.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TriggerListParams`](./src/resources/integrations/triggers.ts) |
+| Response | [`TriggerListResponse`](./src/resources/integrations/triggers.ts) |
+
+```ts
+const trigger = await client.integrations.triggers.list({
+  limit: 50,
+});
 ```
 
 ## `Billing`
