@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import test from 'node:test';
 import Tembo, { AuthenticationError, BadRequestError } from '../dist/esm/index.js';
@@ -185,4 +185,32 @@ test('docs notification uses the published run commit, not npm latest', () => {
   assert.match(workflow, /REQUESTED_VERSION: \$\{\{ inputs\.version \}\}/);
   assert.match(workflow, /select\(\.name == "publish" and \.conclusion == "success"\)/);
   assert.doesNotMatch(workflow, /npm view|dist-tags\.latest|actions\/checkout/);
+});
+
+test('browser builds map every generated WebSocket adapter to its browser variant', () => {
+  const adapters = [];
+  const visit = (dir) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const path = `${dir}/${entry.name}`;
+      if (entry.isDirectory()) visit(path);
+      else if (entry.name === 'ws-browser.ts')
+        adapters.push(path.slice('src/'.length, -'-browser.ts'.length));
+    }
+  };
+  visit('src');
+  assert.ok(adapters.length > 0);
+  for (const adapter of adapters) {
+    for (const format of ['esm', 'cjs']) {
+      assert.equal(
+        packageJson.browser?.[`./dist/${format}/${adapter}.js`],
+        `./dist/${format}/${adapter}-browser.js`,
+        `package.json "browser" must map ${format} ${adapter}.js`,
+      );
+    }
+  }
+  assert.equal(packageJson.browser?.ws, false);
+  const commonJsManifest = JSON.parse(readFileSync(new URL('../dist/cjs/package.json', import.meta.url)));
+  for (const adapter of adapters) {
+    assert.equal(commonJsManifest.browser?.[`./${adapter}.js`], `./${adapter}-browser.js`);
+  }
 });
