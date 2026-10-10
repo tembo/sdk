@@ -10596,6 +10596,7 @@
         "cursorApiKey",
         "customSystemPrompt",
         "defaultAgent",
+        "defaultKeepAliveMinutes",
         "defaultSandboxSize",
         "deleteBranchWhenPrClosed",
         "draftPrs",
@@ -10636,6 +10637,7 @@
         "cursorApiKey",
         "customSystemPrompt",
         "defaultAgent",
+        "defaultKeepAliveMinutes",
         "defaultSandboxSize",
         "deleteBranchWhenPrClosed",
         "draftPrs",
@@ -10704,6 +10706,10 @@
         },
         {
           "name": "defaultAgent",
+          "required": false
+        },
+        {
+          "name": "defaultKeepAliveMinutes",
           "required": false
         },
         {
@@ -24690,6 +24696,7 @@
       "queryParams": [
         "cursor",
         "limit",
+        "enabled",
         "ids",
         "integrationId",
         "order",
@@ -24699,6 +24706,7 @@
       "publicQueryParams": [
         "cursor",
         "limit",
+        "enabled",
         "ids",
         "integrationId",
         "order",
@@ -24724,6 +24732,13 @@
           "style": "form",
           "explode": true,
           "defaultValue": 50
+        },
+        {
+          "name": "enabled",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "all"
         },
         {
           "name": "ids",

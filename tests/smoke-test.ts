@@ -584,6 +584,7 @@ const cases: {
         cursorApiKey: '',
         customSystemPrompt: '',
         defaultAgent: '',
+        defaultKeepAliveMinutes: 0,
         defaultSandboxSize: 'nano',
         deleteBranchWhenPrClosed: false,
         draftPrs: false,
@@ -2441,6 +2442,7 @@ const cases: {
     run: async () => {
       const repository = await client.repositories.list({
         limit: 50,
+        enabled: 'all',
         order: 'desc',
         sort: 'pullRequests',
       });
@@ -2456,6 +2458,7 @@ const cases: {
       const repository = await client.repositories.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
+        enabled: 'all',
         ids: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         order: 'desc',

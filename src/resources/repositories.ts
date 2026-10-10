@@ -7,7 +7,7 @@ import { path as __scalarPath } from '../internal/utils/path';
 
 export class Repositories extends APIResource {
   /**
-   * List enabled repositories in the authenticated organization.
+   * List repositories in the authenticated organization. Defaults to enabled repositories.
    *
    * @param {RepositoryListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -17,6 +17,7 @@ export class Repositories extends APIResource {
    * ```ts
    * const repository = await client.repositories.list({
    *   limit: 50,
+   *   enabled: 'all',
    *   order: 'desc',
    *   sort: 'pullRequests',
    * });
@@ -30,7 +31,7 @@ export class Repositories extends APIResource {
   }
 
   /**
-   * Retrieve an enabled repository in the authenticated organization.
+   * Retrieve a repository in the authenticated organization.
    *
    * @param {string} repositoryID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -57,6 +58,10 @@ export interface RepositoryListParams {
    * @maximum 100
    */
   limit?: number;
+  /**
+   * @default all
+   */
+  enabled?: 'all' | 'true' | 'false';
   /**
    * @minItems 1
    * @maxItems 100

@@ -70,6 +70,11 @@ export namespace SettingRetrieveResponse {
      * @maxLength 64000
      */
     defaultAgent: string;
+    /**
+     * @minimum 0
+     * @maximum 10080
+     */
+    defaultKeepAliveMinutes: number;
     defaultSandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     deleteBranchWhenPrClosed: boolean;
     draftPrs: boolean;
@@ -161,6 +166,11 @@ export interface SettingUpdateParams {
    * @maxLength 64000
    */
   defaultAgent?: string;
+  /**
+   * @minimum 0
+   * @maximum 10080
+   */
+  defaultKeepAliveMinutes?: number;
   defaultSandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
   deleteBranchWhenPrClosed?: boolean;
   draftPrs?: boolean;
@@ -253,6 +263,11 @@ export namespace SettingUpdateResponse {
      * @maxLength 64000
      */
     defaultAgent: string;
+    /**
+     * @minimum 0
+     * @maximum 10080
+     */
+    defaultKeepAliveMinutes: number;
     defaultSandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     deleteBranchWhenPrClosed: boolean;
     draftPrs: boolean;
