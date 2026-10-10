@@ -7,7 +7,7 @@ import { path as __scalarPath } from '../internal/utils/path';
 
 export class Integrations extends APIResource {
   /**
-   * List integrations for the authenticated organization.
+   * List integrations visible to the current organization or authenticated admin.
    *
    * @param {IntegrationListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -29,7 +29,7 @@ export class Integrations extends APIResource {
   }
 
   /**
-   * Retrieve an integration for the authenticated organization.
+   * Retrieve an integration and its configuration.
    *
    * @param {string} integrationID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.

@@ -2106,7 +2106,7 @@ const contentRevision = await client.agents.contentRevisions.restore(1, {
 
 ### List repositories
 
-List enabled repositories in the authenticated organization.
+List repositories in the authenticated organization. Defaults to enabled repositories.
 
 | Direction | Type |
 | --- | --- |
@@ -2116,6 +2116,7 @@ List enabled repositories in the authenticated organization.
 ```ts
 const repository = await client.repositories.list({
   limit: 50,
+  enabled: 'all',
   order: 'desc',
   sort: 'pullRequests',
 });
@@ -2123,7 +2124,7 @@ const repository = await client.repositories.list({
 
 ### Retrieve a repository
 
-Retrieve an enabled repository in the authenticated organization.
+Retrieve a repository in the authenticated organization.
 
 | Direction | Type |
 | --- | --- |
@@ -2137,7 +2138,7 @@ const repository = await client.repositories.retrieve('7c9e6679-7425-40de-944b-e
 
 ### List integrations
 
-List integrations for the authenticated organization.
+List integrations visible to the current organization or authenticated admin.
 
 | Direction | Type |
 | --- | --- |
@@ -2153,7 +2154,7 @@ const integration = await client.integrations.list({
 
 ### Retrieve an integration
 
-Retrieve an integration for the authenticated organization.
+Retrieve an integration and its configuration.
 
 | Direction | Type |
 | --- | --- |
