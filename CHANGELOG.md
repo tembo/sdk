@@ -1,5 +1,44 @@
 # Changelog
 
+## [0.11.0](https://github.com/tembo/sdk/compare/v0.10.0...v0.11.0) (2026-10-10)
+
+
+### Features
+
+* **api:** add operation messages.live.authorize (+16 more changes) ([5a54c00](https://github.com/tembo/sdk/commit/5a54c0085f4e0350ce623af52ddc47b9cdf9da80))
+* **api:** add operation users.profilePicture.retrieve (+5 more changes) ([ca6fe07](https://github.com/tembo/sdk/commit/ca6fe07b06f404b01c9097805e8ab515a4a2e4fe))
+* **api:** update SDK surface (2 changes) ([89d2e6b](https://github.com/tembo/sdk/commit/89d2e6b3dd94448d5ad7eb8c4be91984a044480f))
+
+
+### Bug Fixes
+
+* **sdk:** carry browser mappings into the CommonJS manifest ([17061e2](https://github.com/tembo/sdk/commit/17061e2abbc17f672d016b5714d4f031ef585999))
+* **sdk:** generate live message connect as a WebSocket ([7e6a873](https://github.com/tembo/sdk/commit/7e6a873324aa2d960169bf85b550f91db25934d7))
+* **sdk:** lock generated WebSocket dependencies ([d913bd3](https://github.com/tembo/sdk/commit/d913bd319960b235c54070d6018315d87ae08bf2))
+* **sdk:** lock generated WebSocket dependencies ([742de4f](https://github.com/tembo/sdk/commit/742de4fbaa8c210b3c0f3cf0b7895977ba790a89))
+* **sdk:** map integration management and live message APIs ([0cafddf](https://github.com/tembo/sdk/commit/0cafddf3ba8585910fd2fd3c57db9ad741de0b9c))
+* **sdk:** map integration management and live message APIs ([a61d176](https://github.com/tembo/sdk/commit/a61d1766654f4ad6af9d2894629d12d5d39dbc2c))
+* **sdk:** map live session and profile picture APIs ([884e0a9](https://github.com/tembo/sdk/commit/884e0a971f5447b48217c7b4945020dc5f035c21))
+* **sdk:** map live session and profile picture APIs ([c73b508](https://github.com/tembo/sdk/commit/c73b5089380983fd5ad40bc65caf15654122dd12))
+* **sdk:** map session live WebSocket adapter for browsers ([f491985](https://github.com/tembo/sdk/commit/f491985b73de0b74a6292c8e873c023c131b65b6))
+* **sdk:** map session live WebSocket adapter for browsers ([eea9856](https://github.com/tembo/sdk/commit/eea9856a302d0b434ac968e7d9bfea913ab8e83b))
+* **sdk:** re-authorize live message reconnects with fresh tickets ([2af69ab](https://github.com/tembo/sdk/commit/2af69ab5eb00e0337a898114072a6ecc117e713c))
+* **sdk:** re-authorize live message reconnects with fresh tickets ([8cf16d9](https://github.com/tembo/sdk/commit/8cf16d931c423ba745bba34baf3e7fab817343c2))
+* **sdk:** ship WebSocket types and browser adapter mapping ([28a2098](https://github.com/tembo/sdk/commit/28a20989986585989dd537ce5bb334ec469cbbb7))
+* **sdk:** ship WebSocket types and browser adapter mapping ([3699cc2](https://github.com/tembo/sdk/commit/3699cc2c800225b097c6ca764bff7e79c73a40c9))
+* **sdk:** stop live subscriptions promptly on abort ([227f745](https://github.com/tembo/sdk/commit/227f74568a2fad326c25772bc8523ff444aad7ac))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([6968f02](https://github.com/tembo/sdk/commit/6968f02f38a256c087a9e38d6001b5d9e97db1d9))
+* **api:** sync production OpenAPI snapshot ([f4a18a6](https://github.com/tembo/sdk/commit/f4a18a68aee228c6279fdb81e37f97daed06316a))
+
+
+### Documentation
+
+* **sdk:** document live message subscriptions ([b86cc0a](https://github.com/tembo/sdk/commit/b86cc0a2c013d61a527a14d39eb7a597bd664321))
+
 ## [0.10.0](https://github.com/tembo/sdk/compare/v0.9.0...v0.10.0) (2026-10-08)
 
 
