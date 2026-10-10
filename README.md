@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [WebSockets](#websockets)
 - [Authentication](#authentication)
 - [Errors](#errors)
 - [Client Options](#client-options)
@@ -52,6 +53,22 @@ See the [API reference](./api.md) for every available operation.
 
 <br />
 
+## WebSockets
+
+Follow a session's message changes with `subscribe()`. Live tickets are single-use and expire after 30 seconds, so it authorizes every connection and reconnect with a fresh one. It yields `{ type: 'ready' }` after each (re)connect, which is when to re-read messages so you don't miss any, then `{ resource: 'message', sessionId }` whenever the session's messages change.
+
+```ts
+const controller = new AbortController();
+
+for await (const frame of client.messages.live.subscribe({ sessionId }, { signal: controller.signal })) {
+  console.log(frame);
+}
+```
+
+The subscription ends when the signal aborts or the loop exits, and throws if access is refused or reconnecting keeps failing. For a single connection, call `client.messages.live.authorize({ scope: { sessionId } })` and pass the returned ticket to `client.messages.live.connect({ ticket })`.
+
+<br />
+
 ## Authentication
 
 Pass credentials to the generated client constructor. Environment variables are read automatically when supported by the target runtime.
@@ -85,7 +102,7 @@ try {
 }
 ```
 
-Documented error statuses: `400`, `401`, `403`, `404`, `409`, `429`, `500`, `502`, `503`, `504`.
+Documented error statuses: `400`, `401`, `403`, `404`, `409`, `413`, `429`, `500`, `502`, `503`, `504`.
 
 <br />
 

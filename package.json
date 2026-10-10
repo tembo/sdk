@@ -1,6 +1,6 @@
 {
   "name": "@tembo-io/sdk",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Manage agents, sessions, repositories, and organization resources with the Tembo API.",
   "author": "Tembo Public API",
   "repository": {
@@ -38,6 +38,13 @@
     },
     "./package.json": "./package.json"
   },
+  "browser": {
+    "./dist/esm/resources/messages/live/ws.js": "./dist/esm/resources/messages/live/ws-browser.js",
+    "./dist/cjs/resources/messages/live/ws.js": "./dist/cjs/resources/messages/live/ws-browser.js",
+    "./dist/esm/resources/sessions/live/ws.js": "./dist/esm/resources/sessions/live/ws-browser.js",
+    "./dist/cjs/resources/sessions/live/ws.js": "./dist/cjs/resources/sessions/live/ws-browser.js",
+    "ws": false
+  },
   "files": [
     "dist",
     "api.md",
@@ -52,9 +59,21 @@
     "schema:fetch": "node scripts/fetch-schema.mjs",
     "schema:prepare": "node scripts/prepare-schema.mjs"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/ws": "^8.5.13",
+    "ws": "^8.18.0"
+  },
   "devDependencies": {
+    "@types/node": "^20.17.0",
     "typescript": "^6.0.0"
+  },
+  "peerDependencies": {
+    "ws": "^8.18.0"
+  },
+  "peerDependenciesMeta": {
+    "ws": {
+      "optional": true
+    }
   },
   "license": "Apache-2.0"
 }

@@ -21,6 +21,13 @@ import {
 } from './connected-accounts';
 import * as SubscriptionsAPI from './subscriptions/subscriptions';
 import { Subscriptions } from './subscriptions/subscriptions';
+import * as ProfilePictureAPI from './profile-picture';
+import {
+  ProfilePicture,
+  type ProfilePictureUpdateResponse,
+  type ProfilePictureDeleteResponse,
+  type ProfilePictureUpdateParams,
+} from './profile-picture';
 
 export class Users extends APIResource {
   settings: SettingsAPI.Settings = new SettingsAPI.Settings(this._client);
@@ -28,6 +35,7 @@ export class Users extends APIResource {
     this._client,
   );
   subscriptions: SubscriptionsAPI.Subscriptions = new SubscriptionsAPI.Subscriptions(this._client);
+  profilePicture: ProfilePictureAPI.ProfilePicture = new ProfilePictureAPI.ProfilePicture(this._client);
 
   /**
    * Retrieve the authenticated user.
@@ -156,6 +164,7 @@ export interface UserDeleteResponse {
 Users.Settings = Settings;
 Users.ConnectedAccounts = ConnectedAccounts;
 Users.Subscriptions = Subscriptions;
+Users.ProfilePicture = ProfilePicture;
 
 export declare namespace Users {
   export {
@@ -181,4 +190,11 @@ export declare namespace Users {
   };
 
   export { Subscriptions as Subscriptions };
+
+  export {
+    ProfilePicture as ProfilePicture,
+    type ProfilePictureUpdateResponse as ProfilePictureUpdateResponse,
+    type ProfilePictureDeleteResponse as ProfilePictureDeleteResponse,
+    type ProfilePictureUpdateParams as ProfilePictureUpdateParams,
+  };
 }

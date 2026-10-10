@@ -1,5 +1,34 @@
 # Changelog
 
+## [0.11.0](https://github.com/tembo/sdk/compare/v0.10.0...v0.11.0) (2026-10-10)
+
+
+### Features
+
+* **api:** add integration management, live message, and repository update operations ([5a54c00](https://github.com/tembo/sdk/commit/5a54c00), [#40](https://github.com/tembo/sdk/pull/40))
+* **api:** add live session and user profile picture operations ([ca6fe07](https://github.com/tembo/sdk/commit/ca6fe07), [#45](https://github.com/tembo/sdk/pull/45))
+* **api:** update SDK surface (2 changes) ([89d2e6b](https://github.com/tembo/sdk/commit/89d2e6b))
+* **messages:** add `messages.live.subscribe()`, which authorizes every connection and reconnect with a fresh single-use ticket ([#44](https://github.com/tembo/sdk/pull/44))
+
+
+### Bug Fixes
+
+* **sdk:** generate live message and session `connect()` methods as WebSocket clients ([#40](https://github.com/tembo/sdk/pull/40), [#45](https://github.com/tembo/sdk/pull/45))
+* **sdk:** ship `@types/ws` as a dependency so strict TypeScript consumers compile ([#43](https://github.com/tembo/sdk/pull/43))
+* **sdk:** use the browser WebSocket adapters in browser bundles, including CommonJS builds ([#43](https://github.com/tembo/sdk/pull/43), [#46](https://github.com/tembo/sdk/pull/46))
+* **sdk:** lock the generated WebSocket dependencies ([#42](https://github.com/tembo/sdk/pull/42))
+* **sdk:** stop live subscriptions promptly on abort ([#44](https://github.com/tembo/sdk/pull/44))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([f4a18a6](https://github.com/tembo/sdk/commit/f4a18a6), [6968f02](https://github.com/tembo/sdk/commit/6968f02))
+
+
+### Documentation
+
+* **sdk:** document live message subscriptions ([#44](https://github.com/tembo/sdk/pull/44))
+
 ## [0.10.0](https://github.com/tembo/sdk/compare/v0.9.0...v0.10.0) (2026-10-08)
 
 

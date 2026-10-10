@@ -45,6 +45,24 @@ console.log(apiKey);
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
 
+## WebSockets
+
+WebSocket endpoints open a persistent connection you can send messages to and receive messages from.
+
+```ts
+const connection = client.messages.live.connect({
+  ticket: 'ticket',
+});
+
+try {
+  for await (const message of connection) {
+    console.log(message);
+  }
+} finally {
+  connection.close();
+}
+```
+
 ## Error handling
 
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.

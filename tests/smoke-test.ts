@@ -584,6 +584,7 @@ const cases: {
         cursorApiKey: '',
         customSystemPrompt: '',
         defaultAgent: '',
+        defaultKeepAliveMinutes: 0,
         defaultSandboxSize: 'nano',
         deleteBranchWhenPrClosed: false,
         draftPrs: false,
@@ -993,6 +994,39 @@ const cases: {
   },
 
   {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/messages/live',
+    run: async () => {
+      const live = await client.messages.live.authorize({
+        scope: {
+          sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        },
+      });
+    },
+  },
+
+  {
+    operation: 'connect',
+    method: 'GET',
+    path: '/v1/messages/live',
+    run: async () => {
+      const socket = client.messages.live.connect({
+        ticket: 'ticket',
+      });
+      try {
+        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
+        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
+        for await (const message of socket) {
+          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
+        }
+      } finally {
+        socket.close();
+      }
+    },
+  },
+
+  {
     operation: 'list',
     method: 'GET',
     path: '/v1/models',
@@ -1244,6 +1278,35 @@ const cases: {
     path: '/v1/users/{userId}/subscriptions/supergrok',
     run: async () => {
       const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/users/{userId}/profile-picture',
+    run: async () => {
+      await client.users.profilePicture.retrieve('userId');
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PUT',
+    path: '/v1/users/{userId}/profile-picture',
+    run: async () => {
+      const profilePicture = await client.users.profilePicture.update('userId', {
+        file: new File(['file'], 'file'),
+      });
+    },
+  },
+
+  {
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/users/{userId}/profile-picture',
+    run: async () => {
+      const profilePicture = await client.users.profilePicture.delete('userId');
     },
   },
 
@@ -1514,6 +1577,39 @@ const cases: {
       const diff = await client.sessions.diffs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
       });
+    },
+  },
+
+  {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/sessions/live',
+    run: async () => {
+      const live = await client.sessions.live.authorize({
+        scope: {
+          sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        },
+      });
+    },
+  },
+
+  {
+    operation: 'connect',
+    method: 'GET',
+    path: '/v1/sessions/live',
+    run: async () => {
+      const socket = client.sessions.live.connect({
+        ticket: 'ticket',
+      });
+      try {
+        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
+        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
+        for await (const message of socket) {
+          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
+        }
+      } finally {
+        socket.close();
+      }
     },
   },
 
@@ -2441,6 +2537,7 @@ const cases: {
     run: async () => {
       const repository = await client.repositories.list({
         limit: 50,
+        enabled: 'all',
         order: 'desc',
         sort: 'pullRequests',
       });
@@ -2456,6 +2553,7 @@ const cases: {
       const repository = await client.repositories.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
+        enabled: 'all',
         ids: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         order: 'desc',
@@ -2471,6 +2569,32 @@ const cases: {
     path: '/v1/repositories/{repositoryId}',
     run: async () => {
       const repository = await client.repositories.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/repositories/{repositoryId}',
+    label: 'required params',
+    run: async () => {
+      const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        enabled: false,
+      });
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/repositories/{repositoryId}',
+    label: 'all params',
+    run: async () => {
+      const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        enabled: false,
+        baseBranch: 'x',
+        targetBranch: 'x',
+      });
     },
   },
 
@@ -2509,11 +2633,256 @@ const cases: {
   },
 
   {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/integrations',
+    run: async () => {
+      const integration = await client.integrations.create({
+        environment: 'x',
+        roleArn: 'x',
+        type: 'aws',
+      });
+    },
+  },
+
+  {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/integrations/{integrationId}',
     run: async () => {
       const integration = await client.integrations.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/integrations/{integrationId}',
+    run: async () => {
+      const integration = await client.integrations.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        settings: {},
+      });
+    },
+  },
+
+  {
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/integrations/{integrationId}',
+    run: async () => {
+      const integration = await client.integrations.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/authorize',
+    label: 'required params',
+    run: async () => {
+      const integration = await client.integrations.authorize('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/authorize',
+    label: 'all params',
+    run: async () => {
+      const integration = await client.integrations.authorize('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        returnUrl: 'https://example.com',
+      });
+    },
+  },
+
+  {
+    operation: 'test',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/test',
+    run: async () => {
+      const integration = await client.integrations.test('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'sync',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/sync',
+    run: async () => {
+      const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        mode: 'queued',
+      });
+    },
+  },
+
+  {
+    operation: 'syncAll',
+    method: 'POST',
+    path: '/v1/integrations/sync',
+    run: async () => {
+      const integration = await client.integrations.syncAll({});
+    },
+  },
+
+  {
+    operation: 'retrieveSyncStatus',
+    method: 'GET',
+    path: '/v1/integrations/sync/status',
+    run: async () => {
+      const integration = await client.integrations.retrieveSyncStatus();
+    },
+  },
+
+  {
+    operation: 'retrieveRateLimit',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/rate-limit',
+    run: async () => {
+      const integration = await client.integrations.retrieveRateLimit('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'listSentryEnvironments',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/sentry-environments',
+    label: 'required params',
+    run: async () => {
+      const integration = await client.integrations.listSentryEnvironments(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'listSentryEnvironments',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/sentry-environments',
+    label: 'all params',
+    run: async () => {
+      const integration = await client.integrations.listSentryEnvironments(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          cursor: 'cursor',
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'listSlackChannels',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/slack-channels',
+    label: 'required params',
+    run: async () => {
+      const integration = await client.integrations.listSlackChannels(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'listSlackChannels',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/slack-channels',
+    label: 'all params',
+    run: async () => {
+      const integration = await client.integrations.listSlackChannels(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          cursor: 'cursor',
+          limit: 50,
+          search: 'search',
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/providers',
+    label: 'required params',
+    run: async () => {
+      const provider = await client.integrations.providers.list({
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/providers',
+    label: 'all params',
+    run: async () => {
+      const provider = await client.integrations.providers.list({
+        cursor: 'cursor',
+        limit: 50,
+        returnUrl: 'https://example.com',
+      });
+    },
+  },
+
+  {
+    operation: 'discoverSnykOrganizations',
+    method: 'POST',
+    path: '/v1/integrations/providers/snyk/organizations',
+    label: 'required params',
+    run: async () => {
+      const provider = await client.integrations.providers.discoverSnykOrganizations({
+        clientId: 'x',
+        clientSecret: 'x',
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'discoverSnykOrganizations',
+    method: 'POST',
+    path: '/v1/integrations/providers/snyk/organizations',
+    label: 'all params',
+    run: async () => {
+      const provider = await client.integrations.providers.discoverSnykOrganizations({
+        clientId: 'x',
+        clientSecret: 'x',
+        cursor: 'x',
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/triggers',
+    label: 'required params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.list({
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/triggers',
+    label: 'all params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.list({
+        cursor: 'cursor',
+        limit: 50,
+      });
     },
   },
 

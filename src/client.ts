@@ -113,7 +113,7 @@ import {
   type MessageListParams,
   type MessageCreateParams,
   type MessageUpdateParams,
-} from './resources/messages';
+} from './resources/messages/messages';
 import {
   Models,
   type ModelListResponse,
@@ -184,14 +184,34 @@ import {
   Repositories,
   type RepositoryListResponse,
   type RepositoryRetrieveResponse,
+  type RepositoryUpdateResponse,
   type RepositoryListParams,
+  type RepositoryUpdateParams,
 } from './resources/repositories';
 import {
   Integrations,
   type IntegrationListResponse,
+  type IntegrationCreateResponse,
   type IntegrationRetrieveResponse,
+  type IntegrationUpdateResponse,
+  type IntegrationDeleteResponse,
+  type IntegrationAuthorizeResponse,
+  type IntegrationTestResponse,
+  type IntegrationSyncResponse,
+  type IntegrationSyncAllResponse,
+  type IntegrationRetrieveSyncStatusResponse,
+  type IntegrationRetrieveRateLimitResponse,
+  type IntegrationListSentryEnvironmentsResponse,
+  type IntegrationListSlackChannelsResponse,
   type IntegrationListParams,
-} from './resources/integrations';
+  type IntegrationCreateParams,
+  type IntegrationUpdateParams,
+  type IntegrationAuthorizeParams,
+  type IntegrationSyncParams,
+  type IntegrationSyncAllParams,
+  type IntegrationListSentryEnvironmentsParams,
+  type IntegrationListSlackChannelsParams,
+} from './resources/integrations/integrations';
 import {
   Billing,
   type BillingRetrieveResponse,
@@ -1204,14 +1224,34 @@ export declare namespace Tembo {
     Repositories as Repositories,
     type RepositoryListResponse as RepositoryListResponse,
     type RepositoryRetrieveResponse as RepositoryRetrieveResponse,
+    type RepositoryUpdateResponse as RepositoryUpdateResponse,
     type RepositoryListParams as RepositoryListParams,
+    type RepositoryUpdateParams as RepositoryUpdateParams,
   };
 
   export {
     Integrations as Integrations,
     type IntegrationListResponse as IntegrationListResponse,
+    type IntegrationCreateResponse as IntegrationCreateResponse,
     type IntegrationRetrieveResponse as IntegrationRetrieveResponse,
+    type IntegrationUpdateResponse as IntegrationUpdateResponse,
+    type IntegrationDeleteResponse as IntegrationDeleteResponse,
+    type IntegrationAuthorizeResponse as IntegrationAuthorizeResponse,
+    type IntegrationTestResponse as IntegrationTestResponse,
+    type IntegrationSyncResponse as IntegrationSyncResponse,
+    type IntegrationSyncAllResponse as IntegrationSyncAllResponse,
+    type IntegrationRetrieveSyncStatusResponse as IntegrationRetrieveSyncStatusResponse,
+    type IntegrationRetrieveRateLimitResponse as IntegrationRetrieveRateLimitResponse,
+    type IntegrationListSentryEnvironmentsResponse as IntegrationListSentryEnvironmentsResponse,
+    type IntegrationListSlackChannelsResponse as IntegrationListSlackChannelsResponse,
     type IntegrationListParams as IntegrationListParams,
+    type IntegrationCreateParams as IntegrationCreateParams,
+    type IntegrationUpdateParams as IntegrationUpdateParams,
+    type IntegrationAuthorizeParams as IntegrationAuthorizeParams,
+    type IntegrationSyncParams as IntegrationSyncParams,
+    type IntegrationSyncAllParams as IntegrationSyncAllParams,
+    type IntegrationListSentryEnvironmentsParams as IntegrationListSentryEnvironmentsParams,
+    type IntegrationListSlackChannelsParams as IntegrationListSlackChannelsParams,
   };
 
   export {
