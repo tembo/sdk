@@ -58,6 +58,7 @@ test('SDK mappings cover current manually reviewed operations', () => {
       '/v1/users/{userId}/subscriptions/claude': { get: {} },
       '/v1/users/{userId}/subscriptions/claude/usage': { get: {} },
       '/v1/users/{userId}/subscriptions/supergrok': { get: {} },
+      '/v1/users/{userId}/profile-picture': { get: {}, put: {}, delete: {} },
       '/v1/sessions/{sessionId}/fork': { post: {} },
       '/v1/runtimes': { get: {} },
     },
@@ -196,4 +197,23 @@ test('live message mappings use a WebSocket handshake and repository updates pre
   assert.equal(live.methods.connect.verb, 'get');
   assert.equal(repositories.methods.update.verb, 'patch');
   assert.equal(repositories.methods.update.bodyParamName, 'body');
+});
+
+test('session live and profile picture mappings use a WebSocket handshake and preserve request bodies', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const live = sdkConfig.resources.sessions.subresources.live;
+  const profilePicture = sdkConfig.resources.users.subresources.profile_picture;
+  validateCoverage(
+    {
+      paths: {
+        '/v1/sessions/live': { get: {}, post: {} },
+        '/v1/users/{userId}/profile-picture': { get: {}, put: {}, delete: {} },
+      },
+    },
+    { resources: { live, profilePicture } },
+  );
+  assert.equal(live.methods.authorize.bodyParamName, 'body');
+  assert.equal(live.methods.connect.kind, 'websocket');
+  assert.equal(profilePicture.methods.update.verb, 'put');
+  assert.equal(profilePicture.methods.update.bodyParamName, 'body');
 });
