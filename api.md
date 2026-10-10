@@ -101,6 +101,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
       - [Retrieve user Claude subscription usage](#retrieve-user-claude-subscription-usage)
     - [`Users Subscriptions Supergrok`](#users-subscriptions-supergrok)
       - [Retrieve a user SuperGrok subscription](#retrieve-a-user-supergrok-subscription)
+  - [`Users ProfilePicture`](#users-profilepicture)
+    - [Retrieve a user profile picture](#retrieve-a-user-profile-picture)
+    - [Update your profile picture](#update-your-profile-picture)
+    - [Delete your profile picture](#delete-your-profile-picture)
 - [`Sessions`](#sessions)
   - [List sessions](#list-sessions)
   - [Create a session](#create-a-session)
@@ -116,6 +120,9 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Sessions Diffs`](#sessions-diffs)
     - [List session diffs](#list-session-diffs)
     - [Retrieve a session diff](#retrieve-a-session-diff)
+  - [`Sessions Live`](#sessions-live)
+    - [Authorize live session changes](#authorize-live-session-changes)
+    - [Live session changes](#live-session-changes)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
   - [List projects](#list-projects)
@@ -1268,6 +1275,43 @@ Retrieve the connection status for a user SuperGrok subscription.
 const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
 ```
 
+### `Users ProfilePicture`
+
+#### Retrieve a user profile picture
+
+Redirect to a user's profile picture. Signed URLs are valid for one hour.
+
+```ts
+await client.users.profilePicture.retrieve('userId');
+```
+
+#### Update your profile picture
+
+Upload a JPEG, PNG, GIF, or WebP profile picture up to 5 MB.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ProfilePictureUpdateParams`](./src/resources/users/profile-picture.ts) |
+| Response | [`ProfilePictureUpdateResponse`](./src/resources/users/profile-picture.ts) |
+
+```ts
+const profilePicture = await client.users.profilePicture.update('userId', {
+  file: new File(['file'], 'file'),
+});
+```
+
+#### Delete your profile picture
+
+Delete your profile picture. This succeeds if no picture exists.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ProfilePictureDeleteResponse`](./src/resources/users/profile-picture.ts) |
+
+```ts
+const profilePicture = await client.users.profilePicture.delete('userId');
+```
+
 ## `Sessions`
 
 ### List sessions
@@ -1451,6 +1495,45 @@ Retrieve one recorded session diff and its content.
 const diff = await client.sessions.diffs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
   sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
 });
+```
+
+### `Sessions Live`
+
+#### Authorize live session changes
+
+Issue a 30-second, session-bound WebSocket ticket.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`LiveAuthorizeParams`](./src/resources/sessions/live/live.ts) |
+| Response | [`LiveAuthorizeResponse`](./src/resources/sessions/live/live.ts) |
+
+```ts
+const live = await client.sessions.live.authorize({
+  scope: {
+    sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  },
+});
+```
+
+#### Live session changes
+
+| Direction | Type |
+| --- | --- |
+| Request | [`LiveConnectParams`](./src/resources/sessions/live/live.ts) |
+
+```ts
+const connection = client.sessions.live.connect({
+  ticket: 'ticket',
+});
+
+try {
+  for await (const message of connection) {
+    console.log(message);
+  }
+} finally {
+  connection.close();
+}
 ```
 
 ## `Projects`

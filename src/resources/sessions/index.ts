@@ -23,3 +23,5 @@ export { Sources } from './sources';
 export type { SourceListParams, SourceListResponse, SourceRetrieveResponse } from './sources';
 export { Diffs } from './diffs';
 export type { DiffListParams, DiffListResponse, DiffRetrieveParams, DiffRetrieveResponse } from './diffs';
+export { Live } from './live/live';
+export type { LiveAuthorizeParams, LiveAuthorizeResponse, LiveConnectParams } from './live/live';

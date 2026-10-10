@@ -12,3 +12,9 @@ export type {
   ConnectedAccountRetrieveResponse,
 } from './connected-accounts';
 export { Subscriptions } from './subscriptions/subscriptions';
+export { ProfilePicture } from './profile-picture';
+export type {
+  ProfilePictureUpdateParams,
+  ProfilePictureUpdateResponse,
+  ProfilePictureDeleteResponse,
+} from './profile-picture';

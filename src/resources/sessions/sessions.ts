@@ -20,10 +20,18 @@ import {
   type DiffListParams,
   type DiffRetrieveParams,
 } from './diffs';
+import * as LiveAPI from './live/live';
+import {
+  Live,
+  type LiveAuthorizeResponse,
+  type LiveAuthorizeParams,
+  type LiveConnectParams,
+} from './live/live';
 
 export class Sessions extends APIResource {
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
+  live: LiveAPI.Live = new LiveAPI.Live(this._client);
 
   /**
    * List sessions you have permission to access, with cursor pagination.
@@ -1696,6 +1704,7 @@ export namespace SessionListEventsResponse {
 }
 Sessions.Sources = Sources;
 Sessions.Diffs = Diffs;
+Sessions.Live = Live;
 
 export declare namespace Sessions {
   export {
@@ -1730,5 +1739,12 @@ export declare namespace Sessions {
     type DiffRetrieveResponse as DiffRetrieveResponse,
     type DiffListParams as DiffListParams,
     type DiffRetrieveParams as DiffRetrieveParams,
+  };
+
+  export {
+    Live as Live,
+    type LiveAuthorizeResponse as LiveAuthorizeResponse,
+    type LiveAuthorizeParams as LiveAuthorizeParams,
+    type LiveConnectParams as LiveConnectParams,
   };
 }
