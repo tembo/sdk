@@ -122,7 +122,9 @@ async function markCommonJsOutput(dir) {
       Object.entries(browser).flatMap(([from, to]) => {
         if (!from.startsWith('./')) return [[from, to]];
         if (!from.startsWith(prefix)) return [];
-        return [[`./${from.slice(prefix.length)}`, typeof to === 'string' ? `./${to.slice(prefix.length)}` : to]];
+        return [
+          [`./${from.slice(prefix.length)}`, typeof to === 'string' ? `./${to.slice(prefix.length)}` : to],
+        ];
       }),
     );
     const manifest = { type: 'commonjs', ...(Object.keys(mappings).length ? { browser: mappings } : {}) };
