@@ -107,10 +107,28 @@ async function makeCommonJsEntryCallable(dir) {
   await writeFile(entry, source.replace(ESM_MARKER_RE, `${CALLABLE_ENTRY_SHIM}$1`), 'utf8');
 }
 
+/**
+ * Writes the CommonJS output's package manifest. It creates a nearer package scope, so bundlers
+ * such as webpack read its `browser` field instead of the root one: carry over the root entries
+ * for this directory (rebased to it) and the bare-module entries, so browser builds still swap in
+ * the browser WebSocket adapters.
+ */
 async function markCommonJsOutput(dir) {
   try {
     await readdir(dir);
-    await writeFile(resolve(dir, 'package.json'), '{\n  "type": "commonjs"\n}\n', 'utf8');
+    const { browser = {} } = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
+    const prefix = './dist/cjs/';
+    const mappings = Object.fromEntries(
+      Object.entries(browser).flatMap(([from, to]) => {
+        if (!from.startsWith('./')) return [[from, to]];
+        if (!from.startsWith(prefix)) return [];
+        return [
+          [`./${from.slice(prefix.length)}`, typeof to === 'string' ? `./${to.slice(prefix.length)}` : to],
+        ];
+      }),
+    );
+    const manifest = { type: 'commonjs', ...(Object.keys(mappings).length ? { browser: mappings } : {}) };
+    await writeFile(resolve(dir, 'package.json'), `${JSON.stringify(manifest, null, 2)}\n`, 'utf8');
   } catch (error) {
     if (error && error.code === 'ENOENT') return;
     throw error;

@@ -38,6 +38,11 @@
     },
     "./package.json": "./package.json"
   },
+  "browser": {
+    "./dist/esm/resources/messages/live/ws.js": "./dist/esm/resources/messages/live/ws-browser.js",
+    "./dist/cjs/resources/messages/live/ws.js": "./dist/cjs/resources/messages/live/ws-browser.js",
+    "ws": false
+  },
   "files": [
     "dist",
     "api.md",
@@ -53,11 +58,11 @@
     "schema:prepare": "node scripts/prepare-schema.mjs"
   },
   "dependencies": {
+    "@types/ws": "^8.5.13",
     "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/node": "^20.17.0",
-    "@types/ws": "^8.5.13",
     "typescript": "^6.0.0"
   },
   "peerDependencies": {
