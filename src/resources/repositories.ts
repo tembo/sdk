@@ -45,6 +45,29 @@ export class Repositories extends APIResource {
   retrieve(repositoryID: string, options?: RequestOptions): APIPromise<RepositoryRetrieveResponse> {
     return this._client.get(__scalarPath`/v1/repositories/${repositoryID}`, options);
   }
+
+  /**
+   * Update repository configuration or enable or disable it.
+   *
+   * @param {string} repositoryID
+   * @param {RepositoryUpdateParams} body - The request body to send.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<RepositoryUpdateResponse>} Update a repository
+   *
+   * @example
+   * ```ts
+   * const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+   *   enabled: false,
+   * });
+   * ```
+   */
+  update(
+    repositoryID: string,
+    body: RepositoryUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<RepositoryUpdateResponse> {
+    return this._client.patch(__scalarPath`/v1/repositories/${repositoryID}`, { body, ...options });
+  }
 }
 
 export interface RepositoryListParams {
@@ -185,10 +208,74 @@ export namespace RepositoryRetrieveResponse {
     type: string;
   }
 }
+
+export interface RepositoryUpdateParams {
+  /**
+   * @default false
+   */
+  enabled?: boolean;
+  /**
+   * @minLength 1
+   * @maxLength 1024
+   */
+  baseBranch?: string | null;
+  /**
+   * @minLength 1
+   * @maxLength 1024
+   */
+  targetBranch?: string | null;
+}
+
+export interface RepositoryUpdateResponse {
+  baseBranch: string | null;
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  description: string | null;
+  /**
+   * @format date-time
+   */
+  enabledAt: string | null;
+  /**
+   * @format uuid
+   */
+  id: string;
+  name: string;
+  owner: string | null;
+  provider: RepositoryUpdateResponse.Provider;
+  targetBranch: string | null;
+  /**
+   * @format date-time
+   */
+  updatedAt: string;
+  url: string;
+}
+
+export namespace RepositoryUpdateResponse {
+  export interface Provider {
+    /**
+     * @minLength 1
+     * @maxLength 500
+     */
+    displayName: string;
+    /**
+     * @format uuid
+     */
+    integrationId: string;
+    /**
+     * @minLength 1
+     * @maxLength 100
+     */
+    type: string;
+  }
+}
 export declare namespace Repositories {
   export {
     type RepositoryListResponse as RepositoryListResponse,
     type RepositoryRetrieveResponse as RepositoryRetrieveResponse,
+    type RepositoryUpdateResponse as RepositoryUpdateResponse,
     type RepositoryListParams as RepositoryListParams,
+    type RepositoryUpdateParams as RepositoryUpdateParams,
   };
 }

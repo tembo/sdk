@@ -4,7 +4,7 @@ import { APIResource } from '../../resource';
 import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
 import { path as __scalarPath } from '../../internal/utils/path';
-import type * as MessagesAPI from '../messages';
+import type * as MessagesAPI from '../messages/messages';
 
 export class Templates extends APIResource {
   /**
