@@ -100,3 +100,46 @@ test('live subscribe stops when access is refused and closes when the loop exits
     await close();
   }
 });
+
+test('live subscribe ends promptly when aborted during reconnect backoff', async () => {
+  const { client, state, close } = await liveServer();
+  const controller = new AbortController();
+  try {
+    let abortedAt;
+    for await (const frame of client.messages.live.subscribe(
+      { sessionId },
+      { signal: controller.signal, initialDelay: 5_000 },
+    )) {
+      if (frame.resource === 'message') {
+        for (const socket of state.sockets) socket.terminate();
+        setTimeout(() => {
+          abortedAt = Date.now();
+          controller.abort();
+        }, 100);
+      }
+    }
+    assert.ok(Date.now() - abortedAt < 500, 'subscription waited out the backoff after abort');
+    assert.deepEqual(state.connected, ['ticket-1']);
+  } finally {
+    await close();
+  }
+});
+
+test('live subscribe does not connect when aborted as authorization completes', async () => {
+  const { subscribe } = await import('../dist/esm/resources/messages/live/subscribe.js');
+  const controller = new AbortController();
+  let connects = 0;
+  const live = {
+    authorize: async () => {
+      controller.abort();
+      return { ticket: 'ticket' };
+    },
+    connect: () => {
+      connects += 1;
+      throw new Error('connected after abort');
+    },
+  };
+  for await (const _ of subscribe(live, { sessionId }, { signal: controller.signal }))
+    assert.fail('yielded after abort');
+  assert.equal(connects, 0);
+});
