@@ -41,6 +41,8 @@
   "browser": {
     "./dist/esm/resources/messages/live/ws.js": "./dist/esm/resources/messages/live/ws-browser.js",
     "./dist/cjs/resources/messages/live/ws.js": "./dist/cjs/resources/messages/live/ws-browser.js",
+    "./dist/esm/resources/sessions/live/ws.js": "./dist/esm/resources/sessions/live/ws-browser.js",
+    "./dist/cjs/resources/sessions/live/ws.js": "./dist/cjs/resources/sessions/live/ws-browser.js",
     "ws": false
   },
   "files": [
