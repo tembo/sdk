@@ -4,6 +4,7 @@ import { APIResource } from '../../../resource';
 import { APIPromise } from '../../../api-promise';
 import type { RequestOptions } from '../../../internal/request-options';
 import { LiveWS, type LiveWSClientOptions } from './ws';
+import { subscribe, type LiveSubscribeOptions, type LiveSubscribeParams } from './subscribe';
 
 export class Live extends APIResource {
   /**
@@ -52,6 +53,24 @@ export class Live extends APIResource {
     const { ticket } = params;
     return new LiveWS(this._client, { ticket: ticket }, options);
   }
+
+  /**
+   * Hand-written: follows a session's message changes, authorizing every connection and reconnect
+   * with a fresh single-use ticket. See {@link subscribe} for the frames yielded.
+   *
+   * @example
+   * ```ts
+   * for await (const frame of client.messages.live.subscribe({ sessionId })) {
+   *   console.log(frame); // { type: 'ready' } after each (re)connect, then message-change events
+   * }
+   * ```
+   */
+  subscribe(
+    params: LiveSubscribeParams,
+    options?: LiveSubscribeOptions,
+  ): AsyncGenerator<unknown, void, undefined> {
+    return subscribe(this, params, options);
+  }
 }
 
 export interface LiveAuthorizeParams {
@@ -82,5 +101,7 @@ export declare namespace Live {
     type LiveAuthorizeResponse as LiveAuthorizeResponse,
     type LiveAuthorizeParams as LiveAuthorizeParams,
     type LiveConnectParams as LiveConnectParams,
+    type LiveSubscribeParams as LiveSubscribeParams,
+    type LiveSubscribeOptions as LiveSubscribeOptions,
   };
 }

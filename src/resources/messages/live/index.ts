@@ -2,6 +2,7 @@
 
 export { Live } from './live';
 export type { LiveAuthorizeParams, LiveAuthorizeResponse, LiveConnectParams } from './live';
+export type { LiveSubscribeParams, LiveSubscribeOptions } from './subscribe';
 export { type LiveWSBrowserOptions } from './ws-browser';
 export { LiveWS, type LiveWSClientOptions } from './ws';
 export type { LiveWSReconnectOptions, LiveWSParameters } from './ws-base';

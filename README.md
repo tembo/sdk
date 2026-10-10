@@ -55,21 +55,17 @@ See the [API reference](./api.md) for every available operation.
 
 ## WebSockets
 
-WebSocket endpoints open a persistent connection you can send messages to and receive messages from.
+Follow a session's message changes with `subscribe()`. Live tickets are single-use and expire after 30 seconds, so it authorizes every connection and reconnect with a fresh one. It yields `{ type: 'ready' }` after each (re)connect, which is when to re-read messages so you don't miss any, then `{ resource: 'message', sessionId }` whenever the session's messages change.
 
 ```ts
-const connection = client.messages.live.connect({
-  ticket: 'ticket',
-});
+const controller = new AbortController();
 
-try {
-  for await (const message of connection) {
-    console.log(message);
-  }
-} finally {
-  connection.close();
+for await (const frame of client.messages.live.subscribe({ sessionId }, { signal: controller.signal })) {
+  console.log(frame);
 }
 ```
+
+The subscription ends when the signal aborts or the loop exits, and throws if access is refused or reconnecting keeps failing. For a single connection, call `client.messages.live.authorize({ scope: { sessionId } })` and pass the returned ticket to `client.messages.live.connect({ ticket })`.
 
 <br />
 
