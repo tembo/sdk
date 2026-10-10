@@ -327,6 +327,19 @@
               }
             }
           }
+        },
+        "profile_picture": {
+          "methods": {
+            "retrieve": "get /v1/users/{userId}/profile-picture",
+            "update": {
+              "kind": "http",
+              "endpoint": "put /v1/users/{userId}/profile-picture",
+              "verb": "put",
+              "path": "/v1/users/{userId}/profile-picture",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/users/{userId}/profile-picture"
+          }
         }
       }
     },
@@ -374,6 +387,23 @@
           "methods": {
             "list": "get /v1/sessions/{sessionId}/diffs",
             "retrieve": "get /v1/sessions/{sessionId}/diffs/{diffId}"
+          }
+        },
+        "live": {
+          "methods": {
+            "authorize": {
+              "kind": "http",
+              "endpoint": "post /v1/sessions/live",
+              "verb": "post",
+              "path": "/v1/sessions/live",
+              "bodyParamName": "body"
+            },
+            "connect": {
+              "kind": "websocket",
+              "endpoint": "get /v1/sessions/live",
+              "verb": "get",
+              "path": "/v1/sessions/live"
+            }
           }
         }
       }
