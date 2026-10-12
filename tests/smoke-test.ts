@@ -1681,6 +1681,7 @@ const cases: {
         agentInstructions: '',
         color: 'neutral',
         icon: 'folder',
+        onboardingDefault: false,
         runNow: false,
         schedule: {
           cron: 'x',

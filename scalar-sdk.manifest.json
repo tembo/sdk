@@ -1684,6 +1684,51 @@
                 }
               },
               {
+                "name": "commentedBy",
+                "publicName": "commentedBy",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "name": "messageContains",
+                "publicName": "messageContains",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              }
+            ],
+            "additionalProperties": false
+          },
+          {
+            "kind": "object",
+            "properties": [
+              {
+                "name": "projects",
+                "publicName": "projects",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
                 "name": "assignedTo",
                 "publicName": "assignedTo",
                 "required": false,
@@ -3741,6 +3786,7 @@
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -3887,6 +3933,57 @@
             "type": {
               "kind": "primitive",
               "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "atlassian_issue_comment_created_filters",
+      "source": "atlassian_issue_comment_created_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "projects",
+            "publicName": "projects",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "commentedBy",
+            "publicName": "commentedBy",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "messageContains",
+            "publicName": "messageContains",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
             }
           }
         ],
@@ -19311,6 +19408,7 @@
         "agentInstructions",
         "color",
         "icon",
+        "onboardingDefault",
         "runNow",
         "schedule",
         "sizes"
@@ -19325,6 +19423,7 @@
         "agentInstructions",
         "color",
         "icon",
+        "onboardingDefault",
         "runNow",
         "schedule",
         "sizes"
@@ -19364,6 +19463,10 @@
         },
         {
           "name": "icon",
+          "required": false
+        },
+        {
+          "name": "onboardingDefault",
           "required": false
         },
         {
