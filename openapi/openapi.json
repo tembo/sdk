@@ -1254,6 +1254,14 @@
           {
             "allOf": [
               {
+                "$ref": "#/components/schemas/AtlassianIssueCommentCreatedFilters"
+              }
+            ],
+            "additionalProperties": {}
+          },
+          {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/AtlassianIssueCreatedFilters"
               }
             ],
@@ -1751,6 +1759,32 @@
           "includeNewIssues": {
             "type": "boolean",
             "description": "Also trigger for newly created issues that are already assigned"
+          }
+        }
+      },
+      "AtlassianIssueCommentCreatedFilters": {
+        "type": "object",
+        "properties": {
+          "projects": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the issue is in one of the specified projects"
+          },
+          "commentedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the comment was added by one of the specified users"
+          },
+          "messageContains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the comment contains one of these substrings"
           }
         }
       },
@@ -28665,6 +28699,10 @@
                               "package"
                             ]
                           },
+                          "onboardingDefault": {
+                            "type": "boolean",
+                            "description": "True for the project created during onboarding until it is first edited"
+                          },
                           "sizes": {
                             "type": "array",
                             "items": {
@@ -28699,6 +28737,7 @@
                           "color",
                           "defaultForSizes",
                           "icon",
+                          "onboardingDefault",
                           "sizes",
                           "warmPoolEnabled"
                         ],
@@ -29037,6 +29076,10 @@
                             "package"
                           ]
                         },
+                        "onboardingDefault": {
+                          "type": "boolean",
+                          "description": "True for the project created during onboarding until it is first edited"
+                        },
                         "sizes": {
                           "type": "array",
                           "items": {
@@ -29071,6 +29114,7 @@
                         "color",
                         "defaultForSizes",
                         "icon",
+                        "onboardingDefault",
                         "sizes",
                         "warmPoolEnabled"
                       ],
@@ -29272,6 +29316,9 @@
                       "mobile",
                       "package"
                     ]
+                  },
+                  "onboardingDefault": {
+                    "type": "boolean"
                   },
                   "runNow": {
                     "type": "boolean"
@@ -29491,6 +29538,10 @@
                         "package"
                       ]
                     },
+                    "onboardingDefault": {
+                      "type": "boolean",
+                      "description": "True for the project created during onboarding until it is first edited"
+                    },
                     "sizes": {
                       "type": "array",
                       "items": {
@@ -29525,6 +29576,7 @@
                     "color",
                     "defaultForSizes",
                     "icon",
+                    "onboardingDefault",
                     "sizes",
                     "warmPoolEnabled"
                   ],
@@ -29809,6 +29861,10 @@
                         "package"
                       ]
                     },
+                    "onboardingDefault": {
+                      "type": "boolean",
+                      "description": "True for the project created during onboarding until it is first edited"
+                    },
                     "sizes": {
                       "type": "array",
                       "items": {
@@ -29843,6 +29899,7 @@
                     "color",
                     "defaultForSizes",
                     "icon",
+                    "onboardingDefault",
                     "sizes",
                     "warmPoolEnabled"
                   ],
