@@ -274,6 +274,10 @@ export namespace ProjectListResponse {
       | 'api'
       | 'mobile'
       | 'package';
+    /**
+     * True for the project created during onboarding until it is first edited
+     */
+    onboardingDefault: boolean;
     sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
     warmPoolEnabled: boolean;
   }
@@ -343,6 +347,7 @@ export interface ProjectCreateParams {
     | 'api'
     | 'mobile'
     | 'package';
+  onboardingDefault?: boolean;
   runNow?: boolean;
   schedule?: ProjectCreateParams.Schedule;
 }
@@ -418,6 +423,10 @@ export namespace ProjectCreateResponse {
       | 'api'
       | 'mobile'
       | 'package';
+    /**
+     * True for the project created during onboarding until it is first edited
+     */
+    onboardingDefault: boolean;
     sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
     warmPoolEnabled: boolean;
   }
@@ -488,6 +497,10 @@ export interface ProjectRetrieveResponse {
     | 'api'
     | 'mobile'
     | 'package';
+  /**
+   * True for the project created during onboarding until it is first edited
+   */
+  onboardingDefault: boolean;
   sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   warmPoolEnabled: boolean;
 }
@@ -628,6 +641,10 @@ export interface ProjectUpdateResponse {
     | 'api'
     | 'mobile'
     | 'package';
+  /**
+   * True for the project created during onboarding until it is first edited
+   */
+  onboardingDefault: boolean;
   sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   warmPoolEnabled: boolean;
 }
