@@ -138,34 +138,25 @@
               "verb": "patch",
               "path": "/v1/organizations/{organizationId}/settings",
               "bodyParamName": "body"
+            },
+            "validate_credentials": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/settings/validate-credentials",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/settings/validate-credentials",
+              "bodyParamName": "body"
             }
           }
         },
         "subscriptions": {
-          "subresources": {
-            "chatgpt": {
-              "methods": {
-                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/chatgpt",
-                "retrieve_usage": "get /v1/organizations/{organizationId}/subscriptions/chatgpt/usage",
-                "reset_usage": {
-                  "kind": "http",
-                  "endpoint": "post /v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset",
-                  "verb": "post",
-                  "path": "/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset",
-                  "bodyParamName": "body"
-                }
-              }
-            },
-            "claude": {
-              "methods": {
-                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/claude",
-                "retrieve_usage": "get /v1/organizations/{organizationId}/subscriptions/claude/usage"
-              }
-            },
-            "supergrok": {
-              "methods": {
-                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/supergrok"
-              }
+          "methods": {
+            "retrieve": "get /v1/organizations/{organizationId}/subscriptions",
+            "reset": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/subscriptions/reset",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/subscriptions/reset",
+              "bodyParamName": "body"
             }
           }
         }
@@ -301,30 +292,14 @@
           }
         },
         "subscriptions": {
-          "subresources": {
-            "chatgpt": {
-              "methods": {
-                "retrieve": "get /v1/users/{userId}/subscriptions/chatgpt",
-                "retrieve_usage": "get /v1/users/{userId}/subscriptions/chatgpt/usage",
-                "reset_usage": {
-                  "kind": "http",
-                  "endpoint": "post /v1/users/{userId}/subscriptions/chatgpt/usage/reset",
-                  "verb": "post",
-                  "path": "/v1/users/{userId}/subscriptions/chatgpt/usage/reset",
-                  "bodyParamName": "body"
-                }
-              }
-            },
-            "claude": {
-              "methods": {
-                "retrieve": "get /v1/users/{userId}/subscriptions/claude",
-                "retrieve_usage": "get /v1/users/{userId}/subscriptions/claude/usage"
-              }
-            },
-            "supergrok": {
-              "methods": {
-                "retrieve": "get /v1/users/{userId}/subscriptions/supergrok"
-              }
+          "methods": {
+            "retrieve": "get /v1/users/{userId}/subscriptions",
+            "reset": {
+              "kind": "http",
+              "endpoint": "post /v1/users/{userId}/subscriptions/reset",
+              "verb": "post",
+              "path": "/v1/users/{userId}/subscriptions/reset",
+              "bodyParamName": "body"
             }
           }
         },
