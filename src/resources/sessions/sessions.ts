@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
+import { SessionEvents as PublicSessionEvents } from '../../live';
 import { APIResource } from '../../resource';
 import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
@@ -29,6 +30,7 @@ import {
 } from './live/live';
 
 export class Sessions extends APIResource {
+  events: PublicSessionEvents = new PublicSessionEvents(this._client);
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
   live: LiveAPI.Live = new LiveAPI.Live(this._client);

@@ -55,17 +55,27 @@ See the [API reference](./api.md) for every available operation.
 
 ## WebSockets
 
-Follow a session's message changes with `subscribe()`. Live tickets are single-use and expire after 30 seconds, so it authorizes every connection and reconnect with a fresh one. It yields `{ type: 'ready' }` after each (re)connect, which is when to re-read messages so you don't miss any, then `{ resource: 'message', sessionId }` whenever the session's messages change.
+Follow actual session output with `client.sessions.events.live.subscribe()`. It authorizes through `/v1/live`, subscribes to the public `sessions.events` resource, and yields `{ type: 'ready' }` only after that subscription is authorized. Output frames are `{ type: 'delta', data: { event, message, provider?, messageId?, createdAt? } }`; `message` contains the provider event payload as a string. Tickets expire after 30 seconds, so every reconnect obtains a fresh ticket and resubscribes.
 
 ```ts
 const controller = new AbortController();
 
-for await (const frame of client.messages.live.subscribe({ sessionId }, { signal: controller.signal })) {
+for await (const frame of client.sessions.events.live.subscribe({ sessionId }, { signal: controller.signal })) {
   console.log(frame);
 }
 ```
 
-The subscription ends when the signal aborts or the loop exits, and throws if access is refused or reconnecting keeps failing. For a single connection, call `client.messages.live.authorize({ scope: { sessionId } })` and pass the returned ticket to `client.messages.live.connect({ ticket })`.
+The subscription closes on abort or loop exit, retries temporary failures with bounded backoff, and throws on scoped authorization errors or exhausted retries. Reconcile missed output with `client.sessions.listEvents()` after reconnect; this is a live stream, not replay. You can also call `client.live.subscribe({ resource: 'sessions.events', input: { scope: { sessionId } } })`.
+
+For manual multiplexing, call `client.live.authorize()` and `client.live.connect({ ticket })`. Iterate the connection, wait for connection-level ready, and send `{ op: 'subscribe', id, resource: 'sessions.events', input: { scope: { sessionId } } }`. Subscription frames carry that ID. Send `{ op: 'unsubscribe', id }` to release one subscription, or close the connection. One iterator can consume a connection.
+
+The earlier `messages.live` and `sessions.live` methods remain available for older production deployments; they do not work on the new dev contract. Production defaults and generation mappings are intentionally unchanged until the API rollout. `node scripts/live-mappings.mjs` emits the reviewed live mapping migration without modifying the production config; the full schema must still pass operation coverage before regeneration. Build reattaches the hand-maintained client exports if Scalar regenerates the entry point.
+
+### Dev live smoke test
+
+Set `TEMBO_API_KEY` and `TEMBO_TEST_SESSION_ID`, then run `npm run test:dev:live` to authorize without invoking an agent. `TEMBO_API_URL` defaults to `https://internal.tembo-development.com/public-api` for this test only. Add `RUN_AGENT=1` to send a minimal prompt, verify real streamed tokens and recorded output, and stop the test session. Without a session ID, agent mode creates a private, repository-free test session. Agent mode incurs usage charges; use a dedicated test session.
+
+Add `FORCE_RECONNECT=1` in agent mode to close the first connection after a completed turn, verify a new authorization and subscription, and stream a second real turn.
 
 <br />
 
