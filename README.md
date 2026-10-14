@@ -73,7 +73,7 @@ Production now serves `/v1/live`; the earlier `/v1/messages/live` and `/v1/sessi
 
 ### Dev live smoke test
 
-Set `TEMBO_API_KEY` and `TEMBO_TEST_SESSION_ID`, then run `npm run test:dev:live` to authorize without invoking an agent. `TEMBO_API_URL` defaults to `https://internal.tembo-development.com/public-api` for this test only. Add `RUN_AGENT=1` to send a minimal prompt, verify real streamed tokens and recorded output, and stop the test session. Without a session ID, agent mode creates a private, repository-free test session. Agent mode incurs usage charges; use a dedicated test session.
+Set `TEMBO_API_KEY` and `TEMBO_TEST_SESSION_ID`, then run `npm run build && node --test tests/dev-live.test.mjs` to authorize without invoking an agent. `TEMBO_API_URL` defaults to `https://internal.tembo-development.com/public-api` for this test only. Add `RUN_AGENT=1` to send a minimal prompt, verify real streamed tokens and recorded output, and stop the test session. Without a session ID, agent mode creates a private, repository-free test session. Without those variables the test is skipped, including in `npm test`. Agent mode incurs usage charges; use a dedicated test session.
 
 Add `FORCE_RECONNECT=1` in agent mode to close the first connection after a completed turn, verify a new authorization and subscription, and stream a second real turn.
 
