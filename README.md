@@ -69,7 +69,7 @@ The subscription closes on abort or loop exit, retries temporary failures with b
 
 For manual multiplexing, call `client.live.authorize()` and `client.live.connect({ ticket })`. Iterate the connection, wait for connection-level ready, and send `{ op: 'subscribe', id, resource: 'sessions.events', input: { scope: { sessionId } } }`. Subscription frames carry that ID. Send `{ op: 'unsubscribe', id }` to release one subscription, or close the connection. One iterator can consume a connection.
 
-The earlier `messages.live` and `sessions.live` methods remain available for older production deployments; they do not work on the new dev contract. Production defaults and generation mappings are intentionally unchanged until the API rollout. `node scripts/live-mappings.mjs` emits the reviewed live mapping migration without modifying the production config; the full schema must still pass operation coverage before regeneration. Build reattaches the hand-maintained client exports if Scalar regenerates the entry point.
+Production now serves `/v1/live`; the earlier `/v1/messages/live` and `/v1/sessions/live` endpoints are gone, so `client.messages.live` and `client.sessions.live` no longer work and are removed by the next generation. The generation mappings use the public `live` resource, and the build reattaches the hand-maintained client exports if Scalar regenerates the entry point.
 
 ### Dev live smoke test
 

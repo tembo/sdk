@@ -147,6 +147,8 @@ test('integration mappings cover management routes and preserve request bodies',
         '/v1/integrations/providers': { get: {} },
         '/v1/integrations/providers/snyk/organizations': { post: {} },
         '/v1/integrations/triggers': { get: {} },
+        [`${prefix}/triggers/{triggerName}`]: { get: {} },
+        [`${prefix}/triggers/{triggerName}/filter-options/{field}`]: { get: {} },
         [prefix]: { get: {}, patch: {}, delete: {} },
         [`${prefix}/authorize`]: { post: {} },
         [`${prefix}/test`]: { post: {} },
@@ -170,42 +172,40 @@ test('integration mappings cover management routes and preserve request bodies',
   }
 });
 
-test('live message mappings use a WebSocket handshake and repository updates preserve request bodies', () => {
+test('public live mappings use a WebSocket handshake and repository updates preserve request bodies', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
-  const live = sdkConfig.resources.messages.subresources.live;
+  const live = sdkConfig.resources.live;
   const repositories = sdkConfig.resources.repositories;
   validateCoverage(
     {
       paths: {
-        '/v1/messages/live': { get: {}, post: {} },
+        '/v1/live': { get: {}, post: {} },
         '/v1/repositories': { get: {} },
         '/v1/repositories/{repositoryId}': { get: {}, patch: {} },
       },
     },
     { resources: { live, repositories } },
   );
-  assert.equal(live.methods.authorize.bodyParamName, 'body');
+  assert.equal(sdkConfig.resources.messages.subresources?.live, undefined);
+  assert.equal(sdkConfig.resources.sessions.subresources?.live, undefined);
+  assert.equal(live.methods.authorize.verb, 'post');
   assert.equal(live.methods.connect.kind, 'websocket');
   assert.equal(live.methods.connect.verb, 'get');
   assert.equal(repositories.methods.update.verb, 'patch');
   assert.equal(repositories.methods.update.bodyParamName, 'body');
 });
 
-test('session live and profile picture mappings use a WebSocket handshake and preserve request bodies', () => {
+test('profile picture mappings preserve request bodies', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
-  const live = sdkConfig.resources.sessions.subresources.live;
   const profilePicture = sdkConfig.resources.users.subresources.profile_picture;
   validateCoverage(
     {
       paths: {
-        '/v1/sessions/live': { get: {}, post: {} },
         '/v1/users/{userId}/profile-picture': { get: {}, put: {}, delete: {} },
       },
     },
-    { resources: { live, profilePicture } },
+    { resources: { profilePicture } },
   );
-  assert.equal(live.methods.authorize.bodyParamName, 'body');
-  assert.equal(live.methods.connect.kind, 'websocket');
   assert.equal(profilePicture.methods.update.verb, 'put');
   assert.equal(profilePicture.methods.update.bodyParamName, 'body');
 });

@@ -223,25 +223,7 @@
         },
         "delete": "delete /v1/messages/{messageId}"
       },
-      "subresources": {
-        "live": {
-          "methods": {
-            "authorize": {
-              "kind": "http",
-              "endpoint": "post /v1/messages/live",
-              "verb": "post",
-              "path": "/v1/messages/live",
-              "bodyParamName": "body"
-            },
-            "connect": {
-              "kind": "websocket",
-              "endpoint": "get /v1/messages/live",
-              "verb": "get",
-              "path": "/v1/messages/live"
-            }
-          }
-        }
-      }
+      "subresources": {}
     },
     "models": {
       "methods": {
@@ -362,23 +344,6 @@
           "methods": {
             "list": "get /v1/sessions/{sessionId}/diffs",
             "retrieve": "get /v1/sessions/{sessionId}/diffs/{diffId}"
-          }
-        },
-        "live": {
-          "methods": {
-            "authorize": {
-              "kind": "http",
-              "endpoint": "post /v1/sessions/live",
-              "verb": "post",
-              "path": "/v1/sessions/live",
-              "bodyParamName": "body"
-            },
-            "connect": {
-              "kind": "websocket",
-              "endpoint": "get /v1/sessions/live",
-              "verb": "get",
-              "path": "/v1/sessions/live"
-            }
           }
         }
       }
@@ -682,7 +647,9 @@
         },
         "triggers": {
           "methods": {
-            "list": "get /v1/integrations/triggers"
+            "list": "get /v1/integrations/triggers",
+            "retrieve": "get /v1/integrations/{integrationId}/triggers/{triggerName}",
+            "list_filter_options": "get /v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}"
           }
         }
       }
@@ -691,6 +658,22 @@
       "methods": {
         "retrieve": "get /v1/billing",
         "list_usage": "get /v1/billing/usage"
+      }
+    },
+    "live": {
+      "methods": {
+        "authorize": {
+          "kind": "http",
+          "endpoint": "post /v1/live",
+          "verb": "post",
+          "path": "/v1/live"
+        },
+        "connect": {
+          "kind": "websocket",
+          "endpoint": "get /v1/live",
+          "verb": "get",
+          "path": "/v1/live"
+        }
       }
     }
   },
