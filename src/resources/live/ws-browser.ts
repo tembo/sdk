@@ -1,8 +1,8 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { BrowserWebSocket } from '../../../internal/ws-adapter-browser';
+import { BrowserWebSocket } from '../../internal/ws-adapter-browser';
 import { LiveWSBase, type LiveWSBaseOptions, type LiveWSParameters } from './ws-base';
-import { Tembo } from '../../../client';
+import { Tembo } from '../../client';
 
 export type { LiveWSParameters, LiveWSReconnectOptions, LiveWSBaseOptions } from './ws-base';
 

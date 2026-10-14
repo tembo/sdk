@@ -618,30 +618,13 @@ const cases: {
   },
 
   {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt',
-    run: async () => {
-      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieve('organizationId');
-    },
-  },
-
-  {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage',
-    run: async () => {
-      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieveUsage('organizationId');
-    },
-  },
-
-  {
-    operation: 'resetUsage',
+    operation: 'validateCredentials',
     method: 'POST',
-    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset',
+    path: '/v1/organizations/{organizationId}/settings/validate-credentials',
     run: async () => {
-      const chatgpt = await client.organizations.subscriptions.chatgpt.resetUsage('organizationId', {
-        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      const setting = await client.organizations.settings.validateCredentials('organizationId', {
+        provider: 'anthropic',
+        apiKey: '',
       });
     },
   },
@@ -649,27 +632,21 @@ const cases: {
   {
     operation: 'retrieve',
     method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/claude',
+    path: '/v1/organizations/{organizationId}/subscriptions',
     run: async () => {
-      const claude = await client.organizations.subscriptions.claude.retrieve('organizationId');
+      const subscription = await client.organizations.subscriptions.retrieve('organizationId');
     },
   },
 
   {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/claude/usage',
+    operation: 'reset',
+    method: 'POST',
+    path: '/v1/organizations/{organizationId}/subscriptions/reset',
     run: async () => {
-      const claude = await client.organizations.subscriptions.claude.retrieveUsage('organizationId');
-    },
-  },
-
-  {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/supergrok',
-    run: async () => {
-      const supergrok = await client.organizations.subscriptions.supergrok.retrieve('organizationId');
+      const subscription = await client.organizations.subscriptions.reset('organizationId', {
+        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        provider: 'chatgpt',
+      });
     },
   },
 
@@ -994,39 +971,6 @@ const cases: {
   },
 
   {
-    operation: 'authorize',
-    method: 'POST',
-    path: '/v1/messages/live',
-    run: async () => {
-      const live = await client.messages.live.authorize({
-        scope: {
-          sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        },
-      });
-    },
-  },
-
-  {
-    operation: 'connect',
-    method: 'GET',
-    path: '/v1/messages/live',
-    run: async () => {
-      const socket = client.messages.live.connect({
-        ticket: 'ticket',
-      });
-      try {
-        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
-        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
-        for await (const message of socket) {
-          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
-        }
-      } finally {
-        socket.close();
-      }
-    },
-  },
-
-  {
     operation: 'list',
     method: 'GET',
     path: '/v1/models',
@@ -1228,56 +1172,21 @@ const cases: {
   {
     operation: 'retrieve',
     method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/chatgpt',
+    path: '/v1/users/{userId}/subscriptions',
     run: async () => {
-      const chatgpt = await client.users.subscriptions.chatgpt.retrieve('userId');
+      const subscription = await client.users.subscriptions.retrieve('userId');
     },
   },
 
   {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/chatgpt/usage',
-    run: async () => {
-      const chatgpt = await client.users.subscriptions.chatgpt.retrieveUsage('userId');
-    },
-  },
-
-  {
-    operation: 'resetUsage',
+    operation: 'reset',
     method: 'POST',
-    path: '/v1/users/{userId}/subscriptions/chatgpt/usage/reset',
+    path: '/v1/users/{userId}/subscriptions/reset',
     run: async () => {
-      const chatgpt = await client.users.subscriptions.chatgpt.resetUsage('userId', {
+      const subscription = await client.users.subscriptions.reset('userId', {
         idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        provider: 'chatgpt',
       });
-    },
-  },
-
-  {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/claude',
-    run: async () => {
-      const claude = await client.users.subscriptions.claude.retrieve('userId');
-    },
-  },
-
-  {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/claude/usage',
-    run: async () => {
-      const claude = await client.users.subscriptions.claude.retrieveUsage('userId');
-    },
-  },
-
-  {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/supergrok',
-    run: async () => {
-      const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
     },
   },
 
@@ -1498,6 +1407,7 @@ const cases: {
         cursor: 'cursor',
         limit: 50,
         messageId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        after: 'after',
       });
     },
   },
@@ -1577,39 +1487,6 @@ const cases: {
       const diff = await client.sessions.diffs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
       });
-    },
-  },
-
-  {
-    operation: 'authorize',
-    method: 'POST',
-    path: '/v1/sessions/live',
-    run: async () => {
-      const live = await client.sessions.live.authorize({
-        scope: {
-          sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        },
-      });
-    },
-  },
-
-  {
-    operation: 'connect',
-    method: 'GET',
-    path: '/v1/sessions/live',
-    run: async () => {
-      const socket = client.sessions.live.connect({
-        ticket: 'ticket',
-      });
-      try {
-        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
-        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
-        for await (const message of socket) {
-          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
-        }
-      } finally {
-        socket.close();
-      }
     },
   },
 
@@ -2693,6 +2570,7 @@ const cases: {
     run: async () => {
       const integration = await client.integrations.authorize('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         returnUrl: 'https://example.com',
+        capability: 'confluenceTriggers',
       });
     },
   },
@@ -2890,6 +2768,47 @@ const cases: {
   {
     operation: 'retrieve',
     method: 'GET',
+    path: '/v1/integrations/{integrationId}/triggers/{triggerName}',
+    run: async () => {
+      const trigger = await client.integrations.triggers.retrieve('triggerName', {
+        integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'listFilterOptions',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}',
+    label: 'required params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.listFilterOptions('field', {
+        integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        triggerName: 'triggerName',
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'listFilterOptions',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}',
+    label: 'all params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.listFilterOptions('field', {
+        integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        triggerName: 'triggerName',
+        cursor: 'cursor',
+        limit: 50,
+        search: 'search',
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
     path: '/v1/billing',
     run: async () => {
       const billing = await client.billing.retrieve();
@@ -2919,6 +2838,35 @@ const cases: {
         limit: 50,
         sessionId: 'sessionId',
       });
+    },
+  },
+
+  {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/live',
+    run: async () => {
+      const live = await client.live.authorize();
+    },
+  },
+
+  {
+    operation: 'connect',
+    method: 'GET',
+    path: '/v1/live',
+    run: async () => {
+      const socket = client.live.connect({
+        ticket: 'ticket',
+      });
+      try {
+        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
+        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
+        for await (const message of socket) {
+          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
+        }
+      } finally {
+        socket.close();
+      }
     },
   },
 ];

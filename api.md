@@ -44,16 +44,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Organizations Settings`](#organizations-settings)
     - [Retrieve organization settings](#retrieve-organization-settings)
     - [Update organization settings](#update-organization-settings)
+    - [Validate organization provider credentials](#validate-organization-provider-credentials)
   - [`Organizations Subscriptions`](#organizations-subscriptions)
-    - [`Organizations Subscriptions Chatgpt`](#organizations-subscriptions-chatgpt)
-      - [Retrieve an organization ChatGPT subscription](#retrieve-an-organization-chatgpt-subscription)
-      - [Retrieve organization ChatGPT subscription usage](#retrieve-organization-chatgpt-subscription-usage)
-      - [Reset organization ChatGPT subscription usage](#reset-organization-chatgpt-subscription-usage)
-    - [`Organizations Subscriptions Claude`](#organizations-subscriptions-claude)
-      - [Retrieve an organization Claude subscription](#retrieve-an-organization-claude-subscription)
-      - [Retrieve organization Claude subscription usage](#retrieve-organization-claude-subscription-usage)
-    - [`Organizations Subscriptions Supergrok`](#organizations-subscriptions-supergrok)
-      - [Retrieve an organization SuperGrok subscription](#retrieve-an-organization-supergrok-subscription)
+    - [Retrieve organization subscriptions](#retrieve-organization-subscriptions)
+    - [Reset organization subscription usage](#reset-organization-subscription-usage)
 - [`McpConnections`](#mcpconnections)
   - [List MCP connections](#list-mcp-connections)
   - [Create an MCP connection](#create-an-mcp-connection)
@@ -73,9 +67,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Retrieve a message](#retrieve-a-message)
   - [Update a message](#update-a-message)
   - [Delete a message](#delete-a-message)
-  - [`Messages Live`](#messages-live)
-    - [Authorize live message changes](#authorize-live-message-changes)
-    - [Live persisted message changes](#live-persisted-message-changes)
 - [`Models`](#models)
   - [List models](#list-models)
   - [Update a model](#update-a-model)
@@ -92,15 +83,8 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [List user connected accounts](#list-user-connected-accounts)
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
   - [`Users Subscriptions`](#users-subscriptions)
-    - [`Users Subscriptions Chatgpt`](#users-subscriptions-chatgpt)
-      - [Retrieve a user ChatGPT subscription](#retrieve-a-user-chatgpt-subscription)
-      - [Retrieve user ChatGPT subscription usage](#retrieve-user-chatgpt-subscription-usage)
-      - [Reset user ChatGPT subscription usage](#reset-user-chatgpt-subscription-usage)
-    - [`Users Subscriptions Claude`](#users-subscriptions-claude)
-      - [Retrieve a user Claude subscription](#retrieve-a-user-claude-subscription)
-      - [Retrieve user Claude subscription usage](#retrieve-user-claude-subscription-usage)
-    - [`Users Subscriptions Supergrok`](#users-subscriptions-supergrok)
-      - [Retrieve a user SuperGrok subscription](#retrieve-a-user-supergrok-subscription)
+    - [Retrieve user subscriptions](#retrieve-user-subscriptions)
+    - [Reset user subscription usage](#reset-user-subscription-usage)
   - [`Users ProfilePicture`](#users-profilepicture)
     - [Retrieve a user profile picture](#retrieve-a-user-profile-picture)
     - [Update your profile picture](#update-your-profile-picture)
@@ -120,9 +104,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Sessions Diffs`](#sessions-diffs)
     - [List session diffs](#list-session-diffs)
     - [Retrieve a session diff](#retrieve-a-session-diff)
-  - [`Sessions Live`](#sessions-live)
-    - [Authorize live session changes](#authorize-live-session-changes)
-    - [Live session changes](#live-session-changes)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
   - [List projects](#list-projects)
@@ -205,9 +186,14 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Discover Snyk organizations](#discover-snyk-organizations)
   - [`Integrations Triggers`](#integrations-triggers)
     - [List integration triggers](#list-integration-triggers)
+    - [Retrieve an integration trigger](#retrieve-an-integration-trigger)
+    - [List integration trigger filter options](#list-integration-trigger-filter-options)
 - [`Billing`](#billing)
   - [Retrieve billing](#retrieve-billing)
   - [List billing usage](#list-billing-usage)
+- [`Live`](#live)
+  - [Authorize a live connection](#authorize-a-live-connection)
+  - [Live resource subscriptions](#live-resource-subscriptions)
 
 ## Setup
 
@@ -695,87 +681,50 @@ Update one or more organization settings.
 const setting = await client.organizations.settings.update('organizationId', {});
 ```
 
-### `Organizations Subscriptions`
+#### Validate organization provider credentials
 
-#### `Organizations Subscriptions Chatgpt`
-
-##### Retrieve an organization ChatGPT subscription
-
-Retrieve the connection status for an organization ChatGPT subscription.
+Validate supplied inference provider credentials for an organization without saving them. The provider must be available on the organization’s plan.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`ChatgptRetrieveResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
+| Request | [`SettingValidateCredentialsParams`](./src/resources/organizations/settings.ts) |
+| Response | [`SettingValidateCredentialsResponse`](./src/resources/organizations/settings.ts) |
 
 ```ts
-const chatgpt = await client.organizations.subscriptions.chatgpt.retrieve('organizationId');
-```
-
-##### Retrieve organization ChatGPT subscription usage
-
-Retrieve plan and rate-limit usage for an organization ChatGPT subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ChatgptRetrieveUsageResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
-
-```ts
-const chatgpt = await client.organizations.subscriptions.chatgpt.retrieveUsage('organizationId');
-```
-
-##### Reset organization ChatGPT subscription usage
-
-Redeem one earned rate-limit reset for an organization ChatGPT subscription.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`ChatgptResetUsageParams`](./src/resources/organizations/subscriptions/chatgpt.ts) |
-| Response | [`ChatgptResetUsageResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
-
-```ts
-const chatgpt = await client.organizations.subscriptions.chatgpt.resetUsage('organizationId', {
-  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+const setting = await client.organizations.settings.validateCredentials('organizationId', {
+  provider: 'anthropic',
+  apiKey: '',
 });
 ```
 
-#### `Organizations Subscriptions Claude`
+### `Organizations Subscriptions`
 
-##### Retrieve an organization Claude subscription
+#### Retrieve organization subscriptions
 
-Retrieve the connection status for an organization Claude subscription.
+Retrieve connection statuses and available ChatGPT and Claude usage. Provider usage errors are reported without failing the response.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`ClaudeRetrieveResponse`](./src/resources/organizations/subscriptions/claude.ts) |
+| Response | [`SubscriptionRetrieveResponse`](./src/resources/organizations/subscriptions.ts) |
 
 ```ts
-const claude = await client.organizations.subscriptions.claude.retrieve('organizationId');
+const subscription = await client.organizations.subscriptions.retrieve('organizationId');
 ```
 
-##### Retrieve organization Claude subscription usage
+#### Reset organization subscription usage
 
-Retrieve rate-limit usage for an organization Claude subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ClaudeRetrieveUsageResponse`](./src/resources/organizations/subscriptions/claude.ts) |
-
-```ts
-const claude = await client.organizations.subscriptions.claude.retrieveUsage('organizationId');
-```
-
-#### `Organizations Subscriptions Supergrok`
-
-##### Retrieve an organization SuperGrok subscription
-
-Retrieve the connection status for an organization SuperGrok subscription.
+Redeem an earned ChatGPT rate-limit reset.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`SupergrokRetrieveResponse`](./src/resources/organizations/subscriptions/supergrok.ts) |
+| Request | [`SubscriptionResetParams`](./src/resources/organizations/subscriptions.ts) |
+| Response | [`SubscriptionResetResponse`](./src/resources/organizations/subscriptions.ts) |
 
 ```ts
-const supergrok = await client.organizations.subscriptions.supergrok.retrieve('organizationId');
+const subscription = await client.organizations.subscriptions.reset('organizationId', {
+  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  provider: 'chatgpt',
+});
 ```
 
 ## `McpConnections`
@@ -946,8 +895,8 @@ List organization messages with optional session and thread filters.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MessageListParams`](./src/resources/messages/messages.ts) |
-| Response | [`MessageListResponse`](./src/resources/messages/messages.ts) |
+| Request | [`MessageListParams`](./src/resources/messages.ts) |
+| Response | [`MessageListResponse`](./src/resources/messages.ts) |
 
 ```ts
 const message = await client.messages.list({
@@ -961,8 +910,8 @@ Create a user message for a session and submit it to the session agent.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MessageCreateParams`](./src/resources/messages/messages.ts) |
-| Response | [`MessageCreateResponse`](./src/resources/messages/messages.ts) |
+| Request | [`MessageCreateParams`](./src/resources/messages.ts) |
+| Response | [`MessageCreateResponse`](./src/resources/messages.ts) |
 
 ```ts
 const message = await client.messages.create({
@@ -977,7 +926,7 @@ Retrieve an organization message by ID.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`MessageRetrieveResponse`](./src/resources/messages/messages.ts) |
+| Response | [`MessageRetrieveResponse`](./src/resources/messages.ts) |
 
 ```ts
 const message = await client.messages.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
@@ -989,8 +938,8 @@ Update message content before its queued processing has started.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`MessageUpdateParams`](./src/resources/messages/messages.ts) |
-| Response | [`MessageUpdateResponse`](./src/resources/messages/messages.ts) |
+| Request | [`MessageUpdateParams`](./src/resources/messages.ts) |
+| Response | [`MessageUpdateResponse`](./src/resources/messages.ts) |
 
 ```ts
 const message = await client.messages.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
@@ -1002,49 +951,10 @@ Delete a message and cancel its queued jobs, runtime turns, and active sandbox s
 
 | Direction | Type |
 | --- | --- |
-| Response | [`MessageDeleteResponse`](./src/resources/messages/messages.ts) |
+| Response | [`MessageDeleteResponse`](./src/resources/messages.ts) |
 
 ```ts
 const message = await client.messages.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
-```
-
-### `Messages Live`
-
-#### Authorize live message changes
-
-Issue a 30-second, session-bound WebSocket ticket.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveAuthorizeParams`](./src/resources/messages/live/live.ts) |
-| Response | [`LiveAuthorizeResponse`](./src/resources/messages/live/live.ts) |
-
-```ts
-const live = await client.messages.live.authorize({
-  scope: {
-    sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-  },
-});
-```
-
-#### Live persisted message changes
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveConnectParams`](./src/resources/messages/live/live.ts) |
-
-```ts
-const connection = client.messages.live.connect({
-  ticket: 'ticket',
-});
-
-try {
-  for await (const message of connection) {
-    console.log(message);
-  }
-} finally {
-  connection.close();
-}
 ```
 
 ## `Models`
@@ -1194,85 +1104,32 @@ const connectedAccount = await client.users.connectedAccounts.retrieve('connecte
 
 ### `Users Subscriptions`
 
-#### `Users Subscriptions Chatgpt`
+#### Retrieve user subscriptions
 
-##### Retrieve a user ChatGPT subscription
-
-Retrieve the connection status for a user ChatGPT subscription.
+Retrieve connection statuses and available ChatGPT and Claude usage. Provider usage errors are reported without failing the response.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`ChatgptRetrieveResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
+| Response | [`SubscriptionRetrieveResponse`](./src/resources/users/subscriptions.ts) |
 
 ```ts
-const chatgpt = await client.users.subscriptions.chatgpt.retrieve('userId');
+const subscription = await client.users.subscriptions.retrieve('userId');
 ```
 
-##### Retrieve user ChatGPT subscription usage
+#### Reset user subscription usage
 
-Retrieve plan and rate-limit usage for a user ChatGPT subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ChatgptRetrieveUsageResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
-
-```ts
-const chatgpt = await client.users.subscriptions.chatgpt.retrieveUsage('userId');
-```
-
-##### Reset user ChatGPT subscription usage
-
-Redeem one earned rate-limit reset for a user ChatGPT subscription.
+Redeem an earned ChatGPT rate-limit reset.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ChatgptResetUsageParams`](./src/resources/users/subscriptions/chatgpt.ts) |
-| Response | [`ChatgptResetUsageResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
+| Request | [`SubscriptionResetParams`](./src/resources/users/subscriptions.ts) |
+| Response | [`SubscriptionResetResponse`](./src/resources/users/subscriptions.ts) |
 
 ```ts
-const chatgpt = await client.users.subscriptions.chatgpt.resetUsage('userId', {
+const subscription = await client.users.subscriptions.reset('userId', {
   idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  provider: 'chatgpt',
 });
-```
-
-#### `Users Subscriptions Claude`
-
-##### Retrieve a user Claude subscription
-
-Retrieve the connection status for a user Claude subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ClaudeRetrieveResponse`](./src/resources/users/subscriptions/claude.ts) |
-
-```ts
-const claude = await client.users.subscriptions.claude.retrieve('userId');
-```
-
-##### Retrieve user Claude subscription usage
-
-Retrieve rate-limit usage for a user Claude subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ClaudeRetrieveUsageResponse`](./src/resources/users/subscriptions/claude.ts) |
-
-```ts
-const claude = await client.users.subscriptions.claude.retrieveUsage('userId');
-```
-
-#### `Users Subscriptions Supergrok`
-
-##### Retrieve a user SuperGrok subscription
-
-Retrieve the connection status for a user SuperGrok subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`SupergrokRetrieveResponse`](./src/resources/users/subscriptions/supergrok.ts) |
-
-```ts
-const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
 ```
 
 ### `Users ProfilePicture`
@@ -1495,45 +1352,6 @@ Retrieve one recorded session diff and its content.
 const diff = await client.sessions.diffs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
   sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
 });
-```
-
-### `Sessions Live`
-
-#### Authorize live session changes
-
-Issue a 30-second, session-bound WebSocket ticket.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveAuthorizeParams`](./src/resources/sessions/live/live.ts) |
-| Response | [`LiveAuthorizeResponse`](./src/resources/sessions/live/live.ts) |
-
-```ts
-const live = await client.sessions.live.authorize({
-  scope: {
-    sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-  },
-});
-```
-
-#### Live session changes
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveConnectParams`](./src/resources/sessions/live/live.ts) |
-
-```ts
-const connection = client.sessions.live.connect({
-  ticket: 'ticket',
-});
-
-try {
-  for await (const message of connection) {
-    console.log(message);
-  }
-} finally {
-  connection.close();
-}
 ```
 
 ## `Projects`
@@ -2523,6 +2341,38 @@ const trigger = await client.integrations.triggers.list({
 });
 ```
 
+#### Retrieve an integration trigger
+
+Retrieve a trigger definition and its default filter values for an integration in the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TriggerRetrieveParams`](./src/resources/integrations/triggers.ts) |
+| Response | [`TriggerRetrieveResponse`](./src/resources/integrations/triggers.ts) |
+
+```ts
+const trigger = await client.integrations.triggers.retrieve('triggerName', {
+  integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+});
+```
+
+#### List integration trigger filter options
+
+List one cursor-page of selectable values for an integration trigger filter field, with optional search.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TriggerListFilterOptionsParams`](./src/resources/integrations/triggers.ts) |
+| Response | [`TriggerListFilterOptionsResponse`](./src/resources/integrations/triggers.ts) |
+
+```ts
+const trigger = await client.integrations.triggers.listFilterOptions('field', {
+  integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  triggerName: 'triggerName',
+  limit: 50,
+});
+```
+
 ## `Billing`
 
 ### Retrieve billing
@@ -2550,4 +2400,40 @@ List session usage with cursor pagination.
 const billing = await client.billing.listUsage({
   limit: 50,
 });
+```
+
+## `Live`
+
+### Authorize a live connection
+
+Issue a 30-second WebSocket ticket for one live connection that multiplexes resource subscriptions.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`LiveAuthorizeResponse`](./src/resources/live/live.ts) |
+
+```ts
+const live = await client.live.authorize();
+```
+
+### Live resource subscriptions
+
+Native WebSocket. Send `{ op: "subscribe", id, resource, input }` or `{ op: "unsubscribe", id }`; receive `{ id, type: "ready" | "event" | "error" }`.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`LiveConnectParams`](./src/resources/live/live.ts) |
+
+```ts
+const connection = client.live.connect({
+  ticket: 'ticket',
+});
+
+try {
+  for await (const message of connection) {
+    console.log(message);
+  }
+} finally {
+  connection.close();
+}
 ```

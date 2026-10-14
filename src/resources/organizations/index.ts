@@ -36,5 +36,16 @@ export type {
   SecretDeleteResponse,
 } from './secrets';
 export { Settings } from './settings';
-export type { SettingRetrieveResponse, SettingUpdateParams, SettingUpdateResponse } from './settings';
-export { Subscriptions } from './subscriptions/subscriptions';
+export type {
+  SettingRetrieveResponse,
+  SettingUpdateParams,
+  SettingUpdateResponse,
+  SettingValidateCredentialsParams,
+  SettingValidateCredentialsResponse,
+} from './settings';
+export { Subscriptions } from './subscriptions';
+export type {
+  SubscriptionRetrieveResponse,
+  SubscriptionResetParams,
+  SubscriptionResetResponse,
+} from './subscriptions';

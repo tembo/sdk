@@ -1,33 +1,28 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from '../../../resource';
-import { APIPromise } from '../../../api-promise';
-import type { RequestOptions } from '../../../internal/request-options';
+import { APIResource } from '../../resource';
+import { APIPromise } from '../../api-promise';
+import type { RequestOptions } from '../../internal/request-options';
 import { LiveWS, type LiveWSClientOptions } from './ws';
 
 export class Live extends APIResource {
   /**
-   * Issue a 30-second, session-bound WebSocket ticket.
+   * Issue a 30-second WebSocket ticket for one live connection that multiplexes resource subscriptions.
    *
-   * @param {LiveAuthorizeParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<LiveAuthorizeResponse>} Authorize live session changes
+   * @returns {APIPromise<LiveAuthorizeResponse>} Connection ticket
    *
    * @example
    * ```ts
-   * const live = await client.sessions.live.authorize({
-   *   scope: {
-   *     sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-   *   },
-   * });
+   * const live = await client.live.authorize();
    * ```
    */
-  authorize(body: LiveAuthorizeParams, options?: RequestOptions): APIPromise<LiveAuthorizeResponse> {
-    return this._client.post('/v1/sessions/live', { body, ...options });
+  authorize(options?: RequestOptions): APIPromise<LiveAuthorizeResponse> {
+    return this._client.post('/v1/live', options);
   }
 
   /**
-   * Live session changes
+   * Native WebSocket. Send `{ op: "subscribe", id, resource, input }` or `{ op: "unsubscribe", id }`; receive `{ id, type: "ready" | "event" | "error" }`.
    *
    * @param {LiveConnectParams} params - The parameters to send with the request.
    * @param {LiveWSClientOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -35,7 +30,7 @@ export class Live extends APIResource {
    *
    * @example
    * ```ts
-   * const connection = client.sessions.live.connect({
+   * const connection = client.live.connect({
    *   ticket: 'ticket',
    * });
    *
@@ -54,19 +49,6 @@ export class Live extends APIResource {
   }
 }
 
-export interface LiveAuthorizeParams {
-  scope: LiveAuthorizeParams.Scope;
-}
-
-export namespace LiveAuthorizeParams {
-  export interface Scope {
-    /**
-     * @format uuid
-     */
-    sessionId: string;
-  }
-}
-
 export interface LiveAuthorizeResponse {
   ticket: string;
 }
@@ -78,9 +60,5 @@ export interface LiveConnectParams {
   ticket: string;
 }
 export declare namespace Live {
-  export {
-    type LiveAuthorizeResponse as LiveAuthorizeResponse,
-    type LiveAuthorizeParams as LiveAuthorizeParams,
-    type LiveConnectParams as LiveConnectParams,
-  };
+  export { type LiveAuthorizeResponse as LiveAuthorizeResponse, type LiveConnectParams as LiveConnectParams };
 }

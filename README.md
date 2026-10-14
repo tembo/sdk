@@ -58,7 +58,7 @@ See the [API reference](./api.md) for every available operation.
 WebSocket endpoints open a persistent connection you can send messages to and receive messages from.
 
 ```ts
-const connection = client.messages.live.connect({
+const connection = client.live.connect({
   ticket: 'ticket',
 });
 
@@ -106,7 +106,7 @@ try {
 }
 ```
 
-Documented error statuses: `400`, `401`, `403`, `404`, `409`, `413`, `429`, `500`, `502`, `503`, `504`.
+Documented error statuses: `400`, `401`, `403`, `404`, `409`, `413`, `500`, `502`, `503`, `504`.
 
 <br />
 

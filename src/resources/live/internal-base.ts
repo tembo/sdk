@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { path as __scalarPath } from '../../../internal/utils/path';
+import { path as __scalarPath } from '../../internal/utils/path';
 import * as LiveAPI from './live';
-import { Tembo } from '../../../client';
-import { EventEmitter, type EventParameters } from '../../../core/EventEmitter';
-import { TemboError } from '../../../error';
-import type { RawWebSocketData, ReconnectingEvent, UnsentMessage } from '../../../internal/ws';
+import { Tembo } from '../../client';
+import { EventEmitter, type EventParameters } from '../../core/EventEmitter';
+import { TemboError } from '../../error';
+import type { RawWebSocketData, ReconnectingEvent, UnsentMessage } from '../../internal/ws';
 import type { LiveWSParameters } from './ws-base';
 
 type EventTypeOf<T> = T extends { type?: infer EventType } ? EventType : never;
@@ -89,7 +89,7 @@ export abstract class LiveEmitter extends EventEmitter<WebSocketEvents> {
 
 export function buildURL(client: Tembo, parameters: Record<string, unknown>): URL {
   const { ...query } = parameters;
-  const endpoint = __scalarPath`/v1/sessions/live`;
+  const endpoint = __scalarPath`/v1/live`;
   const url = new URL(client.buildURL(endpoint, query, undefined));
   url.protocol = url.protocol === 'http:' || url.protocol === 'ws:' ? 'ws:' : 'wss:';
   return url;

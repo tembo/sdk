@@ -113,7 +113,7 @@ import {
   type MessageListParams,
   type MessageCreateParams,
   type MessageUpdateParams,
-} from './resources/messages/messages';
+} from './resources/messages';
 import {
   Models,
   type ModelListResponse,
@@ -218,6 +218,7 @@ import {
   type BillingListUsageResponse,
   type BillingListUsageParams,
 } from './resources/billing';
+import { Live, type LiveAuthorizeResponse, type LiveConnectParams } from './resources/live/live';
 
 export type AuthTokenProvider = () => string | Promise<string>;
 
@@ -1026,6 +1027,7 @@ export class Tembo {
   repositories: Repositories = new Repositories(this);
   integrations: Integrations = new Integrations(this);
   billing: Billing = new Billing(this);
+  live: Live = new Live(this);
 }
 
 Tembo.APIKeys = APIKeys;
@@ -1045,6 +1047,7 @@ Tembo.Agents = Agents;
 Tembo.Repositories = Repositories;
 Tembo.Integrations = Integrations;
 Tembo.Billing = Billing;
+Tembo.Live = Live;
 
 export declare namespace Tembo {
   export type RequestOptions = Opts.RequestOptions;
@@ -1259,6 +1262,12 @@ export declare namespace Tembo {
     type BillingRetrieveResponse as BillingRetrieveResponse,
     type BillingListUsageResponse as BillingListUsageResponse,
     type BillingListUsageParams as BillingListUsageParams,
+  };
+
+  export {
+    Live as Live,
+    type LiveAuthorizeResponse as LiveAuthorizeResponse,
+    type LiveConnectParams as LiveConnectParams,
   };
 }
 

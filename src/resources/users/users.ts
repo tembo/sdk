@@ -19,8 +19,13 @@ import {
   type ConnectedAccountListParams,
   type ConnectedAccountRetrieveParams,
 } from './connected-accounts';
-import * as SubscriptionsAPI from './subscriptions/subscriptions';
-import { Subscriptions } from './subscriptions/subscriptions';
+import * as SubscriptionsAPI from './subscriptions';
+import {
+  Subscriptions,
+  type SubscriptionRetrieveResponse,
+  type SubscriptionResetResponse,
+  type SubscriptionResetParams,
+} from './subscriptions';
 import * as ProfilePictureAPI from './profile-picture';
 import {
   ProfilePicture,
@@ -189,7 +194,12 @@ export declare namespace Users {
     type ConnectedAccountRetrieveParams as ConnectedAccountRetrieveParams,
   };
 
-  export { Subscriptions as Subscriptions };
+  export {
+    Subscriptions as Subscriptions,
+    type SubscriptionRetrieveResponse as SubscriptionRetrieveResponse,
+    type SubscriptionResetResponse as SubscriptionResetResponse,
+    type SubscriptionResetParams as SubscriptionResetParams,
+  };
 
   export {
     ProfilePicture as ProfilePicture,

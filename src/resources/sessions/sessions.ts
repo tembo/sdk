@@ -4,7 +4,7 @@ import { APIResource } from '../../resource';
 import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
 import { path as __scalarPath } from '../../internal/utils/path';
-import type * as MessagesAPI from '../messages/messages';
+import type * as MessagesAPI from '../messages';
 import * as SourcesAPI from './sources';
 import {
   Sources,
@@ -20,18 +20,10 @@ import {
   type DiffListParams,
   type DiffRetrieveParams,
 } from './diffs';
-import * as LiveAPI from './live/live';
-import {
-  Live,
-  type LiveAuthorizeResponse,
-  type LiveAuthorizeParams,
-  type LiveConnectParams,
-} from './live/live';
 
 export class Sessions extends APIResource {
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
-  live: LiveAPI.Live = new LiveAPI.Live(this._client);
 
   /**
    * List sessions you have permission to access, with cursor pagination.
@@ -1672,6 +1664,10 @@ export interface SessionListEventsParams {
    * Filter by message ID, or "null" for session-level events.
    */
   messageId?: string | 'null';
+  /**
+   * Only return events recorded after this event ID.
+   */
+  after?: string | number;
 }
 
 export interface SessionListEventsResponse {
@@ -1704,7 +1700,6 @@ export namespace SessionListEventsResponse {
 }
 Sessions.Sources = Sources;
 Sessions.Diffs = Diffs;
-Sessions.Live = Live;
 
 export declare namespace Sessions {
   export {
@@ -1739,12 +1734,5 @@ export declare namespace Sessions {
     type DiffRetrieveResponse as DiffRetrieveResponse,
     type DiffListParams as DiffListParams,
     type DiffRetrieveParams as DiffRetrieveParams,
-  };
-
-  export {
-    Live as Live,
-    type LiveAuthorizeResponse as LiveAuthorizeResponse,
-    type LiveAuthorizeParams as LiveAuthorizeParams,
-    type LiveConnectParams as LiveConnectParams,
   };
 }

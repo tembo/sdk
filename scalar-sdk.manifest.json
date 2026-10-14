@@ -1,7 +1,7 @@
 {
   "name": "TemboPublicApi",
   "slug": "temboPublicApi",
-  "generatorVersion": "0.36.3",
+  "generatorVersion": "0.36.5",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -1699,6 +1699,19 @@
               {
                 "name": "messageContains",
                 "publicName": "messageContains",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
+                "name": "labels",
+                "publicName": "labels",
                 "required": false,
                 "deprecated": false,
                 "type": {
@@ -3976,6 +3989,19 @@
           {
             "name": "messageContains",
             "publicName": "messageContains",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "labels",
+            "publicName": "labels",
             "required": false,
             "deprecated": false,
             "type": {
@@ -6660,27 +6686,19 @@
     "organizations.secrets",
     "organizations.settings",
     "organizations.subscriptions",
-    "organizations.subscriptions.chatgpt",
-    "organizations.subscriptions.claude",
-    "organizations.subscriptions.supergrok",
     "mcpConnections",
     "artifacts",
     "messages",
-    "messages.live",
     "models",
     "runtimes",
     "users",
     "users.settings",
     "users.connectedAccounts",
     "users.subscriptions",
-    "users.subscriptions.chatgpt",
-    "users.subscriptions.claude",
-    "users.subscriptions.supergrok",
     "users.profilePicture",
     "sessions",
     "sessions.sources",
     "sessions.diffs",
-    "sessions.live",
     "projects",
     "projects.environmentVariables",
     "projects.snapshots",
@@ -6697,7 +6715,8 @@
     "integrations",
     "integrations.providers",
     "integrations.triggers",
-    "billing"
+    "billing",
+    "live"
   ],
   "publicResources": [
     "apiKeys",
@@ -6709,27 +6728,19 @@
     "organizations.secrets",
     "organizations.settings",
     "organizations.subscriptions",
-    "organizations.subscriptions.chatgpt",
-    "organizations.subscriptions.claude",
-    "organizations.subscriptions.supergrok",
     "mcpConnections",
     "artifacts",
     "messages",
-    "messages.live",
     "models",
     "runtimes",
     "users",
     "users.settings",
     "users.connectedAccounts",
     "users.subscriptions",
-    "users.subscriptions.chatgpt",
-    "users.subscriptions.claude",
-    "users.subscriptions.supergrok",
     "users.profilePicture",
     "sessions",
     "sessions.sources",
     "sessions.diffs",
-    "sessions.live",
     "projects",
     "projects.environmentVariables",
     "projects.snapshots",
@@ -6746,7 +6757,8 @@
     "integrations",
     "integrations.providers",
     "integrations.triggers",
-    "billing"
+    "billing",
+    "live"
   ],
   "operations": [
     {
@@ -11078,309 +11090,13 @@
       "transport": "http"
     },
     {
-      "resource": "organizations.subscriptions.chatgpt",
-      "publicResource": "organizations.subscriptions.chatgpt",
-      "operation": "retrieve",
-      "publicOperation": "retrieve",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/organizations/{organizationId}/subscriptions/chatgpt",
-      "pathParams": [
-        "organizationId"
-      ],
-      "publicPathParams": [
-        "organizationId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "organizationId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "ChatgptRetrieveParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "403",
-          "404",
-          "409",
-          "500",
-          "502",
-          "503"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "503",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "organizations.subscriptions.chatgpt",
-      "publicResource": "organizations.subscriptions.chatgpt",
-      "operation": "retrieveUsage",
-      "publicOperation": "retrieveUsage",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/organizations/{organizationId}/subscriptions/chatgpt/usage",
-      "pathParams": [
-        "organizationId"
-      ],
-      "publicPathParams": [
-        "organizationId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "organizationId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "ChatgptRetrieveUsageParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "401",
-          "403",
-          "404",
-          "409",
-          "500",
-          "502",
-          "503"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "503",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "organizations.subscriptions.chatgpt",
-      "publicResource": "organizations.subscriptions.chatgpt",
-      "operation": "resetUsage",
-      "publicOperation": "resetUsage",
+      "resource": "organizations.settings",
+      "publicResource": "organizations.settings",
+      "operation": "validateCredentials",
+      "publicOperation": "validateCredentials",
       "deprecated": false,
       "method": "POST",
-      "path": "/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset",
+      "path": "/v1/organizations/{organizationId}/settings/validate-credentials",
       "pathParams": [
         "organizationId"
       ],
@@ -11392,14 +11108,14 @@
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [
-        "idempotencyKey"
+        "body"
       ],
       "publicBodyParams": [
-        "idempotencyKey"
+        "body"
       ],
       "bodyParamDetails": [
         {
-          "name": "idempotencyKey",
+          "name": "body",
           "required": true
         }
       ],
@@ -11417,7 +11133,7 @@
       "publicCookieParams": [],
       "cookieParamDetails": [],
       "paramsModel": {
-        "publicName": "ChatgptResetUsageParams"
+        "publicName": "SettingValidateCredentialsParams"
       },
       "requestBody": {
         "contentType": "application/json",
@@ -11447,29 +11163,16 @@
         "successStatus": "200",
         "errorStatuses": [
           "400",
-          "401",
           "403",
           "404",
           "409",
           "500",
-          "502",
           "503"
         ]
       },
       "errorResponses": [
         {
           "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -11524,17 +11227,6 @@
           ]
         },
         {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
           "status": "503",
           "contentType": "application/json",
           "encoding": "json",
@@ -11550,13 +11242,13 @@
       "transport": "http"
     },
     {
-      "resource": "organizations.subscriptions.claude",
-      "publicResource": "organizations.subscriptions.claude",
+      "resource": "organizations.subscriptions",
+      "publicResource": "organizations.subscriptions",
       "operation": "retrieve",
       "publicOperation": "retrieve",
       "deprecated": false,
       "method": "GET",
-      "path": "/v1/organizations/{organizationId}/subscriptions/claude",
+      "path": "/v1/organizations/{organizationId}/subscriptions",
       "pathParams": [
         "organizationId"
       ],
@@ -11584,7 +11276,7 @@
       "publicCookieParams": [],
       "cookieParamDetails": [],
       "paramsModel": {
-        "publicName": "ClaudeRetrieveParams"
+        "publicName": "SubscriptionRetrieveParams"
       },
       "response": {
         "status": "200",
@@ -11692,13 +11384,13 @@
       "transport": "http"
     },
     {
-      "resource": "organizations.subscriptions.claude",
-      "publicResource": "organizations.subscriptions.claude",
-      "operation": "retrieveUsage",
-      "publicOperation": "retrieveUsage",
+      "resource": "organizations.subscriptions",
+      "publicResource": "organizations.subscriptions",
+      "operation": "reset",
+      "publicOperation": "reset",
       "deprecated": false,
-      "method": "GET",
-      "path": "/v1/organizations/{organizationId}/subscriptions/claude/usage",
+      "method": "POST",
+      "path": "/v1/organizations/{organizationId}/subscriptions/reset",
       "pathParams": [
         "organizationId"
       ],
@@ -11709,9 +11401,24 @@
       "publicQueryParams": [],
       "headerParams": [],
       "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
+      "bodyParams": [
+        "idempotencyKey",
+        "provider"
+      ],
+      "publicBodyParams": [
+        "idempotencyKey",
+        "provider"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "idempotencyKey",
+          "required": true
+        },
+        {
+          "name": "provider",
+          "required": true
+        }
+      ],
       "pathParamDetails": [
         {
           "name": "organizationId",
@@ -11726,10 +11433,9 @@
       "publicCookieParams": [],
       "cookieParamDetails": [],
       "paramsModel": {
-        "publicName": "ClaudeRetrieveUsageParams"
+        "publicName": "SubscriptionResetParams"
       },
-      "response": {
-        "status": "200",
+      "requestBody": {
         "contentType": "application/json",
         "encoding": "json",
         "contents": [
@@ -11737,162 +11443,10 @@
             "contentType": "application/json",
             "encoding": "json"
           }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "401",
-          "403",
-          "404",
-          "409",
-          "429",
-          "500",
-          "502",
-          "503"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "429",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "503",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "organizations.subscriptions.supergrok",
-      "publicResource": "organizations.subscriptions.supergrok",
-      "operation": "retrieve",
-      "publicOperation": "retrieve",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/organizations/{organizationId}/subscriptions/supergrok",
-      "pathParams": [
-        "organizationId"
-      ],
-      "publicPathParams": [
-        "organizationId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "organizationId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "SupergrokRetrieveParams"
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
       },
       "response": {
         "status": "200",
@@ -14072,181 +13626,6 @@
       "transport": "http"
     },
     {
-      "resource": "messages.live",
-      "publicResource": "messages.live",
-      "operation": "authorize",
-      "publicOperation": "authorize",
-      "deprecated": false,
-      "method": "POST",
-      "path": "/v1/messages/live",
-      "pathParams": [],
-      "publicPathParams": [],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [
-        "scope"
-      ],
-      "publicBodyParams": [
-        "scope"
-      ],
-      "bodyParamDetails": [
-        {
-          "name": "scope",
-          "required": true
-        }
-      ],
-      "pathParamDetails": [],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "LiveAuthorizeParams"
-      },
-      "requestBody": {
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ],
-        "required": true,
-        "publicName": "body",
-        "publicIdentifier": "body"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "404",
-          "409",
-          "500"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "messages.live",
-      "publicResource": "messages.live",
-      "operation": "connect",
-      "publicOperation": "connect",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/messages/live",
-      "pathParams": [],
-      "publicPathParams": [],
-      "queryParams": [
-        "ticket"
-      ],
-      "publicQueryParams": [
-        "ticket"
-      ],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [],
-      "queryParamDetails": [
-        {
-          "name": "ticket",
-          "required": true,
-          "style": "form",
-          "explode": true
-        }
-      ],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "LiveConnectParams"
-      },
-      "result": {
-        "successStatus": "101",
-        "errorStatuses": [
-          "401",
-          "404"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "401",
-          "contents": []
-        },
-        {
-          "status": "404",
-          "contents": []
-        }
-      ],
-      "responseLinks": [],
-      "transport": "websocket",
-      "websocket": {}
-    },
-    {
       "resource": "models",
       "publicResource": "models",
       "operation": "list",
@@ -15471,13 +14850,13 @@
       "transport": "http"
     },
     {
-      "resource": "users.subscriptions.chatgpt",
-      "publicResource": "users.subscriptions.chatgpt",
+      "resource": "users.subscriptions",
+      "publicResource": "users.subscriptions",
       "operation": "retrieve",
       "publicOperation": "retrieve",
       "deprecated": false,
       "method": "GET",
-      "path": "/v1/users/{userId}/subscriptions/chatgpt",
+      "path": "/v1/users/{userId}/subscriptions",
       "pathParams": [
         "userId"
       ],
@@ -15505,7 +14884,7 @@
       "publicCookieParams": [],
       "cookieParamDetails": [],
       "paramsModel": {
-        "publicName": "ChatgptRetrieveParams"
+        "publicName": "SubscriptionRetrieveParams"
       },
       "response": {
         "status": "200",
@@ -15589,143 +14968,13 @@
       "transport": "http"
     },
     {
-      "resource": "users.subscriptions.chatgpt",
-      "publicResource": "users.subscriptions.chatgpt",
-      "operation": "retrieveUsage",
-      "publicOperation": "retrieveUsage",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/users/{userId}/subscriptions/chatgpt/usage",
-      "pathParams": [
-        "userId"
-      ],
-      "publicPathParams": [
-        "userId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "userId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "ChatgptRetrieveUsageParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "401",
-          "403",
-          "404",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "users.subscriptions.chatgpt",
-      "publicResource": "users.subscriptions.chatgpt",
-      "operation": "resetUsage",
-      "publicOperation": "resetUsage",
+      "resource": "users.subscriptions",
+      "publicResource": "users.subscriptions",
+      "operation": "reset",
+      "publicOperation": "reset",
       "deprecated": false,
       "method": "POST",
-      "path": "/v1/users/{userId}/subscriptions/chatgpt/usage/reset",
+      "path": "/v1/users/{userId}/subscriptions/reset",
       "pathParams": [
         "userId"
       ],
@@ -15737,14 +14986,20 @@
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [
-        "idempotencyKey"
+        "idempotencyKey",
+        "provider"
       ],
       "publicBodyParams": [
-        "idempotencyKey"
+        "idempotencyKey",
+        "provider"
       ],
       "bodyParamDetails": [
         {
           "name": "idempotencyKey",
+          "required": true
+        },
+        {
+          "name": "provider",
           "required": true
         }
       ],
@@ -15762,7 +15017,7 @@
       "publicCookieParams": [],
       "cookieParamDetails": [],
       "paramsModel": {
-        "publicName": "ChatgptResetUsageParams"
+        "publicName": "SubscriptionResetParams"
       },
       "requestBody": {
         "contentType": "application/json",
@@ -15792,138 +15047,9 @@
         "successStatus": "200",
         "errorStatuses": [
           "400",
-          "401",
           "403",
           "404",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "users.subscriptions.claude",
-      "publicResource": "users.subscriptions.claude",
-      "operation": "retrieve",
-      "publicOperation": "retrieve",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/users/{userId}/subscriptions/claude",
-      "pathParams": [
-        "userId"
-      ],
-      "publicPathParams": [
-        "userId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "userId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "ClaudeRetrieveParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "403",
-          "404",
+          "409",
           "500",
           "502"
         ]
@@ -15963,256 +15089,7 @@
           ]
         },
         {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "users.subscriptions.claude",
-      "publicResource": "users.subscriptions.claude",
-      "operation": "retrieveUsage",
-      "publicOperation": "retrieveUsage",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/users/{userId}/subscriptions/claude/usage",
-      "pathParams": [
-        "userId"
-      ],
-      "publicPathParams": [
-        "userId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "userId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "ClaudeRetrieveUsageParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "401",
-          "403",
-          "404",
-          "429",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "429",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "users.subscriptions.supergrok",
-      "publicResource": "users.subscriptions.supergrok",
-      "operation": "retrieve",
-      "publicOperation": "retrieve",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/users/{userId}/subscriptions/supergrok",
-      "pathParams": [
-        "userId"
-      ],
-      "publicPathParams": [
-        "userId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [
-        {
-          "name": "userId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "SupergrokRetrieveParams"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "403",
-          "404",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
+          "status": "409",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -18080,12 +16957,14 @@
       "queryParams": [
         "cursor",
         "limit",
-        "messageId"
+        "messageId",
+        "after"
       ],
       "publicQueryParams": [
         "cursor",
         "limit",
-        "messageId"
+        "messageId",
+        "after"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -18116,6 +16995,12 @@
         },
         {
           "name": "messageId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "after",
           "required": false,
           "style": "form",
           "explode": true
@@ -18894,217 +17779,6 @@
       ],
       "responseLinks": [],
       "transport": "http"
-    },
-    {
-      "resource": "sessions.live",
-      "publicResource": "sessions.live",
-      "operation": "authorize",
-      "publicOperation": "authorize",
-      "deprecated": false,
-      "method": "POST",
-      "path": "/v1/sessions/live",
-      "pathParams": [],
-      "publicPathParams": [],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [
-        "scope"
-      ],
-      "publicBodyParams": [
-        "scope"
-      ],
-      "bodyParamDetails": [
-        {
-          "name": "scope",
-          "required": true
-        }
-      ],
-      "pathParamDetails": [],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "LiveAuthorizeParams"
-      },
-      "requestBody": {
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ],
-        "required": true,
-        "publicName": "body",
-        "publicIdentifier": "body"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "401",
-          "403",
-          "404",
-          "409",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "401",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "sessions.live",
-      "publicResource": "sessions.live",
-      "operation": "connect",
-      "publicOperation": "connect",
-      "deprecated": false,
-      "method": "GET",
-      "path": "/v1/sessions/live",
-      "pathParams": [],
-      "publicPathParams": [],
-      "queryParams": [
-        "ticket"
-      ],
-      "publicQueryParams": [
-        "ticket"
-      ],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [],
-      "publicBodyParams": [],
-      "bodyParamDetails": [],
-      "pathParamDetails": [],
-      "queryParamDetails": [
-        {
-          "name": "ticket",
-          "required": true,
-          "style": "form",
-          "explode": true
-        }
-      ],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "LiveConnectParams"
-      },
-      "result": {
-        "successStatus": "101",
-        "errorStatuses": [
-          "401",
-          "404"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "401",
-          "contents": []
-        },
-        {
-          "status": "404",
-          "contents": []
-        }
-      ],
-      "responseLinks": [],
-      "transport": "websocket",
-      "websocket": {}
     },
     {
       "resource": "projects",
@@ -26305,6 +24979,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -26377,6 +25052,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -26470,6 +25156,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -26542,6 +25229,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -26624,6 +25322,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -26696,6 +25395,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -26800,6 +25510,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -26872,6 +25583,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -26954,6 +25676,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -27026,6 +25749,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -27065,10 +25799,12 @@
         "integrationId"
       ],
       "queryParams": [
-        "returnUrl"
+        "returnUrl",
+        "capability"
       ],
       "publicQueryParams": [
-        "returnUrl"
+        "returnUrl",
+        "capability"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -27086,6 +25822,12 @@
       "queryParamDetails": [
         {
           "name": "returnUrl",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "capability",
           "required": false,
           "style": "form",
           "explode": true
@@ -27119,6 +25861,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -27191,6 +25934,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -27273,6 +26027,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -27345,6 +26100,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -27449,6 +26215,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -27521,6 +26288,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -27602,6 +26380,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -27674,6 +26453,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -27742,6 +26532,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -27814,6 +26605,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -27896,6 +26698,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -27968,6 +26771,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -28070,6 +26884,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -28142,6 +26957,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -28252,6 +27078,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -28324,6 +27151,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -28423,6 +27261,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -28495,6 +27334,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -28606,6 +27456,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -28678,6 +27529,17 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -28769,6 +27631,7 @@
           "409",
           "500",
           "502",
+          "503",
           "504"
         ]
       },
@@ -28841,6 +27704,401 @@
         },
         {
           "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "504",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "integrations.triggers",
+      "publicResource": "integrations.triggers",
+      "operation": "retrieve",
+      "publicOperation": "retrieve",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/integrations/{integrationId}/triggers/{triggerName}",
+      "pathParams": [
+        "integrationId",
+        "triggerName"
+      ],
+      "publicPathParams": [
+        "integrationId",
+        "triggerName"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "integrationId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        },
+        {
+          "name": "triggerName",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "TriggerRetrieveParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "401",
+          "403",
+          "404",
+          "409",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "504",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "integrations.triggers",
+      "publicResource": "integrations.triggers",
+      "operation": "listFilterOptions",
+      "publicOperation": "listFilterOptions",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}",
+      "pathParams": [
+        "integrationId",
+        "triggerName",
+        "field"
+      ],
+      "publicPathParams": [
+        "integrationId",
+        "triggerName",
+        "field"
+      ],
+      "queryParams": [
+        "cursor",
+        "limit",
+        "search"
+      ],
+      "publicQueryParams": [
+        "cursor",
+        "limit",
+        "search"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "integrationId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        },
+        {
+          "name": "triggerName",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        },
+        {
+          "name": "field",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [
+        {
+          "name": "cursor",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": 50
+        },
+        {
+          "name": "search",
+          "required": false,
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "TriggerListFilterOptionsParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "401",
+          "403",
+          "404",
+          "409",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "401",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "502",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "503",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -29103,6 +28361,115 @@
       ],
       "responseLinks": [],
       "transport": "http"
+    },
+    {
+      "resource": "live",
+      "publicResource": "live",
+      "operation": "authorize",
+      "publicOperation": "authorize",
+      "deprecated": false,
+      "method": "POST",
+      "path": "/v1/live",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "401"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "401",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "live",
+      "publicResource": "live",
+      "operation": "connect",
+      "publicOperation": "connect",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/live",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [
+        "ticket"
+      ],
+      "publicQueryParams": [
+        "ticket"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "ticket",
+          "required": true,
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "LiveConnectParams"
+      },
+      "result": {
+        "successStatus": "101",
+        "errorStatuses": [
+          "401"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "401",
+          "contents": []
+        }
+      ],
+      "responseLinks": [],
+      "transport": "websocket",
+      "websocket": {}
     }
   ],
   "webhooks": []

@@ -1,9 +1,9 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 import { LiveEmitter, LiveStreamMessage, WebSocketError, buildURL, parameterHeaders } from './internal-base';
-import { InternalEventEmitter } from '../../../core/EventEmitter';
-import { sleep } from '../../../internal/utils/sleep';
-import { type WebSocketLike, ReadyState } from '../../../internal/ws-adapter';
+import { InternalEventEmitter } from '../../core/EventEmitter';
+import { sleep } from '../../internal/utils/sleep';
+import { type WebSocketLike, ReadyState } from '../../internal/ws-adapter';
 import {
   SendQueue,
   flattenRawData,
@@ -12,10 +12,10 @@ import {
   type ReconnectingEvent,
   type ReconnectingOverrides,
   type UnsentMessage,
-} from '../../../internal/ws';
+} from '../../internal/ws';
 import * as LiveAPI from './live';
-import { Tembo } from '../../../client';
-import { TemboError } from '../../../error';
+import { Tembo } from '../../client';
+import { TemboError } from '../../error';
 
 export interface LiveWSParameters extends Record<string, unknown> {
   ticket: string;
