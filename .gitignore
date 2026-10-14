@@ -3,3 +3,7 @@ node_modules/
 *.tsbuildinfo
 .env
 .env.*
+scalar-test/
+/openapi/scalar.openapi.json
+/*.tgz
+!.env.example
