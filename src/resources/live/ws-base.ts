@@ -398,7 +398,14 @@ const isErrorEvent = (event: unknown): boolean =>
   typeof event === 'object' && event !== null && 'type' in event && event.type === 'error';
 
 const emitTypedEvent = (emitter: LiveEmitter, event: unknown): void => {
-  if (typeof event === 'object' && event !== null && 'type' in event && typeof event.type === 'string') {
+  // `/v1/live` frames use `type: 'event'`, which `_connect` has already emitted on the `event` channel.
+  if (
+    typeof event === 'object' &&
+    event !== null &&
+    'type' in event &&
+    typeof event.type === 'string' &&
+    event.type !== 'event'
+  ) {
     (emitter._emit as (eventName: string, payload: unknown) => void)(event.type, event);
   }
 };

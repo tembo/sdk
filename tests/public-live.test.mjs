@@ -327,3 +327,32 @@ test('the subscription timeout also bounds a stalled ticket request', async () =
     await close();
   }
 });
+
+test('the generated live socket delivers each /v1/live event frame once', async () => {
+  const { LiveWS } = await import('../dist/esm/resources/live/ws.js');
+  const server = createServer();
+  const wss = new WebSocketServer({ server });
+  wss.on('connection', (socket) => socket.send(JSON.stringify({ id: 'events', type: 'event', data: delta })));
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const client = new Tembo({ apiKey: 'test-key', baseURL: `http://127.0.0.1:${server.address().port}` });
+  const socket = new LiveWS(client, { ticket: 'ticket' });
+  let events = 0;
+  socket.on('event', () => events++);
+  const messages = [];
+  try {
+    for await (const message of socket) {
+      messages.push(message.type);
+      if (message.type === 'message') setTimeout(() => socket.close(), 50);
+    }
+    assert.equal(events, 1);
+    assert.deepEqual(
+      messages.filter((type) => type === 'message'),
+      ['message'],
+    );
+  } finally {
+    socket.close();
+    for (const connection of wss.clients) connection.terminate();
+    await new Promise((resolve) => wss.close(resolve));
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
