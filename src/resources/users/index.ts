@@ -11,4 +11,15 @@ export type {
   ConnectedAccountRetrieveParams,
   ConnectedAccountRetrieveResponse,
 } from './connected-accounts';
-export { Subscriptions } from './subscriptions/subscriptions';
+export { Subscriptions } from './subscriptions';
+export type {
+  SubscriptionRetrieveResponse,
+  SubscriptionResetParams,
+  SubscriptionResetResponse,
+} from './subscriptions';
+export { ProfilePicture } from './profile-picture';
+export type {
+  ProfilePictureUpdateParams,
+  ProfilePictureUpdateResponse,
+  ProfilePictureDeleteResponse,
+} from './profile-picture';

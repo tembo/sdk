@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
+import { Live as PublicLive } from './live';
 import { APIPromise, type APIResponseProps } from './api-promise';
 import * as Errors from './error';
 import { uuid4 } from './internal/utils/uuid';
@@ -184,20 +185,41 @@ import {
   Repositories,
   type RepositoryListResponse,
   type RepositoryRetrieveResponse,
+  type RepositoryUpdateResponse,
   type RepositoryListParams,
+  type RepositoryUpdateParams,
 } from './resources/repositories';
 import {
   Integrations,
   type IntegrationListResponse,
+  type IntegrationCreateResponse,
   type IntegrationRetrieveResponse,
+  type IntegrationUpdateResponse,
+  type IntegrationDeleteResponse,
+  type IntegrationAuthorizeResponse,
+  type IntegrationTestResponse,
+  type IntegrationSyncResponse,
+  type IntegrationSyncAllResponse,
+  type IntegrationRetrieveSyncStatusResponse,
+  type IntegrationRetrieveRateLimitResponse,
+  type IntegrationListSentryEnvironmentsResponse,
+  type IntegrationListSlackChannelsResponse,
   type IntegrationListParams,
-} from './resources/integrations';
+  type IntegrationCreateParams,
+  type IntegrationUpdateParams,
+  type IntegrationAuthorizeParams,
+  type IntegrationSyncParams,
+  type IntegrationSyncAllParams,
+  type IntegrationListSentryEnvironmentsParams,
+  type IntegrationListSlackChannelsParams,
+} from './resources/integrations/integrations';
 import {
   Billing,
   type BillingRetrieveResponse,
   type BillingListUsageResponse,
   type BillingListUsageParams,
 } from './resources/billing';
+import { Live, type LiveAuthorizeResponse, type LiveConnectParams } from './resources/live/live';
 
 export type AuthTokenProvider = () => string | Promise<string>;
 
@@ -283,6 +305,7 @@ export type TemboOptions = ClientOptions;
  * API Client for interfacing with the TemboPublicApi API.
  */
 export class Tembo {
+  live: PublicLive = new PublicLive(this);
   apiKey: string | AuthTokenProvider;
 
   baseURL: string;
@@ -1025,6 +1048,7 @@ Tembo.Agents = Agents;
 Tembo.Repositories = Repositories;
 Tembo.Integrations = Integrations;
 Tembo.Billing = Billing;
+Tembo.Live = Live;
 
 export declare namespace Tembo {
   export type RequestOptions = Opts.RequestOptions;
@@ -1204,14 +1228,34 @@ export declare namespace Tembo {
     Repositories as Repositories,
     type RepositoryListResponse as RepositoryListResponse,
     type RepositoryRetrieveResponse as RepositoryRetrieveResponse,
+    type RepositoryUpdateResponse as RepositoryUpdateResponse,
     type RepositoryListParams as RepositoryListParams,
+    type RepositoryUpdateParams as RepositoryUpdateParams,
   };
 
   export {
     Integrations as Integrations,
     type IntegrationListResponse as IntegrationListResponse,
+    type IntegrationCreateResponse as IntegrationCreateResponse,
     type IntegrationRetrieveResponse as IntegrationRetrieveResponse,
+    type IntegrationUpdateResponse as IntegrationUpdateResponse,
+    type IntegrationDeleteResponse as IntegrationDeleteResponse,
+    type IntegrationAuthorizeResponse as IntegrationAuthorizeResponse,
+    type IntegrationTestResponse as IntegrationTestResponse,
+    type IntegrationSyncResponse as IntegrationSyncResponse,
+    type IntegrationSyncAllResponse as IntegrationSyncAllResponse,
+    type IntegrationRetrieveSyncStatusResponse as IntegrationRetrieveSyncStatusResponse,
+    type IntegrationRetrieveRateLimitResponse as IntegrationRetrieveRateLimitResponse,
+    type IntegrationListSentryEnvironmentsResponse as IntegrationListSentryEnvironmentsResponse,
+    type IntegrationListSlackChannelsResponse as IntegrationListSlackChannelsResponse,
     type IntegrationListParams as IntegrationListParams,
+    type IntegrationCreateParams as IntegrationCreateParams,
+    type IntegrationUpdateParams as IntegrationUpdateParams,
+    type IntegrationAuthorizeParams as IntegrationAuthorizeParams,
+    type IntegrationSyncParams as IntegrationSyncParams,
+    type IntegrationSyncAllParams as IntegrationSyncAllParams,
+    type IntegrationListSentryEnvironmentsParams as IntegrationListSentryEnvironmentsParams,
+    type IntegrationListSlackChannelsParams as IntegrationListSlackChannelsParams,
   };
 
   export {
@@ -1219,6 +1263,12 @@ export declare namespace Tembo {
     type BillingRetrieveResponse as BillingRetrieveResponse,
     type BillingListUsageResponse as BillingListUsageResponse,
     type BillingListUsageParams as BillingListUsageParams,
+  };
+
+  export {
+    Live as Live,
+    type LiveAuthorizeResponse as LiveAuthorizeResponse,
+    type LiveConnectParams as LiveConnectParams,
   };
 }
 

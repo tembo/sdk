@@ -155,12 +155,34 @@ export type {
   RepositoryListParams,
   RepositoryListResponse,
   RepositoryRetrieveResponse,
+  RepositoryUpdateParams,
+  RepositoryUpdateResponse,
 } from './repositories';
-export { Integrations } from './integrations';
+export { Integrations } from './integrations/integrations';
 export type {
   IntegrationListParams,
   IntegrationListResponse,
+  IntegrationCreateParams,
+  IntegrationCreateResponse,
   IntegrationRetrieveResponse,
-} from './integrations';
+  IntegrationUpdateParams,
+  IntegrationUpdateResponse,
+  IntegrationDeleteResponse,
+  IntegrationAuthorizeParams,
+  IntegrationAuthorizeResponse,
+  IntegrationTestResponse,
+  IntegrationSyncParams,
+  IntegrationSyncResponse,
+  IntegrationSyncAllParams,
+  IntegrationSyncAllResponse,
+  IntegrationRetrieveSyncStatusResponse,
+  IntegrationRetrieveRateLimitResponse,
+  IntegrationListSentryEnvironmentsParams,
+  IntegrationListSentryEnvironmentsResponse,
+  IntegrationListSlackChannelsParams,
+  IntegrationListSlackChannelsResponse,
+} from './integrations/integrations';
 export { Billing } from './billing';
 export type { BillingRetrieveResponse, BillingListUsageParams, BillingListUsageResponse } from './billing';
+export { Live } from './live/live';
+export type { LiveAuthorizeResponse, LiveConnectParams } from './live/live';

@@ -90,6 +90,7 @@ export type TriggerFilters =
   | TriggerFilters.TriggerFiltersItem39
   | TriggerFilters.TriggerFiltersItem40
   | TriggerFilters.TriggerFiltersItem41
+  | TriggerFilters.TriggerFiltersItem42
   | Record<string, unknown>;
 
 export namespace TriggerFilters {
@@ -97,46 +98,65 @@ export namespace TriggerFilters {
 
   export interface TriggerFiltersItem2 extends AtlassianIssueAssignedToUserFilters {}
 
-  export interface TriggerFiltersItem3 extends AtlassianIssueCreatedFilters {}
+  export interface TriggerFiltersItem3 {
+    /**
+     * Only trigger if the issue is in one of the specified projects
+     */
+    projects?: Array<string>;
+    /**
+     * Only trigger if the comment was added by one of the specified users
+     */
+    commentedBy?: Array<string>;
+    /**
+     * Only trigger if the comment contains one of these substrings
+     */
+    messageContains?: Array<string>;
+    /**
+     * Only trigger if the issue has at least one of the specified labels
+     */
+    labels?: Array<string>;
+  }
 
-  export interface TriggerFiltersItem4 extends AtlassianIssueLabelAddedFilters {}
+  export interface TriggerFiltersItem4 extends AtlassianIssueCreatedFilters {}
 
-  export interface TriggerFiltersItem5 extends AtlassianIssueStatusChangedFilters {}
+  export interface TriggerFiltersItem5 extends AtlassianIssueLabelAddedFilters {}
 
-  export interface TriggerFiltersItem6 extends AtlassianIssueUpdatedFilters {}
+  export interface TriggerFiltersItem6 extends AtlassianIssueStatusChangedFilters {}
 
-  export interface TriggerFiltersItem7 extends BitbucketPullRequestOpenedFilters {}
+  export interface TriggerFiltersItem7 extends AtlassianIssueUpdatedFilters {}
 
-  export interface TriggerFiltersItem8 extends GithubCreateFilters {}
+  export interface TriggerFiltersItem8 extends BitbucketPullRequestOpenedFilters {}
 
-  export interface TriggerFiltersItem9 extends GithubIssueClosedFilters {}
+  export interface TriggerFiltersItem9 extends GithubCreateFilters {}
 
-  export interface TriggerFiltersItem10 extends GithubIssueCommentCreatedFilters {}
+  export interface TriggerFiltersItem10 extends GithubIssueClosedFilters {}
 
-  export interface TriggerFiltersItem11 extends GithubIssueOpenedFilters {}
+  export interface TriggerFiltersItem11 extends GithubIssueCommentCreatedFilters {}
 
-  export interface TriggerFiltersItem12 extends GithubPullRequestClosedFilters {}
+  export interface TriggerFiltersItem12 extends GithubIssueOpenedFilters {}
 
-  export interface TriggerFiltersItem13 extends GithubPullRequestMergedFilters {}
+  export interface TriggerFiltersItem13 extends GithubPullRequestClosedFilters {}
 
-  export interface TriggerFiltersItem14 extends GithubPullRequestOpenedFilters {}
+  export interface TriggerFiltersItem14 extends GithubPullRequestMergedFilters {}
 
-  export interface TriggerFiltersItem15 extends GithubPullRequestReadyForReviewFilters {}
+  export interface TriggerFiltersItem15 extends GithubPullRequestOpenedFilters {}
 
-  export interface TriggerFiltersItem16 {
+  export interface TriggerFiltersItem16 extends GithubPullRequestReadyForReviewFilters {}
+
+  export interface TriggerFiltersItem17 {
     /**
      * Only trigger if the release is in one of the repositories
      */
     repositories?: Array<string>;
   }
 
-  export interface TriggerFiltersItem17 extends GithubPullRequestSynchronizeFilters {}
+  export interface TriggerFiltersItem18 extends GithubPullRequestSynchronizeFilters {}
 
-  export interface TriggerFiltersItem18 extends GithubTemboPullRequestOpenedFilters {}
+  export interface TriggerFiltersItem19 extends GithubTemboPullRequestOpenedFilters {}
 
-  export interface TriggerFiltersItem19 extends GithubWorkflowRunFailedFilters {}
+  export interface TriggerFiltersItem20 extends GithubWorkflowRunFailedFilters {}
 
-  export interface TriggerFiltersItem20 {
+  export interface TriggerFiltersItem21 {
     /**
      * Only trigger if the workflow run is in one of the repositories
      */
@@ -161,39 +181,39 @@ export namespace TriggerFilters {
     events?: Array<string>;
   }
 
-  export interface TriggerFiltersItem21 extends GitlabBotMergeRequestCommentFilters {}
+  export interface TriggerFiltersItem22 extends GitlabBotMergeRequestCommentFilters {}
 
-  export interface TriggerFiltersItem22 extends GitlabIssueClosedFilters {}
+  export interface TriggerFiltersItem23 extends GitlabIssueClosedFilters {}
 
-  export interface TriggerFiltersItem23 extends GitlabIssueOpenedFilters {}
+  export interface TriggerFiltersItem24 extends GitlabIssueOpenedFilters {}
 
-  export interface TriggerFiltersItem24 extends GitlabMergeRequestClosedFilters {}
+  export interface TriggerFiltersItem25 extends GitlabMergeRequestClosedFilters {}
 
-  export interface TriggerFiltersItem25 extends GitlabMergeRequestMergedFilters {}
+  export interface TriggerFiltersItem26 extends GitlabMergeRequestMergedFilters {}
 
-  export interface TriggerFiltersItem26 extends GitlabMergeRequestOpenedFilters {}
+  export interface TriggerFiltersItem27 extends GitlabMergeRequestOpenedFilters {}
 
-  export interface TriggerFiltersItem27 extends GitlabMergeRequestUpdatedFilters {}
+  export interface TriggerFiltersItem28 extends GitlabMergeRequestUpdatedFilters {}
 
-  export interface TriggerFiltersItem28 extends GitlabPipelineFailedFilters {}
+  export interface TriggerFiltersItem29 extends GitlabPipelineFailedFilters {}
 
-  export interface TriggerFiltersItem29 extends GitlabRefCreatedFilters {}
+  export interface TriggerFiltersItem30 extends GitlabRefCreatedFilters {}
 
-  export interface TriggerFiltersItem30 extends LinearIssueCreateFilters {}
+  export interface TriggerFiltersItem31 extends LinearIssueCreateFilters {}
 
-  export interface TriggerFiltersItem31 extends LinearIssueLabelAddedFilters {}
+  export interface TriggerFiltersItem32 extends LinearIssueLabelAddedFilters {}
 
-  export interface TriggerFiltersItem32 extends LinearIssueStatusChangedFilters {}
+  export interface TriggerFiltersItem33 extends LinearIssueStatusChangedFilters {}
 
-  export interface TriggerFiltersItem33 extends LinearIssueUpdatedFilters {}
+  export interface TriggerFiltersItem34 extends LinearIssueUpdatedFilters {}
 
-  export interface TriggerFiltersItem34 extends SentryIssueCreatedFilters {}
+  export interface TriggerFiltersItem35 extends SentryIssueCreatedFilters {}
 
-  export interface TriggerFiltersItem35 extends SlackMessageReactionAddedFilters {}
+  export interface TriggerFiltersItem36 extends SlackMessageReactionAddedFilters {}
 
-  export interface TriggerFiltersItem36 extends SlackMessageSentInChannelFilters {}
+  export interface TriggerFiltersItem37 extends SlackMessageSentInChannelFilters {}
 
-  export interface TriggerFiltersItem37 {
+  export interface TriggerFiltersItem38 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -205,7 +225,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem38 {
+  export interface TriggerFiltersItem39 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -221,7 +241,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem39 {
+  export interface TriggerFiltersItem40 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -237,7 +257,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem40 {
+  export interface TriggerFiltersItem41 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -257,7 +277,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem41 {
+  export interface TriggerFiltersItem42 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */

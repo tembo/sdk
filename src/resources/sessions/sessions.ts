@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
+import { SessionEvents as PublicSessionEvents } from '../../live';
 import { APIResource } from '../../resource';
 import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
@@ -22,6 +23,7 @@ import {
 } from './diffs';
 
 export class Sessions extends APIResource {
+  events: PublicSessionEvents = new PublicSessionEvents(this._client);
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
 
@@ -1664,6 +1666,10 @@ export interface SessionListEventsParams {
    * Filter by message ID, or "null" for session-level events.
    */
   messageId?: string | 'null';
+  /**
+   * Only return events recorded after this event ID.
+   */
+  after?: string | number;
 }
 
 export interface SessionListEventsResponse {

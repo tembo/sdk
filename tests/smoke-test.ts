@@ -584,6 +584,7 @@ const cases: {
         cursorApiKey: '',
         customSystemPrompt: '',
         defaultAgent: '',
+        defaultKeepAliveMinutes: 0,
         defaultSandboxSize: 'nano',
         deleteBranchWhenPrClosed: false,
         draftPrs: false,
@@ -617,30 +618,13 @@ const cases: {
   },
 
   {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt',
-    run: async () => {
-      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieve('organizationId');
-    },
-  },
-
-  {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage',
-    run: async () => {
-      const chatgpt = await client.organizations.subscriptions.chatgpt.retrieveUsage('organizationId');
-    },
-  },
-
-  {
-    operation: 'resetUsage',
+    operation: 'validateCredentials',
     method: 'POST',
-    path: '/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset',
+    path: '/v1/organizations/{organizationId}/settings/validate-credentials',
     run: async () => {
-      const chatgpt = await client.organizations.subscriptions.chatgpt.resetUsage('organizationId', {
-        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      const setting = await client.organizations.settings.validateCredentials('organizationId', {
+        provider: 'anthropic',
+        apiKey: '',
       });
     },
   },
@@ -648,27 +632,21 @@ const cases: {
   {
     operation: 'retrieve',
     method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/claude',
+    path: '/v1/organizations/{organizationId}/subscriptions',
     run: async () => {
-      const claude = await client.organizations.subscriptions.claude.retrieve('organizationId');
+      const subscription = await client.organizations.subscriptions.retrieve('organizationId');
     },
   },
 
   {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/claude/usage',
+    operation: 'reset',
+    method: 'POST',
+    path: '/v1/organizations/{organizationId}/subscriptions/reset',
     run: async () => {
-      const claude = await client.organizations.subscriptions.claude.retrieveUsage('organizationId');
-    },
-  },
-
-  {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/organizations/{organizationId}/subscriptions/supergrok',
-    run: async () => {
-      const supergrok = await client.organizations.subscriptions.supergrok.retrieve('organizationId');
+      const subscription = await client.organizations.subscriptions.reset('organizationId', {
+        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        provider: 'chatgpt',
+      });
     },
   },
 
@@ -1194,28 +1172,20 @@ const cases: {
   {
     operation: 'retrieve',
     method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/chatgpt',
+    path: '/v1/users/{userId}/subscriptions',
     run: async () => {
-      const chatgpt = await client.users.subscriptions.chatgpt.retrieve('userId');
+      const subscription = await client.users.subscriptions.retrieve('userId');
     },
   },
 
   {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/chatgpt/usage',
-    run: async () => {
-      const chatgpt = await client.users.subscriptions.chatgpt.retrieveUsage('userId');
-    },
-  },
-
-  {
-    operation: 'resetUsage',
+    operation: 'reset',
     method: 'POST',
-    path: '/v1/users/{userId}/subscriptions/chatgpt/usage/reset',
+    path: '/v1/users/{userId}/subscriptions/reset',
     run: async () => {
-      const chatgpt = await client.users.subscriptions.chatgpt.resetUsage('userId', {
+      const subscription = await client.users.subscriptions.reset('userId', {
         idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        provider: 'chatgpt',
       });
     },
   },
@@ -1223,27 +1193,29 @@ const cases: {
   {
     operation: 'retrieve',
     method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/claude',
+    path: '/v1/users/{userId}/profile-picture',
     run: async () => {
-      const claude = await client.users.subscriptions.claude.retrieve('userId');
+      await client.users.profilePicture.retrieve('userId');
     },
   },
 
   {
-    operation: 'retrieveUsage',
-    method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/claude/usage',
+    operation: 'update',
+    method: 'PUT',
+    path: '/v1/users/{userId}/profile-picture',
     run: async () => {
-      const claude = await client.users.subscriptions.claude.retrieveUsage('userId');
+      const profilePicture = await client.users.profilePicture.update('userId', {
+        file: new File(['file'], 'file'),
+      });
     },
   },
 
   {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/users/{userId}/subscriptions/supergrok',
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/users/{userId}/profile-picture',
     run: async () => {
-      const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
+      const profilePicture = await client.users.profilePicture.delete('userId');
     },
   },
 
@@ -1435,6 +1407,7 @@ const cases: {
         cursor: 'cursor',
         limit: 50,
         messageId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        after: 'after',
       });
     },
   },
@@ -1585,6 +1558,7 @@ const cases: {
         agentInstructions: '',
         color: 'neutral',
         icon: 'folder',
+        onboardingDefault: false,
         runNow: false,
         schedule: {
           cron: 'x',
@@ -2441,6 +2415,7 @@ const cases: {
     run: async () => {
       const repository = await client.repositories.list({
         limit: 50,
+        enabled: 'all',
         order: 'desc',
         sort: 'pullRequests',
       });
@@ -2456,6 +2431,7 @@ const cases: {
       const repository = await client.repositories.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
+        enabled: 'all',
         ids: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         order: 'desc',
@@ -2471,6 +2447,32 @@ const cases: {
     path: '/v1/repositories/{repositoryId}',
     run: async () => {
       const repository = await client.repositories.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/repositories/{repositoryId}',
+    label: 'required params',
+    run: async () => {
+      const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        enabled: false,
+      });
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/repositories/{repositoryId}',
+    label: 'all params',
+    run: async () => {
+      const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        enabled: false,
+        baseBranch: 'x',
+        targetBranch: 'x',
+      });
     },
   },
 
@@ -2509,11 +2511,298 @@ const cases: {
   },
 
   {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/integrations',
+    run: async () => {
+      const integration = await client.integrations.create({
+        environment: 'x',
+        roleArn: 'x',
+        type: 'aws',
+      });
+    },
+  },
+
+  {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/integrations/{integrationId}',
     run: async () => {
       const integration = await client.integrations.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/integrations/{integrationId}',
+    run: async () => {
+      const integration = await client.integrations.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        settings: {},
+      });
+    },
+  },
+
+  {
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/integrations/{integrationId}',
+    run: async () => {
+      const integration = await client.integrations.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/authorize',
+    label: 'required params',
+    run: async () => {
+      const integration = await client.integrations.authorize('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/authorize',
+    label: 'all params',
+    run: async () => {
+      const integration = await client.integrations.authorize('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        returnUrl: 'https://example.com',
+        capability: 'confluenceTriggers',
+      });
+    },
+  },
+
+  {
+    operation: 'test',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/test',
+    run: async () => {
+      const integration = await client.integrations.test('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'sync',
+    method: 'POST',
+    path: '/v1/integrations/{integrationId}/sync',
+    run: async () => {
+      const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        mode: 'queued',
+      });
+    },
+  },
+
+  {
+    operation: 'syncAll',
+    method: 'POST',
+    path: '/v1/integrations/sync',
+    run: async () => {
+      const integration = await client.integrations.syncAll({});
+    },
+  },
+
+  {
+    operation: 'retrieveSyncStatus',
+    method: 'GET',
+    path: '/v1/integrations/sync/status',
+    run: async () => {
+      const integration = await client.integrations.retrieveSyncStatus();
+    },
+  },
+
+  {
+    operation: 'retrieveRateLimit',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/rate-limit',
+    run: async () => {
+      const integration = await client.integrations.retrieveRateLimit('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'listSentryEnvironments',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/sentry-environments',
+    label: 'required params',
+    run: async () => {
+      const integration = await client.integrations.listSentryEnvironments(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'listSentryEnvironments',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/sentry-environments',
+    label: 'all params',
+    run: async () => {
+      const integration = await client.integrations.listSentryEnvironments(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          cursor: 'cursor',
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'listSlackChannels',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/slack-channels',
+    label: 'required params',
+    run: async () => {
+      const integration = await client.integrations.listSlackChannels(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          limit: 50,
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'listSlackChannels',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/slack-channels',
+    label: 'all params',
+    run: async () => {
+      const integration = await client.integrations.listSlackChannels(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          cursor: 'cursor',
+          limit: 50,
+          search: 'search',
+        },
+      );
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/providers',
+    label: 'required params',
+    run: async () => {
+      const provider = await client.integrations.providers.list({
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/providers',
+    label: 'all params',
+    run: async () => {
+      const provider = await client.integrations.providers.list({
+        cursor: 'cursor',
+        limit: 50,
+        returnUrl: 'https://example.com',
+      });
+    },
+  },
+
+  {
+    operation: 'discoverSnykOrganizations',
+    method: 'POST',
+    path: '/v1/integrations/providers/snyk/organizations',
+    label: 'required params',
+    run: async () => {
+      const provider = await client.integrations.providers.discoverSnykOrganizations({
+        clientId: 'x',
+        clientSecret: 'x',
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'discoverSnykOrganizations',
+    method: 'POST',
+    path: '/v1/integrations/providers/snyk/organizations',
+    label: 'all params',
+    run: async () => {
+      const provider = await client.integrations.providers.discoverSnykOrganizations({
+        clientId: 'x',
+        clientSecret: 'x',
+        cursor: 'x',
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/triggers',
+    label: 'required params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.list({
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/integrations/triggers',
+    label: 'all params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.list({
+        cursor: 'cursor',
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/triggers/{triggerName}',
+    run: async () => {
+      const trigger = await client.integrations.triggers.retrieve('triggerName', {
+        integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'listFilterOptions',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}',
+    label: 'required params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.listFilterOptions('field', {
+        integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        triggerName: 'triggerName',
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'listFilterOptions',
+    method: 'GET',
+    path: '/v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}',
+    label: 'all params',
+    run: async () => {
+      const trigger = await client.integrations.triggers.listFilterOptions('field', {
+        integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        triggerName: 'triggerName',
+        cursor: 'cursor',
+        limit: 50,
+        search: 'search',
+      });
     },
   },
 
@@ -2549,6 +2838,35 @@ const cases: {
         limit: 50,
         sessionId: 'sessionId',
       });
+    },
+  },
+
+  {
+    operation: 'authorize',
+    method: 'POST',
+    path: '/v1/live',
+    run: async () => {
+      const live = await client.live.authorize();
+    },
+  },
+
+  {
+    operation: 'connect',
+    method: 'GET',
+    path: '/v1/live',
+    run: async () => {
+      const socket = client.live.connect({
+        ticket: 'ticket',
+      });
+      try {
+        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
+        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
+        for await (const message of socket) {
+          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
+        }
+      } finally {
+        socket.close();
+      }
     },
   },
 ];

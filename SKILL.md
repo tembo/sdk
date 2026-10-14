@@ -45,6 +45,18 @@ console.log(apiKey);
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
 
+## WebSockets
+
+Follow a session's live output. Each (re)connection gets a fresh ticket and resubscribes; `{ type: 'ready' }` marks an authorized subscription, then output arrives as `{ type: 'delta', data }` frames.
+
+```ts
+const controller = new AbortController();
+
+for await (const frame of client.sessions.events.live.subscribe({ sessionId }, { signal: controller.signal })) {
+  console.log(frame);
+}
+```
+
 ## Error handling
 
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.

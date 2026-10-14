@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [WebSockets](#websockets)
 - [Authentication](#authentication)
 - [Errors](#errors)
 - [Client Options](#client-options)
@@ -52,6 +53,32 @@ See the [API reference](./api.md) for every available operation.
 
 <br />
 
+## WebSockets
+
+Follow actual session output with `client.sessions.events.live.subscribe()`. It authorizes through `/v1/live`, subscribes to the public `sessions.events` resource, and yields `{ type: 'ready' }` only after that subscription is authorized. Output frames are `{ type: 'delta', data: { event, message, provider?, messageId?, createdAt? } }`; `message` contains the provider event payload as a string. Tickets expire after 30 seconds, so every reconnect obtains a fresh ticket and resubscribes.
+
+```ts
+const controller = new AbortController();
+
+for await (const frame of client.sessions.events.live.subscribe({ sessionId }, { signal: controller.signal })) {
+  console.log(frame);
+}
+```
+
+The subscription closes on abort or loop exit, retries temporary failures with bounded backoff, and throws on scoped authorization errors or exhausted retries. Reconcile missed output with `client.sessions.listEvents()` after reconnect; this is a live stream, not replay. You can also call `client.live.subscribe({ resource: 'sessions.events', input: { scope: { sessionId } } })`.
+
+For manual multiplexing, call `client.live.authorize()` and `client.live.connect({ ticket })`. Iterate the connection, wait for connection-level ready, and send `{ op: 'subscribe', id, resource: 'sessions.events', input: { scope: { sessionId } } }`. Subscription frames carry that ID. Send `{ op: 'unsubscribe', id }` to release one subscription, or close the connection. One iterator can consume a connection.
+
+The earlier `client.messages.live` and `client.sessions.live` are removed: their endpoints are internal-only now. The generation mappings use the public `live` resource, and the build reattaches the hand-maintained client exports if Scalar regenerates the entry point.
+
+### Dev live smoke test
+
+Set `TEMBO_API_KEY` and `TEMBO_TEST_SESSION_ID`, then run `npm run build && node --test tests/dev-live.test.mjs` to authorize without invoking an agent. `TEMBO_API_URL` defaults to `https://internal.tembo-development.com/public-api` for this test only. Add `RUN_AGENT=1` to send a minimal prompt, verify real streamed tokens and recorded output, and stop the test session. Without a session ID, agent mode creates a private, repository-free test session. Without those variables the test is skipped, including in `npm test`. Agent mode reads OpenAI Responses output and fails fast for other agents. It incurs usage charges; use a dedicated test session.
+
+Add `FORCE_RECONNECT=1` in agent mode to close the first connection after a completed turn, verify a new authorization and subscription, and stream a second real turn.
+
+<br />
+
 ## Authentication
 
 Pass credentials to the generated client constructor. Environment variables are read automatically when supported by the target runtime.
@@ -85,7 +112,7 @@ try {
 }
 ```
 
-Documented error statuses: `400`, `401`, `403`, `404`, `409`, `429`, `500`, `502`, `503`, `504`.
+Documented error statuses: `400`, `401`, `403`, `404`, `409`, `413`, `500`, `502`, `503`, `504`.
 
 <br />
 

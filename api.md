@@ -44,16 +44,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Organizations Settings`](#organizations-settings)
     - [Retrieve organization settings](#retrieve-organization-settings)
     - [Update organization settings](#update-organization-settings)
+    - [Validate organization provider credentials](#validate-organization-provider-credentials)
   - [`Organizations Subscriptions`](#organizations-subscriptions)
-    - [`Organizations Subscriptions Chatgpt`](#organizations-subscriptions-chatgpt)
-      - [Retrieve an organization ChatGPT subscription](#retrieve-an-organization-chatgpt-subscription)
-      - [Retrieve organization ChatGPT subscription usage](#retrieve-organization-chatgpt-subscription-usage)
-      - [Reset organization ChatGPT subscription usage](#reset-organization-chatgpt-subscription-usage)
-    - [`Organizations Subscriptions Claude`](#organizations-subscriptions-claude)
-      - [Retrieve an organization Claude subscription](#retrieve-an-organization-claude-subscription)
-      - [Retrieve organization Claude subscription usage](#retrieve-organization-claude-subscription-usage)
-    - [`Organizations Subscriptions Supergrok`](#organizations-subscriptions-supergrok)
-      - [Retrieve an organization SuperGrok subscription](#retrieve-an-organization-supergrok-subscription)
+    - [Retrieve organization subscriptions](#retrieve-organization-subscriptions)
+    - [Reset organization subscription usage](#reset-organization-subscription-usage)
 - [`McpConnections`](#mcpconnections)
   - [List MCP connections](#list-mcp-connections)
   - [Create an MCP connection](#create-an-mcp-connection)
@@ -89,15 +83,12 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [List user connected accounts](#list-user-connected-accounts)
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
   - [`Users Subscriptions`](#users-subscriptions)
-    - [`Users Subscriptions Chatgpt`](#users-subscriptions-chatgpt)
-      - [Retrieve a user ChatGPT subscription](#retrieve-a-user-chatgpt-subscription)
-      - [Retrieve user ChatGPT subscription usage](#retrieve-user-chatgpt-subscription-usage)
-      - [Reset user ChatGPT subscription usage](#reset-user-chatgpt-subscription-usage)
-    - [`Users Subscriptions Claude`](#users-subscriptions-claude)
-      - [Retrieve a user Claude subscription](#retrieve-a-user-claude-subscription)
-      - [Retrieve user Claude subscription usage](#retrieve-user-claude-subscription-usage)
-    - [`Users Subscriptions Supergrok`](#users-subscriptions-supergrok)
-      - [Retrieve a user SuperGrok subscription](#retrieve-a-user-supergrok-subscription)
+    - [Retrieve user subscriptions](#retrieve-user-subscriptions)
+    - [Reset user subscription usage](#reset-user-subscription-usage)
+  - [`Users ProfilePicture`](#users-profilepicture)
+    - [Retrieve a user profile picture](#retrieve-a-user-profile-picture)
+    - [Update your profile picture](#update-your-profile-picture)
+    - [Delete your profile picture](#delete-your-profile-picture)
 - [`Sessions`](#sessions)
   - [List sessions](#list-sessions)
   - [Create a session](#create-a-session)
@@ -175,12 +166,34 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Repositories`](#repositories)
   - [List repositories](#list-repositories)
   - [Retrieve a repository](#retrieve-a-repository)
+  - [Update a repository](#update-a-repository)
 - [`Integrations`](#integrations)
   - [List integrations](#list-integrations)
+  - [Create an integration](#create-an-integration)
   - [Retrieve an integration](#retrieve-an-integration)
+  - [Update an integration](#update-an-integration)
+  - [Delete an integration](#delete-an-integration)
+  - [Authorize an integration](#authorize-an-integration)
+  - [Test an integration](#test-an-integration)
+  - [Sync an integration](#sync-an-integration)
+  - [Sync eligible integrations](#sync-eligible-integrations)
+  - [Retrieve eligible integration sync status](#retrieve-eligible-integration-sync-status)
+  - [Retrieve an integration rate limit](#retrieve-an-integration-rate-limit)
+  - [List Sentry environments](#list-sentry-environments)
+  - [List Slack channels](#list-slack-channels)
+  - [`Integrations Providers`](#integrations-providers)
+    - [List integration providers](#list-integration-providers)
+    - [Discover Snyk organizations](#discover-snyk-organizations)
+  - [`Integrations Triggers`](#integrations-triggers)
+    - [List integration triggers](#list-integration-triggers)
+    - [Retrieve an integration trigger](#retrieve-an-integration-trigger)
+    - [List integration trigger filter options](#list-integration-trigger-filter-options)
 - [`Billing`](#billing)
   - [Retrieve billing](#retrieve-billing)
   - [List billing usage](#list-billing-usage)
+- [`Live`](#live)
+  - [Authorize a live connection](#authorize-a-live-connection)
+  - [Live resource subscriptions](#live-resource-subscriptions)
 
 ## Setup
 
@@ -668,87 +681,50 @@ Update one or more organization settings.
 const setting = await client.organizations.settings.update('organizationId', {});
 ```
 
-### `Organizations Subscriptions`
+#### Validate organization provider credentials
 
-#### `Organizations Subscriptions Chatgpt`
-
-##### Retrieve an organization ChatGPT subscription
-
-Retrieve the connection status for an organization ChatGPT subscription.
+Validate supplied inference provider credentials for an organization without saving them. The provider must be available on the organization’s plan.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`ChatgptRetrieveResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
+| Request | [`SettingValidateCredentialsParams`](./src/resources/organizations/settings.ts) |
+| Response | [`SettingValidateCredentialsResponse`](./src/resources/organizations/settings.ts) |
 
 ```ts
-const chatgpt = await client.organizations.subscriptions.chatgpt.retrieve('organizationId');
-```
-
-##### Retrieve organization ChatGPT subscription usage
-
-Retrieve plan and rate-limit usage for an organization ChatGPT subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ChatgptRetrieveUsageResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
-
-```ts
-const chatgpt = await client.organizations.subscriptions.chatgpt.retrieveUsage('organizationId');
-```
-
-##### Reset organization ChatGPT subscription usage
-
-Redeem one earned rate-limit reset for an organization ChatGPT subscription.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`ChatgptResetUsageParams`](./src/resources/organizations/subscriptions/chatgpt.ts) |
-| Response | [`ChatgptResetUsageResponse`](./src/resources/organizations/subscriptions/chatgpt.ts) |
-
-```ts
-const chatgpt = await client.organizations.subscriptions.chatgpt.resetUsage('organizationId', {
-  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+const setting = await client.organizations.settings.validateCredentials('organizationId', {
+  provider: 'anthropic',
+  apiKey: '',
 });
 ```
 
-#### `Organizations Subscriptions Claude`
+### `Organizations Subscriptions`
 
-##### Retrieve an organization Claude subscription
+#### Retrieve organization subscriptions
 
-Retrieve the connection status for an organization Claude subscription.
+Retrieve connection statuses and available ChatGPT and Claude usage. Provider usage errors are reported without failing the response.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`ClaudeRetrieveResponse`](./src/resources/organizations/subscriptions/claude.ts) |
+| Response | [`SubscriptionRetrieveResponse`](./src/resources/organizations/subscriptions.ts) |
 
 ```ts
-const claude = await client.organizations.subscriptions.claude.retrieve('organizationId');
+const subscription = await client.organizations.subscriptions.retrieve('organizationId');
 ```
 
-##### Retrieve organization Claude subscription usage
+#### Reset organization subscription usage
 
-Retrieve rate-limit usage for an organization Claude subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ClaudeRetrieveUsageResponse`](./src/resources/organizations/subscriptions/claude.ts) |
-
-```ts
-const claude = await client.organizations.subscriptions.claude.retrieveUsage('organizationId');
-```
-
-#### `Organizations Subscriptions Supergrok`
-
-##### Retrieve an organization SuperGrok subscription
-
-Retrieve the connection status for an organization SuperGrok subscription.
+Redeem an earned ChatGPT rate-limit reset.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`SupergrokRetrieveResponse`](./src/resources/organizations/subscriptions/supergrok.ts) |
+| Request | [`SubscriptionResetParams`](./src/resources/organizations/subscriptions.ts) |
+| Response | [`SubscriptionResetResponse`](./src/resources/organizations/subscriptions.ts) |
 
 ```ts
-const supergrok = await client.organizations.subscriptions.supergrok.retrieve('organizationId');
+const subscription = await client.organizations.subscriptions.reset('organizationId', {
+  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  provider: 'chatgpt',
+});
 ```
 
 ## `McpConnections`
@@ -1128,85 +1104,69 @@ const connectedAccount = await client.users.connectedAccounts.retrieve('connecte
 
 ### `Users Subscriptions`
 
-#### `Users Subscriptions Chatgpt`
+#### Retrieve user subscriptions
 
-##### Retrieve a user ChatGPT subscription
-
-Retrieve the connection status for a user ChatGPT subscription.
+Retrieve connection statuses and available ChatGPT and Claude usage. Provider usage errors are reported without failing the response.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`ChatgptRetrieveResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
+| Response | [`SubscriptionRetrieveResponse`](./src/resources/users/subscriptions.ts) |
 
 ```ts
-const chatgpt = await client.users.subscriptions.chatgpt.retrieve('userId');
+const subscription = await client.users.subscriptions.retrieve('userId');
 ```
 
-##### Retrieve user ChatGPT subscription usage
+#### Reset user subscription usage
 
-Retrieve plan and rate-limit usage for a user ChatGPT subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ChatgptRetrieveUsageResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
-
-```ts
-const chatgpt = await client.users.subscriptions.chatgpt.retrieveUsage('userId');
-```
-
-##### Reset user ChatGPT subscription usage
-
-Redeem one earned rate-limit reset for a user ChatGPT subscription.
+Redeem an earned ChatGPT rate-limit reset.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ChatgptResetUsageParams`](./src/resources/users/subscriptions/chatgpt.ts) |
-| Response | [`ChatgptResetUsageResponse`](./src/resources/users/subscriptions/chatgpt.ts) |
+| Request | [`SubscriptionResetParams`](./src/resources/users/subscriptions.ts) |
+| Response | [`SubscriptionResetResponse`](./src/resources/users/subscriptions.ts) |
 
 ```ts
-const chatgpt = await client.users.subscriptions.chatgpt.resetUsage('userId', {
+const subscription = await client.users.subscriptions.reset('userId', {
   idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  provider: 'chatgpt',
 });
 ```
 
-#### `Users Subscriptions Claude`
+### `Users ProfilePicture`
 
-##### Retrieve a user Claude subscription
+#### Retrieve a user profile picture
 
-Retrieve the connection status for a user Claude subscription.
-
-| Direction | Type |
-| --- | --- |
-| Response | [`ClaudeRetrieveResponse`](./src/resources/users/subscriptions/claude.ts) |
+Redirect to a user's profile picture. Signed URLs are valid for one hour.
 
 ```ts
-const claude = await client.users.subscriptions.claude.retrieve('userId');
+await client.users.profilePicture.retrieve('userId');
 ```
 
-##### Retrieve user Claude subscription usage
+#### Update your profile picture
 
-Retrieve rate-limit usage for a user Claude subscription.
+Upload a JPEG, PNG, GIF, or WebP profile picture up to 5 MB.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`ClaudeRetrieveUsageResponse`](./src/resources/users/subscriptions/claude.ts) |
+| Request | [`ProfilePictureUpdateParams`](./src/resources/users/profile-picture.ts) |
+| Response | [`ProfilePictureUpdateResponse`](./src/resources/users/profile-picture.ts) |
 
 ```ts
-const claude = await client.users.subscriptions.claude.retrieveUsage('userId');
+const profilePicture = await client.users.profilePicture.update('userId', {
+  file: new File(['file'], 'file'),
+});
 ```
 
-#### `Users Subscriptions Supergrok`
+#### Delete your profile picture
 
-##### Retrieve a user SuperGrok subscription
-
-Retrieve the connection status for a user SuperGrok subscription.
+Delete your profile picture. This succeeds if no picture exists.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`SupergrokRetrieveResponse`](./src/resources/users/subscriptions/supergrok.ts) |
+| Response | [`ProfilePictureDeleteResponse`](./src/resources/users/profile-picture.ts) |
 
 ```ts
-const supergrok = await client.users.subscriptions.supergrok.retrieve('userId');
+const profilePicture = await client.users.profilePicture.delete('userId');
 ```
 
 ## `Sessions`
@@ -2106,7 +2066,7 @@ const contentRevision = await client.agents.contentRevisions.restore(1, {
 
 ### List repositories
 
-List enabled repositories in the authenticated organization.
+List repositories in the authenticated organization. Defaults to enabled repositories.
 
 | Direction | Type |
 | --- | --- |
@@ -2116,6 +2076,7 @@ List enabled repositories in the authenticated organization.
 ```ts
 const repository = await client.repositories.list({
   limit: 50,
+  enabled: 'all',
   order: 'desc',
   sort: 'pullRequests',
 });
@@ -2123,7 +2084,7 @@ const repository = await client.repositories.list({
 
 ### Retrieve a repository
 
-Retrieve an enabled repository in the authenticated organization.
+Retrieve a repository in the authenticated organization.
 
 | Direction | Type |
 | --- | --- |
@@ -2133,16 +2094,31 @@ Retrieve an enabled repository in the authenticated organization.
 const repository = await client.repositories.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
+### Update a repository
+
+Update repository configuration or enable or disable it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RepositoryUpdateParams`](./src/resources/repositories.ts) |
+| Response | [`RepositoryUpdateResponse`](./src/resources/repositories.ts) |
+
+```ts
+const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  enabled: false,
+});
+```
+
 ## `Integrations`
 
 ### List integrations
 
-List integrations for the authenticated organization.
+List integrations visible to the current organization or authenticated admin.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`IntegrationListParams`](./src/resources/integrations.ts) |
-| Response | [`IntegrationListResponse`](./src/resources/integrations.ts) |
+| Request | [`IntegrationListParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationListResponse`](./src/resources/integrations/integrations.ts) |
 
 ```ts
 const integration = await client.integrations.list({
@@ -2151,16 +2127,250 @@ const integration = await client.integrations.list({
 });
 ```
 
-### Retrieve an integration
+### Create an integration
 
-Retrieve an integration for the authenticated organization.
+Create an integration that does not require an OAuth callback.
 
 | Direction | Type |
 | --- | --- |
-| Response | [`IntegrationRetrieveResponse`](./src/resources/integrations.ts) |
+| Request | [`IntegrationCreateParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationCreateResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.create({
+  environment: 'x',
+  roleArn: 'x',
+  type: 'aws',
+});
+```
+
+### Retrieve an integration
+
+Retrieve an integration and its configuration.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationRetrieveResponse`](./src/resources/integrations/integrations.ts) |
 
 ```ts
 const integration = await client.integrations.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Update an integration
+
+Update provider settings or an editable configuration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationUpdateParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationUpdateResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  settings: {},
+});
+```
+
+### Delete an integration
+
+Uninstall an integration from its provider when supported, then delete it from Tembo.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationDeleteResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Authorize an integration
+
+Return the provider authorization URL for an integration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationAuthorizeParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationAuthorizeResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.authorize('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Test an integration
+
+Test the saved provider connection.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationTestResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.test('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Sync an integration
+
+Queue or immediately perform an integration sync.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationSyncParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationSyncResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  mode: 'queued',
+});
+```
+
+### Sync eligible integrations
+
+Queue integration and pull-request sync jobs for integrations with enabled repositories.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationSyncAllParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationSyncAllResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.syncAll({});
+```
+
+### Retrieve eligible integration sync status
+
+Count active sync jobs for integrations with enabled repositories.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationRetrieveSyncStatusResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.retrieveSyncStatus();
+```
+
+### Retrieve an integration rate limit
+
+Retrieve the GitHub installation rate-limit state.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`IntegrationRetrieveRateLimitResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.retrieveRateLimit('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### List Sentry environments
+
+List environments visible to a Sentry integration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationListSentryEnvironmentsParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationListSentryEnvironmentsResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.listSentryEnvironments('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  limit: 50,
+});
+```
+
+### List Slack channels
+
+List channels visible to a Slack integration.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`IntegrationListSlackChannelsParams`](./src/resources/integrations/integrations.ts) |
+| Response | [`IntegrationListSlackChannelsResponse`](./src/resources/integrations/integrations.ts) |
+
+```ts
+const integration = await client.integrations.listSlackChannels('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  limit: 50,
+});
+```
+
+### `Integrations Providers`
+
+#### List integration providers
+
+List providers available to the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ProviderListParams`](./src/resources/integrations/providers.ts) |
+| Response | [`ProviderListResponse`](./src/resources/integrations/providers.ts) |
+
+```ts
+const provider = await client.integrations.providers.list({
+  limit: 50,
+});
+```
+
+#### Discover Snyk organizations
+
+Validate Snyk service-account credentials and list accessible organizations.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ProviderDiscoverSnykOrganizationsParams`](./src/resources/integrations/providers.ts) |
+| Response | [`ProviderDiscoverSnykOrganizationsResponse`](./src/resources/integrations/providers.ts) |
+
+```ts
+const provider = await client.integrations.providers.discoverSnykOrganizations({
+  clientId: 'x',
+  clientSecret: 'x',
+  limit: 50,
+});
+```
+
+### `Integrations Triggers`
+
+#### List integration triggers
+
+List visible automation triggers grouped by provider.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TriggerListParams`](./src/resources/integrations/triggers.ts) |
+| Response | [`TriggerListResponse`](./src/resources/integrations/triggers.ts) |
+
+```ts
+const trigger = await client.integrations.triggers.list({
+  limit: 50,
+});
+```
+
+#### Retrieve an integration trigger
+
+Retrieve a trigger definition and its default filter values for an integration in the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TriggerRetrieveParams`](./src/resources/integrations/triggers.ts) |
+| Response | [`TriggerRetrieveResponse`](./src/resources/integrations/triggers.ts) |
+
+```ts
+const trigger = await client.integrations.triggers.retrieve('triggerName', {
+  integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+});
+```
+
+#### List integration trigger filter options
+
+List one cursor-page of selectable values for an integration trigger filter field, with optional search.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TriggerListFilterOptionsParams`](./src/resources/integrations/triggers.ts) |
+| Response | [`TriggerListFilterOptionsResponse`](./src/resources/integrations/triggers.ts) |
+
+```ts
+const trigger = await client.integrations.triggers.listFilterOptions('field', {
+  integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  triggerName: 'triggerName',
+  limit: 50,
+});
 ```
 
 ## `Billing`
@@ -2190,4 +2400,40 @@ List session usage with cursor pagination.
 const billing = await client.billing.listUsage({
   limit: 50,
 });
+```
+
+## `Live`
+
+### Authorize a live connection
+
+Issue a 30-second WebSocket ticket for one live connection that multiplexes resource subscriptions.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`LiveAuthorizeResponse`](./src/resources/live/live.ts) |
+
+```ts
+const live = await client.live.authorize();
+```
+
+### Live resource subscriptions
+
+Native WebSocket. Send `{ op: "subscribe", id, resource, input }` or `{ op: "unsubscribe", id }`; receive `{ id, type: "ready" | "event" | "error" }`.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`LiveConnectParams`](./src/resources/live/live.ts) |
+
+```ts
+const connection = client.live.connect({
+  ticket: 'ticket',
+});
+
+try {
+  for await (const message of connection) {
+    console.log(message);
+  }
+} finally {
+  connection.close();
+}
 ```
