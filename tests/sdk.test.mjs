@@ -168,7 +168,6 @@ test('browser builds map every generated WebSocket adapter to its browser varian
     }
   };
   visit('src');
-  assert.ok(adapters.length > 0);
   for (const adapter of adapters) {
     for (const format of ['esm', 'cjs']) {
       assert.equal(
@@ -179,6 +178,13 @@ test('browser builds map every generated WebSocket adapter to its browser varian
     }
   }
   assert.equal(packageJson.browser?.ws, false);
+  for (const [from, to] of Object.entries(packageJson.browser ?? {})) {
+    if (from === 'ws') continue;
+    for (const target of [from, to]) {
+      const source = target.replace(/^\.\/dist\/(esm|cjs)\//, 'src/').replace(/\.js$/, '.ts');
+      assert.ok(existsSync(source), `package.json "browser" maps ${target}, but ${source} does not exist`);
+    }
+  }
   const commonJsManifest = JSON.parse(readFileSync(new URL('../dist/cjs/package.json', import.meta.url)));
   for (const adapter of adapters) {
     assert.equal(commonJsManifest.browser?.[`./${adapter}.js`], `./${adapter}-browser.js`);

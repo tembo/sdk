@@ -25,5 +25,3 @@ export type {
   MessageUpdateResponse,
   MessageDeleteResponse,
 } from './messages';
-export { Live } from './live/live';
-export type { LiveAuthorizeParams, LiveAuthorizeResponse, LiveConnectParams } from './live/live';

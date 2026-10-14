@@ -47,19 +47,13 @@ Method names, parameter shapes, and response types are generated from the API de
 
 ## WebSockets
 
-WebSocket endpoints open a persistent connection you can send messages to and receive messages from.
+Follow a session's live output. Each (re)connection gets a fresh ticket and resubscribes; `{ type: 'ready' }` marks an authorized subscription, then output arrives as `{ type: 'delta', data }` frames.
 
 ```ts
-const connection = client.messages.live.connect({
-  ticket: 'ticket',
-});
+const controller = new AbortController();
 
-try {
-  for await (const message of connection) {
-    console.log(message);
-  }
-} finally {
-  connection.close();
+for await (const frame of client.sessions.events.live.subscribe({ sessionId }, { signal: controller.signal })) {
+  console.log(frame);
 }
 ```
 

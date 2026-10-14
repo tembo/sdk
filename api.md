@@ -73,9 +73,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Retrieve a message](#retrieve-a-message)
   - [Update a message](#update-a-message)
   - [Delete a message](#delete-a-message)
-  - [`Messages Live`](#messages-live)
-    - [Authorize live message changes](#authorize-live-message-changes)
-    - [Live persisted message changes](#live-persisted-message-changes)
 - [`Models`](#models)
   - [List models](#list-models)
   - [Update a model](#update-a-model)
@@ -120,9 +117,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Sessions Diffs`](#sessions-diffs)
     - [List session diffs](#list-session-diffs)
     - [Retrieve a session diff](#retrieve-a-session-diff)
-  - [`Sessions Live`](#sessions-live)
-    - [Authorize live session changes](#authorize-live-session-changes)
-    - [Live session changes](#live-session-changes)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
   - [List projects](#list-projects)
@@ -1008,45 +1002,6 @@ Delete a message and cancel its queued jobs, runtime turns, and active sandbox s
 const message = await client.messages.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
-### `Messages Live`
-
-#### Authorize live message changes
-
-Issue a 30-second, session-bound WebSocket ticket.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveAuthorizeParams`](./src/resources/messages/live/live.ts) |
-| Response | [`LiveAuthorizeResponse`](./src/resources/messages/live/live.ts) |
-
-```ts
-const live = await client.messages.live.authorize({
-  scope: {
-    sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-  },
-});
-```
-
-#### Live persisted message changes
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveConnectParams`](./src/resources/messages/live/live.ts) |
-
-```ts
-const connection = client.messages.live.connect({
-  ticket: 'ticket',
-});
-
-try {
-  for await (const message of connection) {
-    console.log(message);
-  }
-} finally {
-  connection.close();
-}
-```
-
 ## `Models`
 
 ### List models
@@ -1495,45 +1450,6 @@ Retrieve one recorded session diff and its content.
 const diff = await client.sessions.diffs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
   sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
 });
-```
-
-### `Sessions Live`
-
-#### Authorize live session changes
-
-Issue a 30-second, session-bound WebSocket ticket.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveAuthorizeParams`](./src/resources/sessions/live/live.ts) |
-| Response | [`LiveAuthorizeResponse`](./src/resources/sessions/live/live.ts) |
-
-```ts
-const live = await client.sessions.live.authorize({
-  scope: {
-    sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-  },
-});
-```
-
-#### Live session changes
-
-| Direction | Type |
-| --- | --- |
-| Request | [`LiveConnectParams`](./src/resources/sessions/live/live.ts) |
-
-```ts
-const connection = client.sessions.live.connect({
-  ticket: 'ticket',
-});
-
-try {
-  for await (const message of connection) {
-    console.log(message);
-  }
-} finally {
-  connection.close();
-}
 ```
 
 ## `Projects`
