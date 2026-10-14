@@ -215,7 +215,7 @@ export class Live extends APIResource {
       let timedOut = false;
       const close = () => connection?.close();
       try {
-        const { ticket } = await this.authorize({ signal, maxRetries: 0 });
+        const { ticket } = await this.authorize({ signal, maxRetries: 0, timeout });
         if (signal?.aborted) return;
         connection = this.connect({ ticket }, { timeout });
         signal?.addEventListener('abort', close, { once: true });

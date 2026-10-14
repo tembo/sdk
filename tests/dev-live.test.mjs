@@ -71,6 +71,12 @@ test('dev public API streams live session output', {
       } else {
         assert.equal(frame.type, 'delta');
         if (frame.data.messageId !== messageId) continue;
+        if (frame.data.provider && frame.data.provider !== 'tembo')
+          assert.equal(
+            frame.data.provider,
+            'openai_responses',
+            'This test reads OpenAI Responses output; use a session whose agent streams it',
+          );
         if (frame.data.event === 'response.output_text.delta') output += JSON.parse(frame.data.message).delta;
         if (frame.data.event === 'response.completed') {
           assert.equal(output.trim(), marker);

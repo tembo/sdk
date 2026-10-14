@@ -24,6 +24,7 @@ async function fixture() {
     status: 200,
     scopedStatus: undefined,
     rejectUpgrade: false,
+    stallTicket: false,
     requests: 0,
   };
   const server = createServer(async (request, response) => {
@@ -34,6 +35,7 @@ async function fixture() {
     for await (const chunk of request) body += chunk;
     assert.equal(body, '');
     state.requests++;
+    if (state.stallTicket) return;
     if (state.status !== 200)
       return response
         .writeHead(state.status, { 'content-type': 'application/json' })
@@ -80,9 +82,11 @@ async function fixture() {
     maxRetries: 0,
   });
   return {
+    server,
     client,
     state,
     async close() {
+      server.closeAllConnections();
       for (const socket of state.sockets) socket.terminate();
       await new Promise((resolve) => wss.close(resolve));
       await new Promise((resolve) => server.close(resolve));
@@ -304,4 +308,16 @@ test('pending live mappings replace obsolete endpoints without mutating producti
   assert.equal(migrated.resources.live.methods.authorize.endpoint, 'post /v1/live');
   assert.equal(migrated.resources.live.methods.connect.kind, 'websocket');
   assert.deepEqual(migrated.environments, config.environments);
+});
+
+test('the subscription timeout also bounds a stalled ticket request', async () => {
+  const { client, state, close } = await fixture();
+  state.stallTicket = true;
+  try {
+    const started = Date.now();
+    await assert.rejects(client.live.subscribe(params, { maxRetries: 0, timeout: 50 }).next());
+    assert.ok(Date.now() - started < 2000);
+  } finally {
+    await close();
+  }
 });
