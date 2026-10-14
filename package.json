@@ -41,6 +41,8 @@
   "browser": {
     "./dist/esm/internal/live-socket.js": "./dist/esm/internal/live-socket-browser.js",
     "./dist/cjs/internal/live-socket.js": "./dist/cjs/internal/live-socket-browser.js",
+    "./dist/esm/resources/live/ws.js": "./dist/esm/resources/live/ws-browser.js",
+    "./dist/cjs/resources/live/ws.js": "./dist/cjs/resources/live/ws-browser.js",
     "ws": false
   },
   "files": [

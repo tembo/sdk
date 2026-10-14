@@ -18,6 +18,7 @@ export {
   Repositories,
   Integrations,
   Billing,
+  Live,
 } from './resources/index';
 export type {
   APIKeyListParams,
@@ -165,4 +166,6 @@ export type {
   BillingRetrieveResponse,
   BillingListUsageParams,
   BillingListUsageResponse,
+  LiveAuthorizeResponse,
+  LiveConnectParams,
 } from './resources/index';

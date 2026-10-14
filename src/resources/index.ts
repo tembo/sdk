@@ -63,7 +63,7 @@ export type {
   ArtifactRetrieveResponse,
   ArtifactDeleteResponse,
 } from './artifacts';
-export { Messages } from './messages/messages';
+export { Messages } from './messages';
 export type {
   TipTapDocument,
   TipTapNode,
@@ -87,7 +87,7 @@ export type {
   MessageUpdateParams,
   MessageUpdateResponse,
   MessageDeleteResponse,
-} from './messages/messages';
+} from './messages';
 export { Models } from './models';
 export type { ModelListParams, ModelListResponse, ModelUpdateParams, ModelUpdateResponse } from './models';
 export { Runtimes } from './runtimes';
@@ -184,3 +184,5 @@ export type {
 } from './integrations/integrations';
 export { Billing } from './billing';
 export type { BillingRetrieveResponse, BillingListUsageParams, BillingListUsageResponse } from './billing';
+export { Live } from './live/live';
+export type { LiveAuthorizeResponse, LiveConnectParams } from './live/live';

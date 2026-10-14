@@ -21,11 +21,14 @@ export function attachLiveResource(source, resource) {
     if (position === -1) throw new Error('Review changed generated imports');
     updated = updated.slice(0, position) + imported + updated.slice(position);
   }
-  const existing = new RegExp(`^  ${property}: .+ = new .+;$`, 'm');
-  if (existing.test(updated)) return updated.replace(existing, field);
+  // Generation can add its own property (or re-add one this script attached), so replace every
+  // existing declaration with a single hand-maintained one.
+  updated = updated.replace(new RegExp(`^  ${property}: .+ = new .+;\\n`, 'gm'), '');
   const declaration = client ? /export class Tembo[^\n{]*\{/ : /export class Sessions[^\n{]*\{/;
   if (!declaration.test(updated)) throw new Error('Review changed generated resource class');
-  return updated.replace(declaration, (match) => `${match}\n${field}\n`);
+  return updated.replace(declaration, (match, offset) =>
+    updated[offset + match.length] === '\n' ? `${match}\n${field}` : `${match}\n${field}\n`,
+  );
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

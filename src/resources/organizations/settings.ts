@@ -45,6 +45,33 @@ export class Settings extends APIResource {
       ...options,
     });
   }
+
+  /**
+   * Validate supplied inference provider credentials for an organization without saving them. The provider must be available on the organization’s plan.
+   *
+   * @param {string} organizationID
+   * @param {SettingValidateCredentialsParams} body - The request body to send.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<SettingValidateCredentialsResponse>} Validate organization provider credentials
+   *
+   * @example
+   * ```ts
+   * const setting = await client.organizations.settings.validateCredentials('organizationId', {
+   *   provider: 'anthropic',
+   *   apiKey: '',
+   * });
+   * ```
+   */
+  validateCredentials(
+    organizationID: string,
+    body: SettingValidateCredentialsParams,
+    options?: RequestOptions,
+  ): APIPromise<SettingValidateCredentialsResponse> {
+    return this._client.post(
+      __scalarPath`/v1/organizations/${organizationID}/settings/validate-credentials`,
+      { body, ...options },
+    );
+  }
 }
 
 export interface SettingRetrieveResponse {
@@ -317,10 +344,84 @@ export namespace SettingUpdateResponse {
     weeklyReportEnabled: boolean;
   }
 }
+
+export type SettingValidateCredentialsParams =
+  | SettingValidateCredentialsParams.Variant0
+  | SettingValidateCredentialsParams.Variant1
+  | SettingValidateCredentialsParams.Variant2
+  | SettingValidateCredentialsParams.Variant3
+  | SettingValidateCredentialsParams.Variant4;
+
+export declare namespace SettingValidateCredentialsParams {
+  export interface Variant0 {
+    provider: 'anthropic';
+    /**
+     * The Anthropic API key.
+     */
+    apiKey: string;
+  }
+
+  export interface Variant1 {
+    provider: 'openai';
+    /**
+     * The OpenAI API key.
+     */
+    apiKey: string;
+  }
+
+  export interface Variant2 {
+    provider: 'openrouter';
+    /**
+     * The OpenRouter API key.
+     */
+    apiKey: string;
+  }
+
+  export interface Variant3 {
+    provider: 'aws-bedrock';
+    /**
+     * The AWS access key ID.
+     */
+    accessKeyId: string;
+    /**
+     * The AWS secret access key.
+     */
+    secretAccessKey: string;
+    /**
+     * The AWS region.
+     */
+    region: string;
+  }
+
+  export interface Variant4 {
+    provider: 'gcp-vertex-ai';
+    /**
+     * The GCP service account JSON.
+     */
+    serviceAccountJson: string;
+    /**
+     * The GCP project ID.
+     */
+    project: string;
+    /**
+     * The Vertex AI location.
+     */
+    location: string;
+  }
+}
+
+export interface SettingValidateCredentialsResponse {
+  /**
+   * Whether the supplied credentials passed provider validation.
+   */
+  valid: boolean;
+}
 export declare namespace Settings {
   export {
     type SettingRetrieveResponse as SettingRetrieveResponse,
     type SettingUpdateResponse as SettingUpdateResponse,
+    type SettingValidateCredentialsResponse as SettingValidateCredentialsResponse,
     type SettingUpdateParams as SettingUpdateParams,
+    type SettingValidateCredentialsParams as SettingValidateCredentialsParams,
   };
 }

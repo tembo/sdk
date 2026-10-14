@@ -13,7 +13,15 @@ import {
   type ProviderDiscoverSnykOrganizationsParams,
 } from './providers';
 import * as TriggersAPI from './triggers';
-import { Triggers, type TriggerListResponse, type TriggerListParams } from './triggers';
+import {
+  Triggers,
+  type TriggerListResponse,
+  type TriggerRetrieveResponse,
+  type TriggerListFilterOptionsResponse,
+  type TriggerListParams,
+  type TriggerRetrieveParams,
+  type TriggerListFilterOptionsParams,
+} from './triggers';
 
 export class Integrations extends APIResource {
   providers: ProvidersAPI.Providers = new ProvidersAPI.Providers(this._client);
@@ -134,9 +142,9 @@ export class Integrations extends APIResource {
     params: IntegrationAuthorizeParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<IntegrationAuthorizeResponse> {
-    const { returnUrl } = params ?? {};
+    const { returnUrl, capability } = params ?? {};
     return this._client.post(__scalarPath`/v1/integrations/${integrationID}/authorize`, {
-      query: { returnUrl },
+      query: { returnUrl, capability },
       ...options,
     });
   }
@@ -734,6 +742,7 @@ export interface IntegrationAuthorizeParams {
    * @maxLength 8192
    */
   returnUrl?: string;
+  capability?: 'confluenceTriggers';
 }
 
 export interface IntegrationAuthorizeResponse {
@@ -945,6 +954,10 @@ export declare namespace Integrations {
   export {
     Triggers as Triggers,
     type TriggerListResponse as TriggerListResponse,
+    type TriggerRetrieveResponse as TriggerRetrieveResponse,
+    type TriggerListFilterOptionsResponse as TriggerListFilterOptionsResponse,
     type TriggerListParams as TriggerListParams,
+    type TriggerRetrieveParams as TriggerRetrieveParams,
+    type TriggerListFilterOptionsParams as TriggerListFilterOptionsParams,
   };
 }

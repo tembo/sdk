@@ -282,6 +282,12 @@ test('live helpers are reattached after regeneration, including new generated li
   const updated = attachLiveResource(client, 'client');
   assert.match(updated, /live: PublicLive = new PublicLive\(this\)/);
   assert.equal(attachLiveResource(updated, 'client'), updated);
+  const merged =
+    "import { Live as PublicLive } from './live';\nimport { Live } from './resources/live/live';\nexport class Tembo {\n  live: PublicLive = new PublicLive(this);\n  apiKey: string;\n  live: Live = new Live(this);\n}\n";
+  const deduped = attachLiveResource(merged, 'client');
+  assert.equal(deduped.match(/^ {2}live: /gm).length, 1);
+  assert.match(deduped, /live: PublicLive = new PublicLive\(this\)/);
+  assert.equal(attachLiveResource(deduped, 'client'), deduped);
   const sessions = 'import { APIResource } from "./resource";\nexport class Sessions extends APIResource {}';
   const expanded = attachLiveResource(sessions, 'sessions');
   assert.match(expanded, /events: PublicSessionEvents/);
@@ -319,5 +325,34 @@ test('the subscription timeout also bounds a stalled ticket request', async () =
     assert.ok(Date.now() - started < 2000);
   } finally {
     await close();
+  }
+});
+
+test('the generated live socket delivers each /v1/live event frame once', async () => {
+  const { LiveWS } = await import('../dist/esm/resources/live/ws.js');
+  const server = createServer();
+  const wss = new WebSocketServer({ server });
+  wss.on('connection', (socket) => socket.send(JSON.stringify({ id: 'events', type: 'event', data: delta })));
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const client = new Tembo({ apiKey: 'test-key', baseURL: `http://127.0.0.1:${server.address().port}` });
+  const socket = new LiveWS(client, { ticket: 'ticket' });
+  let events = 0;
+  socket.on('event', () => events++);
+  const messages = [];
+  try {
+    for await (const message of socket) {
+      messages.push(message.type);
+      if (message.type === 'message') setTimeout(() => socket.close(), 50);
+    }
+    assert.equal(events, 1);
+    assert.deepEqual(
+      messages.filter((type) => type === 'message'),
+      ['message'],
+    );
+  } finally {
+    socket.close();
+    for (const connection of wss.clients) connection.terminate();
+    await new Promise((resolve) => wss.close(resolve));
+    await new Promise((resolve) => server.close(resolve));
   }
 });

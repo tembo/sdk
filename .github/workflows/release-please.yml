@@ -51,18 +51,44 @@ jobs:
       # version bump and changelog must also land back on scalar-next, or the next
       # release PR would propose this release again. A real merge (never a plain
       # commit push) so a squash- or rebase-merged release PR syncs just as well; the
-      # non-conventional message keeps the sync commit out of future changelogs. Plain
-      # (non-force) push on purpose: losing a race against a concurrent regeneration
-      # push fails loudly here, and the platform's next sync re-converges.
+      # non-conventional message keeps the sync commit out of future changelogs.
+      #
+      # The Scalar platform merges main into scalar-next itself when the release
+      # PR merges, so this step routinely races it. The sync is done once the release commit
+      # is an ancestor of scalar-next, whoever merged it, so that is checked before every
+      # attempt. A rejected push retries from a fresh fetch rather than failing the release
+      # run. Plain (non-force) push on purpose: a concurrent regeneration push is never
+      # discarded, and a sync that still cannot land after the retries fails loudly.
       - name: Sync release back to scalar-next
         if: ${{ steps.release.outputs.release_created == 'true' }}
+        env:
+          RELEASE_SHA: ${{ steps.release.outputs.sha }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag_name }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git fetch origin scalar-next
-          git checkout -B scalar-next origin/scalar-next
-          git merge --no-edit -m "Sync release ${{ steps.release.outputs.tag_name }} back to scalar-next" "${{ steps.release.outputs.sha }}"
-          git push origin scalar-next
+          # Explicit `|| return 1`s because `set -e` does not apply inside a function called
+          # as a condition, and a failed merge must never fall through to a no-op push.
+          sync_release() {
+            git fetch origin scalar-next || return 1
+            if git merge-base --is-ancestor "$RELEASE_SHA" origin/scalar-next; then
+              echo "$RELEASE_TAG is already on scalar-next."
+              return 0
+            fi
+            git checkout -B scalar-next origin/scalar-next || return 1
+            if ! git merge --no-edit -m "Sync release $RELEASE_TAG back to scalar-next" "$RELEASE_SHA"; then
+              git merge --abort
+              return 1
+            fi
+            git push origin scalar-next
+          }
+          for attempt in 1 2 3; do
+            if sync_release; then exit 0; fi
+            echo "Attempt $attempt of 3 to sync $RELEASE_TAG back to scalar-next failed."
+            if [ "$attempt" -lt 3 ]; then sleep $((attempt * 5)); fi
+          done
+          echo "::error::Could not sync $RELEASE_TAG back to scalar-next after 3 attempts."
+          exit 1
   publish:
     needs: release-please
     # `!cancelled()` keeps publishing even when the back-sync to the integration branch

@@ -37,10 +37,17 @@ import {
   Settings,
   type SettingRetrieveResponse,
   type SettingUpdateResponse,
+  type SettingValidateCredentialsResponse,
   type SettingUpdateParams,
+  type SettingValidateCredentialsParams,
 } from './settings';
-import * as SubscriptionsAPI from './subscriptions/subscriptions';
-import { Subscriptions } from './subscriptions/subscriptions';
+import * as SubscriptionsAPI from './subscriptions';
+import {
+  Subscriptions,
+  type SubscriptionRetrieveResponse,
+  type SubscriptionResetResponse,
+  type SubscriptionResetParams,
+} from './subscriptions';
 
 export class Organizations extends APIResource {
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
@@ -266,8 +273,15 @@ export declare namespace Organizations {
     Settings as Settings,
     type SettingRetrieveResponse as SettingRetrieveResponse,
     type SettingUpdateResponse as SettingUpdateResponse,
+    type SettingValidateCredentialsResponse as SettingValidateCredentialsResponse,
     type SettingUpdateParams as SettingUpdateParams,
+    type SettingValidateCredentialsParams as SettingValidateCredentialsParams,
   };
 
-  export { Subscriptions as Subscriptions };
+  export {
+    Subscriptions as Subscriptions,
+    type SubscriptionRetrieveResponse as SubscriptionRetrieveResponse,
+    type SubscriptionResetResponse as SubscriptionResetResponse,
+    type SubscriptionResetParams as SubscriptionResetParams,
+  };
 }

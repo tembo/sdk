@@ -50,7 +50,7 @@ Method names, parameter shapes, and response types are generated from the API de
 WebSocket endpoints open a persistent connection you can send messages to and receive messages from.
 
 ```ts
-const connection = client.messages.live.connect({
+const connection = client.live.connect({
   ticket: 'ticket',
 });
 

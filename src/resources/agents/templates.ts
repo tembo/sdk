@@ -4,7 +4,7 @@ import { APIResource } from '../../resource';
 import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
 import { path as __scalarPath } from '../../internal/utils/path';
-import type * as MessagesAPI from '../messages/messages';
+import type * as MessagesAPI from '../messages';
 
 export class Templates extends APIResource {
   /**
@@ -111,6 +111,10 @@ export namespace TriggerFilters {
      * Only trigger if the comment contains one of these substrings
      */
     messageContains?: Array<string>;
+    /**
+     * Only trigger if the issue has at least one of the specified labels
+     */
+    labels?: Array<string>;
   }
 
   export interface TriggerFiltersItem4 extends AtlassianIssueCreatedFilters {}

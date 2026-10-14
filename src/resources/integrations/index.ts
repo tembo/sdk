@@ -32,4 +32,11 @@ export type {
   ProviderDiscoverSnykOrganizationsResponse,
 } from './providers';
 export { Triggers } from './triggers';
-export type { TriggerListParams, TriggerListResponse } from './triggers';
+export type {
+  TriggerListParams,
+  TriggerListResponse,
+  TriggerRetrieveParams,
+  TriggerRetrieveResponse,
+  TriggerListFilterOptionsParams,
+  TriggerListFilterOptionsResponse,
+} from './triggers';
