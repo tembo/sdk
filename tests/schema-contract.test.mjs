@@ -52,12 +52,8 @@ test('SDK mappings cover current manually reviewed operations', () => {
       '/v1/users/{userId}/settings': { get: {}, patch: {} },
       '/v1/users/{userId}/connected-accounts': { get: {} },
       '/v1/users/{userId}/connected-accounts/{connectedAccountId}': { get: {} },
-      '/v1/users/{userId}/subscriptions/chatgpt': { get: {} },
-      '/v1/users/{userId}/subscriptions/chatgpt/usage': { get: {} },
-      '/v1/users/{userId}/subscriptions/chatgpt/usage/reset': { post: {} },
-      '/v1/users/{userId}/subscriptions/claude': { get: {} },
-      '/v1/users/{userId}/subscriptions/claude/usage': { get: {} },
-      '/v1/users/{userId}/subscriptions/supergrok': { get: {} },
+      '/v1/users/{userId}/subscriptions': { get: {} },
+      '/v1/users/{userId}/subscriptions/reset': { post: {} },
       '/v1/users/{userId}/profile-picture': { get: {}, put: {}, delete: {} },
       '/v1/sessions/{sessionId}/fork': { post: {} },
       '/v1/runtimes': { get: {} },
@@ -85,24 +81,20 @@ test('subscription mappings cover user and organization reads and preserve reset
     validateCoverage(
       {
         paths: {
-          [`${prefix}/chatgpt`]: { get: {} },
-          [`${prefix}/chatgpt/usage`]: { get: {} },
-          [`${prefix}/chatgpt/usage/reset`]: { post: {} },
-          [`${prefix}/claude`]: { get: {} },
-          [`${prefix}/claude/usage`]: { get: {} },
-          [`${prefix}/supergrok`]: { get: {} },
+          [prefix]: { get: {} },
+          [`${prefix}/reset`]: { post: {} },
         },
       },
       { resources: { subscriptions } },
     );
-    assert.equal(subscriptions.subresources.chatgpt.methods.reset_usage.bodyParamName, 'body');
-    assert.equal(subscriptions.subresources.chatgpt.methods.reset_usage.kind, 'http');
-    assert.equal(subscriptions.subresources.chatgpt.methods.reset_usage.verb, 'post');
-    assert.equal(
-      subscriptions.subresources.chatgpt.methods.reset_usage.path,
-      `${prefix}/chatgpt/usage/reset`,
-    );
+    assert.equal(subscriptions.methods.reset.bodyParamName, 'body');
+    assert.equal(subscriptions.methods.reset.kind, 'http');
+    assert.equal(subscriptions.methods.reset.verb, 'post');
+    assert.equal(subscriptions.methods.reset.path, `${prefix}/reset`);
   }
+  const validate = sdkConfig.resources.organizations.subresources.settings.methods.validate_credentials;
+  assert.equal(validate.bodyParamName, 'body');
+  assert.equal(validate.path, '/v1/organizations/{organizationId}/settings/validate-credentials');
 });
 
 test('agent content revision mappings cover reads and preserve the restore request body', () => {
@@ -155,6 +147,8 @@ test('integration mappings cover management routes and preserve request bodies',
         '/v1/integrations/providers': { get: {} },
         '/v1/integrations/providers/snyk/organizations': { post: {} },
         '/v1/integrations/triggers': { get: {} },
+        [`${prefix}/triggers/{triggerName}`]: { get: {} },
+        [`${prefix}/triggers/{triggerName}/filter-options/{field}`]: { get: {} },
         [prefix]: { get: {}, patch: {}, delete: {} },
         [`${prefix}/authorize`]: { post: {} },
         [`${prefix}/test`]: { post: {} },
@@ -178,42 +172,40 @@ test('integration mappings cover management routes and preserve request bodies',
   }
 });
 
-test('live message mappings use a WebSocket handshake and repository updates preserve request bodies', () => {
+test('public live mappings use a WebSocket handshake and repository updates preserve request bodies', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
-  const live = sdkConfig.resources.messages.subresources.live;
+  const live = sdkConfig.resources.live;
   const repositories = sdkConfig.resources.repositories;
   validateCoverage(
     {
       paths: {
-        '/v1/messages/live': { get: {}, post: {} },
+        '/v1/live': { get: {}, post: {} },
         '/v1/repositories': { get: {} },
         '/v1/repositories/{repositoryId}': { get: {}, patch: {} },
       },
     },
     { resources: { live, repositories } },
   );
-  assert.equal(live.methods.authorize.bodyParamName, 'body');
+  assert.equal(sdkConfig.resources.messages.subresources?.live, undefined);
+  assert.equal(sdkConfig.resources.sessions.subresources?.live, undefined);
+  assert.equal(live.methods.authorize.verb, 'post');
   assert.equal(live.methods.connect.kind, 'websocket');
   assert.equal(live.methods.connect.verb, 'get');
   assert.equal(repositories.methods.update.verb, 'patch');
   assert.equal(repositories.methods.update.bodyParamName, 'body');
 });
 
-test('session live and profile picture mappings use a WebSocket handshake and preserve request bodies', () => {
+test('profile picture mappings preserve request bodies', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
-  const live = sdkConfig.resources.sessions.subresources.live;
   const profilePicture = sdkConfig.resources.users.subresources.profile_picture;
   validateCoverage(
     {
       paths: {
-        '/v1/sessions/live': { get: {}, post: {} },
         '/v1/users/{userId}/profile-picture': { get: {}, put: {}, delete: {} },
       },
     },
-    { resources: { live, profilePicture } },
+    { resources: { profilePicture } },
   );
-  assert.equal(live.methods.authorize.bodyParamName, 'body');
-  assert.equal(live.methods.connect.kind, 'websocket');
   assert.equal(profilePicture.methods.update.verb, 'put');
   assert.equal(profilePicture.methods.update.bodyParamName, 'body');
 });

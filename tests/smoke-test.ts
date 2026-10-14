@@ -994,39 +994,6 @@ const cases: {
   },
 
   {
-    operation: 'authorize',
-    method: 'POST',
-    path: '/v1/messages/live',
-    run: async () => {
-      const live = await client.messages.live.authorize({
-        scope: {
-          sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        },
-      });
-    },
-  },
-
-  {
-    operation: 'connect',
-    method: 'GET',
-    path: '/v1/messages/live',
-    run: async () => {
-      const socket = client.messages.live.connect({
-        ticket: 'ticket',
-      });
-      try {
-        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
-        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
-        for await (const message of socket) {
-          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
-        }
-      } finally {
-        socket.close();
-      }
-    },
-  },
-
-  {
     operation: 'list',
     method: 'GET',
     path: '/v1/models',
@@ -1577,39 +1544,6 @@ const cases: {
       const diff = await client.sessions.diffs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
       });
-    },
-  },
-
-  {
-    operation: 'authorize',
-    method: 'POST',
-    path: '/v1/sessions/live',
-    run: async () => {
-      const live = await client.sessions.live.authorize({
-        scope: {
-          sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        },
-      });
-    },
-  },
-
-  {
-    operation: 'connect',
-    method: 'GET',
-    path: '/v1/sessions/live',
-    run: async () => {
-      const socket = client.sessions.live.connect({
-        ticket: 'ticket',
-      });
-      try {
-        // Stop at the first proof a side works: the server accepted the upgrade (`open`) or sent a
-        // payload (`message`/`raw`). Leaving the socket open would keep the process alive.
-        for await (const message of socket) {
-          if (message.type === 'open' || message.type === 'message' || message.type === 'raw') break;
-        }
-      } finally {
-        socket.close();
-      }
     },
   },
 

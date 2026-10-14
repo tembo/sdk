@@ -5,17 +5,8 @@ import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
 import { path as __scalarPath } from '../../internal/utils/path';
 import type * as AgentsAPI from '../agents/agents';
-import * as LiveAPI from './live/live';
-import {
-  Live,
-  type LiveAuthorizeResponse,
-  type LiveAuthorizeParams,
-  type LiveConnectParams,
-} from './live/live';
 
 export class Messages extends APIResource {
-  live: LiveAPI.Live = new LiveAPI.Live(this._client);
-
   /**
    * List organization messages with optional session and thread filters.
    *
@@ -737,7 +728,6 @@ export interface MessageDeleteResponse {
    */
   id: string;
 }
-Messages.Live = Live;
 
 export declare namespace Messages {
   export {
@@ -763,12 +753,5 @@ export declare namespace Messages {
     type MessageListParams as MessageListParams,
     type MessageCreateParams as MessageCreateParams,
     type MessageUpdateParams as MessageUpdateParams,
-  };
-
-  export {
-    Live as Live,
-    type LiveAuthorizeResponse as LiveAuthorizeResponse,
-    type LiveAuthorizeParams as LiveAuthorizeParams,
-    type LiveConnectParams as LiveConnectParams,
   };
 }

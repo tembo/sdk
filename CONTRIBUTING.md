@@ -39,13 +39,13 @@ For an authenticated, read-only dev check, export a dev `TEMBO_API_KEY` and run 
 
 The SDK defaults to `https://api.tembo.io`; the optional dev smoke test overrides that default explicitly. Generation versions are independent of npm release versions. Merging a release PR triggers npm publishing.
 
-## Automated updates
+## Release maintenance
 
-Production API deployments trigger schema validation and upload only when the contract changes. New or removed endpoints require a mapping review. Scalar follows registry versions `2.0.x` to generate release PRs; successful npm publication triggers a docs update PR. Neither PR is auto-merged.
+Schema updates are manual, reviewed work. Production deployments no longer dispatch schema-update workflows, and SDK publication no longer dispatches a docs-update workflow. After a production API release, follow the steps in [Update the schema and regenerate](#update-the-schema-and-regenerate).
 
-After reviewing and committing mapping changes to `scalar-next`, manually run `Update production OpenAPI` from that branch with `dry_run: false` and `apply_mappings: true`. This applies the reviewed configuration to Scalar and rebuilds the SDK. The flag defaults to false; production deployment events never update Scalar mappings automatically.
+New or removed endpoints require a mapping review. Commit reviewed mapping and test changes to `scalar-next` before applying them to Scalar, then commit the refreshed schema snapshot after Scalar generation. Scalar generation and its release PR remain the SDK publishing path; do not create a competing generated release or upload unreviewed mappings.
 
-Verify from `main` with a manual OpenAPI run using `force: true` and `dry_run: true`, then `dry_run: false` to seed generation. Manual workflow runs also recover missed events; no enable flags are needed.
+The schema scripts, contract checks, and release/publishing workflows remain available. Docs examples must be generated from an actually published npm version, not an SDK update PR. No maintenance PR is auto-merged.
 
 ## Why schema preparation exists
 

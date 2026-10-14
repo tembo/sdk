@@ -138,34 +138,25 @@
               "verb": "patch",
               "path": "/v1/organizations/{organizationId}/settings",
               "bodyParamName": "body"
+            },
+            "validate_credentials": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/settings/validate-credentials",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/settings/validate-credentials",
+              "bodyParamName": "body"
             }
           }
         },
         "subscriptions": {
-          "subresources": {
-            "chatgpt": {
-              "methods": {
-                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/chatgpt",
-                "retrieve_usage": "get /v1/organizations/{organizationId}/subscriptions/chatgpt/usage",
-                "reset_usage": {
-                  "kind": "http",
-                  "endpoint": "post /v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset",
-                  "verb": "post",
-                  "path": "/v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset",
-                  "bodyParamName": "body"
-                }
-              }
-            },
-            "claude": {
-              "methods": {
-                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/claude",
-                "retrieve_usage": "get /v1/organizations/{organizationId}/subscriptions/claude/usage"
-              }
-            },
-            "supergrok": {
-              "methods": {
-                "retrieve": "get /v1/organizations/{organizationId}/subscriptions/supergrok"
-              }
+          "methods": {
+            "retrieve": "get /v1/organizations/{organizationId}/subscriptions",
+            "reset": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/subscriptions/reset",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/subscriptions/reset",
+              "bodyParamName": "body"
             }
           }
         }
@@ -232,25 +223,7 @@
         },
         "delete": "delete /v1/messages/{messageId}"
       },
-      "subresources": {
-        "live": {
-          "methods": {
-            "authorize": {
-              "kind": "http",
-              "endpoint": "post /v1/messages/live",
-              "verb": "post",
-              "path": "/v1/messages/live",
-              "bodyParamName": "body"
-            },
-            "connect": {
-              "kind": "websocket",
-              "endpoint": "get /v1/messages/live",
-              "verb": "get",
-              "path": "/v1/messages/live"
-            }
-          }
-        }
-      }
+      "subresources": {}
     },
     "models": {
       "methods": {
@@ -301,30 +274,14 @@
           }
         },
         "subscriptions": {
-          "subresources": {
-            "chatgpt": {
-              "methods": {
-                "retrieve": "get /v1/users/{userId}/subscriptions/chatgpt",
-                "retrieve_usage": "get /v1/users/{userId}/subscriptions/chatgpt/usage",
-                "reset_usage": {
-                  "kind": "http",
-                  "endpoint": "post /v1/users/{userId}/subscriptions/chatgpt/usage/reset",
-                  "verb": "post",
-                  "path": "/v1/users/{userId}/subscriptions/chatgpt/usage/reset",
-                  "bodyParamName": "body"
-                }
-              }
-            },
-            "claude": {
-              "methods": {
-                "retrieve": "get /v1/users/{userId}/subscriptions/claude",
-                "retrieve_usage": "get /v1/users/{userId}/subscriptions/claude/usage"
-              }
-            },
-            "supergrok": {
-              "methods": {
-                "retrieve": "get /v1/users/{userId}/subscriptions/supergrok"
-              }
+          "methods": {
+            "retrieve": "get /v1/users/{userId}/subscriptions",
+            "reset": {
+              "kind": "http",
+              "endpoint": "post /v1/users/{userId}/subscriptions/reset",
+              "verb": "post",
+              "path": "/v1/users/{userId}/subscriptions/reset",
+              "bodyParamName": "body"
             }
           }
         },
@@ -387,23 +344,6 @@
           "methods": {
             "list": "get /v1/sessions/{sessionId}/diffs",
             "retrieve": "get /v1/sessions/{sessionId}/diffs/{diffId}"
-          }
-        },
-        "live": {
-          "methods": {
-            "authorize": {
-              "kind": "http",
-              "endpoint": "post /v1/sessions/live",
-              "verb": "post",
-              "path": "/v1/sessions/live",
-              "bodyParamName": "body"
-            },
-            "connect": {
-              "kind": "websocket",
-              "endpoint": "get /v1/sessions/live",
-              "verb": "get",
-              "path": "/v1/sessions/live"
-            }
           }
         }
       }
@@ -707,7 +647,9 @@
         },
         "triggers": {
           "methods": {
-            "list": "get /v1/integrations/triggers"
+            "list": "get /v1/integrations/triggers",
+            "retrieve": "get /v1/integrations/{integrationId}/triggers/{triggerName}",
+            "list_filter_options": "get /v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}"
           }
         }
       }
@@ -716,6 +658,22 @@
       "methods": {
         "retrieve": "get /v1/billing",
         "list_usage": "get /v1/billing/usage"
+      }
+    },
+    "live": {
+      "methods": {
+        "authorize": {
+          "kind": "http",
+          "endpoint": "post /v1/live",
+          "verb": "post",
+          "path": "/v1/live"
+        },
+        "connect": {
+          "kind": "websocket",
+          "endpoint": "get /v1/live",
+          "verb": "get",
+          "path": "/v1/live"
+        }
       }
     }
   },

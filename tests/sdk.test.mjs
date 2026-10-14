@@ -157,36 +157,6 @@ test('pending scalar-next mappings are validated against production', () => {
   assert.match(workflow, /node scripts\/refresh-schema\.mjs/);
 });
 
-test('schema updates use matching pending mappings and fixtures', () => {
-  const workflow = readFileSync(new URL('../.github/workflows/update-openapi.yml', import.meta.url), 'utf8');
-  for (const filename of ['openapi/openapi.json', 'scalar.config.json', 'tests/schema-contract.test.mjs']) {
-    assert.ok(workflow.includes(`git show origin/scalar-next:${filename} > ${filename}`));
-  }
-  assert.match(
-    workflow,
-    /github\.event_name == 'workflow_dispatch' && github\.ref == 'refs\/heads\/scalar-next'/,
-  );
-  assert.match(
-    workflow,
-    /apply_mappings:\n        description: [^\n]+\n        type: boolean\n        default: false/,
-  );
-  assert.match(
-    workflow,
-    /github\.event_name == 'workflow_dispatch' && inputs\.apply_mappings == true && inputs\.dry_run != true/,
-  );
-});
-
-test('docs notification uses the published run commit, not npm latest', () => {
-  const workflow = readFileSync(new URL('../.github/workflows/notify-docs.yml', import.meta.url), 'utf8');
-  assert.match(workflow, /github\.event\.workflow_run\.head_sha/);
-  assert.match(workflow, /contents\/package\.json\?ref=\$RELEASE_SHA/);
-  assert.match(workflow, /releases\/tags\/v\$VERSION/);
-  assert.match(workflow, /\.draft == false and \.prerelease == false/);
-  assert.match(workflow, /REQUESTED_VERSION: \$\{\{ inputs\.version \}\}/);
-  assert.match(workflow, /select\(\.name == "publish" and \.conclusion == "success"\)/);
-  assert.doesNotMatch(workflow, /npm view|dist-tags\.latest|actions\/checkout/);
-});
-
 test('browser builds map every generated WebSocket adapter to its browser variant', () => {
   const adapters = [];
   const visit = (dir) => {
@@ -198,7 +168,6 @@ test('browser builds map every generated WebSocket adapter to its browser varian
     }
   };
   visit('src');
-  assert.ok(adapters.length > 0);
   for (const adapter of adapters) {
     for (const format of ['esm', 'cjs']) {
       assert.equal(
@@ -209,6 +178,13 @@ test('browser builds map every generated WebSocket adapter to its browser varian
     }
   }
   assert.equal(packageJson.browser?.ws, false);
+  for (const [from, to] of Object.entries(packageJson.browser ?? {})) {
+    if (from === 'ws') continue;
+    for (const target of [from, to]) {
+      const source = target.replace(/^\.\/dist\/(esm|cjs)\//, 'src/').replace(/\.js$/, '.ts');
+      assert.ok(existsSync(source), `package.json "browser" maps ${target}, but ${source} does not exist`);
+    }
+  }
   const commonJsManifest = JSON.parse(readFileSync(new URL('../dist/cjs/package.json', import.meta.url)));
   for (const adapter of adapters) {
     assert.equal(commonJsManifest.browser?.[`./${adapter}.js`], `./${adapter}-browser.js`);

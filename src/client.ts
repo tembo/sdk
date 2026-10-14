@@ -1,5 +1,6 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
+import { Live as PublicLive } from './live';
 import { APIPromise, type APIResponseProps } from './api-promise';
 import * as Errors from './error';
 import { uuid4 } from './internal/utils/uuid';
@@ -303,6 +304,7 @@ export type TemboOptions = ClientOptions;
  * API Client for interfacing with the TemboPublicApi API.
  */
 export class Tembo {
+  live: PublicLive = new PublicLive(this);
   apiKey: string | AuthTokenProvider;
 
   baseURL: string;
