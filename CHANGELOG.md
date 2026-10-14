@@ -1,5 +1,80 @@
 # Changelog
 
+## [0.11.0](https://github.com/tembo/sdk/compare/v0.10.0...v0.11.0) (2026-10-14)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 17 breaking changes to the SDK surface.
+    - Removed operation `organizations.subscriptions.chatgpt.retrieve` (`GET /v1/organizations/{organizationId}/subscriptions/chatgpt`).
+    - Removed operation `organizations.subscriptions.chatgpt.retrieveUsage` (`GET /v1/organizations/{organizationId}/subscriptions/chatgpt/usage`).
+    - Removed operation `organizations.subscriptions.chatgpt.resetUsage` (`POST /v1/organizations/{organizationId}/subscriptions/chatgpt/usage/reset`).
+    - Removed operation `organizations.subscriptions.claude.retrieve` (`GET /v1/organizations/{organizationId}/subscriptions/claude`).
+    - Removed operation `organizations.subscriptions.claude.retrieveUsage` (`GET /v1/organizations/{organizationId}/subscriptions/claude/usage`).
+    - Removed operation `organizations.subscriptions.supergrok.retrieve` (`GET /v1/organizations/{organizationId}/subscriptions/supergrok`).
+    - Removed operation `messages.live.authorize` (`POST /v1/messages/live`).
+    - Removed operation `messages.live.connect` (`GET /v1/messages/live`).
+    - Removed operation `users.subscriptions.chatgpt.retrieve` (`GET /v1/users/{userId}/subscriptions/chatgpt`).
+    - Removed operation `users.subscriptions.chatgpt.retrieveUsage` (`GET /v1/users/{userId}/subscriptions/chatgpt/usage`).
+    - Removed operation `users.subscriptions.chatgpt.resetUsage` (`POST /v1/users/{userId}/subscriptions/chatgpt/usage/reset`).
+    - Removed operation `users.subscriptions.claude.retrieve` (`GET /v1/users/{userId}/subscriptions/claude`).
+    - Removed operation `users.subscriptions.claude.retrieveUsage` (`GET /v1/users/{userId}/subscriptions/claude/usage`).
+    - Removed operation `users.subscriptions.supergrok.retrieve` (`GET /v1/users/{userId}/subscriptions/supergrok`).
+    - Removed operation `sessions.live.authorize` (`POST /v1/sessions/live`).
+    - Removed operation `sessions.live.connect` (`GET /v1/sessions/live`).
+    - Schema `trigger_filters` shape changed.
+* **api:** Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** add operation messages.live.authorize (+16 more changes) ([5a54c00](https://github.com/tembo/sdk/commit/5a54c0085f4e0350ce623af52ddc47b9cdf9da80))
+* **api:** add operation users.profilePicture.retrieve (+5 more changes) ([ca6fe07](https://github.com/tembo/sdk/commit/ca6fe07b06f404b01c9097805e8ab515a4a2e4fe))
+* **api:** update schema trigger_filters (+2 more changes) ([6a65989](https://github.com/tembo/sdk/commit/6a659899232279395fe2f17e04ad8e0b7917ccea))
+* **api:** update SDK surface (2 changes) ([89d2e6b](https://github.com/tembo/sdk/commit/89d2e6b3dd94448d5ad7eb8c4be91984a044480f))
+* **api:** update SDK surface (46 changes) ([a17648c](https://github.com/tembo/sdk/commit/a17648c3459e09e32059da6e4d971795b2f5bd0a))
+* **sdk:** subscribe to public sessions.events live output ([05412e0](https://github.com/tembo/sdk/commit/05412e0c87415991396ec4328f753353e6c58c2a))
+* **sdk:** subscribe to public sessions.events live output ([77b15b0](https://github.com/tembo/sdk/commit/77b15b0b4f5fdc00c361c43a0fad01baeebc847a))
+
+
+### Bug Fixes
+
+* **sdk:** bound live ticket requests by the subscription timeout ([c4fed49](https://github.com/tembo/sdk/commit/c4fed49ec34fed319fafff42d613b59c630d446b))
+* **sdk:** carry browser mappings into the CommonJS manifest ([17061e2](https://github.com/tembo/sdk/commit/17061e2abbc17f672d016b5714d4f031ef585999))
+* **sdk:** deliver each /v1/live event frame once ([973b9af](https://github.com/tembo/sdk/commit/973b9af1afe20a5854580e45c719f9c92921d081))
+* **sdk:** generate live message connect as a WebSocket ([7e6a873](https://github.com/tembo/sdk/commit/7e6a873324aa2d960169bf85b550f91db25934d7))
+* **sdk:** lock generated WebSocket dependencies ([d913bd3](https://github.com/tembo/sdk/commit/d913bd319960b235c54070d6018315d87ae08bf2))
+* **sdk:** lock generated WebSocket dependencies ([742de4f](https://github.com/tembo/sdk/commit/742de4fbaa8c210b3c0f3cf0b7895977ba790a89))
+* **sdk:** map consolidated subscription and credential APIs ([891c01b](https://github.com/tembo/sdk/commit/891c01b1ea2151ec7a37b23263e32986a5166547))
+* **sdk:** map integration management and live message APIs ([0cafddf](https://github.com/tembo/sdk/commit/0cafddf3ba8585910fd2fd3c57db9ad741de0b9c))
+* **sdk:** map integration management and live message APIs ([a61d176](https://github.com/tembo/sdk/commit/a61d1766654f4ad6af9d2894629d12d5d39dbc2c))
+* **sdk:** map live session and profile picture APIs ([884e0a9](https://github.com/tembo/sdk/commit/884e0a971f5447b48217c7b4945020dc5f035c21))
+* **sdk:** map live session and profile picture APIs ([c73b508](https://github.com/tembo/sdk/commit/c73b5089380983fd5ad40bc65caf15654122dd12))
+* **sdk:** map public live resource and integration trigger routes ([95b0423](https://github.com/tembo/sdk/commit/95b04231da44c7a043a9fcaf900f79a651a3a569))
+* **sdk:** map session live WebSocket adapter for browsers ([f491985](https://github.com/tembo/sdk/commit/f491985b73de0b74a6292c8e873c023c131b65b6))
+* **sdk:** map session live WebSocket adapter for browsers ([eea9856](https://github.com/tembo/sdk/commit/eea9856a302d0b434ac968e7d9bfea913ab8e83b))
+* **sdk:** re-authorize live message reconnects with fresh tickets ([2af69ab](https://github.com/tembo/sdk/commit/2af69ab5eb00e0337a898114072a6ecc117e713c))
+* **sdk:** re-authorize live message reconnects with fresh tickets ([8cf16d9](https://github.com/tembo/sdk/commit/8cf16d931c423ba745bba34baf3e7fab817343c2))
+* **sdk:** remove internal-only messages and sessions live clients ([9956f0e](https://github.com/tembo/sdk/commit/9956f0ed84649b77659f595277a81cf5b68c9f38))
+* **sdk:** ship WebSocket types and browser adapter mapping ([28a2098](https://github.com/tembo/sdk/commit/28a20989986585989dd537ce5bb334ec469cbbb7))
+* **sdk:** ship WebSocket types and browser adapter mapping ([3699cc2](https://github.com/tembo/sdk/commit/3699cc2c800225b097c6ca764bff7e79c73a40c9))
+* **sdk:** stop live subscriptions promptly on abort ([227f745](https://github.com/tembo/sdk/commit/227f74568a2fad326c25772bc8523ff444aad7ac))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([ef59e1a](https://github.com/tembo/sdk/commit/ef59e1a92253c50a8ccff20e690c6985f5a6e0ac))
+* **api:** sync production OpenAPI snapshot ([6968f02](https://github.com/tembo/sdk/commit/6968f02f38a256c087a9e38d6001b5d9e97db1d9))
+* **api:** sync production OpenAPI snapshot ([f4a18a6](https://github.com/tembo/sdk/commit/f4a18a68aee228c6279fdb81e37f97daed06316a))
+* **ci:** remove automated API release updates ([dcb96db](https://github.com/tembo/sdk/commit/dcb96db4005c74bfd14ec42d779a94fc385cbb78))
+* **ci:** remove automated API release updates ([91b431a](https://github.com/tembo/sdk/commit/91b431a8c54d64de62a8ab8aa7e22367c1707828))
+
+
+### Documentation
+
+* commit schema snapshot after Scalar generation ([ea4b7b8](https://github.com/tembo/sdk/commit/ea4b7b8512b3fc151146b53adbeea67529286928))
+* describe manual schema updates ([17a94d2](https://github.com/tembo/sdk/commit/17a94d21dc2c8e02bacee701fd77cfd63448fdae))
+* **sdk:** document live message subscriptions ([b86cc0a](https://github.com/tembo/sdk/commit/b86cc0a2c013d61a527a14d39eb7a597bd664321))
+
 ## [0.10.0](https://github.com/tembo/sdk/compare/v0.9.0...v0.10.0) (2026-10-08)
 
 
