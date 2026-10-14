@@ -2,7 +2,7 @@
 
 ## Reporting Security Issues
 
-This is a generated TypeScript SDK for Tembo Public API, produced by the Scalar SDK Generator (https://scalar.com).
+This is a generated TypeScript SDK for Tembo SDK, produced by the Scalar SDK Generator (https://scalar.com).
 
 If the issue is in the generated SDK itself — its runtime, authentication handling, path construction, or serialization — report it to the Scalar team at support@scalar.com. We will acknowledge the report, triage it for severity and impact, and communicate a timeline for a fix or an explanation if we decline it.
 
@@ -12,7 +12,7 @@ Please allow us reasonable time to investigate and address the issue before disc
 
 ## Reporting Non-SDK Security Issues
 
-If the issue is in the Tembo Public API or service rather than in this SDK, report it through the security process Tembo Public API has published.
+If the issue is in the Tembo SDK API or service rather than in this SDK, report it through the security process Tembo SDK has published.
 
 ---
 

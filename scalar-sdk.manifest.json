@@ -1,6 +1,6 @@
 {
-  "name": "TemboPublicApi",
-  "slug": "temboPublicApi",
+  "name": "TemboSdk",
+  "slug": "temboSdk",
   "generatorVersion": "0.36.5",
   "servers": [
     "https://api.tembo.io/"

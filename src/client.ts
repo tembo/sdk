@@ -301,7 +301,7 @@ export interface ClientOptions {
 export type TemboOptions = ClientOptions;
 
 /**
- * API Client for interfacing with the TemboPublicApi API.
+ * API Client for interfacing with the TemboSdk API.
  */
 export class Tembo {
   apiKey: string | AuthTokenProvider;
@@ -320,7 +320,7 @@ export class Tembo {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the TemboPublicApi API.
+   * API Client for interfacing with the TemboSdk API.
    *
    * @param {string | AuthTokenProvider | undefined} [opts.apiKey=process.env["TEMBO_API_KEY"] ?? undefined]
    * @param {string} [opts.baseURL=process.env["TEMBO_BASE_URL"] ?? https://api.tembo.io] - Override the default base URL for the API.

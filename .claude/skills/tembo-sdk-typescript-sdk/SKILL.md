@@ -1,11 +1,11 @@
 ---
-name: tembo-public-api-typescript-sdk
-description: "TypeScript SDK for Tembo Public API. Use when writing TypeScript code that calls Tembo Public API with the @tembo-io/sdk package: installing it, constructing and authenticating the client, and calling API operations."
+name: tembo-sdk-typescript-sdk
+description: "TypeScript SDK for Tembo SDK API. Use when writing TypeScript code that calls Tembo SDK API with the @tembo-io/sdk package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
-# Tembo Public API TypeScript SDK
+# Tembo SDK TypeScript SDK
 
-Generated TypeScript client for Tembo Public API, published as `@tembo-io/sdk`. Use the generated client instead of hand-writing HTTP requests.
+Generated TypeScript client for Tembo SDK API, published as `@tembo-io/sdk`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
