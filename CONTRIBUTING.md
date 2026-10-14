@@ -43,7 +43,7 @@ The SDK defaults to `https://api.tembo.io`; the optional dev smoke test override
 
 Schema updates are manual, reviewed work. Production deployments no longer dispatch schema-update workflows, and SDK publication no longer dispatches a docs-update workflow. After a production API release, follow the steps in [Update the schema and regenerate](#update-the-schema-and-regenerate).
 
-New or removed endpoints require a mapping review. Commit reviewed schema, mapping, and test changes to `scalar-next` before applying them to Scalar. Scalar generation and its release PR remain the SDK publishing path; do not create a competing generated release or upload unreviewed mappings.
+New or removed endpoints require a mapping review. Commit reviewed mapping and test changes to `scalar-next` before applying them to Scalar, then commit the refreshed schema snapshot after Scalar generation. Scalar generation and its release PR remain the SDK publishing path; do not create a competing generated release or upload unreviewed mappings.
 
 The schema scripts, contract checks, and release/publishing workflows remain available. Docs examples must be generated from an actually published npm version, not an SDK update PR. No maintenance PR is auto-merged.
 
