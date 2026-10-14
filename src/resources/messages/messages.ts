@@ -7,7 +7,6 @@ import { path as __scalarPath } from '../../internal/utils/path';
 import type * as AgentsAPI from '../agents/agents';
 
 export class Messages extends APIResource {
-
   /**
    * List organization messages with optional session and thread filters.
    *

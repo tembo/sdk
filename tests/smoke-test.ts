@@ -993,8 +993,6 @@ const cases: {
     },
   },
 
-
-
   {
     operation: 'list',
     method: 'GET',
@@ -1548,8 +1546,6 @@ const cases: {
       });
     },
   },
-
-
 
   {
     operation: 'updateDefaults',
