@@ -209,3 +209,29 @@ test('profile picture mappings preserve request bodies', () => {
   assert.equal(profilePicture.methods.update.verb, 'put');
   assert.equal(profilePicture.methods.update.bodyParamName, 'body');
 });
+
+test('pin and project duplicate mappings cover new routes and preserve request bodies', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const pins = sdkConfig.resources.pins;
+  assert.ok(pins);
+  validateCoverage(
+    {
+      paths: {
+        '/v1/pins': { get: {}, post: {} },
+        '/v1/pins/{resourceType}/{resourceId}': { patch: {}, delete: {} },
+        '/v1/projects/{projectId}/duplicate': { post: {} },
+      },
+    },
+    {
+      resources: {
+        pins,
+        projects: { methods: { duplicate: sdkConfig.resources.projects.methods.duplicate } },
+      },
+    },
+  );
+  assert.equal(pins.methods.create.bodyParamName, 'body');
+  assert.equal(pins.methods.update.verb, 'patch');
+  assert.equal(pins.methods.update.path, '/v1/pins/{resourceType}/{resourceId}');
+  assert.equal(pins.methods.update.bodyParamName, 'body');
+  assert.equal(sdkConfig.resources.projects.methods.duplicate, 'post /v1/projects/{projectId}/duplicate');
+});
