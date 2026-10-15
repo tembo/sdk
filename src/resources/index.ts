@@ -24,6 +24,7 @@ export type {
 } from './skills/skills';
 export { Insights } from './insights';
 export type {
+  InsightRetrieveParams,
   InsightRetrieveResponse,
   InsightUpdateParams,
   InsightUpdateResponse,

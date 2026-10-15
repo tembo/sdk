@@ -1094,6 +1094,7 @@ export interface SessionUpdateParams {
   description?: string;
   richContent?: (SessionDocumentNode & MessagesAPI.TipTapDocument) | null;
   /**
+   * Set 0 to archive the session and stop its VM, or 1 to restore it without restarting work. Omit to preserve the current level.
    * @minimum 0
    * @maximum 100
    */

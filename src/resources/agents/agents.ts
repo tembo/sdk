@@ -413,6 +413,7 @@ export interface AgentCreateParams {
     | 'addTestCoverageFromJira'
     | 'autoAgentsMdMaintainer'
     | 'autoDocsMaintainer'
+    | 'publicApiReleaseMaintainer'
     | 'commitOfTheDay'
     | 'customerHealthMonitoringAgent'
     | 'deadCodeCleanup'

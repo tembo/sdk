@@ -8108,19 +8108,34 @@
       "path": "/v1/insights",
       "pathParams": [],
       "publicPathParams": [],
-      "queryParams": [],
-      "publicQueryParams": [],
+      "queryParams": [
+        "range"
+      ],
+      "publicQueryParams": [
+        "range"
+      ],
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [],
       "publicBodyParams": [],
       "bodyParamDetails": [],
       "pathParamDetails": [],
-      "queryParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "range",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "1y"
+        }
+      ],
       "headerParamDetails": [],
       "cookieParams": [],
       "publicCookieParams": [],
       "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "InsightRetrieveParams"
+      },
       "response": {
         "status": "200",
         "contentType": "application/json",
@@ -8295,11 +8310,13 @@
       "publicPathParams": [],
       "queryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "publicQueryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -8320,6 +8337,13 @@
           "style": "form",
           "explode": true,
           "defaultValue": 50
+        },
+        {
+          "name": "range",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "1y"
         }
       ],
       "headerParamDetails": [],
@@ -8398,11 +8422,13 @@
       "publicPathParams": [],
       "queryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "publicQueryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -8423,6 +8449,13 @@
           "style": "form",
           "explode": true,
           "defaultValue": 50
+        },
+        {
+          "name": "range",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "1y"
         }
       ],
       "headerParamDetails": [],
