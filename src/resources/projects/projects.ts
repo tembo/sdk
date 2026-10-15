@@ -173,6 +173,22 @@ export class Projects extends APIResource {
   delete(projectID: string, options?: RequestOptions): APIPromise<ProjectDeleteResponse> {
     return this._client.delete(__scalarPath`/v1/projects/${projectID}`, options);
   }
+
+  /**
+   * Create a new project with the same configuration, environment variables, and schedule as an existing project. Snapshots are not copied.
+   *
+   * @param {string} projectID
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ProjectDuplicateResponse>} Duplicate a project
+   *
+   * @example
+   * ```ts
+   * const project = await client.projects.duplicate('projectId');
+   * ```
+   */
+  duplicate(projectID: string, options?: RequestOptions): APIPromise<ProjectDuplicateResponse> {
+    return this._client.post(__scalarPath`/v1/projects/${projectID}/duplicate`, options);
+  }
 }
 
 export interface ProjectUpdateDefaultsParams {
@@ -672,6 +688,86 @@ export interface ProjectDeleteResponse {
    */
   id: string;
 }
+
+export interface ProjectDuplicateResponse {
+  jobIds: Array<string>;
+  project: ProjectDuplicateResponse.Project;
+}
+
+export namespace ProjectDuplicateResponse {
+  export interface Project {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    description: string | null;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    includeDeps: boolean;
+    includeSkills: boolean;
+    name: string;
+    setupScript: string | null;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    activeSnapshots: Array<Project.ActiveSnapshot>;
+    /**
+     * @maxLength 20000
+     */
+    agentInstructions: string | null;
+    codeRepositoryIds: Array<string> | null;
+    color: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+    defaultForSizes: Array<'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
+    icon:
+      | 'folder'
+      | 'code'
+      | 'terminal'
+      | 'book'
+      | 'brain'
+      | 'bug'
+      | 'building'
+      | 'cloud'
+      | 'globe'
+      | 'idea'
+      | 'tools'
+      | 'magic'
+      | 'processor'
+      | 'sandbox'
+      | 'server'
+      | 'tasks'
+      | 'tactics'
+      | 'images'
+      | 'database'
+      | 'api'
+      | 'mobile'
+      | 'package';
+    /**
+     * True for the project created during onboarding until it is first edited
+     */
+    onboardingDefault: boolean;
+    sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
+    warmPoolEnabled: boolean;
+  }
+
+  export namespace Project {
+    export interface ActiveSnapshot {
+      /**
+       * @minLength 1
+       * @maxLength 255
+       */
+      id: string;
+      size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+      /**
+       * @format date-time
+       */
+      builtAt: string;
+    }
+  }
+}
 Projects.EnvironmentVariables = EnvironmentVariables;
 Projects.Snapshots = Snapshots;
 Projects.Builds = Builds;
@@ -685,6 +781,7 @@ export declare namespace Projects {
     type ProjectRetrieveResponse as ProjectRetrieveResponse,
     type ProjectUpdateResponse as ProjectUpdateResponse,
     type ProjectDeleteResponse as ProjectDeleteResponse,
+    type ProjectDuplicateResponse as ProjectDuplicateResponse,
     type ProjectUpdateDefaultsParams as ProjectUpdateDefaultsParams,
     type ProjectListParams as ProjectListParams,
     type ProjectCreateParams as ProjectCreateParams,
