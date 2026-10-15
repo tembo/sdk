@@ -111,6 +111,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Retrieve a project](#retrieve-a-project)
   - [Update a project](#update-a-project)
   - [Delete a project](#delete-a-project)
+  - [Duplicate a project](#duplicate-a-project)
   - [`Projects EnvironmentVariables`](#projects-environmentvariables)
     - [List project environment variables](#list-project-environment-variables)
     - [Create project environment variables](#create-project-environment-variables)
@@ -131,6 +132,11 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve a project schedule](#retrieve-a-project-schedule)
     - [Update a project schedule](#update-a-project-schedule)
     - [Delete a project schedule](#delete-a-project-schedule)
+- [`Pins`](#pins)
+  - [List pins](#list-pins)
+  - [Create a pin](#create-a-pin)
+  - [Update a pin](#update-a-pin)
+  - [Delete a pin](#delete-a-pin)
 - [`PullRequests`](#pullrequests)
   - [List pull requests](#list-pull-requests)
   - [Retrieve a pull request](#retrieve-a-pull-request)
@@ -391,10 +397,13 @@ Retrieve pull request contribution insights and their collection status for the 
 
 | Direction | Type |
 | --- | --- |
+| Request | [`InsightRetrieveParams`](./src/resources/insights.ts) |
 | Response | [`InsightRetrieveResponse`](./src/resources/insights.ts) |
 
 ```ts
-const insight = await client.insights.retrieve();
+const insight = await client.insights.retrieve({
+  range: '1y',
+});
 ```
 
 ### Update insights
@@ -424,6 +433,7 @@ List organization members included in pull request insights.
 ```ts
 const insight = await client.insights.listMembers({
   limit: 50,
+  range: '1y',
 });
 ```
 
@@ -439,6 +449,7 @@ List repositories included in pull request insights for the current organization
 ```ts
 const insight = await client.insights.listRepositories({
   limit: 50,
+  range: '1y',
 });
 ```
 
@@ -1440,6 +1451,18 @@ Delete a project and disable its schedule.
 const project = await client.projects.delete('projectId');
 ```
 
+### Duplicate a project
+
+Create a new project with the same configuration, environment variables, and schedule as an existing project. Snapshots are not copied.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ProjectDuplicateResponse`](./src/resources/projects/projects.ts) |
+
+```ts
+const project = await client.projects.duplicate('projectId');
+```
+
 ### `Projects EnvironmentVariables`
 
 #### List project environment variables
@@ -1685,6 +1708,73 @@ Disable a project build schedule.
 ```ts
 const schedule = await client.projects.schedules.delete('scheduleId', {
   projectId: 'projectId',
+});
+```
+
+## `Pins`
+
+### List pins
+
+List sessions, pull requests, and projects you have pinned, in pin order.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`PinListResponse`](./src/resources/pins.ts) |
+
+```ts
+const pin = await client.pins.list();
+```
+
+### Create a pin
+
+Pin a session, pull request, or project you have permission to access.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`PinCreateParams`](./src/resources/pins.ts) |
+| Response | [`PinCreateResponse`](./src/resources/pins.ts) |
+
+```ts
+const pin = await client.pins.create({
+  type: 'session',
+  id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+});
+```
+
+### Update a pin
+
+Update the placement of a pin.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`PinUpdateParams`](./src/resources/pins.ts) |
+| Response | [`PinUpdateResponse`](./src/resources/pins.ts) |
+
+```ts
+const pin = await client.pins.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  resourceType: 'session',
+  placement: {
+    target: {
+      type: 'session',
+      id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+    },
+    position: 'before',
+  },
+});
+```
+
+### Delete a pin
+
+Unpin a session, pull request, or project.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`PinDeleteParams`](./src/resources/pins.ts) |
+| Response | [`PinDeleteResponse`](./src/resources/pins.ts) |
+
+```ts
+const pin = await client.pins.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  resourceType: 'session',
 });
 ```
 
@@ -2418,7 +2508,7 @@ const live = await client.live.authorize();
 
 ### Live resource subscriptions
 
-Native WebSocket. Send `{ op: "subscribe", id, resource, input }` or `{ op: "unsubscribe", id }`; receive `{ id, type: "ready" | "event" | "error" }`.
+Native WebSocket. Send `{ op: "subscribe", id, resource, input }`, `{ op: "unsubscribe", id }`, or `{ op: "ping" }`; receive `{ id, type: "ready" | "event" | "error" }` or `{ type: "pong" }`.
 
 | Direction | Type |
 | --- | --- |

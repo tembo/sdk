@@ -6704,6 +6704,7 @@
     "projects.snapshots",
     "projects.builds",
     "projects.schedules",
+    "pins",
     "pullRequests",
     "agents",
     "agents.templates",
@@ -6746,6 +6747,7 @@
     "projects.snapshots",
     "projects.builds",
     "projects.schedules",
+    "pins",
     "pullRequests",
     "agents",
     "agents.templates",
@@ -8108,19 +8110,34 @@
       "path": "/v1/insights",
       "pathParams": [],
       "publicPathParams": [],
-      "queryParams": [],
-      "publicQueryParams": [],
+      "queryParams": [
+        "range"
+      ],
+      "publicQueryParams": [
+        "range"
+      ],
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [],
       "publicBodyParams": [],
       "bodyParamDetails": [],
       "pathParamDetails": [],
-      "queryParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "range",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "1y"
+        }
+      ],
       "headerParamDetails": [],
       "cookieParams": [],
       "publicCookieParams": [],
       "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "InsightRetrieveParams"
+      },
       "response": {
         "status": "200",
         "contentType": "application/json",
@@ -8295,11 +8312,13 @@
       "publicPathParams": [],
       "queryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "publicQueryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -8320,6 +8339,13 @@
           "style": "form",
           "explode": true,
           "defaultValue": 50
+        },
+        {
+          "name": "range",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "1y"
         }
       ],
       "headerParamDetails": [],
@@ -8398,11 +8424,13 @@
       "publicPathParams": [],
       "queryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "publicQueryParams": [
         "cursor",
-        "limit"
+        "limit",
+        "range"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -8423,6 +8451,13 @@
           "style": "form",
           "explode": true,
           "defaultValue": 50
+        },
+        {
+          "name": "range",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": "1y"
         }
       ],
       "headerParamDetails": [],
@@ -18714,6 +18749,124 @@
       "transport": "http"
     },
     {
+      "resource": "projects",
+      "publicResource": "projects",
+      "operation": "duplicate",
+      "publicOperation": "duplicate",
+      "deprecated": false,
+      "method": "POST",
+      "path": "/v1/projects/{projectId}/duplicate",
+      "pathParams": [
+        "projectId"
+      ],
+      "publicPathParams": [
+        "projectId"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "projectId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "ProjectDuplicateParams"
+      },
+      "response": {
+        "status": "201",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "201",
+        "errorStatuses": [
+          "400",
+          "403",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
       "resource": "projects.environmentVariables",
       "publicResource": "projects.environmentVariables",
       "operation": "list",
@@ -20827,6 +20980,477 @@
         },
         {
           "status": "403",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "pins",
+      "publicResource": "pins",
+      "operation": "list",
+      "publicOperation": "list",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/pins",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "pins",
+      "publicResource": "pins",
+      "operation": "create",
+      "publicOperation": "create",
+      "deprecated": false,
+      "method": "POST",
+      "path": "/v1/pins",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [
+        "type",
+        "id",
+        "placement"
+      ],
+      "publicBodyParams": [
+        "type",
+        "id",
+        "placement"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "type",
+          "required": true
+        },
+        {
+          "name": "id",
+          "required": true
+        },
+        {
+          "name": "placement",
+          "required": false
+        }
+      ],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "PinCreateParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
+      },
+      "response": {
+        "status": "201",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "201",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "pins",
+      "publicResource": "pins",
+      "operation": "update",
+      "publicOperation": "update",
+      "deprecated": false,
+      "method": "PATCH",
+      "path": "/v1/pins/{resourceType}/{resourceId}",
+      "pathParams": [
+        "resourceType",
+        "resourceId"
+      ],
+      "publicPathParams": [
+        "resourceType",
+        "resourceId"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [
+        "placement"
+      ],
+      "publicBodyParams": [
+        "placement"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "placement",
+          "required": true
+        }
+      ],
+      "pathParamDetails": [
+        {
+          "name": "resourceType",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        },
+        {
+          "name": "resourceId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "PinUpdateParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "pins",
+      "publicResource": "pins",
+      "operation": "delete",
+      "publicOperation": "delete",
+      "deprecated": false,
+      "method": "DELETE",
+      "path": "/v1/pins/{resourceType}/{resourceId}",
+      "pathParams": [
+        "resourceType",
+        "resourceId"
+      ],
+      "publicPathParams": [
+        "resourceType",
+        "resourceId"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "resourceType",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        },
+        {
+          "name": "resourceId",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "PinDeleteParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [

@@ -22,7 +22,7 @@ export class Live extends APIResource {
   }
 
   /**
-   * Native WebSocket. Send `{ op: "subscribe", id, resource, input }` or `{ op: "unsubscribe", id }`; receive `{ id, type: "ready" | "event" | "error" }`.
+   * Native WebSocket. Send `{ op: "subscribe", id, resource, input }`, `{ op: "unsubscribe", id }`, or `{ op: "ping" }`; receive `{ id, type: "ready" | "event" | "error" }` or `{ type: "pong" }`.
    *
    * @param {LiveConnectParams} params - The parameters to send with the request.
    * @param {LiveWSClientOptions} [options] - Options to apply to the request, such as headers and an abort signal.
