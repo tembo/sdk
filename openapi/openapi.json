@@ -5029,6 +5029,15 @@
                         "null"
                       ],
                       "properties": {
+                        "range": {
+                          "type": "string",
+                          "enum": [
+                            "1d",
+                            "7d",
+                            "30d",
+                            "1y"
+                          ]
+                        },
                         "summary": {
                           "type": "object",
                           "properties": {
@@ -5084,7 +5093,8 @@
                             "type": "object",
                             "properties": {
                               "month": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Bucket key: YYYY-MM for 1y, YYYY-MM-DD (UTC) for 7d and 30d, and an ISO 8601 hour start for 1d."
                               },
                               "prsWithTembo": {
                                 "type": "integer"
@@ -5115,6 +5125,7 @@
                         }
                       },
                       "required": [
+                        "range",
                         "summary",
                         "timeSeries"
                       ],
@@ -5192,7 +5203,24 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "range",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d",
+                "1y"
+              ],
+              "default": "1y"
+            },
+            "description": "Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y."
+          }
+        ]
       },
       "patch": {
         "operationId": "updateInsight",
@@ -5263,6 +5291,15 @@
                         "null"
                       ],
                       "properties": {
+                        "range": {
+                          "type": "string",
+                          "enum": [
+                            "1d",
+                            "7d",
+                            "30d",
+                            "1y"
+                          ]
+                        },
                         "summary": {
                           "type": "object",
                           "properties": {
@@ -5318,7 +5355,8 @@
                             "type": "object",
                             "properties": {
                               "month": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "Bucket key: YYYY-MM for 1y, YYYY-MM-DD (UTC) for 7d and 30d, and an ISO 8601 hour start for 1d."
                               },
                               "prsWithTembo": {
                                 "type": "integer"
@@ -5349,6 +5387,7 @@
                         }
                       },
                       "required": [
+                        "range",
                         "summary",
                         "timeSeries"
                       ],
@@ -5604,6 +5643,21 @@
               "maximum": 100,
               "default": 50
             }
+          },
+          {
+            "in": "query",
+            "name": "range",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d",
+                "1y"
+              ],
+              "default": "1y"
+            },
+            "description": "Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y."
           }
         ]
       }
@@ -5761,6 +5815,21 @@
               "maximum": 100,
               "default": 50
             }
+          },
+          {
+            "in": "query",
+            "name": "range",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d",
+                "1y"
+              ],
+              "default": "1y"
+            },
+            "description": "Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y."
           }
         ]
       }
@@ -14132,7 +14201,7 @@
       "get": {
         "operationId": "liveConnection",
         "summary": "Live resource subscriptions",
-        "description": "Native WebSocket. Send `{ op: \"subscribe\", id, resource, input }` or `{ op: \"unsubscribe\", id }`; receive `{ id, type: \"ready\" | \"event\" | \"error\" }`.",
+        "description": "Native WebSocket. Send `{ op: \"subscribe\", id, resource, input }`, `{ op: \"unsubscribe\", id }`, or `{ op: \"ping\" }`; receive `{ id, type: \"ready\" | \"event\" | \"error\" }` or `{ type: \"pong\" }`.",
         "tags": [
           "Live"
         ],
@@ -25855,7 +25924,8 @@
                   "level": {
                     "type": "integer",
                     "minimum": 0,
-                    "maximum": 100
+                    "maximum": 100,
+                    "description": "Set 0 to archive the session and stop its VM, or 1 to restore it without restarting work. Omit to preserve the current level."
                   },
                   "mcpServers": {
                     "type": "array",
@@ -27164,6 +27234,1588 @@
           {
             "in": "path",
             "name": "diffId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/pins": {
+      "get": {
+        "operationId": "listPins",
+        "summary": "List pins",
+        "description": "List sessions, pull requests, and projects you have pinned, in pin order.",
+        "tags": [
+          "Pins"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List pins",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "resources": {
+                      "type": "array",
+                      "items": {
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "const": "session"
+                              },
+                              "resource": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "title": {
+                                    "type": "string"
+                                  },
+                                  "kind": {
+                                    "type": "string"
+                                  },
+                                  "externalId": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "agentId": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time"
+                                  },
+                                  "lastQueuedAt": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ],
+                                    "format": "date-time"
+                                  },
+                                  "createdBy": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "projectId": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "level": {
+                                    "type": "integer"
+                                  },
+                                  "visibility": {
+                                    "type": "string",
+                                    "enum": [
+                                      "public",
+                                      "private"
+                                    ],
+                                    "default": "public"
+                                  },
+                                  "vm": {
+                                    "type": [
+                                      "object",
+                                      "null"
+                                    ],
+                                    "properties": {
+                                      "id": {
+                                        "type": "string"
+                                      },
+                                      "status": {
+                                        "type": "string",
+                                        "enum": [
+                                          "Initializing",
+                                          "Running",
+                                          "Warm",
+                                          "Stopping",
+                                          "Idle",
+                                          "Terminated"
+                                        ],
+                                        "default": "Running"
+                                      }
+                                    },
+                                    "required": [
+                                      "id",
+                                      "status"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "sessionSource": {
+                                    "type": "object",
+                                    "properties": {
+                                      "type": {
+                                        "type": "string"
+                                      },
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "sessionSourceCodeRepositories": {
+                                        "type": "array",
+                                        "items": {
+                                          "type": "object",
+                                          "properties": {
+                                            "codeRepository": {
+                                              "type": "object",
+                                              "properties": {
+                                                "id": {
+                                                  "type": "string"
+                                                },
+                                                "name": {
+                                                  "type": "string"
+                                                },
+                                                "integration": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "type": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "github",
+                                                        "gitlab",
+                                                        "bitbucket"
+                                                      ]
+                                                    }
+                                                  },
+                                                  "required": [
+                                                    "type"
+                                                  ],
+                                                  "additionalProperties": false
+                                                }
+                                              },
+                                              "required": [
+                                                "id",
+                                                "name",
+                                                "integration"
+                                              ],
+                                              "additionalProperties": false
+                                            }
+                                          },
+                                          "required": [
+                                            "codeRepository"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      }
+                                    },
+                                    "required": [
+                                      "type",
+                                      "name",
+                                      "sessionSourceCodeRepositories"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "pullRequests": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "status": {
+                                          "type": "string",
+                                          "enum": [
+                                            "open",
+                                            "merged",
+                                            "closed"
+                                          ],
+                                          "default": "open"
+                                        },
+                                        "diffSummary": {
+                                          "type": [
+                                            "object",
+                                            "null"
+                                          ],
+                                          "properties": {
+                                            "additions": {
+                                              "type": "number"
+                                            },
+                                            "deletions": {
+                                              "type": "number"
+                                            }
+                                          },
+                                          "required": [
+                                            "additions",
+                                            "deletions"
+                                          ],
+                                          "additionalProperties": false
+                                        }
+                                      },
+                                      "required": [
+                                        "status",
+                                        "diffSummary"
+                                      ],
+                                      "additionalProperties": false
+                                    }
+                                  },
+                                  "diffSummary": {
+                                    "type": [
+                                      "object",
+                                      "null"
+                                    ],
+                                    "properties": {
+                                      "additions": {
+                                        "type": "number"
+                                      },
+                                      "deletions": {
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "additions",
+                                      "deletions"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "state": {
+                                    "type": "object",
+                                    "properties": {
+                                      "current": {
+                                        "type": "string",
+                                        "enum": [
+                                          "inProgress",
+                                          "queued",
+                                          "completed",
+                                          "failed",
+                                          "cancelled"
+                                        ]
+                                      },
+                                      "isQueued": {
+                                        "type": "boolean"
+                                      },
+                                      "isCancelled": {
+                                        "type": "boolean"
+                                      },
+                                      "isCompleted": {
+                                        "type": "boolean"
+                                      },
+                                      "isFailed": {
+                                        "type": "boolean"
+                                      },
+                                      "inProgress": {
+                                        "type": "boolean"
+                                      }
+                                    },
+                                    "required": [
+                                      "isQueued",
+                                      "isCancelled",
+                                      "isCompleted",
+                                      "isFailed",
+                                      "inProgress"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "title",
+                                  "kind",
+                                  "externalId",
+                                  "agentId",
+                                  "createdAt",
+                                  "updatedAt",
+                                  "lastQueuedAt",
+                                  "createdBy",
+                                  "projectId",
+                                  "level",
+                                  "visibility",
+                                  "vm",
+                                  "sessionSource",
+                                  "pullRequests",
+                                  "diffSummary",
+                                  "state"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "resource"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "const": "pull_request"
+                              },
+                              "resource": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "url": {
+                                    "type": "string"
+                                  },
+                                  "title": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
+                                  },
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "open",
+                                      "merged",
+                                      "closed"
+                                    ],
+                                    "default": "open"
+                                  },
+                                  "isDraft": {
+                                    "type": "boolean"
+                                  },
+                                  "author": {
+                                    "type": [
+                                      "object",
+                                      "null"
+                                    ],
+                                    "properties": {
+                                      "login": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "avatarUrl": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      }
+                                    },
+                                    "required": [
+                                      "login",
+                                      "avatarUrl"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "codeRepository": {
+                                    "type": [
+                                      "object",
+                                      "null"
+                                    ],
+                                    "properties": {
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "owner": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "integration": {
+                                        "type": "object",
+                                        "properties": {
+                                          "type": {
+                                            "type": "string",
+                                            "enum": [
+                                              "github",
+                                              "gitlab",
+                                              "bitbucket"
+                                            ]
+                                          }
+                                        },
+                                        "required": [
+                                          "type"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "owner",
+                                      "integration"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "url",
+                                  "title",
+                                  "status",
+                                  "isDraft",
+                                  "author",
+                                  "codeRepository"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "resource"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "const": "project"
+                              },
+                              "resource": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "icon": {
+                                    "type": "string",
+                                    "enum": [
+                                      "folder",
+                                      "code",
+                                      "terminal",
+                                      "book",
+                                      "brain",
+                                      "bug",
+                                      "building",
+                                      "cloud",
+                                      "globe",
+                                      "idea",
+                                      "tools",
+                                      "magic",
+                                      "processor",
+                                      "sandbox",
+                                      "server",
+                                      "tasks",
+                                      "tactics",
+                                      "images",
+                                      "database",
+                                      "api",
+                                      "mobile",
+                                      "package"
+                                    ]
+                                  },
+                                  "color": {
+                                    "type": "string",
+                                    "enum": [
+                                      "neutral",
+                                      "red",
+                                      "orange",
+                                      "yellow",
+                                      "green",
+                                      "teal",
+                                      "blue",
+                                      "purple",
+                                      "pink"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "icon",
+                                  "color"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "resource"
+                            ],
+                            "additionalProperties": false
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "resources"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Pin limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pin operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createPin",
+        "summary": "Create a pin",
+        "description": "Pin a session, pull request, or project you have permission to access.",
+        "tags": [
+          "Pins"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a pin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "session"
+                        },
+                        "resource": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "kind": {
+                              "type": "string"
+                            },
+                            "externalId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "agentId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "lastQueuedAt": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "format": "date-time"
+                            },
+                            "createdBy": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "projectId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "level": {
+                              "type": "integer"
+                            },
+                            "visibility": {
+                              "type": "string",
+                              "enum": [
+                                "public",
+                                "private"
+                              ],
+                              "default": "public"
+                            },
+                            "vm": {
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "enum": [
+                                    "Initializing",
+                                    "Running",
+                                    "Warm",
+                                    "Stopping",
+                                    "Idle",
+                                    "Terminated"
+                                  ],
+                                  "default": "Running"
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "status"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "sessionSource": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "sessionSourceCodeRepositories": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "object",
+                                    "properties": {
+                                      "codeRepository": {
+                                        "type": "object",
+                                        "properties": {
+                                          "id": {
+                                            "type": "string"
+                                          },
+                                          "name": {
+                                            "type": "string"
+                                          },
+                                          "integration": {
+                                            "type": "object",
+                                            "properties": {
+                                              "type": {
+                                                "type": "string",
+                                                "enum": [
+                                                  "github",
+                                                  "gitlab",
+                                                  "bitbucket"
+                                                ]
+                                              }
+                                            },
+                                            "required": [
+                                              "type"
+                                            ],
+                                            "additionalProperties": false
+                                          }
+                                        },
+                                        "required": [
+                                          "id",
+                                          "name",
+                                          "integration"
+                                        ],
+                                        "additionalProperties": false
+                                      }
+                                    },
+                                    "required": [
+                                      "codeRepository"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                }
+                              },
+                              "required": [
+                                "type",
+                                "name",
+                                "sessionSourceCodeRepositories"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "pullRequests": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "status": {
+                                    "type": "string",
+                                    "enum": [
+                                      "open",
+                                      "merged",
+                                      "closed"
+                                    ],
+                                    "default": "open"
+                                  },
+                                  "diffSummary": {
+                                    "type": [
+                                      "object",
+                                      "null"
+                                    ],
+                                    "properties": {
+                                      "additions": {
+                                        "type": "number"
+                                      },
+                                      "deletions": {
+                                        "type": "number"
+                                      }
+                                    },
+                                    "required": [
+                                      "additions",
+                                      "deletions"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "status",
+                                  "diffSummary"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "diffSummary": {
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "additions": {
+                                  "type": "number"
+                                },
+                                "deletions": {
+                                  "type": "number"
+                                }
+                              },
+                              "required": [
+                                "additions",
+                                "deletions"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "state": {
+                              "type": "object",
+                              "properties": {
+                                "current": {
+                                  "type": "string",
+                                  "enum": [
+                                    "inProgress",
+                                    "queued",
+                                    "completed",
+                                    "failed",
+                                    "cancelled"
+                                  ]
+                                },
+                                "isQueued": {
+                                  "type": "boolean"
+                                },
+                                "isCancelled": {
+                                  "type": "boolean"
+                                },
+                                "isCompleted": {
+                                  "type": "boolean"
+                                },
+                                "isFailed": {
+                                  "type": "boolean"
+                                },
+                                "inProgress": {
+                                  "type": "boolean"
+                                }
+                              },
+                              "required": [
+                                "isQueued",
+                                "isCancelled",
+                                "isCompleted",
+                                "isFailed",
+                                "inProgress"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "title",
+                            "kind",
+                            "externalId",
+                            "agentId",
+                            "createdAt",
+                            "updatedAt",
+                            "lastQueuedAt",
+                            "createdBy",
+                            "projectId",
+                            "level",
+                            "visibility",
+                            "vm",
+                            "sessionSource",
+                            "pullRequests",
+                            "diffSummary",
+                            "state"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "resource"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "pull_request"
+                        },
+                        "resource": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            },
+                            "status": {
+                              "type": "string",
+                              "enum": [
+                                "open",
+                                "merged",
+                                "closed"
+                              ],
+                              "default": "open"
+                            },
+                            "isDraft": {
+                              "type": "boolean"
+                            },
+                            "author": {
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "login": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "avatarUrl": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "login",
+                                "avatarUrl"
+                              ],
+                              "additionalProperties": false
+                            },
+                            "codeRepository": {
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "owner": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "integration": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "enum": [
+                                        "github",
+                                        "gitlab",
+                                        "bitbucket"
+                                      ]
+                                    }
+                                  },
+                                  "required": [
+                                    "type"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "name",
+                                "owner",
+                                "integration"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "url",
+                            "title",
+                            "status",
+                            "isDraft",
+                            "author",
+                            "codeRepository"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "resource"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "project"
+                        },
+                        "resource": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "icon": {
+                              "type": "string",
+                              "enum": [
+                                "folder",
+                                "code",
+                                "terminal",
+                                "book",
+                                "brain",
+                                "bug",
+                                "building",
+                                "cloud",
+                                "globe",
+                                "idea",
+                                "tools",
+                                "magic",
+                                "processor",
+                                "sandbox",
+                                "server",
+                                "tasks",
+                                "tactics",
+                                "images",
+                                "database",
+                                "api",
+                                "mobile",
+                                "package"
+                              ]
+                            },
+                            "color": {
+                              "type": "string",
+                              "enum": [
+                                "neutral",
+                                "red",
+                                "orange",
+                                "yellow",
+                                "green",
+                                "teal",
+                                "blue",
+                                "purple",
+                                "pink"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "icon",
+                            "color"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "resource"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Pin limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pin operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "session",
+                      "pull_request",
+                      "project"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "placement": {
+                    "type": "object",
+                    "properties": {
+                      "target": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "session",
+                              "pull_request",
+                              "project"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "position": {
+                        "type": "string",
+                        "enum": [
+                          "before",
+                          "after"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "target",
+                      "position"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "type",
+                  "id"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/pins/{resourceType}/{resourceId}": {
+      "patch": {
+        "operationId": "updatePin",
+        "summary": "Update a pin",
+        "description": "Update the placement of a pin.",
+        "tags": [
+          "Pins"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update a pin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "updated": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "updated"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Pin limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pin operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "resourceType",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "session",
+                "pull_request",
+                "project"
+              ]
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "resourceId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "placement": {
+                    "type": "object",
+                    "properties": {
+                      "target": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "session",
+                              "pull_request",
+                              "project"
+                            ]
+                          },
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "id"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "position": {
+                        "type": "string",
+                        "enum": [
+                          "before",
+                          "after"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "target",
+                      "position"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "placement"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deletePin",
+        "summary": "Delete a pin",
+        "description": "Unpin a session, pull request, or project.",
+        "tags": [
+          "Pins"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a pin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "session",
+                        "pull_request",
+                        "project"
+                      ]
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "type",
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Pin limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Pin operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "resourceType",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "session",
+                "pull_request",
+                "project"
+              ]
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "resourceId",
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -29052,6 +30704,349 @@
                   "required": [
                     "deleted",
                     "id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Project resource conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Project operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "projectId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/projects/{projectId}/duplicate": {
+      "post": {
+        "operationId": "duplicateProject",
+        "summary": "Duplicate a project",
+        "description": "Create a new project with the same configuration, environment variables, and schedule as an existing project. Snapshots are not copied.",
+        "tags": [
+          "Projects"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Duplicate a project",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "jobIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 255
+                      }
+                    },
+                    "project": {
+                      "type": "object",
+                      "properties": {
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "description": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255
+                        },
+                        "includeDeps": {
+                          "type": "boolean",
+                          "default": true
+                        },
+                        "includeSkills": {
+                          "type": "boolean",
+                          "default": true
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "setupScript": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "activeSnapshots": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "size": {
+                                "type": "string",
+                                "enum": [
+                                  "nano",
+                                  "micro",
+                                  "small",
+                                  "medium",
+                                  "large",
+                                  "xl",
+                                  "xxl",
+                                  "ultra"
+                                ]
+                              },
+                              "builtAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "size",
+                              "builtAt"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "agentInstructions": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "maxLength": 20000
+                        },
+                        "codeRepositoryIds": {
+                          "type": [
+                            "array",
+                            "null"
+                          ],
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 255
+                          }
+                        },
+                        "color": {
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "red",
+                            "orange",
+                            "yellow",
+                            "green",
+                            "teal",
+                            "blue",
+                            "purple",
+                            "pink"
+                          ]
+                        },
+                        "defaultForSizes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "nano",
+                              "micro",
+                              "small",
+                              "medium",
+                              "large",
+                              "xl",
+                              "xxl",
+                              "ultra"
+                            ]
+                          }
+                        },
+                        "icon": {
+                          "type": "string",
+                          "enum": [
+                            "folder",
+                            "code",
+                            "terminal",
+                            "book",
+                            "brain",
+                            "bug",
+                            "building",
+                            "cloud",
+                            "globe",
+                            "idea",
+                            "tools",
+                            "magic",
+                            "processor",
+                            "sandbox",
+                            "server",
+                            "tasks",
+                            "tactics",
+                            "images",
+                            "database",
+                            "api",
+                            "mobile",
+                            "package"
+                          ]
+                        },
+                        "onboardingDefault": {
+                          "type": "boolean",
+                          "description": "True for the project created during onboarding until it is first edited"
+                        },
+                        "sizes": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "nano",
+                              "micro",
+                              "medium",
+                              "large",
+                              "xl",
+                              "xxl",
+                              "ultra"
+                            ]
+                          }
+                        },
+                        "warmPoolEnabled": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "createdAt",
+                        "description",
+                        "id",
+                        "includeDeps",
+                        "includeSkills",
+                        "name",
+                        "setupScript",
+                        "updatedAt",
+                        "activeSnapshots",
+                        "agentInstructions",
+                        "codeRepositoryIds",
+                        "color",
+                        "defaultForSizes",
+                        "icon",
+                        "onboardingDefault",
+                        "sizes",
+                        "warmPoolEnabled"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "jobIds",
+                    "project"
                   ],
                   "additionalProperties": false
                 }
@@ -35104,6 +37099,7 @@
                       "addTestCoverageFromJira",
                       "autoAgentsMdMaintainer",
                       "autoDocsMaintainer",
+                      "publicApiReleaseMaintainer",
                       "commitOfTheDay",
                       "customerHealthMonitoringAgent",
                       "deadCodeCleanup",
@@ -35183,6 +37179,7 @@
                               "addTestCoverageFromJira",
                               "autoAgentsMdMaintainer",
                               "autoDocsMaintainer",
+                              "publicApiReleaseMaintainer",
                               "commitOfTheDay",
                               "customerHealthMonitoringAgent",
                               "deadCodeCleanup",
@@ -35325,6 +37322,7 @@
                         "addTestCoverageFromJira",
                         "autoAgentsMdMaintainer",
                         "autoDocsMaintainer",
+                        "publicApiReleaseMaintainer",
                         "commitOfTheDay",
                         "customerHealthMonitoringAgent",
                         "deadCodeCleanup",
@@ -35458,6 +37456,7 @@
                 "addTestCoverageFromJira",
                 "autoAgentsMdMaintainer",
                 "autoDocsMaintainer",
+                "publicApiReleaseMaintainer",
                 "commitOfTheDay",
                 "customerHealthMonitoringAgent",
                 "deadCodeCleanup",
@@ -35534,6 +37533,7 @@
                         "addTestCoverageFromJira",
                         "autoAgentsMdMaintainer",
                         "autoDocsMaintainer",
+                        "publicApiReleaseMaintainer",
                         "commitOfTheDay",
                         "customerHealthMonitoringAgent",
                         "deadCodeCleanup",
