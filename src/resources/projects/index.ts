@@ -12,6 +12,7 @@ export type {
   ProjectUpdateParams,
   ProjectUpdateResponse,
   ProjectDeleteResponse,
+  ProjectDuplicateResponse,
 } from './projects';
 export { EnvironmentVariables } from './environment-variables';
 export type {

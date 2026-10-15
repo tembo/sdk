@@ -1628,6 +1628,15 @@ const cases: {
   },
 
   {
+    operation: 'duplicate',
+    method: 'POST',
+    path: '/v1/projects/{projectId}/duplicate',
+    run: async () => {
+      const project = await client.projects.duplicate('projectId');
+    },
+  },
+
+  {
     operation: 'list',
     method: 'GET',
     path: '/v1/projects/{projectId}/environment-variables',
@@ -1901,6 +1910,77 @@ const cases: {
     run: async () => {
       const schedule = await client.projects.schedules.delete('scheduleId', {
         projectId: 'projectId',
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/pins',
+    run: async () => {
+      const pin = await client.pins.list();
+    },
+  },
+
+  {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/pins',
+    label: 'required params',
+    run: async () => {
+      const pin = await client.pins.create({
+        type: 'session',
+        id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
+    },
+  },
+
+  {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/pins',
+    label: 'all params',
+    run: async () => {
+      const pin = await client.pins.create({
+        type: 'session',
+        id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        placement: {
+          target: {
+            type: 'session',
+            id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+          },
+          position: 'before',
+        },
+      });
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/pins/{resourceType}/{resourceId}',
+    run: async () => {
+      const pin = await client.pins.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        resourceType: 'session',
+        placement: {
+          target: {
+            type: 'session',
+            id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+          },
+          position: 'before',
+        },
+      });
+    },
+  },
+
+  {
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/pins/{resourceType}/{resourceId}',
+    run: async () => {
+      const pin = await client.pins.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        resourceType: 'session',
       });
     },
   },
