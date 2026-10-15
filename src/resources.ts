@@ -37,6 +37,7 @@ export type {
   SkillUpdateParams,
   SkillUpdateResponse,
   SkillDeleteResponse,
+  InsightRetrieveParams,
   InsightRetrieveResponse,
   InsightUpdateParams,
   InsightUpdateResponse,

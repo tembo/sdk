@@ -391,10 +391,13 @@ Retrieve pull request contribution insights and their collection status for the 
 
 | Direction | Type |
 | --- | --- |
+| Request | [`InsightRetrieveParams`](./src/resources/insights.ts) |
 | Response | [`InsightRetrieveResponse`](./src/resources/insights.ts) |
 
 ```ts
-const insight = await client.insights.retrieve();
+const insight = await client.insights.retrieve({
+  range: '1y',
+});
 ```
 
 ### Update insights
@@ -424,6 +427,7 @@ List organization members included in pull request insights.
 ```ts
 const insight = await client.insights.listMembers({
   limit: 50,
+  range: '1y',
 });
 ```
 
@@ -439,6 +443,7 @@ List repositories included in pull request insights for the current organization
 ```ts
 const insight = await client.insights.listRepositories({
   limit: 50,
+  range: '1y',
 });
 ```
 
@@ -2418,7 +2423,7 @@ const live = await client.live.authorize();
 
 ### Live resource subscriptions
 
-Native WebSocket. Send `{ op: "subscribe", id, resource, input }` or `{ op: "unsubscribe", id }`; receive `{ id, type: "ready" | "event" | "error" }`.
+Native WebSocket. Send `{ op: "subscribe", id, resource, input }`, `{ op: "unsubscribe", id }`, or `{ op: "ping" }`; receive `{ id, type: "ready" | "event" | "error" }` or `{ type: "pong" }`.
 
 | Direction | Type |
 | --- | --- |

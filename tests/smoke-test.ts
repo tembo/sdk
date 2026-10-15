@@ -256,7 +256,9 @@ const cases: {
     method: 'GET',
     path: '/v1/insights',
     run: async () => {
-      const insight = await client.insights.retrieve();
+      const insight = await client.insights.retrieve({
+        range: '1y',
+      });
     },
   },
 
@@ -279,6 +281,7 @@ const cases: {
     run: async () => {
       const insight = await client.insights.listMembers({
         limit: 50,
+        range: '1y',
       });
     },
   },
@@ -292,6 +295,7 @@ const cases: {
       const insight = await client.insights.listMembers({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
+        range: '1y',
       });
     },
   },
@@ -304,6 +308,7 @@ const cases: {
     run: async () => {
       const insight = await client.insights.listRepositories({
         limit: 50,
+        range: '1y',
       });
     },
   },
@@ -317,6 +322,7 @@ const cases: {
       const insight = await client.insights.listRepositories({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
+        range: '1y',
       });
     },
   },
