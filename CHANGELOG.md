@@ -1,5 +1,25 @@
 # Changelog
 
+## [0.12.0](https://github.com/tembo/sdk/compare/v0.11.0...v0.12.0) (2026-10-15)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Renamed SDK from `TemboPublicApi` to `TemboSdk`.
+
+### Features
+
+* **api:** add operation projects.duplicate (+4 more changes) ([bb6b76c](https://github.com/tembo/sdk/commit/bb6b76c1f4db1844bed987c7ff59aee2483c7ba4))
+* **api:** add query param range on insights.retrieve (+2 more changes) ([f8b6c92](https://github.com/tembo/sdk/commit/f8b6c9277244ecb20e796b11d46ac39865ff407c))
+* **api:** update SDK name ([74f2cbb](https://github.com/tembo/sdk/commit/74f2cbb625349c5ccd8d7b6d8788bb8b767c432d))
+* **config:** map pins and project duplicate endpoints ([25e01c8](https://github.com/tembo/sdk/commit/25e01c8a321dfc538b0242aee00bf73233c4ce64))
+* **config:** map pins and project duplicate endpoints ([ea6cea1](https://github.com/tembo/sdk/commit/ea6cea121771ac67563832c666a8199ee8dba1b8))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot ([6605558](https://github.com/tembo/sdk/commit/66055582120708d097dc3b429f857852fa1125e7))
+
 ## [0.11.0](https://github.com/tembo/sdk/compare/v0.10.0...v0.11.0) (2026-10-14)
 
 
