@@ -373,7 +373,8 @@
           "path": "/v1/projects/{projectId}",
           "bodyParamName": "body"
         },
-        "delete": "delete /v1/projects/{projectId}"
+        "delete": "delete /v1/projects/{projectId}",
+        "duplicate": "post /v1/projects/{projectId}/duplicate"
       },
       "subresources": {
         "environment_variables": {
@@ -438,6 +439,26 @@
             "delete": "delete /v1/projects/{projectId}/schedules/{scheduleId}"
           }
         }
+      }
+    },
+    "pins": {
+      "methods": {
+        "list": "get /v1/pins",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/pins",
+          "verb": "post",
+          "path": "/v1/pins",
+          "bodyParamName": "body"
+        },
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/pins/{resourceType}/{resourceId}",
+          "verb": "patch",
+          "path": "/v1/pins/{resourceType}/{resourceId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/pins/{resourceType}/{resourceId}"
       }
     },
     "pull_requests": {

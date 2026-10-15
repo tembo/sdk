@@ -24,6 +24,7 @@ export type {
 } from './skills/skills';
 export { Insights } from './insights';
 export type {
+  InsightRetrieveParams,
   InsightRetrieveResponse,
   InsightUpdateParams,
   InsightUpdateResponse,
@@ -130,7 +131,18 @@ export type {
   ProjectUpdateParams,
   ProjectUpdateResponse,
   ProjectDeleteResponse,
+  ProjectDuplicateResponse,
 } from './projects/projects';
+export { Pins } from './pins';
+export type {
+  PinListResponse,
+  PinCreateParams,
+  PinCreateResponse,
+  PinUpdateParams,
+  PinUpdateResponse,
+  PinDeleteParams,
+  PinDeleteResponse,
+} from './pins';
 export { PullRequests } from './pull-requests';
 export type {
   PullRequestListParams,

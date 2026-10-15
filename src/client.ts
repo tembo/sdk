@@ -55,6 +55,7 @@ import {
   type InsightUpdateResponse,
   type InsightListMembersResponse,
   type InsightListRepositoriesResponse,
+  type InsightRetrieveParams,
   type InsightUpdateParams,
   type InsightListMembersParams,
   type InsightListRepositoriesParams,
@@ -157,11 +158,22 @@ import {
   type ProjectRetrieveResponse,
   type ProjectUpdateResponse,
   type ProjectDeleteResponse,
+  type ProjectDuplicateResponse,
   type ProjectUpdateDefaultsParams,
   type ProjectListParams,
   type ProjectCreateParams,
   type ProjectUpdateParams,
 } from './resources/projects/projects';
+import {
+  Pins,
+  type PinListResponse,
+  type PinCreateResponse,
+  type PinUpdateResponse,
+  type PinDeleteResponse,
+  type PinCreateParams,
+  type PinUpdateParams,
+  type PinDeleteParams,
+} from './resources/pins';
 import {
   PullRequests,
   type PullRequestListResponse,
@@ -302,7 +314,7 @@ export interface ClientOptions {
 export type TemboOptions = ClientOptions;
 
 /**
- * API Client for interfacing with the TemboPublicApi API.
+ * API Client for interfacing with the TemboSdk API.
  */
 export class Tembo {
   live: PublicLive = new PublicLive(this);
@@ -322,7 +334,7 @@ export class Tembo {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the TemboPublicApi API.
+   * API Client for interfacing with the TemboSdk API.
    *
    * @param {string | AuthTokenProvider | undefined} [opts.apiKey=process.env["TEMBO_API_KEY"] ?? undefined]
    * @param {string} [opts.baseURL=process.env["TEMBO_BASE_URL"] ?? https://api.tembo.io] - Override the default base URL for the API.
@@ -1024,6 +1036,7 @@ export class Tembo {
   users: Users = new Users(this);
   sessions: Sessions = new Sessions(this);
   projects: Projects = new Projects(this);
+  pins: Pins = new Pins(this);
   pullRequests: PullRequests = new PullRequests(this);
   agents: Agents = new Agents(this);
   repositories: Repositories = new Repositories(this);
@@ -1043,6 +1056,7 @@ Tembo.Runtimes = Runtimes;
 Tembo.Users = Users;
 Tembo.Sessions = Sessions;
 Tembo.Projects = Projects;
+Tembo.Pins = Pins;
 Tembo.PullRequests = PullRequests;
 Tembo.Agents = Agents;
 Tembo.Repositories = Repositories;
@@ -1082,6 +1096,7 @@ export declare namespace Tembo {
     type InsightUpdateResponse as InsightUpdateResponse,
     type InsightListMembersResponse as InsightListMembersResponse,
     type InsightListRepositoriesResponse as InsightListRepositoriesResponse,
+    type InsightRetrieveParams as InsightRetrieveParams,
     type InsightUpdateParams as InsightUpdateParams,
     type InsightListMembersParams as InsightListMembersParams,
     type InsightListRepositoriesParams as InsightListRepositoriesParams,
@@ -1197,10 +1212,22 @@ export declare namespace Tembo {
     type ProjectRetrieveResponse as ProjectRetrieveResponse,
     type ProjectUpdateResponse as ProjectUpdateResponse,
     type ProjectDeleteResponse as ProjectDeleteResponse,
+    type ProjectDuplicateResponse as ProjectDuplicateResponse,
     type ProjectUpdateDefaultsParams as ProjectUpdateDefaultsParams,
     type ProjectListParams as ProjectListParams,
     type ProjectCreateParams as ProjectCreateParams,
     type ProjectUpdateParams as ProjectUpdateParams,
+  };
+
+  export {
+    Pins as Pins,
+    type PinListResponse as PinListResponse,
+    type PinCreateResponse as PinCreateResponse,
+    type PinUpdateResponse as PinUpdateResponse,
+    type PinDeleteResponse as PinDeleteResponse,
+    type PinCreateParams as PinCreateParams,
+    type PinUpdateParams as PinUpdateParams,
+    type PinDeleteParams as PinDeleteParams,
   };
 
   export {

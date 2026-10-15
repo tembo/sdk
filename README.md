@@ -1,6 +1,6 @@
-# Tembo Public API
+# Tembo SDK
 
-This library provides convenient access to the Tembo Public API from TypeScript or JavaScript.
+This library provides convenient access to the Tembo SDK REST API from TypeScript or JavaScript.
 
 The full API of this library can be found in [api.md](./api.md).
 

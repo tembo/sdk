@@ -8,16 +8,22 @@ export class Insights extends APIResource {
   /**
    * Retrieve pull request contribution insights and their collection status for the current organization.
    *
+   * @param {InsightRetrieveParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<InsightRetrieveResponse>} Retrieve insights
    *
    * @example
    * ```ts
-   * const insight = await client.insights.retrieve();
+   * const insight = await client.insights.retrieve({
+   *   range: '1y',
+   * });
    * ```
    */
-  retrieve(options?: RequestOptions): APIPromise<InsightRetrieveResponse> {
-    return this._client.get('/v1/insights', options);
+  retrieve(
+    query: InsightRetrieveParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<InsightRetrieveResponse> {
+    return this._client.get('/v1/insights', { query, ...options });
   }
 
   /**
@@ -49,6 +55,7 @@ export class Insights extends APIResource {
    * ```ts
    * const insight = await client.insights.listMembers({
    *   limit: 50,
+   *   range: '1y',
    * });
    * ```
    */
@@ -70,6 +77,7 @@ export class Insights extends APIResource {
    * ```ts
    * const insight = await client.insights.listRepositories({
    *   limit: 50,
+   *   range: '1y',
    * });
    * ```
    */
@@ -79,6 +87,13 @@ export class Insights extends APIResource {
   ): APIPromise<InsightListRepositoriesResponse> {
     return this._client.get('/v1/insights/repositories', { query, ...options });
   }
+}
+
+export interface InsightRetrieveParams {
+  /**
+   * Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y.
+   */
+  range?: '1d' | '7d' | '30d' | '1y';
 }
 
 export interface InsightRetrieveResponse {
@@ -105,6 +120,7 @@ export interface InsightRetrieveResponse {
 
 export namespace InsightRetrieveResponse {
   export interface Data {
+    range: '1d' | '7d' | '30d' | '1y';
     summary: Data.Summary;
     timeSeries: Array<Data.TimeSeries>;
   }
@@ -128,6 +144,9 @@ export namespace InsightRetrieveResponse {
     }
 
     export interface TimeSeries {
+      /**
+       * Bucket key: YYYY-MM for 1y, YYYY-MM-DD (UTC) for 7d and 30d, and an ISO 8601 hour start for 1d.
+       */
       month: string;
       prsWithTembo: number;
       prsWithoutTembo: number;
@@ -166,6 +185,7 @@ export interface InsightUpdateResponse {
 
 export namespace InsightUpdateResponse {
   export interface Data {
+    range: '1d' | '7d' | '30d' | '1y';
     summary: Data.Summary;
     timeSeries: Array<Data.TimeSeries>;
   }
@@ -189,6 +209,9 @@ export namespace InsightUpdateResponse {
     }
 
     export interface TimeSeries {
+      /**
+       * Bucket key: YYYY-MM for 1y, YYYY-MM-DD (UTC) for 7d and 30d, and an ISO 8601 hour start for 1d.
+       */
       month: string;
       prsWithTembo: number;
       prsWithoutTembo: number;
@@ -210,6 +233,10 @@ export interface InsightListMembersParams {
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y.
+   */
+  range?: '1d' | '7d' | '30d' | '1y';
 }
 
 export interface InsightListMembersResponse {
@@ -243,6 +270,10 @@ export interface InsightListRepositoriesParams {
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y.
+   */
+  range?: '1d' | '7d' | '30d' | '1y';
 }
 
 export interface InsightListRepositoriesResponse {
@@ -270,6 +301,7 @@ export declare namespace Insights {
     type InsightUpdateResponse as InsightUpdateResponse,
     type InsightListMembersResponse as InsightListMembersResponse,
     type InsightListRepositoriesResponse as InsightListRepositoriesResponse,
+    type InsightRetrieveParams as InsightRetrieveParams,
     type InsightUpdateParams as InsightUpdateParams,
     type InsightListMembersParams as InsightListMembersParams,
     type InsightListRepositoriesParams as InsightListRepositoriesParams,
