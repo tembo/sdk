@@ -127,6 +127,7 @@ export type {
   ProjectUpdateResponse,
   ProjectDeleteResponse,
   ProjectDuplicateResponse,
+  PinListParams,
   PinListResponse,
   PinCreateParams,
   PinCreateResponse,

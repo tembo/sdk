@@ -135,6 +135,7 @@ export type {
 } from './projects/projects';
 export { Pins } from './pins';
 export type {
+  PinListParams,
   PinListResponse,
   PinCreateParams,
   PinCreateResponse,

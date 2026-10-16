@@ -7,18 +7,21 @@ import { path as __scalarPath } from '../internal/utils/path';
 
 export class Pins extends APIResource {
   /**
-   * List sessions, pull requests, and projects you have pinned, in pin order.
+   * List your pinned resources in pin order.
    *
+   * @param {PinListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<PinListResponse>} List pins
    *
    * @example
    * ```ts
-   * const pin = await client.pins.list();
+   * const pin = await client.pins.list({
+   *   limit: 50,
+   * });
    * ```
    */
-  list(options?: RequestOptions): APIPromise<PinListResponse> {
-    return this._client.get('/v1/pins', options);
+  list(query: PinListParams | null | undefined = {}, options?: RequestOptions): APIPromise<PinListResponse> {
+    return this._client.get('/v1/pins', { query, ...options });
   }
 
   /**
@@ -43,7 +46,7 @@ export class Pins extends APIResource {
   /**
    * Update the placement of a pin.
    *
-   * @param {string} resourceID
+   * @param {string} resourceID - ID of the pinned resource.
    * @param {PinUpdateParams} params - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<PinUpdateResponse>} Update a pin
@@ -74,7 +77,7 @@ export class Pins extends APIResource {
   /**
    * Unpin a session, pull request, or project.
    *
-   * @param {string} resourceID
+   * @param {string} resourceID - ID of the pinned resource.
    * @param {PinDeleteParams} params - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<PinDeleteResponse>} Delete a pin
@@ -96,8 +99,31 @@ export class Pins extends APIResource {
   }
 }
 
+export interface PinListParams {
+  /**
+   * Continue after this pin. Restart listing if it was removed or reordered.
+   * @pattern ^(session|pull_request|project):[0-9a-f-]{36}$
+   */
+  cursor?: string;
+  /**
+   * Maximum number of pins returned per page.
+   * @default 50
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number;
+}
+
 export interface PinListResponse {
+  /**
+   * Accessible pinned resources in pin order.
+   */
   resources: Array<PinListResponse.Resource | PinListResponse.Resource2 | PinListResponse.Resource3>;
+  /**
+   * Cursor for the next page, even when resources is empty; null at the end.
+   * @pattern ^(session|pull_request|project):[0-9a-f-]{36}$
+   */
+  nextCursor: string | null;
 }
 
 export namespace PinListResponse {
@@ -270,24 +296,41 @@ export namespace PinListResponse {
 }
 
 export interface PinCreateParams {
+  /**
+   * Type of the pinned resource.
+   */
   type: 'session' | 'pull_request' | 'project';
   /**
+   * ID of the pinned resource.
    * @format uuid
    */
   id: string;
+  /**
+   * Placement for a new pin; omit to add it first. Existing pins keep their position.
+   */
   placement?: PinCreateParams.Placement;
 }
 
 export namespace PinCreateParams {
   export interface Placement {
+    /**
+     * Existing pin to place this pin next to.
+     */
     target: Placement.Target;
+    /**
+     * Whether to place this pin before or after the target.
+     */
     position: 'before' | 'after';
   }
 
   export namespace Placement {
     export interface Target {
+      /**
+       * Type of the pinned resource.
+       */
       type: 'session' | 'pull_request' | 'project';
       /**
+       * ID of the pinned resource.
        * @format uuid
        */
       id: string;
@@ -471,25 +514,35 @@ export namespace PinCreateResponse {
 
 export interface PinUpdateParams {
   /**
-   * Path param
+   * Path param: Type of the pinned resource.
    */
   resourceType: 'session' | 'pull_request' | 'project';
   /**
-   * Body param
+   * Body param: New position of the pin relative to another pin.
    */
   placement: PinUpdateParams.Placement;
 }
 
 export namespace PinUpdateParams {
   export interface Placement {
+    /**
+     * Existing pin to place this pin next to.
+     */
     target: Placement.Target;
+    /**
+     * Whether to place this pin before or after the target.
+     */
     position: 'before' | 'after';
   }
 
   export namespace Placement {
     export interface Target {
+      /**
+       * Type of the pinned resource.
+       */
       type: 'session' | 'pull_request' | 'project';
       /**
+       * ID of the pinned resource.
        * @format uuid
        */
       id: string;
@@ -502,12 +555,19 @@ export interface PinUpdateResponse {
 }
 
 export interface PinDeleteParams {
+  /**
+   * Type of the pinned resource.
+   */
   resourceType: 'session' | 'pull_request' | 'project';
 }
 
 export interface PinDeleteResponse {
+  /**
+   * Type of the pinned resource.
+   */
   type: 'session' | 'pull_request' | 'project';
   /**
+   * ID of the pinned resource.
    * @format uuid
    */
   id: string;
@@ -519,6 +579,7 @@ export declare namespace Pins {
     type PinCreateResponse as PinCreateResponse,
     type PinUpdateResponse as PinUpdateResponse,
     type PinDeleteResponse as PinDeleteResponse,
+    type PinListParams as PinListParams,
     type PinCreateParams as PinCreateParams,
     type PinUpdateParams as PinUpdateParams,
     type PinDeleteParams as PinDeleteParams,
