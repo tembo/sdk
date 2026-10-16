@@ -3056,6 +3056,13 @@
                             "type": "string",
                             "format": "date-time"
                           },
+                          "expiresAt": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "date-time"
+                          },
                           "id": {
                             "type": "string",
                             "format": "uuid"
@@ -3086,6 +3093,7 @@
                         },
                         "required": [
                           "createdAt",
+                          "expiresAt",
                           "id",
                           "lastUsedAt",
                           "name",
@@ -3195,7 +3203,7 @@
       "post": {
         "operationId": "createApiKey",
         "summary": "Create an API key",
-        "description": "Create an API key for the current organization. The complete token is returned only by this operation.",
+        "description": "Create an API key for the current organization. Optionally set `expiresAt` to a future timestamp after which the key stops authenticating requests. The complete token is returned only by this operation.",
         "tags": [
           "API Keys"
         ],
@@ -3214,6 +3222,13 @@
                   "properties": {
                     "createdAt": {
                       "type": "string",
+                      "format": "date-time"
+                    },
+                    "expiresAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
                       "format": "date-time"
                     },
                     "id": {
@@ -3249,6 +3264,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "expiresAt",
                     "id",
                     "lastUsedAt",
                     "name",
@@ -3327,6 +3343,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "expiresAt": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "format": "date-time"
+                  },
                   "name": {
                     "type": "string",
                     "minLength": 1,
@@ -3365,6 +3388,13 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "expiresAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
                     "id": {
                       "type": "string",
                       "format": "uuid"
@@ -3395,6 +3425,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "expiresAt",
                     "id",
                     "lastUsedAt",
                     "name",
@@ -3501,6 +3532,13 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "expiresAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
                     "id": {
                       "type": "string",
                       "format": "uuid"
@@ -3531,6 +3569,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "expiresAt",
                     "id",
                     "lastUsedAt",
                     "name",
@@ -14178,7 +14217,7 @@
             }
           },
           "401": {
-            "description": "User or API-key authentication required",
+            "description": "User, API-key or MCP OAuth authentication required",
             "content": {
               "application/json": {
                 "schema": {
@@ -27247,7 +27286,7 @@
       "get": {
         "operationId": "listPins",
         "summary": "List pins",
-        "description": "List sessions, pull requests, and projects you have pinned, in pin order.",
+        "description": "List your pinned resources in pin order.",
         "tags": [
           "Pins"
         ],
@@ -27747,11 +27786,21 @@
                             "additionalProperties": false
                           }
                         ]
-                      }
+                      },
+                      "description": "Accessible pinned resources in pin order."
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "pattern": "^(session|pull_request|project):[0-9a-f-]{36}$",
+                      "description": "Cursor for the next page, even when resources is empty; null at the end."
                     }
                   },
                   "required": [
-                    "resources"
+                    "resources",
+                    "nextCursor"
                   ],
                   "additionalProperties": false
                 }
@@ -27796,25 +27845,6 @@
               }
             }
           },
-          "409": {
-            "description": "Pin limit reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
           "500": {
             "description": "Pin operation failed",
             "content": {
@@ -27834,7 +27864,29 @@
               }
             }
           }
-        }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "pattern": "^(session|pull_request|project):[0-9a-f-]{36}$"
+            },
+            "description": "Continue after this pin. Restart listing if it was removed or reordered."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            },
+            "description": "Maximum number of pins returned per page."
+          }
+        ]
       },
       "post": {
         "operationId": "createPin",
@@ -28376,25 +28428,6 @@
               }
             }
           },
-          "409": {
-            "description": "Pin limit reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
           "500": {
             "description": "Pin operation failed",
             "content": {
@@ -28428,11 +28461,13 @@
                       "session",
                       "pull_request",
                       "project"
-                    ]
+                    ],
+                    "description": "Type of the pinned resource."
                   },
                   "id": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "ID of the pinned resource."
                   },
                   "placement": {
                     "type": "object",
@@ -28446,32 +28481,37 @@
                               "session",
                               "pull_request",
                               "project"
-                            ]
+                            ],
+                            "description": "Type of the pinned resource."
                           },
                           "id": {
                             "type": "string",
-                            "format": "uuid"
+                            "format": "uuid",
+                            "description": "ID of the pinned resource."
                           }
                         },
                         "required": [
                           "type",
                           "id"
                         ],
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "description": "Existing pin to place this pin next to."
                       },
                       "position": {
                         "type": "string",
                         "enum": [
                           "before",
                           "after"
-                        ]
+                        ],
+                        "description": "Whether to place this pin before or after the target."
                       }
                     },
                     "required": [
                       "target",
                       "position"
                     ],
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Placement for a new pin; omit to add it first. Existing pins keep their position."
                   }
                 },
                 "required": [
@@ -28556,25 +28596,6 @@
               }
             }
           },
-          "409": {
-            "description": "Pin limit reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
           "500": {
             "description": "Pin operation failed",
             "content": {
@@ -28607,7 +28628,8 @@
                 "project"
               ]
             },
-            "required": true
+            "required": true,
+            "description": "Type of the pinned resource."
           },
           {
             "in": "path",
@@ -28616,7 +28638,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "required": true
+            "required": true,
+            "description": "ID of the pinned resource."
           }
         ],
         "requestBody": {
@@ -28638,32 +28661,37 @@
                               "session",
                               "pull_request",
                               "project"
-                            ]
+                            ],
+                            "description": "Type of the pinned resource."
                           },
                           "id": {
                             "type": "string",
-                            "format": "uuid"
+                            "format": "uuid",
+                            "description": "ID of the pinned resource."
                           }
                         },
                         "required": [
                           "type",
                           "id"
                         ],
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "description": "Existing pin to place this pin next to."
                       },
                       "position": {
                         "type": "string",
                         "enum": [
                           "before",
                           "after"
-                        ]
+                        ],
+                        "description": "Whether to place this pin before or after the target."
                       }
                     },
                     "required": [
                       "target",
                       "position"
                     ],
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "New position of the pin relative to another pin."
                   }
                 },
                 "required": [
@@ -28701,11 +28729,13 @@
                         "session",
                         "pull_request",
                         "project"
-                      ]
+                      ],
+                      "description": "Type of the pinned resource."
                     },
                     "id": {
                       "type": "string",
-                      "format": "uuid"
+                      "format": "uuid",
+                      "description": "ID of the pinned resource."
                     },
                     "deleted": {
                       "type": "boolean",
@@ -28760,25 +28790,6 @@
               }
             }
           },
-          "409": {
-            "description": "Pin limit reached",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
           "500": {
             "description": "Pin operation failed",
             "content": {
@@ -28811,7 +28822,8 @@
                 "project"
               ]
             },
-            "required": true
+            "required": true,
+            "description": "Type of the pinned resource."
           },
           {
             "in": "path",
@@ -28820,7 +28832,8 @@
               "type": "string",
               "format": "uuid"
             },
-            "required": true
+            "required": true,
+            "description": "ID of the pinned resource."
           }
         ]
       }
