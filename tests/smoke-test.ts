@@ -83,6 +83,7 @@ const cases: {
     label: 'all params',
     run: async () => {
       const apiKey = await client.apiKeys.create({
+        expiresAt: '2024-01-01T00:00:00.000Z',
         name: 'x',
       });
     },
@@ -1918,8 +1919,24 @@ const cases: {
     operation: 'list',
     method: 'GET',
     path: '/v1/pins',
+    label: 'required params',
     run: async () => {
-      const pin = await client.pins.list();
+      const pin = await client.pins.list({
+        limit: 50,
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/pins',
+    label: 'all params',
+    run: async () => {
+      const pin = await client.pins.list({
+        cursor: 'cursor',
+        limit: 50,
+      });
     },
   },
 

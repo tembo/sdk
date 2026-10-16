@@ -28,7 +28,7 @@ export class APIKeys extends APIResource {
   }
 
   /**
-   * Create an API key for the current organization. The complete token is returned only by this operation.
+   * Create an API key for the current organization. Optionally set `expiresAt` to a future timestamp after which the key stops authenticating requests. The complete token is returned only by this operation.
    *
    * @param {APIKeyCreateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -127,6 +127,10 @@ export namespace APIKeyListResponse {
      */
     createdAt: string;
     /**
+     * @format date-time
+     */
+    expiresAt: string | null;
+    /**
      * @format uuid
      */
     id: string;
@@ -146,6 +150,10 @@ export namespace APIKeyListResponse {
 
 export interface APIKeyCreateParams {
   /**
+   * @format date-time
+   */
+  expiresAt?: string | null;
+  /**
    * @minLength 1
    * @maxLength 100
    */
@@ -157,6 +165,10 @@ export interface APIKeyCreateResponse {
    * @format date-time
    */
   createdAt: string;
+  /**
+   * @format date-time
+   */
+  expiresAt: string | null;
   /**
    * @format uuid
    */
@@ -180,6 +192,10 @@ export interface APIKeyRetrieveResponse {
    * @format date-time
    */
   createdAt: string;
+  /**
+   * @format date-time
+   */
+  expiresAt: string | null;
   /**
    * @format uuid
    */
@@ -210,6 +226,10 @@ export interface APIKeyUpdateResponse {
    * @format date-time
    */
   createdAt: string;
+  /**
+   * @format date-time
+   */
+  expiresAt: string | null;
   /**
    * @format uuid
    */
