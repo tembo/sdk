@@ -230,7 +230,7 @@ const apiKey = await client.apiKeys.list({
 
 ### Create an API key
 
-Create an API key for the current organization. The complete token is returned only by this operation.
+Create an API key for the current organization. Optionally set `expiresAt` to a future timestamp after which the key stops authenticating requests. The complete token is returned only by this operation.
 
 | Direction | Type |
 | --- | --- |
@@ -1715,14 +1715,17 @@ const schedule = await client.projects.schedules.delete('scheduleId', {
 
 ### List pins
 
-List sessions, pull requests, and projects you have pinned, in pin order.
+List your pinned resources in pin order.
 
 | Direction | Type |
 | --- | --- |
+| Request | [`PinListParams`](./src/resources/pins.ts) |
 | Response | [`PinListResponse`](./src/resources/pins.ts) |
 
 ```ts
-const pin = await client.pins.list();
+const pin = await client.pins.list({
+  limit: 50,
+});
 ```
 
 ### Create a pin

@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.36.5",
+  "generatorVersion": "0.36.6",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -6881,12 +6881,18 @@
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [
+        "expiresAt",
         "name"
       ],
       "publicBodyParams": [
+        "expiresAt",
         "name"
       ],
       "bodyParamDetails": [
+        {
+          "name": "expiresAt",
+          "required": false
+        },
         {
           "name": "name",
           "required": false
@@ -21036,19 +21042,42 @@
       "path": "/v1/pins",
       "pathParams": [],
       "publicPathParams": [],
-      "queryParams": [],
-      "publicQueryParams": [],
+      "queryParams": [
+        "cursor",
+        "limit"
+      ],
+      "publicQueryParams": [
+        "cursor",
+        "limit"
+      ],
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [],
       "publicBodyParams": [],
       "bodyParamDetails": [],
       "pathParamDetails": [],
-      "queryParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "cursor",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": 50
+        }
+      ],
       "headerParamDetails": [],
       "cookieParams": [],
       "publicCookieParams": [],
       "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "PinListParams"
+      },
       "response": {
         "status": "200",
         "contentType": "application/json",
@@ -21065,7 +21094,6 @@
         "errorStatuses": [
           "400",
           "404",
-          "409",
           "500"
         ]
       },
@@ -21083,17 +21111,6 @@
         },
         {
           "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -21194,7 +21211,6 @@
         "errorStatuses": [
           "400",
           "404",
-          "409",
           "500"
         ]
       },
@@ -21212,17 +21228,6 @@
         },
         {
           "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -21330,7 +21335,6 @@
         "errorStatuses": [
           "400",
           "404",
-          "409",
           "500"
         ]
       },
@@ -21348,17 +21352,6 @@
         },
         {
           "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -21444,7 +21437,6 @@
         "errorStatuses": [
           "400",
           "404",
-          "409",
           "500"
         ]
       },
@@ -21462,17 +21454,6 @@
         },
         {
           "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
