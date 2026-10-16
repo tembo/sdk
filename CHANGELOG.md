@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.13.0](https://github.com/tembo/sdk/compare/v0.12.0...v0.13.0) (2026-10-16)
+
+
+### Features
+
+* **api:** add body field expiresAt on apiKeys.create (+7 more changes) ([36c5fb3](https://github.com/tembo/sdk/commit/36c5fb3fc6c8419d88c1af3d36f74619b69da860))
+
+
+### Chores
+
+* **api:** sync production OpenAPI snapshot for v0.2.870 ([a0ae1cd](https://github.com/tembo/sdk/commit/a0ae1cd39e65f2ec9e69d8437f342fa2771c82e3))
+* **api:** sync production OpenAPI snapshot for v0.2.870 ([13d8c5b](https://github.com/tembo/sdk/commit/13d8c5b5e973a394e8755a6fa6ca0fd054a04a0b))
+
 ## [0.12.0](https://github.com/tembo/sdk/compare/v0.11.0...v0.12.0) (2026-10-15)
 
 
