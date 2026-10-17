@@ -23,7 +23,7 @@ export class Settings extends APIResource {
   }
 
   /**
-   * Merge user preference updates while preserving unrelated settings.
+   * Configure personal agent/model and project defaults, system instructions, follow-up queue/steer behavior, VM restart, commit signing/attribution, notifications, themes, and review layout. Updates preserve unrelated settings.
    *
    * @param {string} userID
    * @param {SettingUpdateParams} body - The request body to send.
@@ -51,6 +51,8 @@ export interface SettingRetrieveResponse {
   includeTemboCommitAttribution?: boolean;
   desktopNotificationsEnabled?: boolean;
   desktopNotificationPreferences?: SettingRetrieveResponse.DesktopNotificationPreferences;
+  hasDesktopApp?: boolean;
+  openLinksInDesktopApp?: boolean;
   appearancePreferences?: SettingRetrieveResponse.AppearancePreferences;
   appSidebarPreferences?: SettingRetrieveResponse.AppSidebarPreferences;
   diffPreferences?: SettingRetrieveResponse.DiffPreferences;
@@ -177,40 +179,87 @@ export namespace SettingRetrieveResponse {
 }
 
 export interface SettingUpdateParams {
+  /**
+   * Automatically restart a session VM when needed.
+   */
   autoRestartVm?: boolean;
   /**
+   * Default project environment for new sessions, or null to clear the preference.
    * @minLength 1
    * @maxLength 255
    */
   defaultProjectId?: string | null;
   /**
+   * GPG signing key configuration. This value is returned by retrieveUserSettings.
    * @maxLength 32768
    */
   gpgKey?: string;
+  /**
+   * Include Tembo attribution in agent-created commits.
+   */
   includeTemboCommitAttribution?: boolean;
+  /**
+   * Enable or disable desktop notifications.
+   */
   desktopNotificationsEnabled?: boolean;
+  /**
+   * Notification types to show on the desktop.
+   */
   desktopNotificationPreferences?: SettingUpdateParams.DesktopNotificationPreferences;
+  /**
+   * Whether the user has signed in to the Tembo desktop app.
+   */
+  hasDesktopApp?: boolean;
+  /**
+   * Open Tembo links from the browser in the desktop app when it is installed.
+   */
+  openLinksInDesktopApp?: boolean;
+  /**
+   * Theme, accent, and appearance preferences. Nested updates preserve unrelated preferences.
+   */
   appearancePreferences?: SettingUpdateParams.AppearancePreferences;
+  /**
+   * Application sidebar layout preferences.
+   */
   appSidebarPreferences?: SettingUpdateParams.AppSidebarPreferences;
+  /**
+   * Diff display and comparison preferences.
+   */
   diffPreferences?: SettingUpdateParams.DiffPreferences;
+  /**
+   * Dashboard task-filter preferences.
+   */
   dashboardPreferences?: SettingUpdateParams.DashboardPreferences;
+  /**
+   * Message composer preferences, including selected repositories.
+   */
   composerPreferences?: SettingUpdateParams.ComposerPreferences;
+  /**
+   * Code review file sorting, exclusions, bot comment visibility, and layout preferences.
+   */
   reviewPreferences?: SettingUpdateParams.ReviewPreferences;
   /**
+   * Diff syntax theme for light mode.
    * @maxLength 255
    */
   diffLightTheme?: string;
   /**
+   * Diff syntax theme for dark mode.
    * @maxLength 255
    */
   diffDarkTheme?: string;
   /**
+   * Default coding agent and model key. Null clears the preference.
    * @maxLength 255
    * @pattern ^[^:]+:[^:]+(?::[^:]+)?$
    */
   defaultAgent?: string | null;
+  /**
+   * Default follow-up delivery: queue a new turn or steer an active turn.
+   */
   followUpBehavior?: 'queue' | 'steer';
   /**
+   * Personal system instructions supplied to agents.
    * @maxLength 4096
    */
   customSystemPrompt?: string;
@@ -418,6 +467,8 @@ export interface SettingUpdateResponse {
   includeTemboCommitAttribution?: boolean;
   desktopNotificationsEnabled?: boolean;
   desktopNotificationPreferences?: SettingUpdateResponse.DesktopNotificationPreferences;
+  hasDesktopApp?: boolean;
+  openLinksInDesktopApp?: boolean;
   appearancePreferences?: SettingUpdateResponse.AppearancePreferences;
   appSidebarPreferences?: SettingUpdateResponse.AppSidebarPreferences;
   diffPreferences?: SettingUpdateResponse.DiffPreferences;

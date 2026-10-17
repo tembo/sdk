@@ -23,7 +23,7 @@ export class Settings extends APIResource {
   }
 
   /**
-   * Update one or more organization settings.
+   * Configure organization defaults for agent/model, VM size and keep-alive; inference credentials; agent prompts and commit/PR instructions; bot feedback, signing, reports, and insights. Only supplied settings are changed.
    *
    * @param {string} organizationID
    * @param {SettingUpdateParams} body - The request body to send.
@@ -82,42 +82,82 @@ export interface SettingRetrieveResponse {
 export namespace SettingRetrieveResponse {
   export interface Settings {
     /**
+     * Git clone history depth used for repositories.
      * @exclusiveMinimum 0
      */
     cloneDepth: number;
     /**
+     * Organization instructions for agent commit messages.
      * @maxLength 64000
      */
     commitInstructions: string;
     /**
+     * Custom system instructions supplied to organization agents.
      * @maxLength 64000
      */
     customSystemPrompt: string;
     /**
+     * Default coding agent and model key for the organization.
      * @maxLength 64000
      */
     defaultAgent: string;
     /**
+     * Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations.
      * @minimum 0
      * @maximum 10080
      */
     defaultKeepAliveMinutes: number;
+    /**
+     * Default VM size for organization sessions.
+     */
     defaultSandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+    /**
+     * Delete agent-created branches when their pull requests close.
+     */
     deleteBranchWhenPrClosed: boolean;
+    /**
+     * Create agent pull requests as drafts by default.
+     */
     draftPrs: boolean;
+    /**
+     * Enable handling of CodeRabbit bot feedback.
+     */
     enableCoderabbitBot: boolean;
+    /**
+     * Enable handling of Cursor bot feedback.
+     */
     enableCursorBot: boolean;
+    /**
+     * Enable handling of Gemini Code Assist bot feedback.
+     */
     enableGeminiCodeAssistBot: boolean;
+    /**
+     * Enable handling of GitHub Actions bot feedback.
+     */
     enableGithubActionsBot: boolean;
+    /**
+     * Enable handling of Graphite bot feedback.
+     */
     enableGraphiteBot: boolean;
+    /**
+     * Enable handling of Greptile bot feedback.
+     */
     enableGreptileBot: boolean;
+    /**
+     * Enable experimental MCP features for the organization.
+     */
     experimentalMcp: boolean;
+    /**
+     * Enable mentioning the author in supported integration responses.
+     */
     featureMentionAuthor: boolean;
     /**
+     * Maximum number of bot review iterations.
      * @minimum 0
      */
     maxBotReviews: number;
     /**
+     * Maximum number of generated solutions.
      * @minimum 0
      */
     maxSolutions: number;
@@ -126,144 +166,235 @@ export namespace SettingRetrieveResponse {
      */
     onDemandMaxCreditUsage: number;
     /**
+     * Reset frequency for PostgreSQL pg_stat_statements collection.
      * @maxLength 64000
      */
     pgStatStatementsResetFrequency: string;
     /**
+     * Custom system instructions for the project-management agent.
      * @maxLength 64000
      */
     pmSystemPrompt: string;
     /**
+     * Organization instructions for agent pull request titles.
      * @maxLength 64000
      */
     prTitleInstructions: string;
+    /**
+     * Enable or disable pull request contribution insight collection.
+     */
     pullRequestInsightsEnabled: boolean;
+    /**
+     * Sign agent-created commits when signing credentials are configured.
+     */
     shouldSignCommits: boolean;
+    /**
+     * Use Tembo review links in Slack review notifications.
+     */
     slackReviewOnTembo: boolean;
     /**
+     * Threshold in milliseconds for identifying slow database queries.
      * @minimum 0
      */
     slowQueryThresholdMs: number;
     /**
+     * SSH public keys authorized for organization workspace access.
      * @maxLength 64000
      */
     sshPublicKeys: string;
+    /**
+     * Enable or disable the organization weekly report.
+     */
     weeklyReportEnabled: boolean;
   }
 }
 
 export interface SettingUpdateParams {
   /**
+   * API key for Amp agent access.
    * @maxLength 64000
    */
   ampApiKey?: string;
   /**
+   * Anthropic API key for organization-provided inference.
    * @maxLength 64000
    */
   anthropicApiKey?: string;
   /**
+   * AWS access key ID for Bedrock inference.
    * @maxLength 64000
    */
   awsBedrockAccessKeyId?: string;
   /**
+   * AWS region for Bedrock inference.
    * @maxLength 64000
    */
   awsBedrockRegion?: string;
   /**
+   * AWS secret access key for Bedrock inference.
    * @maxLength 64000
    */
   awsBedrockSecretAccessKey?: string;
   /**
+   * Git clone history depth used for repositories.
    * @exclusiveMinimum 0
    */
   cloneDepth?: number;
   /**
+   * Organization instructions for agent commit messages.
    * @maxLength 64000
    */
   commitInstructions?: string;
   /**
+   * API key for Cursor agent access.
    * @maxLength 64000
    */
   cursorApiKey?: string;
   /**
+   * Custom system instructions supplied to organization agents.
    * @maxLength 64000
    */
   customSystemPrompt?: string;
   /**
+   * Default coding agent and model key for the organization.
    * @maxLength 64000
    */
   defaultAgent?: string;
   /**
+   * Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations.
    * @minimum 0
    * @maximum 10080
    */
   defaultKeepAliveMinutes?: number;
+  /**
+   * Default VM size for organization sessions.
+   */
   defaultSandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  /**
+   * Delete agent-created branches when their pull requests close.
+   */
   deleteBranchWhenPrClosed?: boolean;
+  /**
+   * Create agent pull requests as drafts by default.
+   */
   draftPrs?: boolean;
+  /**
+   * Enable handling of CodeRabbit bot feedback.
+   */
   enableCoderabbitBot?: boolean;
+  /**
+   * Enable handling of Cursor bot feedback.
+   */
   enableCursorBot?: boolean;
+  /**
+   * Enable handling of Gemini Code Assist bot feedback.
+   */
   enableGeminiCodeAssistBot?: boolean;
+  /**
+   * Enable handling of GitHub Actions bot feedback.
+   */
   enableGithubActionsBot?: boolean;
+  /**
+   * Enable handling of Graphite bot feedback.
+   */
   enableGraphiteBot?: boolean;
+  /**
+   * Enable handling of Greptile bot feedback.
+   */
   enableGreptileBot?: boolean;
+  /**
+   * Enable experimental MCP features for the organization.
+   */
   experimentalMcp?: boolean;
+  /**
+   * Enable mentioning the author in supported integration responses.
+   */
   featureMentionAuthor?: boolean;
   /**
+   * Google Cloud location for Vertex AI inference.
    * @maxLength 64000
    */
   gcpVertexAiLocation?: string;
   /**
+   * Google Cloud project for Vertex AI inference.
    * @maxLength 64000
    */
   gcpVertexAiProject?: string;
   /**
+   * Service-account JSON credentials for Vertex AI inference.
    * @maxLength 64000
    */
   gcpVertexAiServiceAccountJson?: string;
   /**
+   * API key for Kernel browser access.
    * @maxLength 64000
    */
   kernelApiKey?: string;
   /**
+   * Maximum number of bot review iterations.
    * @minimum 0
    */
   maxBotReviews?: number;
   /**
+   * Maximum number of generated solutions.
    * @minimum 0
    */
   maxSolutions?: number;
   /**
+   * OpenAI API key for organization-provided inference.
    * @maxLength 64000
    */
   openaiApiKey?: string;
   /**
+   * xAI API key for organization-provided inference.
+   * @maxLength 64000
+   */
+  xaiApiKey?: string;
+  /**
+   * OpenRouter API key for organization-provided inference.
    * @maxLength 64000
    */
   openrouterApiKey?: string;
   /**
+   * Reset frequency for PostgreSQL pg_stat_statements collection.
    * @maxLength 64000
    */
   pgStatStatementsResetFrequency?: string;
   /**
+   * Custom system instructions for the project-management agent.
    * @maxLength 64000
    */
   pmSystemPrompt?: string;
   /**
+   * Organization instructions for agent pull request titles.
    * @maxLength 64000
    */
   prTitleInstructions?: string;
+  /**
+   * Enable or disable pull request contribution insight collection.
+   */
   pullRequestInsightsEnabled?: boolean;
+  /**
+   * Sign agent-created commits when signing credentials are configured.
+   */
   shouldSignCommits?: boolean;
+  /**
+   * Use Tembo review links in Slack review notifications.
+   */
   slackReviewOnTembo?: boolean;
   /**
+   * Threshold in milliseconds for identifying slow database queries.
    * @minimum 0
    */
   slowQueryThresholdMs?: number;
   /**
+   * SSH public keys authorized for organization workspace access.
    * @maxLength 64000
    */
   sshPublicKeys?: string;
+  /**
+   * Enable or disable the organization weekly report.
+   */
   weeklyReportEnabled?: boolean;
 }
 
@@ -275,42 +406,82 @@ export interface SettingUpdateResponse {
 export namespace SettingUpdateResponse {
   export interface Settings {
     /**
+     * Git clone history depth used for repositories.
      * @exclusiveMinimum 0
      */
     cloneDepth: number;
     /**
+     * Organization instructions for agent commit messages.
      * @maxLength 64000
      */
     commitInstructions: string;
     /**
+     * Custom system instructions supplied to organization agents.
      * @maxLength 64000
      */
     customSystemPrompt: string;
     /**
+     * Default coding agent and model key for the organization.
      * @maxLength 64000
      */
     defaultAgent: string;
     /**
+     * Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations.
      * @minimum 0
      * @maximum 10080
      */
     defaultKeepAliveMinutes: number;
+    /**
+     * Default VM size for organization sessions.
+     */
     defaultSandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+    /**
+     * Delete agent-created branches when their pull requests close.
+     */
     deleteBranchWhenPrClosed: boolean;
+    /**
+     * Create agent pull requests as drafts by default.
+     */
     draftPrs: boolean;
+    /**
+     * Enable handling of CodeRabbit bot feedback.
+     */
     enableCoderabbitBot: boolean;
+    /**
+     * Enable handling of Cursor bot feedback.
+     */
     enableCursorBot: boolean;
+    /**
+     * Enable handling of Gemini Code Assist bot feedback.
+     */
     enableGeminiCodeAssistBot: boolean;
+    /**
+     * Enable handling of GitHub Actions bot feedback.
+     */
     enableGithubActionsBot: boolean;
+    /**
+     * Enable handling of Graphite bot feedback.
+     */
     enableGraphiteBot: boolean;
+    /**
+     * Enable handling of Greptile bot feedback.
+     */
     enableGreptileBot: boolean;
+    /**
+     * Enable experimental MCP features for the organization.
+     */
     experimentalMcp: boolean;
+    /**
+     * Enable mentioning the author in supported integration responses.
+     */
     featureMentionAuthor: boolean;
     /**
+     * Maximum number of bot review iterations.
      * @minimum 0
      */
     maxBotReviews: number;
     /**
+     * Maximum number of generated solutions.
      * @minimum 0
      */
     maxSolutions: number;
@@ -319,28 +490,45 @@ export namespace SettingUpdateResponse {
      */
     onDemandMaxCreditUsage: number;
     /**
+     * Reset frequency for PostgreSQL pg_stat_statements collection.
      * @maxLength 64000
      */
     pgStatStatementsResetFrequency: string;
     /**
+     * Custom system instructions for the project-management agent.
      * @maxLength 64000
      */
     pmSystemPrompt: string;
     /**
+     * Organization instructions for agent pull request titles.
      * @maxLength 64000
      */
     prTitleInstructions: string;
+    /**
+     * Enable or disable pull request contribution insight collection.
+     */
     pullRequestInsightsEnabled: boolean;
+    /**
+     * Sign agent-created commits when signing credentials are configured.
+     */
     shouldSignCommits: boolean;
+    /**
+     * Use Tembo review links in Slack review notifications.
+     */
     slackReviewOnTembo: boolean;
     /**
+     * Threshold in milliseconds for identifying slow database queries.
      * @minimum 0
      */
     slowQueryThresholdMs: number;
     /**
+     * SSH public keys authorized for organization workspace access.
      * @maxLength 64000
      */
     sshPublicKeys: string;
+    /**
+     * Enable or disable the organization weekly report.
+     */
     weeklyReportEnabled: boolean;
   }
 }
@@ -350,10 +538,14 @@ export type SettingValidateCredentialsParams =
   | SettingValidateCredentialsParams.Variant1
   | SettingValidateCredentialsParams.Variant2
   | SettingValidateCredentialsParams.Variant3
-  | SettingValidateCredentialsParams.Variant4;
+  | SettingValidateCredentialsParams.Variant4
+  | SettingValidateCredentialsParams.Variant5;
 
 export declare namespace SettingValidateCredentialsParams {
   export interface Variant0 {
+    /**
+     * Validate Anthropic API credentials without saving them.
+     */
     provider: 'anthropic';
     /**
      * The Anthropic API key.
@@ -362,6 +554,9 @@ export declare namespace SettingValidateCredentialsParams {
   }
 
   export interface Variant1 {
+    /**
+     * Validate OpenAI API credentials without saving them.
+     */
     provider: 'openai';
     /**
      * The OpenAI API key.
@@ -370,6 +565,20 @@ export declare namespace SettingValidateCredentialsParams {
   }
 
   export interface Variant2 {
+    /**
+     * Validate xAI API credentials without saving them.
+     */
+    provider: 'xai';
+    /**
+     * The xAI API key.
+     */
+    apiKey: string;
+  }
+
+  export interface Variant3 {
+    /**
+     * Validate OpenRouter API credentials without saving them.
+     */
     provider: 'openrouter';
     /**
      * The OpenRouter API key.
@@ -377,7 +586,10 @@ export declare namespace SettingValidateCredentialsParams {
     apiKey: string;
   }
 
-  export interface Variant3 {
+  export interface Variant4 {
+    /**
+     * Validate AWS Bedrock credentials without saving them.
+     */
     provider: 'aws-bedrock';
     /**
      * The AWS access key ID.
@@ -393,7 +605,10 @@ export declare namespace SettingValidateCredentialsParams {
     region: string;
   }
 
-  export interface Variant4 {
+  export interface Variant5 {
+    /**
+     * Validate Google Cloud Vertex AI credentials without saving them.
+     */
     provider: 'gcp-vertex-ai';
     /**
      * The GCP service account JSON.

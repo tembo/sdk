@@ -28,7 +28,7 @@ export class McpConnections extends APIResource {
   }
 
   /**
-   * Create a new stdio or Streamable HTTP MCP connection. Remote connections support OAuth, client credentials, or static headers and begin authorization when required; stdio commands are stored but never executed by this API.
+   * Create a new stdio or Streamable HTTP MCP connection. Remote connections support OAuth, Client Credentials (M2M), or static headers and begin authorization when required; stdio commands are stored but never executed by this API.
    *
    * @param {McpConnectionCreateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -66,7 +66,7 @@ export class McpConnections extends APIResource {
   }
 
   /**
-   * Update MCP configuration. Header and environment objects merge write-only values by key, null values remove individual keys, and a null environment clears all variables. Hidden credentials are preserved unless explicitly changed or authentication is replaced; changing a remote server URL clears credentials for the old server. Call authorize explicitly after changing the server or authentication to reconnect.
+   * Update MCP configuration, including OAuth, Client Credentials (M2M), or static-header authentication. Supplied headers merge by key only for unchanged-server static_headers authentication; otherwise they are replaced. Environment values merge by key, null values remove individual keys, and a null environment clears all variables. Hidden credentials are preserved unless explicitly changed or authentication is replaced; changing a remote server URL clears credentials for the old server. Call authorize explicitly after changing the server or authentication to reconnect.
    *
    * @param {string} mcpConnectionID
    * @param {McpConnectionUpdateParams} body - The request body to send.
@@ -138,18 +138,24 @@ export class McpConnections extends APIResource {
 }
 
 export interface McpConnectionListParams {
+  /**
+   * Filter by whether the MCP connection has completed connection or authorization.
+   */
   connected?: boolean;
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Search MCP connection names or server URLs.
    * @minLength 1
    * @maxLength 200
    */
@@ -177,6 +183,9 @@ export namespace McpConnectionListResponse {
     name: string;
     serverUrl: string | null;
     type: 'remote' | 'stdio';
+    /**
+     * shared makes the connection available to the organization; personal restricts it to its owner.
+     */
     visibility: 'shared' | 'personal';
   }
 }
@@ -188,23 +197,33 @@ export type McpConnectionCreateParams =
 export declare namespace McpConnectionCreateParams {
   export interface Variant0 {
     /**
+     * Display name for the MCP connection.
      * @minLength 1
      * @maxLength 200
      */
     name: string;
     /**
+     * Executable for the stdio MCP server. This API stores the command but never executes it.
      * @minLength 1
      * @maxLength 4096
      */
     command: string;
+    /**
+     * Use stdio for a command-based MCP server.
+     */
     type: 'stdio';
     /**
+     * Command-line arguments for the stdio server. Stored here, not executed by this API.
      * @default []
      * @maxItems 100
      */
     args?: Array<string>;
+    /**
+     * Environment variables for the stdio command. Values are write-only.
+     */
     env?: Record<string, string>;
     /**
+     * shared makes the connection available to the organization; personal restricts it to its owner.
      * @default shared
      */
     visibility?: 'shared' | 'personal';
@@ -212,43 +231,55 @@ export declare namespace McpConnectionCreateParams {
 
   export interface Variant1 {
     /**
+     * Display name for the MCP connection.
      * @minLength 1
      * @maxLength 200
      */
     name: string;
     /**
+     * HTTP or HTTPS MCP server endpoint. Changing it requires an explicit authType, clears old credentials, and requires authorization to reconnect.
      * @format uri
      */
     serverUrl: string;
     /**
+     * Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers).
      * @default oauth
      */
     authType?: 'oauth' | 'client_credentials' | 'static_headers';
     /**
+     * OAuth client ID. Required for client_credentials or pre_registered OAuth.
      * @minLength 1
      * @maxLength 4096
      */
     clientId?: string;
     /**
+     * Write-only OAuth client secret. Required for client_credentials; optional for pre_registered OAuth.
      * @minLength 1
      * @maxLength 65536
      */
     clientSecret?: string;
+    /**
+     * Request headers for static-header or automatic OAuth authentication. Values are write-only.
+     */
     headers?: Record<string, string>;
     /**
+     * Register an OAuth client automatically or use pre-registered clientId and optional clientSecret.
      * @default automatic
      */
     oauthRegistration?: 'automatic' | 'pre_registered';
     /**
+     * OAuth scopes requested for client credentials or pre-registered OAuth.
      * @minLength 1
      * @maxLength 4096
      */
     scope?: string;
     /**
+     * Use remote for a Streamable HTTP MCP server.
      * @default remote
      */
     type?: 'remote';
     /**
+     * shared makes the connection available to the organization; personal restricts it to its owner.
      * @default shared
      */
     visibility?: 'shared' | 'personal';
@@ -276,11 +307,18 @@ export namespace McpConnectionCreateResponse {
     name: string;
     serverUrl: string | null;
     type: 'remote' | 'stdio';
+    /**
+     * shared makes the connection available to the organization; personal restricts it to its owner.
+     */
     visibility: 'shared' | 'personal';
     /**
+     * Command-line arguments for the stdio server. Stored here, not executed by this API.
      * @maxItems 100
      */
     args: Array<string> | null;
+    /**
+     * Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers).
+     */
     authType: 'oauth' | 'client_credentials' | 'static_headers' | null;
     command: string | null;
     /**
@@ -308,11 +346,18 @@ export interface McpConnectionRetrieveResponse {
   name: string;
   serverUrl: string | null;
   type: 'remote' | 'stdio';
+  /**
+   * shared makes the connection available to the organization; personal restricts it to its owner.
+   */
   visibility: 'shared' | 'personal';
   /**
+   * Command-line arguments for the stdio server. Stored here, not executed by this API.
    * @maxItems 100
    */
   args: Array<string> | null;
+  /**
+   * Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers).
+   */
   authType: 'oauth' | 'client_credentials' | 'static_headers' | null;
   command: string | null;
   /**
@@ -333,30 +378,47 @@ export type McpConnectionUpdateParams =
 
 export declare namespace McpConnectionUpdateParams {
   export interface Variant0 {
+    /**
+     * Connection type must remain remote; transport type cannot be changed by update.
+     */
     type: 'remote';
     /**
+     * Display name for the MCP connection.
      * @minLength 1
      * @maxLength 200
      */
     name?: string;
     /**
+     * HTTP or HTTPS MCP server endpoint. Changing it requires an explicit authType, clears old credentials, and requires authorization to reconnect.
      * @format uri
      */
     serverUrl?: string;
+    /**
+     * Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers).
+     */
     authType?: 'oauth' | 'client_credentials' | 'static_headers';
     /**
+     * OAuth client ID when replacing authentication. Requires authType; required for client_credentials or pre_registered OAuth.
      * @minLength 1
      * @maxLength 4096
      */
     clientId?: string;
     /**
+     * Write-only client secret when replacing authentication. Requires authType; required for client_credentials.
      * @minLength 1
      * @maxLength 65536
      */
     clientSecret?: string;
+    /**
+     * Requires authType. Merges by key only when keeping static_headers authentication and the same server URL; otherwise replaces stored headers. Null values remove keys; static_headers requires at least one header. Values are write-only.
+     */
     headers?: Record<string, string | null> | null;
+    /**
+     * Register an OAuth client automatically or use pre-registered clientId and optional clientSecret.
+     */
     oauthRegistration?: 'automatic' | 'pre_registered';
     /**
+     * OAuth scopes when replacing authentication. Requires authType.
      * @minLength 1
      * @maxLength 4096
      */
@@ -364,21 +426,30 @@ export declare namespace McpConnectionUpdateParams {
   }
 
   export interface Variant1 {
+    /**
+     * Connection type must remain stdio; transport type cannot be changed by update.
+     */
     type: 'stdio';
     /**
+     * Replace the stored stdio server executable. This API never executes it.
      * @minLength 1
      * @maxLength 4096
      */
     command?: string;
     /**
+     * Display name for the MCP connection.
      * @minLength 1
      * @maxLength 200
      */
     name?: string;
     /**
+     * Command-line arguments for the stdio server. Stored here, not executed by this API.
      * @maxItems 100
      */
     args?: Array<string> | null;
+    /**
+     * Merge write-only environment variables by key. A null value removes a key; null for the entire env field clears all variables.
+     */
     env?: Record<string, string | null> | null;
   }
 }
@@ -395,11 +466,18 @@ export interface McpConnectionUpdateResponse {
   name: string;
   serverUrl: string | null;
   type: 'remote' | 'stdio';
+  /**
+   * shared makes the connection available to the organization; personal restricts it to its owner.
+   */
   visibility: 'shared' | 'personal';
   /**
+   * Command-line arguments for the stdio server. Stored here, not executed by this API.
    * @maxItems 100
    */
   args: Array<string> | null;
+  /**
+   * Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers).
+   */
   authType: 'oauth' | 'client_credentials' | 'static_headers' | null;
   command: string | null;
   /**
@@ -443,11 +521,18 @@ export namespace McpConnectionAuthorizeResponse {
     name: string;
     serverUrl: string | null;
     type: 'remote' | 'stdio';
+    /**
+     * shared makes the connection available to the organization; personal restricts it to its owner.
+     */
     visibility: 'shared' | 'personal';
     /**
+     * Command-line arguments for the stdio server. Stored here, not executed by this API.
      * @maxItems 100
      */
     args: Array<string> | null;
+    /**
+     * Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers).
+     */
     authType: 'oauth' | 'client_credentials' | 'static_headers' | null;
     command: string | null;
     /**

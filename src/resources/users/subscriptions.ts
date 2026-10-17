@@ -369,9 +369,13 @@ export namespace SubscriptionRetrieveResponse {
 
 export interface SubscriptionResetParams {
   /**
+   * Unique UUID for this reset attempt. Reuse the same UUID when retrying to avoid redeeming another reset credit.
    * @format uuid
    */
   idempotencyKey: string;
+  /**
+   * Subscription provider whose rate-limit reset credit to redeem. Currently only chatgpt is supported.
+   */
   provider: 'chatgpt';
 }
 

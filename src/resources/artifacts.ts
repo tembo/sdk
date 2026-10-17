@@ -85,24 +85,29 @@ export class Artifacts extends APIResource {
 
 export interface ArtifactListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Filter artifacts created by this job.
    * @minLength 1
    */
   jobId?: string;
   /**
+   * Filter artifacts attached to this session.
    * @format uuid
    */
   sessionId?: string;
   /**
+   * Filter artifact types, supplied as a comma-separated list.
    * @minItems 1
    */
   types?: Array<'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source'>;
@@ -213,6 +218,7 @@ export interface ArtifactCreateParams {
     | ArtifactCreateParams.Output4
     | ArtifactCreateParams.Output5;
   /**
+   * Session to attach the artifact to.
    * @format uuid
    */
   sessionId: string;

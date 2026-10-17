@@ -130,11 +130,13 @@ export class Schedules extends APIResource {
 
 export interface ScheduleListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 255
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -190,11 +192,13 @@ export namespace ScheduleListResponse {
 
 export interface ScheduleCreateParams {
   /**
+   * Cron expression for recurring project snapshot builds.
    * @minLength 1
    * @maxLength 120
    */
   cron: string;
   /**
+   * Timezone for the cron schedule. Defaults to UTC.
    * @minLength 1
    * @maxLength 100
    */
@@ -287,17 +291,17 @@ export interface ScheduleUpdateParams {
    */
   projectId: string;
   /**
-   * Body param
+   * Body param: Replace the recurring project build cron expression.
    * @minLength 1
    * @maxLength 120
    */
   cron?: string;
   /**
-   * Body param
+   * Body param: Enable or pause scheduled project builds.
    */
   enabled?: boolean;
   /**
-   * Body param
+   * Body param: Timezone for the cron schedule, or null to clear it.
    * @minLength 1
    * @maxLength 100
    */

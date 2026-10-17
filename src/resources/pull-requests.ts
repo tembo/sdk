@@ -45,44 +45,84 @@ export class PullRequests extends APIResource {
 }
 
 export interface PullRequestListParams {
+  /**
+   * Filter authors by comma-separated provider:identifier values, such as github:octocat.
+   */
   authorIds?: Array<string>;
   /**
+   * Only pull requests created after this ISO 8601 timestamp.
    * @format date-time
    */
   createdAfter?: string;
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Exclude authors by comma-separated provider:identifier values.
+   */
   excludeAuthorIds?: Array<string>;
   /**
+   * Exclude pull requests from the named organization within the caller access scope.
    * @minLength 1
    */
   excludeOrganizationName?: string;
+  /**
+   * Exclude returned pull requests by these comma-separated provider:identifier author values.
+   */
   excludeReturnedAuthorIds?: Array<string>;
+  /**
+   * Exclude pull requests assigned to these comma-separated reviewer identifiers.
+   */
   excludeReviewerIds?: Array<string>;
+  /**
+   * When true, only return pull requests with a linked Tembo session.
+   */
   hasTemboSession?: boolean;
+  /**
+   * Request author filter options. Public responses do not include organization-wide author options.
+   */
   includeAuthors?: boolean;
+  /**
+   * Include the total count of matching pull requests.
+   */
   includeTotal?: boolean;
+  /**
+   * Filter by repository IDs, supplied as a comma-separated list.
+   */
   repositoryIds?: Array<string>;
+  /**
+   * Filter by assigned reviewer identifiers, supplied as a comma-separated list.
+   */
   reviewerIds?: Array<string>;
   /**
+   * Only pull requests merged after this ISO 8601 timestamp.
    * @format date-time
    */
   mergedAfter?: string;
   /**
+   * Search pull requests.
    * @minLength 1
    */
   search?: string;
+  /**
+   * Sort by creation time or last update time.
+   */
   sortBy?: 'createdAt' | 'updatedAt';
+  /**
+   * Filter by lifecycle or review state, including open, returned, approved, needs review, draft, merged, or closed.
+   */
   state?: 'open' | 'returned' | 'approved' | 'needs review' | 'draft' | 'merged' | 'closed';
   /**
+   * Only pull requests updated after this ISO 8601 timestamp.
    * @format date-time
    */
   updatedAfter?: string;
