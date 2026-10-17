@@ -956,7 +956,8 @@
                 "enum": [
                   "normal",
                   "planning"
-                ]
+                ],
+                "description": "Use Build (normal) to execute work or Plan (planning) to plan before writing code."
               },
               "speed": {
                 "type": "string",
@@ -964,7 +965,8 @@
                   "normal",
                   "fast",
                   "ultrafast"
-                ]
+                ],
+                "description": "Preferred execution speed when supported by the selected runtime."
               },
               "goal": {
                 "type": "object",
@@ -1001,7 +1003,8 @@
             "enum": [
               "normal",
               "planning"
-            ]
+            ],
+            "description": "Use Build (normal) to execute work or Plan (planning) to plan before writing code."
           },
           "speed": {
             "type": "string",
@@ -1009,7 +1012,8 @@
               "normal",
               "fast",
               "ultrafast"
-            ]
+            ],
+            "description": "Preferred execution speed when supported by the selected runtime."
           },
           "goal": {
             "type": "object",
@@ -3186,7 +3190,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -3196,7 +3201,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       },
@@ -3348,12 +3354,14 @@
                       "string",
                       "null"
                     ],
-                    "format": "date-time"
+                    "format": "date-time",
+                    "description": "Future ISO 8601 expiration timestamp. Omit or use null for a key that does not expire."
                   },
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Display name for identifying this API key."
                   }
                 },
                 "additionalProperties": false
@@ -3661,7 +3669,8 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "New display name for the API key. This does not rotate its token."
                   }
                 },
                 "required": [
@@ -3944,7 +3953,7 @@
               "type": "string",
               "const": ""
             },
-            "description": "No continuation cursor is supported for marketplace results."
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -3954,7 +3963,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -4015,11 +4025,13 @@
                         "type": "object",
                         "properties": {
                           "content": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "Complete text content of the skill file."
                           },
                           "filename": {
                             "type": "string",
-                            "minLength": 1
+                            "minLength": 1,
+                            "description": "Relative file path within the skill, such as SKILL.md."
                           }
                         },
                         "required": [
@@ -4299,7 +4311,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -4309,7 +4322,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -4320,7 +4334,8 @@
                 "type": "string",
                 "minLength": 1
               }
-            }
+            },
+            "description": "Filter by exact skill names."
           },
           {
             "in": "query",
@@ -4332,7 +4347,8 @@
                 "format": "uuid"
               },
               "default": []
-            }
+            },
+            "description": "Repository IDs to search for checked-in skills, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -4341,7 +4357,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Project whose repositories to search for checked-in skills."
           },
           {
             "in": "query",
@@ -4349,7 +4366,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Session whose repositories to search for checked-in skills."
           },
           {
             "in": "query",
@@ -4357,7 +4375,8 @@
             "schema": {
               "type": "string",
               "minLength": 1
-            }
+            },
+            "description": "Search skills by name, description, or keywords."
           },
           {
             "in": "query",
@@ -4369,7 +4388,8 @@
                 "repository"
               ],
               "default": "organization"
-            }
+            },
+            "description": "organization lists saved organization skills; repository lists checked-in skills from the selected repositories, project, or session."
           }
         ]
       },
@@ -4515,11 +4535,13 @@
                 "type": "object",
                 "properties": {
                   "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Summary of what the skill does and when to use it."
                   },
                   "name": {
                     "type": "string",
-                    "minLength": 1
+                    "minLength": 1,
+                    "description": "Display name of the skill."
                   },
                   "files": {
                     "type": "array",
@@ -4527,11 +4549,13 @@
                       "type": "object",
                       "properties": {
                         "content": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Complete text content of the skill file."
                         },
                         "filename": {
                           "type": "string",
-                          "minLength": 1
+                          "minLength": 1,
+                          "description": "Relative file path within the skill, such as SKILL.md."
                         }
                       },
                       "required": [
@@ -4540,7 +4564,8 @@
                       ],
                       "additionalProperties": false
                     },
-                    "minItems": 1
+                    "minItems": 1,
+                    "description": "Complete file set, including a required SKILL.md. On update, replaces all existing files rather than merging them."
                   }
                 },
                 "required": [
@@ -4855,11 +4880,13 @@
                 "type": "object",
                 "properties": {
                   "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Summary of what the skill does and when to use it."
                   },
                   "name": {
                     "type": "string",
-                    "minLength": 1
+                    "minLength": 1,
+                    "description": "Display name of the skill."
                   },
                   "files": {
                     "type": "array",
@@ -4867,11 +4894,13 @@
                       "type": "object",
                       "properties": {
                         "content": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Complete text content of the skill file."
                         },
                         "filename": {
                           "type": "string",
-                          "minLength": 1
+                          "minLength": 1,
+                          "description": "Relative file path within the skill, such as SKILL.md."
                         }
                       },
                       "required": [
@@ -4880,7 +4909,8 @@
                       ],
                       "additionalProperties": false
                     },
-                    "minItems": 1
+                    "minItems": 1,
+                    "description": "Complete file set, including a required SKILL.md. On update, replaces all existing files rather than merging them."
                   }
                 },
                 "additionalProperties": false
@@ -5513,7 +5543,8 @@
                 "type": "object",
                 "properties": {
                   "enabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or disable pull request contribution insight collection. Enabling starts the initial refresh when needed."
                   }
                 },
                 "required": [
@@ -5671,7 +5702,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -5681,7 +5713,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -5843,7 +5876,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -5853,7 +5887,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -6068,13 +6103,15 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Organization display name."
                   },
                   "slug": {
                     "type": "string",
                     "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Unique organization URL slug using lowercase letters, numbers, and single hyphens."
                   }
                 },
                 "required": [
@@ -6487,16 +6524,19 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Organization display name."
                   },
                   "slug": {
                     "type": "string",
                     "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Unique organization URL slug using lowercase letters, numbers, and single hyphens."
                   },
                   "onboardingCompleted": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Mark organization onboarding as completed or incomplete."
                   }
                 },
                 "additionalProperties": false
@@ -6914,7 +6954,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -6924,7 +6965,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -6933,7 +6975,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 100
-            }
+            },
+            "description": "Search organization members or invitations."
           },
           {
             "in": "query",
@@ -6945,7 +6988,8 @@
                 "pending"
               ],
               "default": "active"
-            }
+            },
+            "description": "List active members or pending invitations."
           }
         ]
       },
@@ -7177,7 +7221,8 @@
                 "properties": {
                   "emailAddress": {
                     "type": "string",
-                    "format": "email"
+                    "format": "email",
+                    "description": "Email address of the user to add or invite."
                   },
                   "role": {
                     "type": "string",
@@ -7185,7 +7230,8 @@
                       "org:admin",
                       "org:member"
                     ],
-                    "default": "org:member"
+                    "default": "org:member",
+                    "description": "Organization role to grant: org:admin or org:member."
                   }
                 },
                 "required": [
@@ -7670,7 +7716,8 @@
                     "enum": [
                       "org:admin",
                       "org:member"
-                    ]
+                    ],
+                    "description": "New organization role: org:admin or org:member."
                   }
                 },
                 "required": [
@@ -8058,7 +8105,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -8068,7 +8116,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -8077,7 +8126,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Search secret names. Secret values are never returned."
           }
         ]
       },
@@ -8265,12 +8315,14 @@
                   "key": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Secret name used to reference it in the organization."
                   },
                   "value": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Secret plaintext value to encrypt and store. Retrieve and list operations return redacted summaries, not this value."
                   }
                 },
                 "required": [
@@ -8662,12 +8714,14 @@
                   "key": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Secret name used to reference it in the organization."
                   },
                   "value": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Secret plaintext value to encrypt and store. Retrieve and list operations return redacted summaries, not this value."
                   }
                 },
                 "additionalProperties": false
@@ -8879,24 +8933,29 @@
                       "properties": {
                         "cloneDepth": {
                           "type": "integer",
-                          "exclusiveMinimum": 0
+                          "exclusiveMinimum": 0,
+                          "description": "Git clone history depth used for repositories."
                         },
                         "commitInstructions": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Organization instructions for agent commit messages."
                         },
                         "customSystemPrompt": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Custom system instructions supplied to organization agents."
                         },
                         "defaultAgent": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Default coding agent and model key for the organization."
                         },
                         "defaultKeepAliveMinutes": {
                           "type": "integer",
                           "minimum": 0,
-                          "maximum": 10080
+                          "maximum": 10080,
+                          "description": "Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations."
                         },
                         "defaultSandboxSize": {
                           "type": "string",
@@ -8909,45 +8968,58 @@
                             "xl",
                             "xxl",
                             "ultra"
-                          ]
+                          ],
+                          "description": "Default VM size for organization sessions."
                         },
                         "deleteBranchWhenPrClosed": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Delete agent-created branches when their pull requests close."
                         },
                         "draftPrs": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Create agent pull requests as drafts by default."
                         },
                         "enableCoderabbitBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of CodeRabbit bot feedback."
                         },
                         "enableCursorBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Cursor bot feedback."
                         },
                         "enableGeminiCodeAssistBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Gemini Code Assist bot feedback."
                         },
                         "enableGithubActionsBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of GitHub Actions bot feedback."
                         },
                         "enableGraphiteBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Graphite bot feedback."
                         },
                         "enableGreptileBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Greptile bot feedback."
                         },
                         "experimentalMcp": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable experimental MCP features for the organization."
                         },
                         "featureMentionAuthor": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable mentioning the author in supported integration responses."
                         },
                         "maxBotReviews": {
                           "type": "integer",
-                          "minimum": 0
+                          "minimum": 0,
+                          "description": "Maximum number of bot review iterations."
                         },
                         "maxSolutions": {
                           "type": "integer",
-                          "minimum": 0
+                          "minimum": 0,
+                          "description": "Maximum number of generated solutions."
                         },
                         "onDemandMaxCreditUsage": {
                           "type": "number",
@@ -8955,35 +9027,44 @@
                         },
                         "pgStatStatementsResetFrequency": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Reset frequency for PostgreSQL pg_stat_statements collection."
                         },
                         "pmSystemPrompt": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Custom system instructions for the project-management agent."
                         },
                         "prTitleInstructions": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Organization instructions for agent pull request titles."
                         },
                         "pullRequestInsightsEnabled": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable or disable pull request contribution insight collection."
                         },
                         "shouldSignCommits": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Sign agent-created commits when signing credentials are configured."
                         },
                         "slackReviewOnTembo": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Use Tembo review links in Slack review notifications."
                         },
                         "slowQueryThresholdMs": {
                           "type": "number",
-                          "minimum": 0
+                          "minimum": 0,
+                          "description": "Threshold in milliseconds for identifying slow database queries."
                         },
                         "sshPublicKeys": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "SSH public keys authorized for organization workspace access."
                         },
                         "weeklyReportEnabled": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable or disable the organization weekly report."
                         }
                       },
                       "required": [
@@ -9157,7 +9238,7 @@
       "patch": {
         "operationId": "updateOrganizationSettings",
         "summary": "Update organization settings",
-        "description": "Update one or more organization settings.",
+        "description": "Configure organization defaults for agent/model, VM size and keep-alive; inference credentials; agent prompts and commit/PR instructions; bot feedback, signing, reports, and insights. Only supplied settings are changed.",
         "tags": [
           "Organizations"
         ],
@@ -9182,24 +9263,29 @@
                       "properties": {
                         "cloneDepth": {
                           "type": "integer",
-                          "exclusiveMinimum": 0
+                          "exclusiveMinimum": 0,
+                          "description": "Git clone history depth used for repositories."
                         },
                         "commitInstructions": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Organization instructions for agent commit messages."
                         },
                         "customSystemPrompt": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Custom system instructions supplied to organization agents."
                         },
                         "defaultAgent": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Default coding agent and model key for the organization."
                         },
                         "defaultKeepAliveMinutes": {
                           "type": "integer",
                           "minimum": 0,
-                          "maximum": 10080
+                          "maximum": 10080,
+                          "description": "Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations."
                         },
                         "defaultSandboxSize": {
                           "type": "string",
@@ -9212,45 +9298,58 @@
                             "xl",
                             "xxl",
                             "ultra"
-                          ]
+                          ],
+                          "description": "Default VM size for organization sessions."
                         },
                         "deleteBranchWhenPrClosed": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Delete agent-created branches when their pull requests close."
                         },
                         "draftPrs": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Create agent pull requests as drafts by default."
                         },
                         "enableCoderabbitBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of CodeRabbit bot feedback."
                         },
                         "enableCursorBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Cursor bot feedback."
                         },
                         "enableGeminiCodeAssistBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Gemini Code Assist bot feedback."
                         },
                         "enableGithubActionsBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of GitHub Actions bot feedback."
                         },
                         "enableGraphiteBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Graphite bot feedback."
                         },
                         "enableGreptileBot": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable handling of Greptile bot feedback."
                         },
                         "experimentalMcp": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable experimental MCP features for the organization."
                         },
                         "featureMentionAuthor": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable mentioning the author in supported integration responses."
                         },
                         "maxBotReviews": {
                           "type": "integer",
-                          "minimum": 0
+                          "minimum": 0,
+                          "description": "Maximum number of bot review iterations."
                         },
                         "maxSolutions": {
                           "type": "integer",
-                          "minimum": 0
+                          "minimum": 0,
+                          "description": "Maximum number of generated solutions."
                         },
                         "onDemandMaxCreditUsage": {
                           "type": "number",
@@ -9258,35 +9357,44 @@
                         },
                         "pgStatStatementsResetFrequency": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Reset frequency for PostgreSQL pg_stat_statements collection."
                         },
                         "pmSystemPrompt": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Custom system instructions for the project-management agent."
                         },
                         "prTitleInstructions": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "Organization instructions for agent pull request titles."
                         },
                         "pullRequestInsightsEnabled": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable or disable pull request contribution insight collection."
                         },
                         "shouldSignCommits": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Sign agent-created commits when signing credentials are configured."
                         },
                         "slackReviewOnTembo": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Use Tembo review links in Slack review notifications."
                         },
                         "slowQueryThresholdMs": {
                           "type": "number",
-                          "minimum": 0
+                          "minimum": 0,
+                          "description": "Threshold in milliseconds for identifying slow database queries."
                         },
                         "sshPublicKeys": {
                           "type": "string",
-                          "maxLength": 64000
+                          "maxLength": 64000,
+                          "description": "SSH public keys authorized for organization workspace access."
                         },
                         "weeklyReportEnabled": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Enable or disable the organization weekly report."
                         }
                       },
                       "required": [
@@ -9465,48 +9573,59 @@
                 "properties": {
                   "ampApiKey": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "API key for Amp agent access."
                   },
                   "anthropicApiKey": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Anthropic API key for organization-provided inference."
                   },
                   "awsBedrockAccessKeyId": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "AWS access key ID for Bedrock inference."
                   },
                   "awsBedrockRegion": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "AWS region for Bedrock inference."
                   },
                   "awsBedrockSecretAccessKey": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "AWS secret access key for Bedrock inference."
                   },
                   "cloneDepth": {
                     "type": "integer",
-                    "exclusiveMinimum": 0
+                    "exclusiveMinimum": 0,
+                    "description": "Git clone history depth used for repositories."
                   },
                   "commitInstructions": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Organization instructions for agent commit messages."
                   },
                   "cursorApiKey": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "API key for Cursor agent access."
                   },
                   "customSystemPrompt": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Custom system instructions supplied to organization agents."
                   },
                   "defaultAgent": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Default coding agent and model key for the organization."
                   },
                   "defaultKeepAliveMinutes": {
                     "type": "integer",
                     "minimum": 0,
-                    "maximum": 10080
+                    "maximum": 10080,
+                    "description": "Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations."
                   },
                   "defaultSandboxSize": {
                     "type": "string",
@@ -9519,101 +9638,134 @@
                       "xl",
                       "xxl",
                       "ultra"
-                    ]
+                    ],
+                    "description": "Default VM size for organization sessions."
                   },
                   "deleteBranchWhenPrClosed": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Delete agent-created branches when their pull requests close."
                   },
                   "draftPrs": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Create agent pull requests as drafts by default."
                   },
                   "enableCoderabbitBot": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable handling of CodeRabbit bot feedback."
                   },
                   "enableCursorBot": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable handling of Cursor bot feedback."
                   },
                   "enableGeminiCodeAssistBot": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable handling of Gemini Code Assist bot feedback."
                   },
                   "enableGithubActionsBot": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable handling of GitHub Actions bot feedback."
                   },
                   "enableGraphiteBot": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable handling of Graphite bot feedback."
                   },
                   "enableGreptileBot": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable handling of Greptile bot feedback."
                   },
                   "experimentalMcp": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable experimental MCP features for the organization."
                   },
                   "featureMentionAuthor": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable mentioning the author in supported integration responses."
                   },
                   "gcpVertexAiLocation": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Google Cloud location for Vertex AI inference."
                   },
                   "gcpVertexAiProject": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Google Cloud project for Vertex AI inference."
                   },
                   "gcpVertexAiServiceAccountJson": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Service-account JSON credentials for Vertex AI inference."
                   },
                   "kernelApiKey": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "API key for Kernel browser access."
                   },
                   "maxBotReviews": {
                     "type": "integer",
-                    "minimum": 0
+                    "minimum": 0,
+                    "description": "Maximum number of bot review iterations."
                   },
                   "maxSolutions": {
                     "type": "integer",
-                    "minimum": 0
+                    "minimum": 0,
+                    "description": "Maximum number of generated solutions."
                   },
                   "openaiApiKey": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "OpenAI API key for organization-provided inference."
+                  },
+                  "xaiApiKey": {
+                    "type": "string",
+                    "maxLength": 64000,
+                    "description": "xAI API key for organization-provided inference."
                   },
                   "openrouterApiKey": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "OpenRouter API key for organization-provided inference."
                   },
                   "pgStatStatementsResetFrequency": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Reset frequency for PostgreSQL pg_stat_statements collection."
                   },
                   "pmSystemPrompt": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Custom system instructions for the project-management agent."
                   },
                   "prTitleInstructions": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "Organization instructions for agent pull request titles."
                   },
                   "pullRequestInsightsEnabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or disable pull request contribution insight collection."
                   },
                   "shouldSignCommits": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Sign agent-created commits when signing credentials are configured."
                   },
                   "slackReviewOnTembo": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Use Tembo review links in Slack review notifications."
                   },
                   "slowQueryThresholdMs": {
                     "type": "number",
-                    "minimum": 0
+                    "minimum": 0,
+                    "description": "Threshold in milliseconds for identifying slow database queries."
                   },
                   "sshPublicKeys": {
                     "type": "string",
-                    "maxLength": 64000
+                    "maxLength": 64000,
+                    "description": "SSH public keys authorized for organization workspace access."
                   },
                   "weeklyReportEnabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or disable the organization weekly report."
                   }
                 },
                 "additionalProperties": false
@@ -9793,7 +9945,8 @@
                     "properties": {
                       "provider": {
                         "type": "string",
-                        "const": "anthropic"
+                        "const": "anthropic",
+                        "description": "Validate Anthropic API credentials without saving them."
                       },
                       "apiKey": {
                         "type": "string",
@@ -9811,7 +9964,8 @@
                     "properties": {
                       "provider": {
                         "type": "string",
-                        "const": "openai"
+                        "const": "openai",
+                        "description": "Validate OpenAI API credentials without saving them."
                       },
                       "apiKey": {
                         "type": "string",
@@ -9829,7 +9983,27 @@
                     "properties": {
                       "provider": {
                         "type": "string",
-                        "const": "openrouter"
+                        "const": "xai",
+                        "description": "Validate xAI API credentials without saving them."
+                      },
+                      "apiKey": {
+                        "type": "string",
+                        "description": "The xAI API key."
+                      }
+                    },
+                    "required": [
+                      "provider",
+                      "apiKey"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "provider": {
+                        "type": "string",
+                        "const": "openrouter",
+                        "description": "Validate OpenRouter API credentials without saving them."
                       },
                       "apiKey": {
                         "type": "string",
@@ -9847,7 +10021,8 @@
                     "properties": {
                       "provider": {
                         "type": "string",
-                        "const": "aws-bedrock"
+                        "const": "aws-bedrock",
+                        "description": "Validate AWS Bedrock credentials without saving them."
                       },
                       "accessKeyId": {
                         "type": "string",
@@ -9875,7 +10050,8 @@
                     "properties": {
                       "provider": {
                         "type": "string",
-                        "const": "gcp-vertex-ai"
+                        "const": "gcp-vertex-ai",
+                        "description": "Validate Google Cloud Vertex AI credentials without saving them."
                       },
                       "serviceAccountJson": {
                         "type": "string",
@@ -11015,11 +11191,13 @@
                 "properties": {
                   "idempotencyKey": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Unique UUID for this reset attempt. Reuse the same UUID when retrying to avoid redeeming another reset credit."
                   },
                   "provider": {
                     "type": "string",
-                    "const": "chatgpt"
+                    "const": "chatgpt",
+                    "description": "Subscription provider whose rate-limit reset credit to redeem. Currently only chatgpt is supported."
                   }
                 },
                 "required": [
@@ -11091,7 +11269,8 @@
                             "enum": [
                               "shared",
                               "personal"
-                            ]
+                            ],
+                            "description": "shared makes the connection available to the organization; personal restricts it to its owner."
                           }
                         },
                         "required": [
@@ -11243,7 +11422,8 @@
             "name": "connected",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Filter by whether the MCP connection has completed connection or authorization."
           },
           {
             "in": "query",
@@ -11251,7 +11431,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -11261,7 +11442,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -11270,14 +11452,15 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 200
-            }
+            },
+            "description": "Search MCP connection names or server URLs."
           }
         ]
       },
       "post": {
         "operationId": "createMcpConnection",
         "summary": "Create an MCP connection",
-        "description": "Create a new stdio or Streamable HTTP MCP connection. Remote connections support OAuth, client credentials, or static headers and begin authorization when required; stdio commands are stored but never executed by this API.",
+        "description": "Create a new stdio or Streamable HTTP MCP connection. Remote connections support OAuth, Client Credentials (M2M), or static headers and begin authorization when required; stdio commands are stored but never executed by this API.",
         "tags": [
           "MCP Connections"
         ],
@@ -11336,7 +11519,8 @@
                           "enum": [
                             "shared",
                             "personal"
-                          ]
+                          ],
+                          "description": "shared makes the connection available to the organization; personal restricts it to its owner."
                         },
                         "args": {
                           "type": [
@@ -11347,7 +11531,8 @@
                             "type": "string",
                             "maxLength": 8192
                           },
-                          "maxItems": 100
+                          "maxItems": 100,
+                          "description": "Command-line arguments for the stdio server. Stored here, not executed by this API."
                         },
                         "authType": {
                           "type": [
@@ -11359,7 +11544,8 @@
                             "client_credentials",
                             "static_headers",
                             null
-                          ]
+                          ],
+                          "description": "Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers)."
                         },
                         "command": {
                           "type": [
@@ -11542,7 +11728,8 @@
                       "name": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display name for the MCP connection."
                       },
                       "args": {
                         "type": "array",
@@ -11551,12 +11738,14 @@
                           "maxLength": 8192
                         },
                         "maxItems": 100,
+                        "description": "Command-line arguments for the stdio server. Stored here, not executed by this API.",
                         "default": []
                       },
                       "command": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4096
+                        "maxLength": 4096,
+                        "description": "Executable for the stdio MCP server. This API stores the command but never executes it."
                       },
                       "env": {
                         "type": "object",
@@ -11568,11 +11757,13 @@
                         "additionalProperties": {
                           "type": "string",
                           "maxLength": 16384
-                        }
+                        },
+                        "description": "Environment variables for the stdio command. Values are write-only."
                       },
                       "type": {
                         "type": "string",
-                        "const": "stdio"
+                        "const": "stdio",
+                        "description": "Use stdio for a command-based MCP server."
                       },
                       "visibility": {
                         "type": "string",
@@ -11580,6 +11771,7 @@
                           "shared",
                           "personal"
                         ],
+                        "description": "shared makes the connection available to the organization; personal restricts it to its owner.",
                         "default": "shared"
                       }
                     },
@@ -11596,11 +11788,13 @@
                       "name": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display name for the MCP connection."
                       },
                       "serverUrl": {
                         "type": "string",
-                        "format": "uri"
+                        "format": "uri",
+                        "description": "HTTP or HTTPS MCP server endpoint. Changing it requires an explicit authType, clears old credentials, and requires authorization to reconnect."
                       },
                       "authType": {
                         "type": "string",
@@ -11609,17 +11803,20 @@
                           "client_credentials",
                           "static_headers"
                         ],
+                        "description": "Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers).",
                         "default": "oauth"
                       },
                       "clientId": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4096
+                        "maxLength": 4096,
+                        "description": "OAuth client ID. Required for client_credentials or pre_registered OAuth."
                       },
                       "clientSecret": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 65536
+                        "maxLength": 65536,
+                        "description": "Write-only OAuth client secret. Required for client_credentials; optional for pre_registered OAuth."
                       },
                       "headers": {
                         "type": "object",
@@ -11631,7 +11828,8 @@
                         "additionalProperties": {
                           "type": "string",
                           "maxLength": 16384
-                        }
+                        },
+                        "description": "Request headers for static-header or automatic OAuth authentication. Values are write-only."
                       },
                       "oauthRegistration": {
                         "type": "string",
@@ -11639,17 +11837,20 @@
                           "automatic",
                           "pre_registered"
                         ],
+                        "description": "Register an OAuth client automatically or use pre-registered clientId and optional clientSecret.",
                         "default": "automatic"
                       },
                       "scope": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4096
+                        "maxLength": 4096,
+                        "description": "OAuth scopes requested for client credentials or pre-registered OAuth."
                       },
                       "type": {
                         "type": "string",
                         "const": "remote",
-                        "default": "remote"
+                        "default": "remote",
+                        "description": "Use remote for a Streamable HTTP MCP server."
                       },
                       "visibility": {
                         "type": "string",
@@ -11657,6 +11858,7 @@
                           "shared",
                           "personal"
                         ],
+                        "description": "shared makes the connection available to the organization; personal restricts it to its owner.",
                         "default": "shared"
                       }
                     },
@@ -11726,7 +11928,8 @@
                       "enum": [
                         "shared",
                         "personal"
-                      ]
+                      ],
+                      "description": "shared makes the connection available to the organization; personal restricts it to its owner."
                     },
                     "args": {
                       "type": [
@@ -11737,7 +11940,8 @@
                         "type": "string",
                         "maxLength": 8192
                       },
-                      "maxItems": 100
+                      "maxItems": 100,
+                      "description": "Command-line arguments for the stdio server. Stored here, not executed by this API."
                     },
                     "authType": {
                       "type": [
@@ -11749,7 +11953,8 @@
                         "client_credentials",
                         "static_headers",
                         null
-                      ]
+                      ],
+                      "description": "Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers)."
                     },
                     "command": {
                       "type": [
@@ -11928,7 +12133,7 @@
       "patch": {
         "operationId": "updateMcpConnection",
         "summary": "Update an MCP connection",
-        "description": "Update MCP configuration. Header and environment objects merge write-only values by key, null values remove individual keys, and a null environment clears all variables. Hidden credentials are preserved unless explicitly changed or authentication is replaced; changing a remote server URL clears credentials for the old server. Call authorize explicitly after changing the server or authentication to reconnect.",
+        "description": "Update MCP configuration, including OAuth, Client Credentials (M2M), or static-header authentication. Supplied headers merge by key only for unchanged-server static_headers authentication; otherwise they are replaced. Environment values merge by key, null values remove individual keys, and a null environment clears all variables. Hidden credentials are preserved unless explicitly changed or authentication is replaced; changing a remote server URL clears credentials for the old server. Call authorize explicitly after changing the server or authentication to reconnect.",
         "tags": [
           "MCP Connections"
         ],
@@ -11977,7 +12182,8 @@
                       "enum": [
                         "shared",
                         "personal"
-                      ]
+                      ],
+                      "description": "shared makes the connection available to the organization; personal restricts it to its owner."
                     },
                     "args": {
                       "type": [
@@ -11988,7 +12194,8 @@
                         "type": "string",
                         "maxLength": 8192
                       },
-                      "maxItems": 100
+                      "maxItems": 100,
+                      "description": "Command-line arguments for the stdio server. Stored here, not executed by this API."
                     },
                     "authType": {
                       "type": [
@@ -12000,7 +12207,8 @@
                         "client_credentials",
                         "static_headers",
                         null
-                      ]
+                      ],
+                      "description": "Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers)."
                     },
                     "command": {
                       "type": [
@@ -12187,15 +12395,18 @@
                       "name": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display name for the MCP connection."
                       },
                       "serverUrl": {
                         "type": "string",
-                        "format": "uri"
+                        "format": "uri",
+                        "description": "HTTP or HTTPS MCP server endpoint. Changing it requires an explicit authType, clears old credentials, and requires authorization to reconnect."
                       },
                       "type": {
                         "type": "string",
-                        "const": "remote"
+                        "const": "remote",
+                        "description": "Connection type must remain remote; transport type cannot be changed by update."
                       },
                       "authType": {
                         "type": "string",
@@ -12203,17 +12414,20 @@
                           "oauth",
                           "client_credentials",
                           "static_headers"
-                        ]
+                        ],
+                        "description": "Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers)."
                       },
                       "clientId": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4096
+                        "maxLength": 4096,
+                        "description": "OAuth client ID when replacing authentication. Requires authType; required for client_credentials or pre_registered OAuth."
                       },
                       "clientSecret": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 65536
+                        "maxLength": 65536,
+                        "description": "Write-only client secret when replacing authentication. Requires authType; required for client_credentials."
                       },
                       "headers": {
                         "type": [
@@ -12231,19 +12445,22 @@
                             "null"
                           ],
                           "maxLength": 16384
-                        }
+                        },
+                        "description": "Requires authType. Merges by key only when keeping static_headers authentication and the same server URL; otherwise replaces stored headers. Null values remove keys; static_headers requires at least one header. Values are write-only."
                       },
                       "oauthRegistration": {
                         "type": "string",
                         "enum": [
                           "automatic",
                           "pre_registered"
-                        ]
+                        ],
+                        "description": "Register an OAuth client automatically or use pre-registered clientId and optional clientSecret."
                       },
                       "scope": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4096
+                        "maxLength": 4096,
+                        "description": "OAuth scopes when replacing authentication. Requires authType."
                       }
                     },
                     "required": [
@@ -12257,16 +12474,19 @@
                       "command": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4096
+                        "maxLength": 4096,
+                        "description": "Replace the stored stdio server executable. This API never executes it."
                       },
                       "name": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display name for the MCP connection."
                       },
                       "type": {
                         "type": "string",
-                        "const": "stdio"
+                        "const": "stdio",
+                        "description": "Connection type must remain stdio; transport type cannot be changed by update."
                       },
                       "args": {
                         "type": [
@@ -12277,7 +12497,8 @@
                           "type": "string",
                           "maxLength": 8192
                         },
-                        "maxItems": 100
+                        "maxItems": 100,
+                        "description": "Command-line arguments for the stdio server. Stored here, not executed by this API."
                       },
                       "env": {
                         "type": [
@@ -12295,7 +12516,8 @@
                             "null"
                           ],
                           "maxLength": 16384
-                        }
+                        },
+                        "description": "Merge write-only environment variables by key. A null value removes a key; null for the entire env field clears all variables."
                       }
                     },
                     "required": [
@@ -12538,7 +12760,8 @@
                           "enum": [
                             "shared",
                             "personal"
-                          ]
+                          ],
+                          "description": "shared makes the connection available to the organization; personal restricts it to its owner."
                         },
                         "args": {
                           "type": [
@@ -12549,7 +12772,8 @@
                             "type": "string",
                             "maxLength": 8192
                           },
-                          "maxItems": 100
+                          "maxItems": 100,
+                          "description": "Command-line arguments for the stdio server. Stored here, not executed by this API."
                         },
                         "authType": {
                           "type": [
@@ -12561,7 +12785,8 @@
                             "client_credentials",
                             "static_headers",
                             null
-                          ]
+                          ],
+                          "description": "Authentication method: OAuth user authorization (oauth), Client Credentials (M2M) using client_credentials, or static request headers (static_headers)."
                         },
                         "command": {
                           "type": [
@@ -13219,7 +13444,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -13229,7 +13455,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -13237,7 +13464,8 @@
             "schema": {
               "type": "string",
               "minLength": 1
-            }
+            },
+            "description": "Filter artifacts created by this job."
           },
           {
             "in": "query",
@@ -13245,7 +13473,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Filter artifacts attached to this session."
           },
           {
             "in": "query",
@@ -13266,7 +13495,8 @@
                 "default": "PullRequest"
               },
               "minItems": 1
-            }
+            },
+            "description": "Filter artifact types, supplied as a comma-separated list."
           }
         ]
       },
@@ -13756,7 +13986,8 @@
                   },
                   "sessionId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Session to attach the artifact to."
                   }
                 },
                 "required": [
@@ -14260,7 +14491,8 @@
               "type": "string",
               "minLength": 1
             },
-            "required": true
+            "required": true,
+            "description": "Short-lived connection ticket returned by liveConnectionTicket. Used to authenticate the native WebSocket connection."
           }
         ]
       }
@@ -14525,7 +14757,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -14535,7 +14768,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -14543,7 +14777,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Filter messages belonging to this session."
           },
           {
             "in": "query",
@@ -14551,14 +14786,15 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Filter messages belonging to this thread."
           }
         ]
       },
       "post": {
         "operationId": "createMessage",
         "summary": "Create a message",
-        "description": "Create a user message for a session and submit it to the session agent.",
+        "description": "Send a task or follow-up message to an existing session, resume work, or steer an active agent turn using deliveryMode.",
         "tags": [
           "Messages"
         ],
@@ -14906,12 +15142,14 @@
                 "properties": {
                   "artifactId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Artifact to associate with this message."
                   },
                   "content": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 1000000
+                    "maxLength": 1000000,
+                    "description": "Text of the task, follow-up, or steering instruction to send to the session agent."
                   },
                   "mcpServers": {
                     "type": "array",
@@ -14920,25 +15158,30 @@
                       "minLength": 1,
                       "maxLength": 200
                     },
-                    "maxItems": 100
+                    "maxItems": 100,
+                    "description": "MCP server or connection IDs selected for this message."
                   },
                   "pullRequestId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Pull request to associate with this message."
                   },
                   "sessionId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Session to receive this message. Use this operation to continue work in an existing session."
                   },
                   "agentOptions": {
-                    "$ref": "#/components/schemas/AgentOptionsInput"
+                    "$ref": "#/components/schemas/AgentOptionsInput",
+                    "description": "Agent-specific runtime options for this message, such as reasoning effort."
                   },
                   "deliveryMode": {
                     "type": "string",
                     "enum": [
                       "queue",
                       "steer"
-                    ]
+                    ],
+                    "description": "queue adds a follow-up task; steer sends guidance to an active agent turn when supported."
                   },
                   "richContent": {
                     "$ref": "#/components/schemas/TipTapDocument",
@@ -14960,7 +15203,8 @@
                     "required": [
                       "command"
                     ],
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Structured slash command to execute with this message."
                   }
                 },
                 "required": [
@@ -15472,7 +15716,8 @@
                   "content": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 1000000
+                    "maxLength": 1000000,
+                    "description": "Replace the text of a queued message before processing starts."
                   },
                   "richContent": {
                     "oneOf": [
@@ -15482,7 +15727,8 @@
                       {
                         "type": "null"
                       }
-                    ]
+                    ],
+                    "description": "Replace the queued message rich-text document, or null to clear it."
                   }
                 },
                 "additionalProperties": false
@@ -16305,7 +16551,8 @@
                 "deepseek-v4-pro",
                 "deepseek-v4p1-flash"
               ]
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -16315,7 +16562,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -16939,7 +17187,8 @@
                 "type": "object",
                 "properties": {
                   "enabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or disable this model for the organization."
                   },
                   "inferenceProvider": {
                     "type": [
@@ -16953,7 +17202,8 @@
                       "GCPVertexAI",
                       "OpenRouter",
                       null
-                    ]
+                    ],
+                    "description": "Select the inference provider used to run this model. Use listModels to discover available provider access."
                   }
                 },
                 "additionalProperties": false
@@ -17339,7 +17589,8 @@
                 "fx",
                 "pi"
               ]
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -17349,7 +17600,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -17830,7 +18082,8 @@
                       "reasons",
                       "submittedAt"
                     ],
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Optional account-deletion feedback. Account deletion is queued regardless of whether feedback is supplied."
                   }
                 },
                 "additionalProperties": false
@@ -18037,7 +18290,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -18047,7 +18301,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -18287,6 +18542,12 @@
                         }
                       },
                       "additionalProperties": false
+                    },
+                    "hasDesktopApp": {
+                      "type": "boolean"
+                    },
+                    "openLinksInDesktopApp": {
+                      "type": "boolean"
                     },
                     "appearancePreferences": {
                       "type": "object",
@@ -18712,7 +18973,7 @@
       "patch": {
         "operationId": "updateUserSettings",
         "summary": "Update user settings",
-        "description": "Merge user preference updates while preserving unrelated settings.",
+        "description": "Configure personal agent/model and project defaults, system instructions, follow-up queue/steer behavior, VM restart, commit signing/attribution, notifications, themes, and review layout. Updates preserve unrelated settings.",
         "tags": [
           "Users"
         ],
@@ -18761,6 +19022,12 @@
                         }
                       },
                       "additionalProperties": false
+                    },
+                    "hasDesktopApp": {
+                      "type": "boolean"
+                    },
+                    "openLinksInDesktopApp": {
+                      "type": "boolean"
                     },
                     "appearancePreferences": {
                       "type": "object",
@@ -19190,7 +19457,8 @@
                 "type": "object",
                 "properties": {
                   "autoRestartVm": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Automatically restart a session VM when needed."
                   },
                   "defaultProjectId": {
                     "type": [
@@ -19198,17 +19466,21 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Default project environment for new sessions, or null to clear the preference."
                   },
                   "gpgKey": {
                     "type": "string",
-                    "maxLength": 32768
+                    "maxLength": 32768,
+                    "description": "GPG signing key configuration. This value is returned by retrieveUserSettings."
                   },
                   "includeTemboCommitAttribution": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Include Tembo attribution in agent-created commits."
                   },
                   "desktopNotificationsEnabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or disable desktop notifications."
                   },
                   "desktopNotificationPreferences": {
                     "type": "object",
@@ -19223,7 +19495,16 @@
                         "type": "boolean"
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Notification types to show on the desktop."
+                  },
+                  "hasDesktopApp": {
+                    "type": "boolean",
+                    "description": "Whether the user has signed in to the Tembo desktop app."
+                  },
+                  "openLinksInDesktopApp": {
+                    "type": "boolean",
+                    "description": "Open Tembo links from the browser in the desktop app when it is installed."
                   },
                   "appearancePreferences": {
                     "type": "object",
@@ -19274,7 +19555,8 @@
                         "additionalProperties": false
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Theme, accent, and appearance preferences. Nested updates preserve unrelated preferences."
                   },
                   "appSidebarPreferences": {
                     "type": "object",
@@ -19333,7 +19615,8 @@
                         }
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Application sidebar layout preferences."
                   },
                   "diffPreferences": {
                     "type": "object",
@@ -19392,7 +19675,8 @@
                         "maxLength": 255
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Diff display and comparison preferences."
                   },
                   "dashboardPreferences": {
                     "type": "object",
@@ -19467,7 +19751,8 @@
                         "additionalProperties": false
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Dashboard task-filter preferences."
                   },
                   "composerPreferences": {
                     "type": "object",
@@ -19498,7 +19783,8 @@
                         "maxItems": 100
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Message composer preferences, including selected repositories."
                   },
                   "reviewPreferences": {
                     "type": "object",
@@ -19578,15 +19864,18 @@
                         "additionalProperties": false
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Code review file sorting, exclusions, bot comment visibility, and layout preferences."
                   },
                   "diffLightTheme": {
                     "type": "string",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Diff syntax theme for light mode."
                   },
                   "diffDarkTheme": {
                     "type": "string",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Diff syntax theme for dark mode."
                   },
                   "defaultAgent": {
                     "type": [
@@ -19594,18 +19883,21 @@
                       "null"
                     ],
                     "pattern": "^[^:]+:[^:]+(?::[^:]+)?$",
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Default coding agent and model key. Null clears the preference."
                   },
                   "followUpBehavior": {
                     "type": "string",
                     "enum": [
                       "queue",
                       "steer"
-                    ]
+                    ],
+                    "description": "Default follow-up delivery: queue a new turn or steer an active turn."
                   },
                   "customSystemPrompt": {
                     "type": "string",
-                    "maxLength": 4096
+                    "maxLength": 4096,
+                    "description": "Personal system instructions supplied to agents."
                   }
                 },
                 "additionalProperties": false
@@ -20672,11 +20964,13 @@
                 "properties": {
                   "idempotencyKey": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Unique UUID for this reset attempt. Reuse the same UUID when retrying to avoid redeeming another reset credit."
                   },
                   "provider": {
                     "type": "string",
-                    "const": "chatgpt"
+                    "const": "chatgpt",
+                    "description": "Subscription provider whose rate-limit reset credit to redeem. Currently only chatgpt is supported."
                   }
                 },
                 "required": [
@@ -21527,7 +21821,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -21537,14 +21832,16 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
             "name": "enabled",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Filter by whether the source is enabled."
           },
           {
             "in": "query",
@@ -21552,7 +21849,8 @@
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "description": "Include totalCount for matching sources."
           },
           {
             "in": "query",
@@ -21560,7 +21858,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Filter sources belonging to this integration."
           },
           {
             "in": "query",
@@ -21569,7 +21868,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 1000
-            }
+            },
+            "description": "Search session source names or types."
           },
           {
             "in": "query",
@@ -21577,7 +21877,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Find the source associated with an accessible session."
           },
           {
             "in": "query",
@@ -21589,7 +21890,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter source types, supplied as a comma-separated list."
           }
         ]
       }
@@ -21889,7 +22191,7 @@
       "get": {
         "operationId": "listSessions",
         "summary": "List sessions",
-        "description": "List sessions you have permission to access, with cursor pagination.",
+        "description": "List and search sessions, including active or archived sessions, with repository, project, creator, and source filters and cursor pagination.",
         "tags": [
           "Sessions"
         ],
@@ -22457,7 +22759,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Filter sessions created by this automation agent."
           },
           {
             "in": "query",
@@ -22469,7 +22772,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by creator IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22477,7 +22781,8 @@
             "schema": {
               "type": "string",
               "format": "date-time"
-            }
+            },
+            "description": "Only sessions created after this ISO 8601 timestamp."
           },
           {
             "in": "query",
@@ -22485,7 +22790,8 @@
             "schema": {
               "type": "string",
               "maxLength": 500
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -22495,14 +22801,16 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
             "name": "excludePinned",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Exclude sessions pinned by the authenticated user."
           },
           {
             "in": "query",
@@ -22514,14 +22822,16 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by external source IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
             "name": "hasProject",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Filter by whether a session has an assigned project."
           },
           {
             "in": "query",
@@ -22529,7 +22839,8 @@
             "schema": {
               "type": "boolean",
               "default": true
-            }
+            },
+            "description": "Include archived sessions in the all-state view. Defaults to true; state=archived explicitly selects archived sessions."
           },
           {
             "in": "query",
@@ -22537,7 +22848,8 @@
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "description": "Include totalCount. Not supported with state=active."
           },
           {
             "in": "query",
@@ -22549,7 +22861,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by participant IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22561,7 +22874,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by pending reviewer keys, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22573,7 +22887,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by project IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22589,7 +22904,8 @@
                 ]
               },
               "default": []
-            }
+            },
+            "description": "Filter by linked pull request statuses: open, merged, or closed, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22601,7 +22917,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by repository IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22610,7 +22927,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 1000
-            }
+            },
+            "description": "Search session titles, task prompts, kinds, and source names or types."
           },
           {
             "in": "query",
@@ -22623,7 +22941,8 @@
                 "updatedAt"
               ],
               "default": "lastQueuedAt"
-            }
+            },
+            "description": "Timestamp used to sort sessions, newest first."
           },
           {
             "in": "query",
@@ -22635,7 +22954,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by session source IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22647,7 +22967,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by session source types, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -22660,14 +22981,15 @@
                 "archived"
               ],
               "default": "all"
-            }
+            },
+            "description": "Select all sessions, currently active work, or archived sessions. Use archived to find sessions to restore."
           }
         ]
       },
       "post": {
         "operationId": "createSession",
         "summary": "Create a session",
-        "description": "Create a session for a task. Provide the initial prompt in description and optionally configure its repositories and agent.",
+        "description": "Create a session for a task. Provide the initial prompt in description and optionally configure its repositories, agent, Build (normal) or Plan (planning) mode, and private or workspace visibility.",
         "tags": [
           "Sessions"
         ],
@@ -23433,7 +23755,8 @@
                   "agent": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Agent and model key to run, such as claudeCode:claude-fable-5-1. Omit to use the default."
                   },
                   "baseBranch": {
                     "type": [
@@ -23441,7 +23764,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Git branch to start work from. Omit or use null for the repository default."
                   },
                   "mcpServers": {
                     "type": "array",
@@ -23451,13 +23775,15 @@
                       "maxLength": 500
                     },
                     "maxItems": 100,
-                    "default": []
+                    "default": [],
+                    "description": "MCP server or connection IDs to enable for the session."
                   },
                   "projectId": {
                     "type": [
                       "string",
                       "null"
-                    ]
+                    ],
+                    "description": "Project environment to use for the workspace. Omit or use null for the default."
                   },
                   "sandboxSize": {
                     "type": "string",
@@ -23470,7 +23796,8 @@
                       "xl",
                       "xxl",
                       "ultra"
-                    ]
+                    ],
+                    "description": "VM size for the session workspace."
                   },
                   "targetBranch": {
                     "type": [
@@ -23478,17 +23805,20 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Default target branch for pull requests created by the session."
                   },
                   "visibility": {
                     "type": "string",
                     "enum": [
                       "private",
                       "public"
-                    ]
+                    ],
+                    "description": "Session visibility: private or visible to workspace (public)."
                   },
                   "agentOptions": {
-                    "$ref": "#/components/schemas/AgentOptions"
+                    "$ref": "#/components/schemas/AgentOptions",
+                    "description": "Agent-specific runtime options, such as reasoning effort."
                   },
                   "branchName": {
                     "type": [
@@ -23496,7 +23826,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Git branch for this session. Omit or use null to generate a branch name."
                   },
                   "codeRepositoryIds": {
                     "type": "array",
@@ -23504,7 +23835,8 @@
                       "type": "string",
                       "format": "uuid"
                     },
-                    "maxItems": 100
+                    "maxItems": 100,
+                    "description": "Repository IDs to make available in the session workspace."
                   },
                   "description": {
                     "type": "string",
@@ -23514,7 +23846,8 @@
                   },
                   "id": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Optional caller-supplied session UUID. Omit to generate one."
                   },
                   "richContent": {
                     "$ref": "#/components/schemas/SessionTipTapDocument",
@@ -23522,17 +23855,20 @@
                   },
                   "pullRequestId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Pull request to associate with the session. Requires richContent."
                   },
                   "queueRightAway": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Whether to queue the initial task immediately instead of only creating the session."
                   },
                   "sessionMode": {
                     "type": "string",
                     "enum": [
                       "chat",
                       "terminal"
-                    ]
+                    ],
+                    "description": "Whether to create a chat session or a terminal session."
                   },
                   "startupAgent": {
                     "type": "string",
@@ -23543,7 +23879,8 @@
                       "pi",
                       "amp",
                       "cursor"
-                    ]
+                    ],
+                    "description": "Coding agent to start in a terminal session."
                   }
                 },
                 "required": [
@@ -24349,12 +24686,14 @@
                   "prompt": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 1000000
+                    "maxLength": 1000000,
+                    "description": "Optional first task for the independent fork. Existing messages are not replayed."
                   },
                   "title": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 1000
+                    "maxLength": 1000,
+                    "description": "Display title for the forked session."
                   },
                   "queueRightAway": {
                     "type": "boolean",
@@ -25144,7 +25483,7 @@
       "patch": {
         "operationId": "updateSession",
         "summary": "Update a session",
-        "description": "Update the configuration of a session you have permission to access.",
+        "description": "Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.",
         "tags": [
           "Sessions"
         ],
@@ -25924,10 +26263,12 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Change the agent and model key. Null clears the session override."
                   },
                   "agentOptions": {
-                    "$ref": "#/components/schemas/AgentOptions"
+                    "$ref": "#/components/schemas/AgentOptions",
+                    "description": "Change agent-specific runtime options, such as reasoning effort."
                   },
                   "baseBranch": {
                     "type": [
@@ -25935,7 +26276,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Change the starting Git branch. Null clears the session override."
                   },
                   "branchName": {
                     "type": [
@@ -25943,12 +26285,14 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Change the session Git branch name. Null clears the stored name."
                   },
                   "description": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 1000000
+                    "maxLength": 1000000,
+                    "description": "Replace the initial task prompt; only the session creator can change it. Use createMessage to send a follow-up task."
                   },
                   "richContent": {
                     "oneOf": [
@@ -25958,13 +26302,14 @@
                       {
                         "type": "null"
                       }
-                    ]
+                    ],
+                    "description": "Replace the initial prompt rich-text document, or null to clear it. Only the session creator can change it."
                   },
                   "level": {
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 100,
-                    "description": "Set 0 to archive the session and stop its VM, or 1 to restore it without restarting work. Omit to preserve the current level."
+                    "description": "Archive or restore the session and set its priority: 0 archives and stops its VM; 1 restores without restarting work; 2–100 also keep it unarchived and set its priority level. Omit to preserve the current level."
                   },
                   "mcpServers": {
                     "type": "array",
@@ -25973,20 +26318,23 @@
                       "minLength": 1,
                       "maxLength": 500
                     },
-                    "maxItems": 100
+                    "maxItems": 100,
+                    "description": "Replace the enabled MCP server or connection IDs. An empty array clears the selection."
                   },
                   "mode": {
                     "type": "string",
                     "enum": [
                       "normal",
                       "planning"
-                    ]
+                    ],
+                    "description": "Switch between Build (normal) and Plan (planning) modes."
                   },
                   "projectId": {
                     "type": [
                       "string",
                       "null"
-                    ]
+                    ],
+                    "description": "Change the project environment used for the workspace. Null clears the session override."
                   },
                   "sandboxSize": {
                     "type": [
@@ -26003,7 +26351,8 @@
                       "xxl",
                       "ultra",
                       null
-                    ]
+                    ],
+                    "description": "Change the workspace VM size. Null clears the session override."
                   },
                   "targetBranch": {
                     "type": [
@@ -26011,19 +26360,22 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Change the default pull request target branch. Null clears the session override."
                   },
                   "title": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 1000
+                    "maxLength": 1000,
+                    "description": "Rename the session."
                   },
                   "visibility": {
                     "type": "string",
                     "enum": [
                       "private",
                       "public"
-                    ]
+                    ],
+                    "description": "Change session visibility: private or visible to workspace (public). Only the session creator can change it."
                   }
                 },
                 "additionalProperties": false
@@ -26035,7 +26387,7 @@
       "delete": {
         "operationId": "deleteSession",
         "summary": "Delete a session",
-        "description": "Delete a session you have permission to access.",
+        "description": "Archive a session and stop its VM without permanently deleting it. Equivalent to updateSession with level=0; restore with updateSession and level=1.",
         "tags": [
           "Sessions"
         ],
@@ -26221,7 +26573,7 @@
       "post": {
         "operationId": "stopSession",
         "summary": "Stop a session",
-        "description": "Interrupt active session work and continue with the next queued message.",
+        "description": "Interrupt active session work without archiving it. Continue with the next queued message, or set cancelQueued=true to cancel pending messages too.",
         "tags": [
           "Sessions"
         ],
@@ -26420,7 +26772,8 @@
             "name": "cancelQueued",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Also cancel pending queued messages instead of continuing with the next queued message. Does not archive the session."
           }
         ]
       }
@@ -26673,7 +27026,8 @@
                   "exclusiveMinimum": 0
                 }
               ]
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -26683,7 +27037,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -26996,7 +27351,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -27006,14 +27362,16 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
             "name": "hasChanges",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Filter by whether a recorded diff contains changes."
           }
         ]
       }
@@ -27481,6 +27839,9 @@
                                           ],
                                           "default": "open"
                                         },
+                                        "isDraft": {
+                                          "type": "boolean"
+                                        },
                                         "diffSummary": {
                                           "type": [
                                             "object",
@@ -27503,6 +27864,7 @@
                                       },
                                       "required": [
                                         "status",
+                                        "isDraft",
                                         "diffSummary"
                                       ],
                                       "additionalProperties": false
@@ -27873,7 +28235,7 @@
               "type": "string",
               "pattern": "^(session|pull_request|project):[0-9a-f-]{36}$"
             },
-            "description": "Continue after this pin. Restart listing if it was removed or reordered."
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -28081,6 +28443,9 @@
                                     ],
                                     "default": "open"
                                   },
+                                  "isDraft": {
+                                    "type": "boolean"
+                                  },
                                   "diffSummary": {
                                     "type": [
                                       "object",
@@ -28103,6 +28468,7 @@
                                 },
                                 "required": [
                                   "status",
+                                  "isDraft",
                                   "diffSummary"
                                 ],
                                 "additionalProperties": false
@@ -28462,12 +28828,12 @@
                       "pull_request",
                       "project"
                     ],
-                    "description": "Type of the pinned resource."
+                    "description": "Kind of resource to pin or unpin: session, pull_request, or project."
                   },
                   "id": {
                     "type": "string",
                     "format": "uuid",
-                    "description": "ID of the pinned resource."
+                    "description": "ID of the session, pull request, or project, not a separate pin ID."
                   },
                   "placement": {
                     "type": "object",
@@ -28482,12 +28848,12 @@
                               "pull_request",
                               "project"
                             ],
-                            "description": "Type of the pinned resource."
+                            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
                           },
                           "id": {
                             "type": "string",
                             "format": "uuid",
-                            "description": "ID of the pinned resource."
+                            "description": "ID of the session, pull request, or project, not a separate pin ID."
                           }
                         },
                         "required": [
@@ -28511,7 +28877,7 @@
                       "position"
                     ],
                     "additionalProperties": false,
-                    "description": "Placement for a new pin; omit to add it first. Existing pins keep their position."
+                    "description": "Position of a new pin relative to another pin. Omit to add it first. Ignored if the resource is already pinned; use updatePin to reorder."
                   }
                 },
                 "required": [
@@ -28529,7 +28895,7 @@
       "patch": {
         "operationId": "updatePin",
         "summary": "Update a pin",
-        "description": "Update the placement of a pin.",
+        "description": "Reorder a pinned session, pull request, or project before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.",
         "tags": [
           "Pins"
         ],
@@ -28629,7 +28995,7 @@
               ]
             },
             "required": true,
-            "description": "Type of the pinned resource."
+            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
           },
           {
             "in": "path",
@@ -28639,7 +29005,7 @@
               "format": "uuid"
             },
             "required": true,
-            "description": "ID of the pinned resource."
+            "description": "ID of the pinned session, pull request, or project, not a separate pin ID."
           }
         ],
         "requestBody": {
@@ -28662,12 +29028,12 @@
                               "pull_request",
                               "project"
                             ],
-                            "description": "Type of the pinned resource."
+                            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
                           },
                           "id": {
                             "type": "string",
                             "format": "uuid",
-                            "description": "ID of the pinned resource."
+                            "description": "ID of the session, pull request, or project, not a separate pin ID."
                           }
                         },
                         "required": [
@@ -28691,7 +29057,7 @@
                       "position"
                     ],
                     "additionalProperties": false,
-                    "description": "New position of the pin relative to another pin."
+                    "description": "Reorder an existing pin before or after another pin. Use createPin to pin a resource and deletePin to unpin it."
                   }
                 },
                 "required": [
@@ -28706,7 +29072,7 @@
       "delete": {
         "operationId": "deletePin",
         "summary": "Delete a pin",
-        "description": "Unpin a session, pull request, or project.",
+        "description": "Unpin a session, pull request, or project for the authenticated user without deleting or archiving the resource.",
         "tags": [
           "Pins"
         ],
@@ -28730,12 +29096,12 @@
                         "pull_request",
                         "project"
                       ],
-                      "description": "Type of the pinned resource."
+                      "description": "Kind of resource to pin or unpin: session, pull_request, or project."
                     },
                     "id": {
                       "type": "string",
                       "format": "uuid",
-                      "description": "ID of the pinned resource."
+                      "description": "ID of the session, pull request, or project, not a separate pin ID."
                     },
                     "deleted": {
                       "type": "boolean",
@@ -28823,7 +29189,7 @@
               ]
             },
             "required": true,
-            "description": "Type of the pinned resource."
+            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
           },
           {
             "in": "path",
@@ -28833,7 +29199,7 @@
               "format": "uuid"
             },
             "required": true,
-            "description": "ID of the pinned resource."
+            "description": "ID of the pinned session, pull request, or project, not a separate pin ID."
           }
         ]
       }
@@ -28865,7 +29231,8 @@
                         "null"
                       ],
                       "minLength": 1,
-                      "maxLength": 255
+                      "maxLength": 255,
+                      "description": "Project to make the organization default, or null to clear the default."
                     },
                     "sandboxSize": {
                       "type": "string",
@@ -28878,7 +29245,8 @@
                         "xl",
                         "xxl",
                         "ultra"
-                      ]
+                      ],
+                      "description": "Default workspace VM size for the organization."
                     }
                   },
                   "required": [
@@ -28999,7 +29367,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Project to make the organization default, or null to clear the default."
                   },
                   "sandboxSize": {
                     "type": "string",
@@ -29012,7 +29381,8 @@
                       "xl",
                       "xxl",
                       "ultra"
-                    ]
+                    ],
+                    "description": "Default workspace VM size for the organization."
                   }
                 },
                 "required": [
@@ -29370,7 +29740,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -29380,7 +29751,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -29388,7 +29760,8 @@
             "schema": {
               "type": "string",
               "const": "true"
-            }
+            },
+            "description": "Only projects configured as defaults for at least one VM size."
           },
           {
             "in": "query",
@@ -29397,7 +29770,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 120
-            }
+            },
+            "description": "Search project names."
           }
         ]
       },
@@ -29741,25 +30115,30 @@
                       "string",
                       "null"
                     ],
-                    "maxLength": 300
+                    "maxLength": 300,
+                    "description": "Short project description, or null to clear it."
                   },
                   "includeDeps": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Include project dependencies when building the environment. Defaults to true on creation."
                   },
                   "includeSkills": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Include skills in the project environment. Defaults to true on creation."
                   },
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 120
+                    "maxLength": 120,
+                    "description": "Project display name."
                   },
                   "setupScript": {
                     "type": [
                       "string",
                       "null"
                     ],
-                    "maxLength": 100000
+                    "maxLength": 100000,
+                    "description": "Setup script to run while building the environment, or null to clear it."
                   },
                   "codeRepositoryIds": {
                     "type": [
@@ -29770,14 +30149,16 @@
                       "type": "string",
                       "minLength": 1,
                       "maxLength": 255
-                    }
+                    },
+                    "description": "Repository IDs included in the project environment. On update, replaces the repository selection."
                   },
                   "agentInstructions": {
                     "type": [
                       "string",
                       "null"
                     ],
-                    "maxLength": 20000
+                    "maxLength": 20000,
+                    "description": "Instructions supplied to agents using this project, or null to clear them."
                   },
                   "color": {
                     "type": "string",
@@ -29791,7 +30172,8 @@
                       "blue",
                       "purple",
                       "pink"
-                    ]
+                    ],
+                    "description": "Project display color."
                   },
                   "icon": {
                     "type": "string",
@@ -29818,13 +30200,16 @@
                       "api",
                       "mobile",
                       "package"
-                    ]
+                    ],
+                    "description": "Project display icon."
                   },
                   "onboardingDefault": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Make this project the onboarding default for the organization."
                   },
                   "runNow": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Queue initial snapshot builds immediately when a build host is available. Defaults to false."
                   },
                   "schedule": {
                     "type": "object",
@@ -29832,18 +30217,21 @@
                       "cron": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 120
+                        "maxLength": 120,
+                        "description": "Cron expression for recurring project snapshot builds."
                       },
                       "timezone": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 100
+                        "maxLength": 100,
+                        "description": "Timezone for the cron schedule. Defaults to UTC."
                       }
                     },
                     "required": [
                       "cron"
                     ],
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Recurring schedule for rebuilding the project environment."
                   },
                   "sizes": {
                     "type": "array",
@@ -29859,7 +30247,8 @@
                         "ultra"
                       ]
                     },
-                    "minItems": 1
+                    "minItems": 1,
+                    "description": "Workspace VM sizes to build for this project."
                   }
                 },
                 "required": [
@@ -30200,7 +30589,7 @@
       "patch": {
         "operationId": "updateProject",
         "summary": "Update a project",
-        "description": "Update project configuration fields.",
+        "description": "Update project repositories, setup script, agent instructions, environment variables, VM sizes and defaults; enable or pause scheduled builds or the warm pool; rename or customize its appearance.",
         "tags": [
           "Projects"
         ],
@@ -30531,25 +30920,30 @@
                       "string",
                       "null"
                     ],
-                    "maxLength": 300
+                    "maxLength": 300,
+                    "description": "Short project description, or null to clear it."
                   },
                   "includeDeps": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Include project dependencies when building the environment. Defaults to true on creation."
                   },
                   "includeSkills": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Include skills in the project environment. Defaults to true on creation."
                   },
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 120
+                    "maxLength": 120,
+                    "description": "Project display name."
                   },
                   "setupScript": {
                     "type": [
                       "string",
                       "null"
                     ],
-                    "maxLength": 100000
+                    "maxLength": 100000,
+                    "description": "Setup script to run while building the environment, or null to clear it."
                   },
                   "codeRepositoryIds": {
                     "type": [
@@ -30560,14 +30954,16 @@
                       "type": "string",
                       "minLength": 1,
                       "maxLength": 255
-                    }
+                    },
+                    "description": "Repository IDs included in the project environment. On update, replaces the repository selection."
                   },
                   "agentInstructions": {
                     "type": [
                       "string",
                       "null"
                     ],
-                    "maxLength": 20000
+                    "maxLength": 20000,
+                    "description": "Instructions supplied to agents using this project, or null to clear them."
                   },
                   "color": {
                     "type": "string",
@@ -30581,7 +30977,8 @@
                       "blue",
                       "purple",
                       "pink"
-                    ]
+                    ],
+                    "description": "Project display color."
                   },
                   "icon": {
                     "type": "string",
@@ -30608,7 +31005,8 @@
                       "api",
                       "mobile",
                       "package"
-                    ]
+                    ],
+                    "description": "Project display icon."
                   },
                   "defaultForSizes": {
                     "type": "array",
@@ -30623,7 +31021,8 @@
                         "xxl",
                         "ultra"
                       ]
-                    }
+                    },
+                    "description": "VM sizes for which this project is the organization default. An empty array removes its default assignments."
                   },
                   "environmentVariables": {
                     "type": "object",
@@ -30634,7 +31033,8 @@
                     "additionalProperties": {
                       "type": "string",
                       "maxLength": 10000
-                    }
+                    },
+                    "description": "Replace the complete environment-variable map. Use createProjectEnvironmentVariables to add or replace individual keys instead."
                   },
                   "schedule": {
                     "type": "object",
@@ -30642,10 +31042,12 @@
                       "cron": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 120
+                        "maxLength": 120,
+                        "description": "Replace the recurring project build cron expression."
                       },
                       "enabled": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "description": "Enable or pause scheduled project builds."
                       },
                       "timezone": {
                         "type": [
@@ -30653,10 +31055,12 @@
                           "null"
                         ],
                         "minLength": 1,
-                        "maxLength": 100
+                        "maxLength": 100,
+                        "description": "Timezone for the cron schedule, or null to clear it."
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "description": "Change the project build schedule, including enabling or pausing it."
                   },
                   "sizes": {
                     "type": "array",
@@ -30672,10 +31076,12 @@
                         "ultra"
                       ]
                     },
-                    "minItems": 1
+                    "minItems": 1,
+                    "description": "Replace the workspace VM sizes built for this project."
                   },
                   "warmPoolEnabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or disable prewarmed VMs for this project."
                   }
                 },
                 "additionalProperties": false
@@ -30687,7 +31093,7 @@
       "delete": {
         "operationId": "deleteProject",
         "summary": "Delete a project",
-        "description": "Delete a project and disable its schedule.",
+        "description": "Archive a project, remove its default VM-size assignments, and disable its build schedule. This does not permanently delete the project record.",
         "tags": [
           "Projects"
         ],
@@ -31498,12 +31904,14 @@
                       "properties": {
                         "key": {
                           "type": "string",
-                          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+                          "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                          "description": "Environment-variable name."
                         },
                         "value": {
                           "type": "string",
                           "minLength": 1,
-                          "maxLength": 10000
+                          "maxLength": 10000,
+                          "description": "Secret environment-variable value; stored encrypted and not returned by list operations."
                         }
                       },
                       "required": [
@@ -31513,7 +31921,8 @@
                       "additionalProperties": false
                     },
                     "minItems": 1,
-                    "maxItems": 100
+                    "maxItems": 100,
+                    "description": "Environment variables to add or replace by key, preserving other keys. Values are encrypted and not returned by list operations."
                   }
                 },
                 "required": [
@@ -32026,7 +32435,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -32036,7 +32446,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -32703,10 +33114,12 @@
                       "string",
                       "null"
                     ],
-                    "maxLength": 120
+                    "maxLength": 120,
+                    "description": "Rename the snapshot, or null to clear its name."
                   },
                   "pinned": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Pin the snapshot with true to retain it, or unpin with false. This is separate from user sidebar resource pins."
                   }
                 },
                 "additionalProperties": false
@@ -33202,7 +33615,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -33212,7 +33626,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       },
@@ -33383,12 +33798,14 @@
                         "ultra"
                       ]
                     },
-                    "minItems": 1
+                    "minItems": 1,
+                    "description": "VM sizes to build. Omit to use the project sizes. Cannot be combined with snapshotId."
                   },
                   "snapshotId": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 255
+                    "maxLength": 255,
+                    "description": "Rebuild one existing snapshot instead of building project sizes. Cannot be combined with sizes."
                   }
                 },
                 "additionalProperties": false
@@ -34087,7 +34504,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -34097,7 +34515,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       },
@@ -34304,12 +34723,14 @@
                   "cron": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 120
+                    "maxLength": 120,
+                    "description": "Cron expression for recurring project snapshot builds."
                   },
                   "timezone": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Timezone for the cron schedule. Defaults to UTC."
                   }
                 },
                 "required": [
@@ -34740,10 +35161,12 @@
                   "cron": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 120
+                    "maxLength": 120,
+                    "description": "Replace the recurring project build cron expression."
                   },
                   "enabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or pause scheduled project builds."
                   },
                   "timezone": {
                     "type": [
@@ -34751,7 +35174,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Timezone for the cron schedule, or null to clear it."
                   }
                 },
                 "additionalProperties": false
@@ -35467,7 +35891,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter authors by comma-separated provider:identifier values, such as github:octocat."
           },
           {
             "in": "query",
@@ -35475,7 +35900,8 @@
             "schema": {
               "type": "string",
               "format": "date-time"
-            }
+            },
+            "description": "Only pull requests created after this ISO 8601 timestamp."
           },
           {
             "in": "query",
@@ -35483,7 +35909,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -35493,7 +35920,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -35505,7 +35933,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Exclude authors by comma-separated provider:identifier values."
           },
           {
             "in": "query",
@@ -35513,7 +35942,8 @@
             "schema": {
               "type": "string",
               "minLength": 1
-            }
+            },
+            "description": "Exclude pull requests from the named organization within the caller access scope."
           },
           {
             "in": "query",
@@ -35525,7 +35955,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Exclude returned pull requests by these comma-separated provider:identifier author values."
           },
           {
             "in": "query",
@@ -35537,28 +35968,32 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Exclude pull requests assigned to these comma-separated reviewer identifiers."
           },
           {
             "in": "query",
             "name": "hasTemboSession",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "When true, only return pull requests with a linked Tembo session."
           },
           {
             "in": "query",
             "name": "includeAuthors",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Request author filter options. Public responses do not include organization-wide author options."
           },
           {
             "in": "query",
             "name": "includeTotal",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Include the total count of matching pull requests."
           },
           {
             "in": "query",
@@ -35570,7 +36005,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by repository IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -35582,7 +36018,8 @@
                 "minLength": 1
               },
               "default": []
-            }
+            },
+            "description": "Filter by assigned reviewer identifiers, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -35590,7 +36027,8 @@
             "schema": {
               "type": "string",
               "format": "date-time"
-            }
+            },
+            "description": "Only pull requests merged after this ISO 8601 timestamp."
           },
           {
             "in": "query",
@@ -35598,7 +36036,8 @@
             "schema": {
               "type": "string",
               "minLength": 1
-            }
+            },
+            "description": "Search pull requests."
           },
           {
             "in": "query",
@@ -35609,7 +36048,8 @@
                 "createdAt",
                 "updatedAt"
               ]
-            }
+            },
+            "description": "Sort by creation time or last update time."
           },
           {
             "in": "query",
@@ -35625,7 +36065,8 @@
                 "merged",
                 "closed"
               ]
-            }
+            },
+            "description": "Filter by lifecycle or review state, including open, returned, approved, needs review, draft, merged, or closed."
           },
           {
             "in": "query",
@@ -35633,7 +36074,8 @@
             "schema": {
               "type": "string",
               "format": "date-time"
-            }
+            },
+            "description": "Only pull requests updated after this ISO 8601 timestamp."
           }
         ]
       }
@@ -36492,7 +36934,8 @@
             "schema": {
               "type": "string",
               "maxLength": 2000
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -36502,7 +36945,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -36510,7 +36954,8 @@
             "schema": {
               "type": "string",
               "maxLength": 10000
-            }
+            },
+            "description": "Filter by agent IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -36519,14 +36964,16 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 200
-            }
+            },
+            "description": "Search agent names."
           },
           {
             "in": "query",
             "name": "archived",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "true lists archived agents; false or omitted lists unarchived agents. Use this to find agents to restore."
           },
           {
             "in": "query",
@@ -36537,7 +36984,8 @@
                 "latestRun",
                 "runCount"
               ]
-            }
+            },
+            "description": "Sort agents by latest run or run count."
           },
           {
             "in": "query",
@@ -36545,7 +36993,8 @@
             "schema": {
               "type": "string",
               "maxLength": 10000
-            }
+            },
+            "description": "Filter by enabled (running) or paused status, supplied as a comma-separated list; this is not individual run execution status."
           },
           {
             "in": "query",
@@ -36553,7 +37002,8 @@
             "schema": {
               "type": "string",
               "maxLength": 10000
-            }
+            },
+            "description": "Filter by integration provider types, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -36561,7 +37011,8 @@
             "schema": {
               "type": "string",
               "maxLength": 10000
-            }
+            },
+            "description": "Filter by creator user IDs, supplied as a comma-separated list."
           }
         ]
       },
@@ -36978,7 +37429,8 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Agent display name. Required when creating from scratch."
                   },
                   "instructions": {
                     "$ref": "#/components/schemas/TipTapDocument",
@@ -36991,15 +37443,18 @@
                       "minLength": 1,
                       "maxLength": 200
                     },
-                    "maxItems": 100
+                    "maxItems": 100,
+                    "description": "MCP server or connection IDs available to agent runs."
                   },
                   "agent": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Coding agent and model key used for runs. Omit to use the default."
                   },
                   "agentOptions": {
-                    "$ref": "#/components/schemas/AgentOptionsInput"
+                    "$ref": "#/components/schemas/AgentOptionsInput",
+                    "description": "Agent-specific runtime options, such as reasoning effort."
                   },
                   "sandboxSize": {
                     "type": [
@@ -37016,7 +37471,8 @@
                       "xxl",
                       "ultra",
                       null
-                    ]
+                    ],
+                    "description": "Workspace VM size used for agent runs."
                   },
                   "projectId": {
                     "anyOf": [
@@ -37031,7 +37487,8 @@
                       {
                         "type": "null"
                       }
-                    ]
+                    ],
+                    "description": "Project environment used for agent runs."
                   },
                   "artifactType": {
                     "type": [
@@ -37047,7 +37504,8 @@
                       "Service",
                       "Source",
                       null
-                    ]
+                    ],
+                    "description": "Artifact type produced by this agent."
                   },
                   "repositoryIds": {
                     "type": "array",
@@ -37055,7 +37513,8 @@
                       "type": "string",
                       "format": "uuid"
                     },
-                    "maxItems": 250
+                    "maxItems": 250,
+                    "description": "Repository IDs available to agent runs."
                   },
                   "triggers": {
                     "type": "array",
@@ -37065,19 +37524,23 @@
                         "name": {
                           "type": "string",
                           "minLength": 1,
-                          "maxLength": 200
+                          "maxLength": 200,
+                          "description": "Integration event name. Use listIntegrationTriggers to discover supported triggers."
                         },
                         "integrationType": {
                           "type": "string",
                           "minLength": 1,
-                          "maxLength": 100
+                          "maxLength": 100,
+                          "description": "Provider type for the trigger, such as github or slack."
                         },
                         "integrationId": {
                           "type": "string",
-                          "format": "uuid"
+                          "format": "uuid",
+                          "description": "Connected integration that supplies trigger events."
                         },
                         "filters": {
-                          "$ref": "#/components/schemas/TriggerFilters"
+                          "$ref": "#/components/schemas/TriggerFilters",
+                          "description": "Event-specific trigger filters. Use retrieveIntegrationTrigger and listIntegrationTriggerFilterOptions to discover supported fields and values."
                         }
                       },
                       "required": [
@@ -37085,7 +37548,8 @@
                       ],
                       "additionalProperties": false
                     },
-                    "maxItems": 50
+                    "maxItems": 50,
+                    "description": "Integration events that automatically start agent runs."
                   },
                   "schedules": {
                     "type": "array",
@@ -37095,7 +37559,8 @@
                         "cron": {
                           "type": "string",
                           "minLength": 1,
-                          "maxLength": 500
+                          "maxLength": 500,
+                          "description": "Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs."
                         }
                       },
                       "required": [
@@ -37103,7 +37568,8 @@
                       ],
                       "additionalProperties": false
                     },
-                    "maxItems": 50
+                    "maxItems": 50,
+                    "description": "Recurring cron schedules that automatically start agent runs."
                   },
                   "templateName": {
                     "type": "string",
@@ -37145,11 +37611,13 @@
                       "stalePullRequestNotifier",
                       "summarizeChangesDaily",
                       "triageNewJiraBug"
-                    ]
+                    ],
+                    "description": "Create from a template discovered with listAgentTemplates. Only name and triggers may also be supplied."
                   },
                   "sourceAgentId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Duplicate an existing agent. Must be the only field; cannot be combined with templateName or overrides."
                   }
                 },
                 "additionalProperties": false
@@ -37503,7 +37971,8 @@
                 "summarizeChangesDaily",
                 "triageNewJiraBug"
               ]
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -37513,7 +37982,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -38191,7 +38661,7 @@
       "patch": {
         "operationId": "updateAgent",
         "summary": "Update an agent",
-        "description": "Update agent configuration. Supply expectedUpdatedAt to reject an update if the agent changed since it was retrieved. Enabling or archiving an agent also updates its schedules and triggers.",
+        "description": "Update agent instructions, model, workspace, repositories, or persistent state; enable or pause the agent; archive or restore it. enabled and archived also control its schedules and triggers. Supply expectedUpdatedAt to reject concurrent changes.",
         "tags": [
           "Agents"
         ],
@@ -38617,7 +39087,8 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Rename the agent."
                   },
                   "key": {
                     "type": [
@@ -38625,7 +39096,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Change the agent lookup key, or null to clear it."
                   },
                   "instructions": {
                     "oneOf": [
@@ -38636,7 +39108,8 @@
                       {
                         "type": "null"
                       }
-                    ]
+                    ],
+                    "description": "Replace the agent instruction document, or null to clear it."
                   },
                   "mcpServers": {
                     "type": "array",
@@ -38645,7 +39118,8 @@
                       "minLength": 1,
                       "maxLength": 200
                     },
-                    "maxItems": 100
+                    "maxItems": 100,
+                    "description": "Replace the MCP server or connection IDs. An empty array clears the selection."
                   },
                   "agent": {
                     "type": [
@@ -38653,13 +39127,16 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Change the coding agent and model key. Null clears the override."
                   },
                   "agentOptions": {
-                    "$ref": "#/components/schemas/AgentOptionsInput"
+                    "$ref": "#/components/schemas/AgentOptionsInput",
+                    "description": "Change agent-specific runtime options, such as reasoning effort."
                   },
                   "userState": {
-                    "$ref": "#/components/schemas/AgentState"
+                    "$ref": "#/components/schemas/AgentState",
+                    "description": "Replace the user-managed persistent agent state."
                   },
                   "sandboxSize": {
                     "type": [
@@ -38678,7 +39155,8 @@
                       "ultra",
                       null,
                       null
-                    ]
+                    ],
+                    "description": "Change the workspace VM size. Null clears the override."
                   },
                   "projectId": {
                     "anyOf": [
@@ -38693,21 +39171,24 @@
                       {
                         "type": "null"
                       }
-                    ]
+                    ],
+                    "description": "Change the project environment for runs. Null clears the override."
                   },
                   "templateId": {
                     "type": [
                       "string",
                       "null"
                     ],
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Change the associated agent template identifier, or null to clear it."
                   },
                   "script": {
                     "type": [
                       "string",
                       "null"
                     ],
-                    "maxLength": 100000
+                    "maxLength": 100000,
+                    "description": "Replace the agent script, or null to clear it."
                   },
                   "artifactType": {
                     "type": [
@@ -38725,7 +39206,8 @@
                       "Source",
                       null,
                       null
-                    ]
+                    ],
+                    "description": "Change the artifact type produced by the agent, or null to clear it."
                   },
                   "repositoryIds": {
                     "type": "array",
@@ -38733,13 +39215,16 @@
                       "type": "string",
                       "format": "uuid"
                     },
-                    "maxItems": 250
+                    "maxItems": 250,
+                    "description": "Replace repository associations. An empty array removes all associations."
                   },
                   "enabled": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Enable or pause the agent and its schedules and triggers. Archived agents remain paused until restored."
                   },
                   "archived": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Archive with true or restore with false. Archiving disables schedules and triggers; restoring follows the agent enabled state."
                   }
                 },
                 "additionalProperties": false
@@ -38751,7 +39236,7 @@
       "delete": {
         "operationId": "deleteAgent",
         "summary": "Delete an agent",
-        "description": "Delete an agent and disable its scheduled and triggered jobs.",
+        "description": "Archive an agent and disable its scheduled and triggered jobs without permanently deleting it. Restore with updateAgent and archived=false.",
         "tags": [
           "Agents"
         ],
@@ -39053,7 +39538,8 @@
             "schema": {
               "type": "string",
               "pattern": "^[1-9]\\d*$"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -39063,7 +39549,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -39883,7 +40370,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -39893,7 +40381,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       },
@@ -40071,7 +40560,8 @@
                   "cron": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs."
                   }
                 },
                 "required": [
@@ -40262,7 +40752,7 @@
       "patch": {
         "operationId": "updateAgentSchedule",
         "summary": "Update an agent schedule",
-        "description": "Update an agent schedule, including its cron expression or enabled state.",
+        "description": "Change an agent schedule cron expression. Use updateAgent with enabled to enable or pause the agent and its schedules.",
         "tags": [
           "Agents"
         ],
@@ -40442,7 +40932,8 @@
                   "cron": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 500
+                    "maxLength": 500,
+                    "description": "Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs."
                   }
                 },
                 "required": [
@@ -40790,7 +41281,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -40800,7 +41292,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       },
@@ -40987,19 +41480,23 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Integration event name. Use listIntegrationTriggers to discover supported triggers."
                   },
                   "integrationType": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 100
+                    "maxLength": 100,
+                    "description": "Provider type for the trigger, such as github or slack."
                   },
                   "integrationId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Connected integration that supplies trigger events."
                   },
                   "filters": {
-                    "$ref": "#/components/schemas/TriggerFilters"
+                    "$ref": "#/components/schemas/TriggerFilters",
+                    "description": "Event-specific trigger filters. Use retrieveIntegrationTrigger and listIntegrationTriggerFilterOptions to discover supported fields and values."
                   }
                 },
                 "required": [
@@ -41199,7 +41696,7 @@
       "patch": {
         "operationId": "updateAgentTrigger",
         "summary": "Update an agent trigger",
-        "description": "Update an agent trigger configuration or enabled state.",
+        "description": "Change an agent trigger event, integration, or filters. Use updateAgent with enabled to enable or pause the agent and its triggers.",
         "tags": [
           "Agents"
         ],
@@ -41388,14 +41885,17 @@
                   "name": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 200
+                    "maxLength": 200,
+                    "description": "Integration event name. Use listIntegrationTriggers to discover supported triggers."
                   },
                   "integrationId": {
                     "type": "string",
-                    "format": "uuid"
+                    "format": "uuid",
+                    "description": "Connected integration that supplies trigger events."
                   },
                   "filters": {
-                    "$ref": "#/components/schemas/TriggerFilters"
+                    "$ref": "#/components/schemas/TriggerFilters",
+                    "description": "Event-specific trigger filters. Use retrieveIntegrationTrigger and listIntegrationTriggerFilterOptions to discover supported fields and values."
                   }
                 },
                 "required": [
@@ -41724,7 +42224,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -41734,7 +42235,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       },
@@ -42341,7 +42843,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -42351,7 +42854,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -42364,7 +42868,8 @@
                 "false"
               ],
               "default": "all"
-            }
+            },
+            "description": "Select enabled repositories, disabled repositories, or all. The public API defaults to enabled repositories."
           },
           {
             "in": "query",
@@ -42377,7 +42882,8 @@
               },
               "minItems": 1,
               "maxItems": 100
-            }
+            },
+            "description": "Filter by repository IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -42385,7 +42891,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Filter repositories belonging to this integration."
           },
           {
             "in": "query",
@@ -42397,7 +42904,8 @@
                 "desc"
               ],
               "default": "desc"
-            }
+            },
+            "description": "Sort direction: ascending or descending."
           },
           {
             "in": "query",
@@ -42406,7 +42914,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 500
-            }
+            },
+            "description": "Search repository names and owners."
           },
           {
             "in": "query",
@@ -42421,7 +42930,8 @@
                 "updatedAt"
               ],
               "default": "pullRequests"
-            }
+            },
+            "description": "Sort by creation time, integration, name, pull request count, or update time."
           }
         ]
       }
@@ -42991,7 +43501,8 @@
                 "properties": {
                   "enabled": {
                     "type": "boolean",
-                    "default": false
+                    "default": false,
+                    "description": "Enable or disable this repository for Tembo. Disabled by default on creation."
                   },
                   "baseBranch": {
                     "type": [
@@ -42999,7 +43510,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 1024
+                    "maxLength": 1024,
+                    "description": "Default Git branch to start sessions from. Null clears the override."
                   },
                   "targetBranch": {
                     "type": [
@@ -43007,7 +43519,8 @@
                       "null"
                     ],
                     "minLength": 1,
-                    "maxLength": 1024
+                    "maxLength": 1024,
+                    "description": "Default target branch for agent-created pull requests. Null clears the override."
                   }
                 },
                 "additionalProperties": false
@@ -43299,7 +43812,8 @@
             "schema": {
               "type": "string",
               "format": "uuid"
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -43309,21 +43823,24 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
             "name": "enabled",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Filter by whether integrations are enabled."
           },
           {
             "in": "query",
             "name": "hasEnabledRepositories",
             "schema": {
               "type": "boolean"
-            }
+            },
+            "description": "Filter by whether integrations have enabled repositories."
           },
           {
             "in": "query",
@@ -43336,7 +43853,8 @@
               },
               "minItems": 1,
               "maxItems": 100
-            }
+            },
+            "description": "Filter by integration IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -43345,7 +43863,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 200
-            }
+            },
+            "description": "Search integration provider types and external IDs."
           },
           {
             "in": "query",
@@ -43359,7 +43878,8 @@
               },
               "minItems": 1,
               "maxItems": 18
-            }
+            },
+            "description": "Filter provider types, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -43367,7 +43887,8 @@
             "schema": {
               "type": "string",
               "format": "date-time"
-            }
+            },
+            "description": "Only integrations created after this ISO 8601 timestamp."
           },
           {
             "in": "query",
@@ -43376,7 +43897,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Exclude integrations belonging to the named organization within the caller access scope."
           },
           {
             "in": "query",
@@ -43384,14 +43906,15 @@
             "schema": {
               "type": "boolean",
               "default": false
-            }
+            },
+            "description": "Include totalCount for matching integrations."
           }
         ]
       },
       "post": {
         "operationId": "createIntegration",
         "summary": "Create an integration",
-        "description": "Create an integration that does not require an OAuth callback.",
+        "description": "Connect AWS, BigQuery, GitLab, PostgreSQL, Snyk, OpenConnect VPN, or Tailscale using provider credentials. For browser-authorized providers, use listIntegrationProviders and authorizeIntegration instead.",
         "tags": [
           "Integrations"
         ],
@@ -43667,16 +44190,19 @@
                       "environment": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display label for the AWS environment."
                       },
                       "roleArn": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 2048
+                        "maxLength": 2048,
+                        "description": "AWS IAM role ARN to assume for account access."
                       },
                       "type": {
                         "type": "string",
-                        "const": "aws"
+                        "const": "aws",
+                        "description": "Create an AWS account integration."
                       }
                     },
                     "required": [
@@ -43691,16 +44217,19 @@
                     "properties": {
                       "projectId": {
                         "type": "string",
-                        "pattern": "^[a-z][a-z0-9-]{4,28}[a-z0-9]$"
+                        "pattern": "^[a-z][a-z0-9-]{4,28}[a-z0-9]$",
+                        "description": "Google Cloud project ID for BigQuery."
                       },
                       "serviceAccountJson": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 1000000
+                        "maxLength": 1000000,
+                        "description": "Google Cloud service-account JSON credentials for BigQuery."
                       },
                       "type": {
                         "type": "string",
-                        "const": "bigquery"
+                        "const": "bigquery",
+                        "description": "Create a BigQuery integration."
                       }
                     },
                     "required": [
@@ -43716,11 +44245,13 @@
                       "accessToken": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 65536
+                        "maxLength": 65536,
+                        "description": "GitLab access token used to connect the integration."
                       },
                       "type": {
                         "type": "string",
-                        "const": "gitlab"
+                        "const": "gitlab",
+                        "description": "Create a GitLab integration."
                       }
                     },
                     "required": [
@@ -43735,17 +44266,20 @@
                       "gateway": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 2048
+                        "maxLength": 2048,
+                        "description": "VPN gateway hostname or URL for OpenConnect."
                       },
                       "instanceName": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display name for the VPN connection."
                       },
                       "password": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 65536
+                        "maxLength": 65536,
+                        "description": "VPN login password."
                       },
                       "protocol": {
                         "type": "string",
@@ -43754,16 +44288,19 @@
                           "anyconnect",
                           "gp",
                           "nc"
-                        ]
+                        ],
+                        "description": "OpenConnect VPN protocol supported by the gateway."
                       },
                       "type": {
                         "type": "string",
-                        "const": "openconnect"
+                        "const": "openconnect",
+                        "description": "Create an OpenConnect VPN integration."
                       },
                       "username": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 4096
+                        "maxLength": 4096,
+                        "description": "VPN login username."
                       }
                     },
                     "required": [
@@ -43781,21 +44318,25 @@
                     "properties": {
                       "caCertificate": {
                         "type": "string",
-                        "maxLength": 1000000
+                        "maxLength": 1000000,
+                        "description": "Optional CA certificate for the PostgreSQL TLS connection."
                       },
                       "connectionString": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 16384
+                        "maxLength": 16384,
+                        "description": "PostgreSQL connection URI, including credentials. Stored as secret configuration."
                       },
                       "instanceName": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display name for the PostgreSQL instance."
                       },
                       "type": {
                         "type": "string",
-                        "const": "postgres"
+                        "const": "postgres",
+                        "description": "Create a PostgreSQL integration."
                       }
                     },
                     "required": [
@@ -43811,25 +44352,30 @@
                       "clientId": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 16384
+                        "maxLength": 16384,
+                        "description": "Snyk service-account client ID."
                       },
                       "clientSecret": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 65536
+                        "maxLength": 65536,
+                        "description": "Snyk service-account client secret."
                       },
                       "organizationId": {
                         "type": "string",
-                        "format": "uuid"
+                        "format": "uuid",
+                        "description": "Snyk organization ID, not a Tembo organization ID. Discover choices with discoverSnykOrganizations."
                       },
                       "organizationName": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 500
+                        "maxLength": 500,
+                        "description": "Optional display name for the Snyk organization."
                       },
                       "type": {
                         "type": "string",
-                        "const": "snyk"
+                        "const": "snyk",
+                        "description": "Create a Snyk integration."
                       }
                     },
                     "required": [
@@ -43846,17 +44392,20 @@
                       "instanceName": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 200
+                        "maxLength": 200,
+                        "description": "Display name for the Tailscale connection."
                       },
                       "oauthClientId": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 16384
+                        "maxLength": 16384,
+                        "description": "Tailscale OAuth client ID authorized to create tagged devices."
                       },
                       "oauthClientSecret": {
                         "type": "string",
                         "minLength": 1,
-                        "maxLength": 65536
+                        "maxLength": 65536,
+                        "description": "Tailscale OAuth client secret."
                       },
                       "tags": {
                         "type": "array",
@@ -43865,17 +44414,20 @@
                           "pattern": "^tag:[a-z0-9][a-z0-9-]*$"
                         },
                         "minItems": 1,
-                        "maxItems": 100
+                        "maxItems": 100,
+                        "description": "Tags to assign to connected devices, such as tag:tembo. Must be authorized for the OAuth client."
                       },
                       "tailnet": {
                         "type": "string",
                         "minLength": 1,
                         "maxLength": 500,
-                        "default": "-"
+                        "default": "-",
+                        "description": "Tailnet name. The default - uses the OAuth client tailnet."
                       },
                       "type": {
                         "type": "string",
-                        "const": "tailscale"
+                        "const": "tailscale",
+                        "description": "Create a Tailscale private-network integration."
                       }
                     },
                     "required": [
@@ -44724,7 +45276,8 @@
               "type": "string",
               "pattern": "^\\d+$",
               "maxLength": 10
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -44734,7 +45287,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -44743,7 +45297,8 @@
               "type": "string",
               "format": "uri",
               "maxLength": 8192
-            }
+            },
+            "description": "URL to return to after provider authorization. Must use HTTPS or localhost HTTP."
           }
         ]
       }
@@ -45141,7 +45696,8 @@
               "type": "string",
               "pattern": "^\\d+$",
               "maxLength": 10
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -45151,7 +45707,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -45832,7 +46389,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 8192
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -45842,7 +46400,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -45851,7 +46410,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 200
-            }
+            },
+            "description": "Search selectable values for this integration trigger filter."
           }
         ]
       }
@@ -46108,23 +46668,27 @@
                   "clientId": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 16384
+                    "maxLength": 16384,
+                    "description": "Snyk service-account client ID to validate and use for organization discovery."
                   },
                   "clientSecret": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 65536
+                    "maxLength": 65536,
+                    "description": "Snyk service-account client secret. Used for discovery without saving an integration."
                   },
                   "cursor": {
                     "type": "string",
                     "minLength": 1,
-                    "maxLength": 2048
+                    "maxLength": 2048,
+                    "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
                   },
                   "limit": {
                     "type": "integer",
                     "minimum": 1,
                     "maximum": 100,
-                    "default": 50
+                    "default": 50,
+                    "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
                   }
                 },
                 "required": [
@@ -46404,7 +46968,7 @@
       "patch": {
         "operationId": "updateIntegration",
         "summary": "Update an integration",
-        "description": "Update provider settings or an editable configuration.",
+        "description": "Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.",
         "tags": [
           "Integrations"
         ],
@@ -46703,7 +47267,8 @@
                             "maxItems": 1000
                           }
                         },
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "description": "Update integration settings, preserving unspecified settings."
                       }
                     },
                     "required": [
@@ -46720,19 +47285,22 @@
                           "environment": {
                             "type": "string",
                             "minLength": 1,
-                            "maxLength": 200
+                            "maxLength": 200,
+                            "description": "Display label for the AWS environment."
                           },
                           "roleArn": {
                             "type": "string",
                             "minLength": 1,
-                            "maxLength": 2048
+                            "maxLength": 2048,
+                            "description": "AWS IAM role ARN to assume for account access."
                           }
                         },
                         "required": [
                           "environment",
                           "roleArn"
                         ],
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "description": "Replace AWS environment and assumed-role configuration."
                       }
                     },
                     "required": [
@@ -46748,24 +47316,28 @@
                         "properties": {
                           "caCertificate": {
                             "type": "string",
-                            "maxLength": 1000000
+                            "maxLength": 1000000,
+                            "description": "Optional CA certificate for the PostgreSQL TLS connection."
                           },
                           "connectionString": {
                             "type": "string",
                             "minLength": 1,
-                            "maxLength": 16384
+                            "maxLength": 16384,
+                            "description": "PostgreSQL connection URI, including credentials. Stored as secret configuration."
                           },
                           "instanceName": {
                             "type": "string",
                             "minLength": 1,
-                            "maxLength": 200
+                            "maxLength": 200,
+                            "description": "Display name for the PostgreSQL instance."
                           }
                         },
                         "required": [
                           "connectionString",
                           "instanceName"
                         ],
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "description": "Replace PostgreSQL connection configuration."
                       }
                     },
                     "required": [
@@ -46797,7 +47369,8 @@
                           "clientId",
                           "clientSecret"
                         ],
-                        "additionalProperties": false
+                        "additionalProperties": false,
+                        "description": "Set Atlassian service-account OAuth credentials for triggers, or null to remove them."
                       }
                     },
                     "required": [
@@ -47257,7 +47830,8 @@
               "type": "string",
               "format": "uri",
               "maxLength": 8192
-            }
+            },
+            "description": "URL to return to after provider authorization. Must use HTTPS or localhost HTTP."
           },
           {
             "in": "query",
@@ -47265,7 +47839,8 @@
             "schema": {
               "type": "string",
               "const": "confluenceTriggers"
-            }
+            },
+            "description": "Request authorization for Confluence automation triggers instead of the default integration capability."
           }
         ]
       }
@@ -47737,7 +48312,8 @@
                       "immediate",
                       "queued"
                     ],
-                    "default": "queued"
+                    "default": "queued",
+                    "description": "queued schedules a background integration sync; immediate performs the sync in this request."
                   }
                 },
                 "additionalProperties": false
@@ -48275,7 +48851,8 @@
               "type": "string",
               "pattern": "^\\d+$",
               "maxLength": 10
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -48285,7 +48862,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -48542,7 +49120,8 @@
               "type": "string",
               "pattern": "^\\d+$",
               "maxLength": 10
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -48552,7 +49131,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -48561,7 +49141,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 200
-            }
+            },
+            "description": "Search Slack channel names."
           }
         ]
       }
@@ -49247,7 +49828,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
           {
             "in": "query",
@@ -49257,7 +49839,8 @@
               "minimum": 1,
               "maximum": 100,
               "default": 50
-            }
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           },
           {
             "in": "query",
@@ -49266,7 +49849,8 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 255
-            }
+            },
+            "description": "Filter billing usage to this session."
           }
         ]
       }
