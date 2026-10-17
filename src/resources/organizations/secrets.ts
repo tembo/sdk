@@ -134,16 +134,19 @@ export class Secrets extends APIResource {
 
 export interface SecretListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Search secret names. Secret values are never returned.
    * @minLength 1
    * @maxLength 255
    */
@@ -182,11 +185,13 @@ export namespace SecretListResponse {
 
 export interface SecretCreateParams {
   /**
+   * Secret name used to reference it in the organization.
    * @minLength 1
    * @maxLength 255
    */
   key: string;
   /**
+   * Secret plaintext value to encrypt and store. Retrieve and list operations return redacted summaries, not this value.
    * @minLength 1
    * @maxLength 64000
    */
@@ -243,13 +248,13 @@ export interface SecretUpdateParams {
    */
   organizationId: string;
   /**
-   * Body param
+   * Body param: Secret name used to reference it in the organization.
    * @minLength 1
    * @maxLength 255
    */
   key?: string;
   /**
-   * Body param
+   * Body param: Secret plaintext value to encrypt and store. Retrieve and list operations return redacted summaries, not this value.
    * @minLength 1
    * @maxLength 64000
    */

@@ -107,11 +107,13 @@ export class Snapshots extends APIResource {
 
 export interface SnapshotListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 255
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -274,12 +276,12 @@ export interface SnapshotUpdateParams {
    */
   projectId: string;
   /**
-   * Body param
+   * Body param: Rename the snapshot, or null to clear its name.
    * @maxLength 120
    */
   name?: string | null;
   /**
-   * Body param
+   * Body param: Pin the snapshot with true to retain it, or unpin with false. This is separate from user sidebar resource pins.
    */
   pinned?: boolean;
 }

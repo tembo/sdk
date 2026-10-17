@@ -138,7 +138,7 @@ export class Projects extends APIResource {
   }
 
   /**
-   * Update project configuration fields.
+   * Update project repositories, setup script, agent instructions, environment variables, VM sizes and defaults; enable or pause scheduled builds or the warm pool; rename or customize its appearance.
    *
    * @param {string} projectID
    * @param {ProjectUpdateParams} body - The request body to send.
@@ -159,7 +159,7 @@ export class Projects extends APIResource {
   }
 
   /**
-   * Delete a project and disable its schedule.
+   * Archive a project, remove its default VM-size assignments, and disable its build schedule. This does not permanently delete the project record.
    *
    * @param {string} projectID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -193,36 +193,50 @@ export class Projects extends APIResource {
 
 export interface ProjectUpdateDefaultsParams {
   /**
+   * Project to make the organization default, or null to clear the default.
    * @minLength 1
    * @maxLength 255
    */
   projectId: string | null;
+  /**
+   * Default workspace VM size for the organization.
+   */
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
 }
 
 export interface ProjectUpdateDefaultsResponse {
   /**
+   * Project to make the organization default, or null to clear the default.
    * @minLength 1
    * @maxLength 255
    */
   projectId: string | null;
+  /**
+   * Default workspace VM size for the organization.
+   */
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
 }
 
 export interface ProjectListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 255
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Only projects configured as defaults for at least one VM size.
+   */
   defaultOnly?: 'true';
   /**
+   * Search project names.
    * @minLength 1
    * @maxLength 120
    */
@@ -316,30 +330,50 @@ export namespace ProjectListResponse {
 
 export interface ProjectCreateParams {
   /**
+   * Project display name.
    * @minLength 1
    * @maxLength 120
    */
   name: string;
   /**
+   * Workspace VM sizes to build for this project.
    * @minItems 1
    */
   sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   /**
+   * Short project description, or null to clear it.
    * @maxLength 300
    */
   description?: string | null;
+  /**
+   * Include project dependencies when building the environment. Defaults to true on creation.
+   */
   includeDeps?: boolean;
+  /**
+   * Include skills in the project environment. Defaults to true on creation.
+   */
   includeSkills?: boolean;
   /**
+   * Setup script to run while building the environment, or null to clear it.
    * @maxLength 100000
    */
   setupScript?: string | null;
+  /**
+   * Repository IDs included in the project environment. On update, replaces the repository selection.
+   */
   codeRepositoryIds?: Array<string> | null;
   /**
+   * Instructions supplied to agents using this project, or null to clear them.
    * @maxLength 20000
    */
   agentInstructions?: string | null;
+  /**
+   * Project display color.
+   */
   color?: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+  /**
+   * Project display icon.
+   */
   icon?:
     | 'folder'
     | 'code'
@@ -363,19 +397,30 @@ export interface ProjectCreateParams {
     | 'api'
     | 'mobile'
     | 'package';
+  /**
+   * Make this project the onboarding default for the organization.
+   */
   onboardingDefault?: boolean;
+  /**
+   * Queue initial snapshot builds immediately when a build host is available. Defaults to false.
+   */
   runNow?: boolean;
+  /**
+   * Recurring schedule for rebuilding the project environment.
+   */
   schedule?: ProjectCreateParams.Schedule;
 }
 
 export namespace ProjectCreateParams {
   export interface Schedule {
     /**
+     * Cron expression for recurring project snapshot builds.
      * @minLength 1
      * @maxLength 120
      */
     cron: string;
     /**
+     * Timezone for the cron schedule. Defaults to UTC.
      * @minLength 1
      * @maxLength 100
      */
@@ -538,26 +583,45 @@ export namespace ProjectRetrieveResponse {
 
 export interface ProjectUpdateParams {
   /**
+   * Short project description, or null to clear it.
    * @maxLength 300
    */
   description?: string | null;
+  /**
+   * Include project dependencies when building the environment. Defaults to true on creation.
+   */
   includeDeps?: boolean;
+  /**
+   * Include skills in the project environment. Defaults to true on creation.
+   */
   includeSkills?: boolean;
   /**
+   * Project display name.
    * @minLength 1
    * @maxLength 120
    */
   name?: string;
   /**
+   * Setup script to run while building the environment, or null to clear it.
    * @maxLength 100000
    */
   setupScript?: string | null;
+  /**
+   * Repository IDs included in the project environment. On update, replaces the repository selection.
+   */
   codeRepositoryIds?: Array<string> | null;
   /**
+   * Instructions supplied to agents using this project, or null to clear them.
    * @maxLength 20000
    */
   agentInstructions?: string | null;
+  /**
+   * Project display color.
+   */
   color?: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+  /**
+   * Project display icon.
+   */
   icon?:
     | 'folder'
     | 'code'
@@ -581,25 +645,43 @@ export interface ProjectUpdateParams {
     | 'api'
     | 'mobile'
     | 'package';
+  /**
+   * VM sizes for which this project is the organization default. An empty array removes its default assignments.
+   */
   defaultForSizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
+  /**
+   * Replace the complete environment-variable map. Use createProjectEnvironmentVariables to add or replace individual keys instead.
+   */
   environmentVariables?: Record<string, string>;
+  /**
+   * Change the project build schedule, including enabling or pausing it.
+   */
   schedule?: ProjectUpdateParams.Schedule;
   /**
+   * Replace the workspace VM sizes built for this project.
    * @minItems 1
    */
   sizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
+  /**
+   * Enable or disable prewarmed VMs for this project.
+   */
   warmPoolEnabled?: boolean;
 }
 
 export namespace ProjectUpdateParams {
   export interface Schedule {
     /**
+     * Replace the recurring project build cron expression.
      * @minLength 1
      * @maxLength 120
      */
     cron?: string;
+    /**
+     * Enable or pause scheduled project builds.
+     */
     enabled?: boolean;
     /**
+     * Timezone for the cron schedule, or null to clear it.
      * @minLength 1
      * @maxLength 100
      */

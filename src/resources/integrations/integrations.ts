@@ -50,7 +50,7 @@ export class Integrations extends APIResource {
   }
 
   /**
-   * Create an integration that does not require an OAuth callback.
+   * Connect AWS, BigQuery, GitLab, PostgreSQL, Snyk, OpenConnect VPN, or Tailscale using provider credentials. For browser-authorized providers, use listIntegrationProviders and authorizeIntegration instead.
    *
    * @param {IntegrationCreateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -86,7 +86,7 @@ export class Integrations extends APIResource {
   }
 
   /**
-   * Update provider settings or an editable configuration.
+   * Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.
    *
    * @param {string} integrationID
    * @param {IntegrationUpdateParams} body - The request body to send.
@@ -293,42 +293,56 @@ export class Integrations extends APIResource {
 
 export interface IntegrationListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Filter by whether integrations are enabled.
+   */
   enabled?: boolean;
+  /**
+   * Filter by whether integrations have enabled repositories.
+   */
   hasEnabledRepositories?: boolean;
   /**
+   * Filter by integration IDs, supplied as a comma-separated list.
    * @minItems 1
    * @maxItems 100
    */
   ids?: Array<string>;
   /**
+   * Search integration provider types and external IDs.
    * @minLength 1
    * @maxLength 200
    */
   search?: string;
   /**
+   * Filter provider types, supplied as a comma-separated list.
    * @minItems 1
    * @maxItems 18
    */
   type?: Array<string>;
   /**
+   * Only integrations created after this ISO 8601 timestamp.
    * @format date-time
    */
   createdAfter?: string;
   /**
+   * Exclude integrations belonging to the named organization within the caller access scope.
    * @minLength 1
    * @maxLength 255
    */
   excludeOrganizationName?: string;
   /**
+   * Include totalCount for matching integrations.
    * @default false
    */
   includeTotal?: boolean;
@@ -394,59 +408,83 @@ export type IntegrationCreateParams =
 export declare namespace IntegrationCreateParams {
   export interface Variant0 {
     /**
+     * Display label for the AWS environment.
      * @minLength 1
      * @maxLength 200
      */
     environment: string;
     /**
+     * AWS IAM role ARN to assume for account access.
      * @minLength 1
      * @maxLength 2048
      */
     roleArn: string;
+    /**
+     * Create an AWS account integration.
+     */
     type: 'aws';
   }
 
   export interface Variant1 {
     /**
+     * Google Cloud project ID for BigQuery.
      * @pattern ^[a-z][a-z0-9-]{4,28}[a-z0-9]$
      */
     projectId: string;
     /**
+     * Google Cloud service-account JSON credentials for BigQuery.
      * @minLength 1
      * @maxLength 1000000
      */
     serviceAccountJson: string;
+    /**
+     * Create a BigQuery integration.
+     */
     type: 'bigquery';
   }
 
   export interface Variant2 {
     /**
+     * GitLab access token used to connect the integration.
      * @minLength 1
      * @maxLength 65536
      */
     accessToken: string;
+    /**
+     * Create a GitLab integration.
+     */
     type: 'gitlab';
   }
 
   export interface Variant3 {
     /**
+     * VPN gateway hostname or URL for OpenConnect.
      * @minLength 1
      * @maxLength 2048
      */
     gateway: string;
     /**
+     * Display name for the VPN connection.
      * @minLength 1
      * @maxLength 200
      */
     instanceName: string;
     /**
+     * VPN login password.
      * @minLength 1
      * @maxLength 65536
      */
     password: string;
+    /**
+     * OpenConnect VPN protocol supported by the gateway.
+     */
     protocol: 'fortinet' | 'anyconnect' | 'gp' | 'nc';
+    /**
+     * Create an OpenConnect VPN integration.
+     */
     type: 'openconnect';
     /**
+     * VPN login username.
      * @minLength 1
      * @maxLength 4096
      */
@@ -455,17 +493,23 @@ export declare namespace IntegrationCreateParams {
 
   export interface Variant4 {
     /**
+     * PostgreSQL connection URI, including credentials. Stored as secret configuration.
      * @minLength 1
      * @maxLength 16384
      */
     connectionString: string;
     /**
+     * Display name for the PostgreSQL instance.
      * @minLength 1
      * @maxLength 200
      */
     instanceName: string;
+    /**
+     * Create a PostgreSQL integration.
+     */
     type: 'postgres';
     /**
+     * Optional CA certificate for the PostgreSQL TLS connection.
      * @maxLength 1000000
      */
     caCertificate?: string;
@@ -473,21 +517,28 @@ export declare namespace IntegrationCreateParams {
 
   export interface Variant5 {
     /**
+     * Snyk service-account client ID.
      * @minLength 1
      * @maxLength 16384
      */
     clientId: string;
     /**
+     * Snyk service-account client secret.
      * @minLength 1
      * @maxLength 65536
      */
     clientSecret: string;
     /**
+     * Snyk organization ID, not a Tembo organization ID. Discover choices with discoverSnykOrganizations.
      * @format uuid
      */
     organizationId: string;
+    /**
+     * Create a Snyk integration.
+     */
     type: 'snyk';
     /**
+     * Optional display name for the Snyk organization.
      * @minLength 1
      * @maxLength 500
      */
@@ -496,27 +547,35 @@ export declare namespace IntegrationCreateParams {
 
   export interface Variant6 {
     /**
+     * Display name for the Tailscale connection.
      * @minLength 1
      * @maxLength 200
      */
     instanceName: string;
     /**
+     * Tailscale OAuth client ID authorized to create tagged devices.
      * @minLength 1
      * @maxLength 16384
      */
     oauthClientId: string;
     /**
+     * Tailscale OAuth client secret.
      * @minLength 1
      * @maxLength 65536
      */
     oauthClientSecret: string;
     /**
+     * Tags to assign to connected devices, such as tag:tembo. Must be authorized for the OAuth client.
      * @minItems 1
      * @maxItems 100
      */
     tags: Array<string>;
+    /**
+     * Create a Tailscale private-network integration.
+     */
     type: 'tailscale';
     /**
+     * Tailnet name. The default - uses the OAuth client tailnet.
      * @default -
      * @minLength 1
      * @maxLength 500
@@ -611,6 +670,9 @@ export type IntegrationUpdateParams =
 
 export declare namespace IntegrationUpdateParams {
   export interface Settings {
+    /**
+     * Update integration settings, preserving unspecified settings.
+     */
     settings: Settings.Settings;
   }
 
@@ -633,17 +695,22 @@ export declare namespace IntegrationUpdateParams {
   }
 
   export interface Aws {
+    /**
+     * Replace AWS environment and assumed-role configuration.
+     */
     aws: Aws.Aws;
   }
 
   export namespace Aws {
     export interface Aws {
       /**
+       * Display label for the AWS environment.
        * @minLength 1
        * @maxLength 200
        */
       environment: string;
       /**
+       * AWS IAM role ARN to assume for account access.
        * @minLength 1
        * @maxLength 2048
        */
@@ -652,22 +719,28 @@ export declare namespace IntegrationUpdateParams {
   }
 
   export interface Postgres {
+    /**
+     * Replace PostgreSQL connection configuration.
+     */
     postgres: Postgres.Postgres;
   }
 
   export namespace Postgres {
     export interface Postgres {
       /**
+       * PostgreSQL connection URI, including credentials. Stored as secret configuration.
        * @minLength 1
        * @maxLength 16384
        */
       connectionString: string;
       /**
+       * Display name for the PostgreSQL instance.
        * @minLength 1
        * @maxLength 200
        */
       instanceName: string;
       /**
+       * Optional CA certificate for the PostgreSQL TLS connection.
        * @maxLength 1000000
        */
       caCertificate?: string;
@@ -675,6 +748,9 @@ export declare namespace IntegrationUpdateParams {
   }
 
   export interface AtlassianServiceAccount {
+    /**
+     * Set Atlassian service-account OAuth credentials for triggers, or null to remove them.
+     */
     atlassianServiceAccount: AtlassianServiceAccount.AtlassianServiceAccount | null;
   }
 
@@ -738,10 +814,14 @@ export interface IntegrationDeleteResponse {
 
 export interface IntegrationAuthorizeParams {
   /**
+   * URL to return to after provider authorization. Must use HTTPS or localhost HTTP.
    * @format uri
    * @maxLength 8192
    */
   returnUrl?: string;
+  /**
+   * Request authorization for Confluence automation triggers instead of the default integration capability.
+   */
   capability?: 'confluenceTriggers';
 }
 
@@ -759,6 +839,7 @@ export interface IntegrationTestResponse {
 
 export interface IntegrationSyncParams {
   /**
+   * queued schedules a background integration sync; immediate performs the sync in this request.
    * @default queued
    */
   mode?: 'immediate' | 'queued';
@@ -846,11 +927,13 @@ export namespace IntegrationRetrieveRateLimitResponse {
 
 export interface IntegrationListSentryEnvironmentsParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @maxLength 10
    * @pattern ^\d+$
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -872,17 +955,20 @@ export interface IntegrationListSentryEnvironmentsResponse {
 
 export interface IntegrationListSlackChannelsParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @maxLength 10
    * @pattern ^\d+$
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Search Slack channel names.
    * @minLength 1
    * @maxLength 200
    */

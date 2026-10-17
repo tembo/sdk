@@ -92,6 +92,9 @@ export class Models extends APIResource {
 }
 
 export interface ModelListParams {
+  /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
+   */
   cursor?:
     | 'claude-opus-5-5'
     | 'claude-fable-5-1'
@@ -136,6 +139,7 @@ export interface ModelListParams {
     | 'deepseek-v4-pro'
     | 'deepseek-v4p1-flash';
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -373,7 +377,13 @@ export namespace ModelListResponse {
 }
 
 export interface ModelUpdateParams {
+  /**
+   * Enable or disable this model for the organization.
+   */
   enabled?: boolean;
+  /**
+   * Select the inference provider used to run this model. Use listModels to discover available provider access.
+   */
   inferenceProvider?: 'TemboManagedInference' | 'BYOK' | 'AWSBedrock' | 'GCPVertexAI' | 'OpenRouter' | null;
 }
 

@@ -53,10 +53,11 @@ export class Marketplace extends APIResource {
 
 export interface MarketplaceListParams {
   /**
-   * No continuation cursor is supported for marketplace results.
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    */
   cursor?: '';
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -123,8 +124,12 @@ export interface MarketplaceRetrieveResponse {
 
 export namespace MarketplaceRetrieveResponse {
   export interface File {
+    /**
+     * Complete text content of the skill file.
+     */
     content: string;
     /**
+     * Relative file path within the skill, such as SKILL.md.
      * @minLength 1
      */
     filename: string;

@@ -132,6 +132,9 @@ export interface UserRetrieveResponse {
 }
 
 export interface UserDeleteParams {
+  /**
+   * Optional account-deletion feedback. Account deletion is queued regardless of whether feedback is supplied.
+   */
   deletionQuestionnaire?: UserDeleteParams.DeletionQuestionnaire;
 }
 

@@ -129,11 +129,13 @@ export class Organizations extends APIResource {
 
 export interface OrganizationCreateParams {
   /**
+   * Organization display name.
    * @minLength 1
    * @maxLength 100
    */
   name: string;
   /**
+   * Unique organization URL slug using lowercase letters, numbers, and single hyphens.
    * @minLength 1
    * @maxLength 100
    * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
@@ -187,16 +189,21 @@ export interface OrganizationRetrieveResponse {
 
 export interface OrganizationUpdateParams {
   /**
+   * Organization display name.
    * @minLength 1
    * @maxLength 100
    */
   name?: string;
   /**
+   * Unique organization URL slug using lowercase letters, numbers, and single hyphens.
    * @minLength 1
    * @maxLength 100
    * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
    */
   slug?: string;
+  /**
+   * Mark organization onboarding as completed or incomplete.
+   */
   onboardingCompleted?: boolean;
 }
 

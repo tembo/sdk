@@ -55,6 +55,7 @@ export interface LiveAuthorizeResponse {
 
 export interface LiveConnectParams {
   /**
+   * Short-lived connection ticket returned by liveConnectionTicket. Used to authenticate the native WebSocket connection.
    * @minLength 1
    */
   ticket: string;

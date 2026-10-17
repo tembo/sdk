@@ -77,7 +77,7 @@ export class Schedules extends APIResource {
   }
 
   /**
-   * Update an agent schedule, including its cron expression or enabled state.
+   * Change an agent schedule cron expression. Use updateAgent with enabled to enable or pause the agent and its schedules.
    *
    * @param {string} scheduleID
    * @param {ScheduleUpdateParams} params - The parameters to send with the request.
@@ -131,10 +131,12 @@ export class Schedules extends APIResource {
 
 export interface ScheduleListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -186,6 +188,7 @@ export namespace ScheduleListResponse {
 
 export interface ScheduleCreateParams {
   /**
+   * Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs.
    * @minLength 1
    * @maxLength 500
    */
@@ -270,7 +273,7 @@ export interface ScheduleUpdateParams {
    */
   agentId: string;
   /**
-   * Body param
+   * Body param: Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs.
    * @minLength 1
    * @maxLength 500
    */
