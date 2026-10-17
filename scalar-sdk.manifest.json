@@ -10798,6 +10798,7 @@
         "maxBotReviews",
         "maxSolutions",
         "openaiApiKey",
+        "xaiApiKey",
         "openrouterApiKey",
         "pgStatStatementsResetFrequency",
         "pmSystemPrompt",
@@ -10839,6 +10840,7 @@
         "maxBotReviews",
         "maxSolutions",
         "openaiApiKey",
+        "xaiApiKey",
         "openrouterApiKey",
         "pgStatStatementsResetFrequency",
         "pmSystemPrompt",
@@ -10965,6 +10967,10 @@
         },
         {
           "name": "openaiApiKey",
+          "required": false
+        },
+        {
+          "name": "xaiApiKey",
           "required": false
         },
         {
@@ -14451,6 +14457,8 @@
         "includeTemboCommitAttribution",
         "desktopNotificationsEnabled",
         "desktopNotificationPreferences",
+        "hasDesktopApp",
+        "openLinksInDesktopApp",
         "appearancePreferences",
         "appSidebarPreferences",
         "diffPreferences",
@@ -14470,6 +14478,8 @@
         "includeTemboCommitAttribution",
         "desktopNotificationsEnabled",
         "desktopNotificationPreferences",
+        "hasDesktopApp",
+        "openLinksInDesktopApp",
         "appearancePreferences",
         "appSidebarPreferences",
         "diffPreferences",
@@ -14505,6 +14515,14 @@
         },
         {
           "name": "desktopNotificationPreferences",
+          "required": false
+        },
+        {
+          "name": "hasDesktopApp",
+          "required": false
+        },
+        {
+          "name": "openLinksInDesktopApp",
           "required": false
         },
         {

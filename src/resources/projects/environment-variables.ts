@@ -93,6 +93,7 @@ export namespace EnvironmentVariableListResponse {
 
 export interface EnvironmentVariableCreateParams {
   /**
+   * Environment variables to add or replace by key, preserving other keys. Values are encrypted and not returned by list operations.
    * @minItems 1
    * @maxItems 100
    */
@@ -102,10 +103,12 @@ export interface EnvironmentVariableCreateParams {
 export namespace EnvironmentVariableCreateParams {
   export interface Secret {
     /**
+     * Environment-variable name.
      * @pattern ^[A-Za-z_][A-Za-z0-9_]*$
      */
     key: string;
     /**
+     * Secret environment-variable value; stored encrypted and not returned by list operations.
      * @minLength 1
      * @maxLength 10000
      */

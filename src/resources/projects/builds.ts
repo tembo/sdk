@@ -101,11 +101,13 @@ export class Builds extends APIResource {
 
 export interface BuildListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 255
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -184,10 +186,12 @@ export namespace BuildListResponse {
 
 export interface BuildCreateParams {
   /**
+   * VM sizes to build. Omit to use the project sizes. Cannot be combined with snapshotId.
    * @minItems 1
    */
   sizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   /**
+   * Rebuild one existing snapshot instead of building project sizes. Cannot be combined with sizes.
    * @minLength 1
    * @maxLength 255
    */
