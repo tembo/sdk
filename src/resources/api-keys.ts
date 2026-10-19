@@ -101,10 +101,12 @@ export class APIKeys extends APIResource {
 
 export interface APIKeyListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -150,10 +152,12 @@ export namespace APIKeyListResponse {
 
 export interface APIKeyCreateParams {
   /**
+   * Future ISO 8601 expiration timestamp. Omit or use null for a key that does not expire.
    * @format date-time
    */
   expiresAt?: string | null;
   /**
+   * Display name for identifying this API key.
    * @minLength 1
    * @maxLength 100
    */
@@ -215,6 +219,7 @@ export interface APIKeyRetrieveResponse {
 
 export interface APIKeyUpdateParams {
   /**
+   * New display name for the API key. This does not rotate its token.
    * @minLength 1
    * @maxLength 100
    */

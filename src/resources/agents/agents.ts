@@ -161,7 +161,7 @@ export class Agents extends APIResource {
   }
 
   /**
-   * Update agent configuration. Supply expectedUpdatedAt to reject an update if the agent changed since it was retrieved. Enabling or archiving an agent also updates its schedules and triggers.
+   * Update agent instructions, model, workspace, repositories, or persistent state; enable or pause the agent; archive or restore it. enabled and archived also control its schedules and triggers. Supply expectedUpdatedAt to reject concurrent changes.
    *
    * @param {string} agentID
    * @param {AgentUpdateParams} body - The request body to send.
@@ -182,7 +182,7 @@ export class Agents extends APIResource {
   }
 
   /**
-   * Delete an agent and disable its scheduled and triggered jobs.
+   * Archive an agent and disable its scheduled and triggered jobs without permanently deleting it. Restore with updateAgent and archived=false.
    *
    * @param {string} agentID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -210,7 +210,13 @@ export namespace AgentOptionsInput {
      * @maxLength 100
      */
     reasoningLevel?: string;
+    /**
+     * Use Build (normal) to execute work or Plan (planning) to plan before writing code.
+     */
     mode?: 'normal' | 'planning';
+    /**
+     * Preferred execution speed when supported by the selected runtime.
+     */
     speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptionsInputItem.Goal;
     [k: string]: unknown;
@@ -234,35 +240,48 @@ export type AgentState = Record<string, unknown>;
 
 export interface AgentListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @maxLength 2000
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Filter by agent IDs, supplied as a comma-separated list.
    * @maxLength 10000
    */
   ids?: string;
   /**
+   * Search agent names.
    * @minLength 1
    * @maxLength 200
    */
   search?: string;
+  /**
+   * true lists archived agents; false or omitted lists unarchived agents. Use this to find agents to restore.
+   */
   archived?: boolean;
+  /**
+   * Sort agents by latest run or run count.
+   */
   sort?: 'latestRun' | 'runCount';
   /**
+   * Filter by enabled (running) or paused status, supplied as a comma-separated list; this is not individual run execution status.
    * @maxLength 10000
    */
   status?: string;
   /**
+   * Filter by integration provider types, supplied as a comma-separated list.
    * @maxLength 10000
    */
   integration?: string;
   /**
+   * Filter by creator user IDs, supplied as a comma-separated list.
    * @maxLength 10000
    */
   author?: string;
@@ -372,6 +391,7 @@ export namespace AgentListResponse {
 
 export interface AgentCreateParams {
   /**
+   * Agent display name. Required when creating from scratch.
    * @minLength 1
    * @maxLength 200
    */
@@ -381,33 +401,50 @@ export interface AgentCreateParams {
    */
   instructions?: MessagesAPI.TipTapDocument;
   /**
+   * MCP server or connection IDs available to agent runs.
    * @maxItems 100
    */
   mcpServers?: Array<string>;
   /**
+   * Coding agent and model key used for runs. Omit to use the default.
    * @minLength 1
    * @maxLength 200
    */
   agent?: string;
   /**
-   * Execution settings for the selected agent runtime, including provider-specific options.
+   * Agent-specific runtime options, such as reasoning effort.
    */
   agentOptions?: AgentOptionsInput;
+  /**
+   * Workspace VM size used for agent runs.
+   */
   sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
+  /**
+   * Project environment used for agent runs.
+   */
   projectId?: string | 'tembo' | null;
+  /**
+   * Artifact type produced by this agent.
+   */
   artifactType?: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   /**
+   * Repository IDs available to agent runs.
    * @maxItems 250
    */
   repositoryIds?: Array<string>;
   /**
+   * Integration events that automatically start agent runs.
    * @maxItems 50
    */
   triggers?: Array<AgentCreateParams.Trigger>;
   /**
+   * Recurring cron schedules that automatically start agent runs.
    * @maxItems 50
    */
   schedules?: Array<AgentCreateParams.Schedule>;
+  /**
+   * Create from a template discovered with listAgentTemplates. Only name and triggers may also be supplied.
+   */
   templateName?:
     | 'addTestCoverage'
     | 'addTestCoverageFromJira'
@@ -447,6 +484,7 @@ export interface AgentCreateParams {
     | 'summarizeChangesDaily'
     | 'triageNewJiraBug';
   /**
+   * Duplicate an existing agent. Must be the only field; cannot be combined with templateName or overrides.
    * @format uuid
    */
   sourceAgentId?: string;
@@ -455,27 +493,31 @@ export interface AgentCreateParams {
 export namespace AgentCreateParams {
   export interface Trigger {
     /**
+     * Integration event name. Use listIntegrationTriggers to discover supported triggers.
      * @minLength 1
      * @maxLength 200
      */
     name: string;
     /**
+     * Provider type for the trigger, such as github or slack.
      * @minLength 1
      * @maxLength 100
      */
     integrationType?: string;
     /**
+     * Connected integration that supplies trigger events.
      * @format uuid
      */
     integrationId?: string;
     /**
-     * Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type.
+     * Event-specific trigger filters. Use retrieveIntegrationTrigger and listIntegrationTriggerFilterOptions to discover supported fields and values.
      */
     filters?: TemplatesAPI.TriggerFilters;
   }
 
   export interface Schedule {
     /**
+     * Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs.
      * @minLength 1
      * @maxLength 500
      */
@@ -726,52 +768,74 @@ export interface AgentUpdateParams {
    */
   expectedUpdatedAt?: string;
   /**
+   * Rename the agent.
    * @minLength 1
    * @maxLength 200
    */
   name?: string;
   /**
+   * Change the agent lookup key, or null to clear it.
    * @minLength 1
    * @maxLength 200
    */
   key?: string | null;
   /**
-   * Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.
+   * Replace the agent instruction document, or null to clear it.
    */
   instructions?: MessagesAPI.TipTapDocument | null;
   /**
+   * Replace the MCP server or connection IDs. An empty array clears the selection.
    * @maxItems 100
    */
   mcpServers?: Array<string>;
   /**
+   * Change the coding agent and model key. Null clears the override.
    * @minLength 1
    * @maxLength 200
    */
   agent?: string | null;
   /**
-   * Execution settings for the selected agent runtime, including provider-specific options.
+   * Change agent-specific runtime options, such as reasoning effort.
    */
   agentOptions?: AgentOptionsInput;
   /**
-   * User-defined state keyed by name. Values may be any JSON value, including nested objects and arrays. No application-specific keys are required.
+   * Replace the user-managed persistent agent state.
    */
   userState?: AgentState;
+  /**
+   * Change the workspace VM size. Null clears the override.
+   */
   sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
+  /**
+   * Change the project environment for runs. Null clears the override.
+   */
   projectId?: string | 'tembo' | null;
   /**
+   * Change the associated agent template identifier, or null to clear it.
    * @maxLength 200
    */
   templateId?: string | null;
   /**
+   * Replace the agent script, or null to clear it.
    * @maxLength 100000
    */
   script?: string | null;
+  /**
+   * Change the artifact type produced by the agent, or null to clear it.
+   */
   artifactType?: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   /**
+   * Replace repository associations. An empty array removes all associations.
    * @maxItems 250
    */
   repositoryIds?: Array<string>;
+  /**
+   * Enable or pause the agent and its schedules and triggers. Archived agents remain paused until restored.
+   */
   enabled?: boolean;
+  /**
+   * Archive with true or restore with false. Archiving disables schedules and triggers; restoring follows the agent enabled state.
+   */
   archived?: boolean;
 }
 

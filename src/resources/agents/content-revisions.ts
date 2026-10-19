@@ -86,10 +86,12 @@ export class ContentRevisions extends APIResource {
 
 export interface ContentRevisionListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @pattern ^[1-9]\d*$
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100

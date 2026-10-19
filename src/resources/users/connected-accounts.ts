@@ -59,11 +59,13 @@ export class ConnectedAccounts extends APIResource {
 
 export interface ConnectedAccountListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 255
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100

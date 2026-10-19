@@ -44,9 +44,9 @@ export class Pins extends APIResource {
   }
 
   /**
-   * Update the placement of a pin.
+   * Reorder a pinned session, pull request, or project before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
    *
-   * @param {string} resourceID - ID of the pinned resource.
+   * @param {string} resourceID - ID of the pinned session, pull request, or project, not a separate pin ID.
    * @param {PinUpdateParams} params - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<PinUpdateResponse>} Update a pin
@@ -75,9 +75,9 @@ export class Pins extends APIResource {
   }
 
   /**
-   * Unpin a session, pull request, or project.
+   * Unpin a session, pull request, or project for the authenticated user without deleting or archiving the resource.
    *
-   * @param {string} resourceID - ID of the pinned resource.
+   * @param {string} resourceID - ID of the pinned session, pull request, or project, not a separate pin ID.
    * @param {PinDeleteParams} params - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<PinDeleteResponse>} Delete a pin
@@ -101,7 +101,7 @@ export class Pins extends APIResource {
 
 export interface PinListParams {
   /**
-   * Continue after this pin. Restart listing if it was removed or reordered.
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @pattern ^(session|pull_request|project):[0-9a-f-]{36}$
    */
   cursor?: string;
@@ -196,6 +196,7 @@ export namespace PinListResponse {
 
       export interface PullRequest {
         status: 'open' | 'merged' | 'closed';
+        isDraft: boolean;
         diffSummary: PullRequest.DiffSummary | null;
       }
 
@@ -297,16 +298,16 @@ export namespace PinListResponse {
 
 export interface PinCreateParams {
   /**
-   * Type of the pinned resource.
+   * Kind of resource to pin or unpin: session, pull_request, or project.
    */
   type: 'session' | 'pull_request' | 'project';
   /**
-   * ID of the pinned resource.
+   * ID of the session, pull request, or project, not a separate pin ID.
    * @format uuid
    */
   id: string;
   /**
-   * Placement for a new pin; omit to add it first. Existing pins keep their position.
+   * Position of a new pin relative to another pin. Omit to add it first. Ignored if the resource is already pinned; use updatePin to reorder.
    */
   placement?: PinCreateParams.Placement;
 }
@@ -326,11 +327,11 @@ export namespace PinCreateParams {
   export namespace Placement {
     export interface Target {
       /**
-       * Type of the pinned resource.
+       * Kind of resource to pin or unpin: session, pull_request, or project.
        */
       type: 'session' | 'pull_request' | 'project';
       /**
-       * ID of the pinned resource.
+       * ID of the session, pull request, or project, not a separate pin ID.
        * @format uuid
        */
       id: string;
@@ -413,6 +414,7 @@ export namespace PinCreateResponse {
 
       export interface PullRequest {
         status: 'open' | 'merged' | 'closed';
+        isDraft: boolean;
         diffSummary: PullRequest.DiffSummary | null;
       }
 
@@ -514,11 +516,11 @@ export namespace PinCreateResponse {
 
 export interface PinUpdateParams {
   /**
-   * Path param: Type of the pinned resource.
+   * Path param: Kind of resource to pin or unpin: session, pull_request, or project.
    */
   resourceType: 'session' | 'pull_request' | 'project';
   /**
-   * Body param: New position of the pin relative to another pin.
+   * Body param: Reorder an existing pin before or after another pin. Use createPin to pin a resource and deletePin to unpin it.
    */
   placement: PinUpdateParams.Placement;
 }
@@ -538,11 +540,11 @@ export namespace PinUpdateParams {
   export namespace Placement {
     export interface Target {
       /**
-       * Type of the pinned resource.
+       * Kind of resource to pin or unpin: session, pull_request, or project.
        */
       type: 'session' | 'pull_request' | 'project';
       /**
-       * ID of the pinned resource.
+       * ID of the session, pull request, or project, not a separate pin ID.
        * @format uuid
        */
       id: string;
@@ -556,18 +558,18 @@ export interface PinUpdateResponse {
 
 export interface PinDeleteParams {
   /**
-   * Type of the pinned resource.
+   * Kind of resource to pin or unpin: session, pull_request, or project.
    */
   resourceType: 'session' | 'pull_request' | 'project';
 }
 
 export interface PinDeleteResponse {
   /**
-   * Type of the pinned resource.
+   * Kind of resource to pin or unpin: session, pull_request, or project.
    */
   type: 'session' | 'pull_request' | 'project';
   /**
-   * ID of the pinned resource.
+   * ID of the session, pull request, or project, not a separate pin ID.
    * @format uuid
    */
   id: string;

@@ -119,31 +119,43 @@ export class Skills extends APIResource {
 
 export interface SkillListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Filter by exact skill names.
+   */
   names?: Array<string>;
+  /**
+   * Repository IDs to search for checked-in skills, supplied as a comma-separated list.
+   */
   repositoryIds?: Array<string>;
   /**
+   * Project whose repositories to search for checked-in skills.
    * @minLength 1
    * @maxLength 255
    */
   projectId?: string;
   /**
+   * Session whose repositories to search for checked-in skills.
    * @format uuid
    */
   sessionId?: string;
   /**
+   * Search skills by name, description, or keywords.
    * @minLength 1
    */
   search?: string;
   /**
+   * organization lists saved organization skills; repository lists checked-in skills from the selected repositories, project, or session.
    * @default organization
    */
   source?: 'organization' | 'repository';
@@ -171,12 +183,17 @@ export namespace SkillListResponse {
 }
 
 export interface SkillCreateParams {
+  /**
+   * Summary of what the skill does and when to use it.
+   */
   description: string;
   /**
+   * Display name of the skill.
    * @minLength 1
    */
   name: string;
   /**
+   * Complete file set, including a required SKILL.md. On update, replaces all existing files rather than merging them.
    * @minItems 1
    */
   files: Array<SkillCreateParams.File>;
@@ -184,8 +201,12 @@ export interface SkillCreateParams {
 
 export namespace SkillCreateParams {
   export interface File {
+    /**
+     * Complete text content of the skill file.
+     */
     content: string;
     /**
+     * Relative file path within the skill, such as SKILL.md.
      * @minLength 1
      */
     filename: string;
@@ -251,12 +272,17 @@ export namespace SkillRetrieveResponse {
 }
 
 export interface SkillUpdateParams {
+  /**
+   * Summary of what the skill does and when to use it.
+   */
   description?: string;
   /**
+   * Display name of the skill.
    * @minLength 1
    */
   name?: string;
   /**
+   * Complete file set, including a required SKILL.md. On update, replaces all existing files rather than merging them.
    * @minItems 1
    */
   files?: Array<SkillUpdateParams.File>;
@@ -264,8 +290,12 @@ export interface SkillUpdateParams {
 
 export namespace SkillUpdateParams {
   export interface File {
+    /**
+     * Complete text content of the skill file.
+     */
     content: string;
     /**
+     * Relative file path within the skill, such as SKILL.md.
      * @minLength 1
      */
     filename: string;

@@ -47,33 +47,45 @@ export class Sources extends APIResource {
 
 export interface SourceListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Filter by whether the source is enabled.
+   */
   enabled?: boolean;
   /**
+   * Include totalCount for matching sources.
    * @default false
    */
   includeTotal?: boolean;
   /**
+   * Filter sources belonging to this integration.
    * @format uuid
    */
   integrationId?: string;
   /**
+   * Search session source names or types.
    * @minLength 1
    * @maxLength 1000
    */
   search?: string;
   /**
+   * Find the source associated with an accessible session.
    * @format uuid
    */
   sessionId?: string;
+  /**
+   * Filter source types, supplied as a comma-separated list.
+   */
   types?: Array<string>;
 }
 

@@ -136,22 +136,26 @@ export class Members extends APIResource {
 
 export interface MemberListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 255
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Search organization members or invitations.
    * @minLength 1
    * @maxLength 100
    */
   search?: string;
   /**
+   * List active members or pending invitations.
    * @default active
    */
   status?: 'active' | 'pending';
@@ -195,10 +199,12 @@ export namespace MemberListResponse {
 
 export interface MemberCreateParams {
   /**
+   * Email address of the user to add or invite.
    * @format email
    */
   emailAddress: string;
   /**
+   * Organization role to grant: org:admin or org:member.
    * @default org:member
    */
   role?: 'org:admin' | 'org:member';
@@ -272,7 +278,7 @@ export interface MemberUpdateParams {
    */
   organizationId: string;
   /**
-   * Body param
+   * Body param: New organization role: org:admin or org:member.
    */
   role: 'org:admin' | 'org:member';
 }

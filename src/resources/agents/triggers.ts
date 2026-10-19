@@ -78,7 +78,7 @@ export class Triggers extends APIResource {
   }
 
   /**
-   * Update an agent trigger configuration or enabled state.
+   * Change an agent trigger event, integration, or filters. Use updateAgent with enabled to enable or pause the agent and its triggers.
    *
    * @param {string} triggerID
    * @param {TriggerUpdateParams} params - The parameters to send with the request.
@@ -132,10 +132,12 @@ export class Triggers extends APIResource {
 
 export interface TriggerListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -193,21 +195,24 @@ export namespace TriggerListResponse {
 
 export interface TriggerCreateParams {
   /**
+   * Integration event name. Use listIntegrationTriggers to discover supported triggers.
    * @minLength 1
    * @maxLength 200
    */
   name: string;
   /**
+   * Provider type for the trigger, such as github or slack.
    * @minLength 1
    * @maxLength 100
    */
   integrationType?: string;
   /**
+   * Connected integration that supplies trigger events.
    * @format uuid
    */
   integrationId?: string;
   /**
-   * Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type.
+   * Event-specific trigger filters. Use retrieveIntegrationTrigger and listIntegrationTriggerFilterOptions to discover supported fields and values.
    */
   filters?: TemplatesAPI.TriggerFilters;
 }
@@ -302,18 +307,18 @@ export interface TriggerUpdateParams {
    */
   agentId: string;
   /**
-   * Body param
+   * Body param: Integration event name. Use listIntegrationTriggers to discover supported triggers.
    * @minLength 1
    * @maxLength 200
    */
   name: string;
   /**
-   * Body param
+   * Body param: Connected integration that supplies trigger events.
    * @format uuid
    */
   integrationId?: string;
   /**
-   * Body param: Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type.
+   * Body param: Event-specific trigger filters. Use retrieveIntegrationTrigger and listIntegrationTriggerFilterOptions to discover supported fields and values.
    */
   filters?: TemplatesAPI.TriggerFilters;
 }

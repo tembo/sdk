@@ -29,7 +29,7 @@ export class Messages extends APIResource {
   }
 
   /**
-   * Create a user message for a session and submit it to the session agent.
+   * Send a task or follow-up message to an existing session, resume work, or steer an active agent turn using deliveryMode.
    *
    * @param {MessageCreateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -349,20 +349,24 @@ export type TipTapExtensionAttributes = Record<string, unknown>;
 
 export interface MessageListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Filter messages belonging to this session.
    * @format uuid
    */
   sessionId?: string;
   /**
+   * Filter messages belonging to this thread.
    * @format uuid
    */
   threadId?: string;
@@ -440,35 +444,46 @@ export namespace MessageListResponse {
 
 export interface MessageCreateParams {
   /**
+   * Text of the task, follow-up, or steering instruction to send to the session agent.
    * @minLength 1
    * @maxLength 1000000
    */
   content: string;
   /**
+   * Session to receive this message. Use this operation to continue work in an existing session.
    * @format uuid
    */
   sessionId: string;
   /**
+   * Artifact to associate with this message.
    * @format uuid
    */
   artifactId?: string;
   /**
+   * MCP server or connection IDs selected for this message.
    * @maxItems 100
    */
   mcpServers?: Array<string>;
   /**
+   * Pull request to associate with this message.
    * @format uuid
    */
   pullRequestId?: string;
   /**
-   * Execution settings for the selected agent runtime, including provider-specific options.
+   * Agent-specific runtime options for this message, such as reasoning effort.
    */
   agentOptions?: AgentsAPI.AgentOptionsInput;
+  /**
+   * queue adds a follow-up task; steer sends guidance to an active agent turn when supported.
+   */
   deliveryMode?: 'queue' | 'steer';
   /**
    * Optional rich-text representation of the message. Provide the required text content separately.
    */
   richContent?: TipTapDocument;
+  /**
+   * Structured slash command to execute with this message.
+   */
   slashCommand?: MessageCreateParams.SlashCommand;
 }
 
@@ -642,12 +657,13 @@ export namespace MessageRetrieveResponse {
 
 export interface MessageUpdateParams {
   /**
+   * Replace the text of a queued message before processing starts.
    * @minLength 1
    * @maxLength 1000000
    */
   content?: string;
   /**
-   * Rich-text document containing text, formatting, images, and mentions. A document typically has a "doc" root with nested content nodes.
+   * Replace the queued message rich-text document, or null to clear it.
    */
   richContent?: TipTapDocument | null;
 }

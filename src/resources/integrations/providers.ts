@@ -52,17 +52,20 @@ export class Providers extends APIResource {
 
 export interface ProviderListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @maxLength 10
    * @pattern ^\d+$
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * URL to return to after provider authorization. Must use HTTPS or localhost HTTP.
    * @format uri
    * @maxLength 8192
    */
@@ -218,21 +221,25 @@ export namespace ProviderListResponse {
 
 export interface ProviderDiscoverSnykOrganizationsParams {
   /**
+   * Snyk service-account client ID to validate and use for organization discovery.
    * @minLength 1
    * @maxLength 16384
    */
   clientId: string;
   /**
+   * Snyk service-account client secret. Used for discovery without saving an integration.
    * @minLength 1
    * @maxLength 65536
    */
   clientSecret: string;
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 2048
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100

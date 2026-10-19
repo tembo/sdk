@@ -882,6 +882,9 @@ export interface SlackMessageSentInChannelFilters {
 export type EmptyTriggerFilters = Record<string, unknown>;
 
 export interface TemplateListParams {
+  /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
+   */
   cursor?:
     | 'addTestCoverage'
     | 'addTestCoverageFromJira'
@@ -921,6 +924,7 @@ export interface TemplateListParams {
     | 'summarizeChangesDaily'
     | 'triageNewJiraBug';
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100

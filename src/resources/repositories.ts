@@ -72,38 +72,46 @@ export class Repositories extends APIResource {
 
 export interface RepositoryListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
+   * Select enabled repositories, disabled repositories, or all. The public API defaults to enabled repositories.
    * @default all
    */
   enabled?: 'all' | 'true' | 'false';
   /**
+   * Filter by repository IDs, supplied as a comma-separated list.
    * @minItems 1
    * @maxItems 100
    */
   ids?: Array<string>;
   /**
+   * Filter repositories belonging to this integration.
    * @format uuid
    */
   integrationId?: string;
   /**
+   * Sort direction: ascending or descending.
    * @default desc
    */
   order?: 'asc' | 'desc';
   /**
+   * Search repository names and owners.
    * @minLength 1
    * @maxLength 500
    */
   search?: string;
   /**
+   * Sort by creation time, integration, name, pull request count, or update time.
    * @default pullRequests
    */
   sort?: 'createdAt' | 'integration' | 'name' | 'pullRequests' | 'updatedAt';
@@ -211,15 +219,18 @@ export namespace RepositoryRetrieveResponse {
 
 export interface RepositoryUpdateParams {
   /**
+   * Enable or disable this repository for Tembo. Disabled by default on creation.
    * @default false
    */
   enabled?: boolean;
   /**
+   * Default Git branch to start sessions from. Null clears the override.
    * @minLength 1
    * @maxLength 1024
    */
   baseBranch?: string | null;
   /**
+   * Default target branch for agent-created pull requests. Null clears the override.
    * @minLength 1
    * @maxLength 1024
    */

@@ -83,11 +83,13 @@ export class Triggers extends APIResource {
 
 export interface TriggerListParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @maxLength 10
    * @pattern ^\d+$
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -313,20 +315,20 @@ export interface TriggerListFilterOptionsParams {
    */
   triggerName: string;
   /**
-   * Query param
+   * Query param: Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
    * @maxLength 8192
    */
   cursor?: string;
   /**
-   * Query param
+   * Query param: Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
   /**
-   * Query param
+   * Query param: Search selectable values for this integration trigger filter.
    * @minLength 1
    * @maxLength 200
    */

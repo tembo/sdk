@@ -158,6 +158,9 @@ export namespace InsightRetrieveResponse {
 }
 
 export interface InsightUpdateParams {
+  /**
+   * Enable or disable pull request contribution insight collection. Enabling starts the initial refresh when needed.
+   */
   enabled: boolean;
 }
 
@@ -224,10 +227,12 @@ export namespace InsightUpdateResponse {
 
 export interface InsightListMembersParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
@@ -261,10 +266,12 @@ export namespace InsightListMembersResponse {
 
 export interface InsightListRepositoriesParams {
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100

@@ -28,7 +28,7 @@ export class Sessions extends APIResource {
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
 
   /**
-   * List sessions you have permission to access, with cursor pagination.
+   * List and search sessions, including active or archived sessions, with repository, project, creator, and source filters and cursor pagination.
    *
    * @param {SessionListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -53,7 +53,7 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Create a session for a task. Provide the initial prompt in description and optionally configure its repositories and agent.
+   * Create a session for a task. Provide the initial prompt in description and optionally configure its repositories, agent, Build (normal) or Plan (planning) mode, and private or workspace visibility.
    *
    * @param {SessionCreateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -94,7 +94,7 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Update the configuration of a session you have permission to access.
+   * Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.
    *
    * @param {string} sessionID
    * @param {SessionUpdateParams} body - The request body to send.
@@ -115,7 +115,7 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Delete a session you have permission to access.
+   * Archive a session and stop its VM without permanently deleting it. Equivalent to updateSession with level=0; restore with updateSession and level=1.
    *
    * @param {string} sessionID
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -154,7 +154,7 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Interrupt active session work and continue with the next queued message.
+   * Interrupt active session work without archiving it. Continue with the next queued message, or set cancelQueued=true to cancel pending messages too.
    *
    * @param {string} sessionID
    * @param {SessionStopParams} [params] - The parameters to send with the request.
@@ -310,52 +310,93 @@ export namespace SessionDocumentNode {
 
 export interface SessionListParams {
   /**
+   * Filter sessions created by this automation agent.
    * @format uuid
    */
   agentId?: string;
+  /**
+   * Filter by creator IDs, supplied as a comma-separated list.
+   */
   createdBy?: Array<string>;
   /**
+   * Only sessions created after this ISO 8601 timestamp.
    * @format date-time
    */
   createdAfter?: string;
   /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @maxLength 500
    */
   cursor?: string;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Exclude sessions pinned by the authenticated user.
+   */
   excludePinned?: boolean;
+  /**
+   * Filter by external source IDs, supplied as a comma-separated list.
+   */
   externalIds?: Array<string>;
+  /**
+   * Filter by whether a session has an assigned project.
+   */
   hasProject?: boolean;
   /**
-   * @default true
+   * Include archived sessions in the all-state view. Defaults to true; state=archived explicitly selects archived sessions.
    */
   includeArchived?: boolean;
   /**
+   * Include totalCount. Not supported with state=active.
    * @default false
    */
   includeTotal?: boolean;
+  /**
+   * Filter by participant IDs, supplied as a comma-separated list.
+   */
   participant?: Array<string>;
+  /**
+   * Filter by pending reviewer keys, supplied as a comma-separated list.
+   */
   pendingReviewerKeys?: Array<string>;
+  /**
+   * Filter by project IDs, supplied as a comma-separated list.
+   */
   projectIds?: Array<string>;
+  /**
+   * Filter by linked pull request statuses: open, merged, or closed, supplied as a comma-separated list.
+   */
   pullRequestStatuses?: Array<'open' | 'merged' | 'closed'>;
+  /**
+   * Filter by repository IDs, supplied as a comma-separated list.
+   */
   repositoryIds?: Array<string>;
   /**
+   * Search session titles, task prompts, kinds, and source names or types.
    * @minLength 1
    * @maxLength 1000
    */
   search?: string;
   /**
+   * Timestamp used to sort sessions, newest first.
    * @default lastQueuedAt
    */
   sortBy?: 'lastQueuedAt' | 'createdAt' | 'updatedAt';
+  /**
+   * Filter by session source IDs, supplied as a comma-separated list.
+   */
   sourceIds?: Array<string>;
+  /**
+   * Filter by session source types, supplied as a comma-separated list.
+   */
   sourceTypes?: Array<string>;
   /**
+   * Select all sessions, currently active work, or archived sessions. Use archived to find sessions to restore.
    * @default all
    */
   state?: 'all' | 'active' | 'archived';
@@ -538,39 +579,58 @@ export interface SessionCreateParams {
    */
   description: string;
   /**
+   * Agent and model key to run, such as claudeCode:claude-fable-5-1. Omit to use the default.
    * @minLength 1
    * @maxLength 500
    */
   agent?: string;
   /**
+   * Git branch to start work from. Omit or use null for the repository default.
    * @minLength 1
    * @maxLength 500
    */
   baseBranch?: string | null;
   /**
+   * MCP server or connection IDs to enable for the session.
    * @default []
    * @maxItems 100
    */
   mcpServers?: Array<string>;
+  /**
+   * Project environment to use for the workspace. Omit or use null for the default.
+   */
   projectId?: string | null;
+  /**
+   * VM size for the session workspace.
+   */
   sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
   /**
+   * Default target branch for pull requests created by the session.
    * @minLength 1
    * @maxLength 500
    */
   targetBranch?: string | null;
+  /**
+   * Session visibility: private or visible to workspace (public).
+   */
   visibility?: 'private' | 'public';
+  /**
+   * Agent-specific runtime options, such as reasoning effort.
+   */
   agentOptions?: SessionCreateParams.AgentOptions;
   /**
+   * Git branch for this session. Omit or use null to generate a branch name.
    * @minLength 1
    * @maxLength 500
    */
   branchName?: string | null;
   /**
+   * Repository IDs to make available in the session workspace.
    * @maxItems 100
    */
   codeRepositoryIds?: Array<string>;
   /**
+   * Optional caller-supplied session UUID. Omit to generate one.
    * @format uuid
    */
   id?: string;
@@ -579,11 +639,21 @@ export interface SessionCreateParams {
    */
   richContent?: SessionDocumentNode & MessagesAPI.TipTapDocument;
   /**
+   * Pull request to associate with the session. Requires richContent.
    * @format uuid
    */
   pullRequestId?: string;
+  /**
+   * Whether to queue the initial task immediately instead of only creating the session.
+   */
   queueRightAway?: boolean;
+  /**
+   * Whether to create a chat session or a terminal session.
+   */
   sessionMode?: 'chat' | 'terminal';
+  /**
+   * Coding agent to start in a terminal session.
+   */
   startupAgent?: 'claudeCode' | 'codex' | 'opencode' | 'pi' | 'amp' | 'cursor';
 }
 
@@ -594,7 +664,13 @@ export namespace SessionCreateParams {
      * @maxLength 100
      */
     reasoningLevel?: string;
+    /**
+     * Use Build (normal) to execute work or Plan (planning) to plan before writing code.
+     */
     mode?: 'normal' | 'planning';
+    /**
+     * Preferred execution speed when supported by the selected runtime.
+     */
     speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptions.Goal;
   }
@@ -1072,50 +1148,75 @@ export namespace SessionRetrieveResponse {
 
 export interface SessionUpdateParams {
   /**
+   * Change the agent and model key. Null clears the session override.
    * @minLength 1
    * @maxLength 500
    */
   agent?: string | null;
+  /**
+   * Change agent-specific runtime options, such as reasoning effort.
+   */
   agentOptions?: SessionUpdateParams.AgentOptions;
   /**
+   * Change the starting Git branch. Null clears the session override.
    * @minLength 1
    * @maxLength 500
    */
   baseBranch?: string | null;
   /**
+   * Change the session Git branch name. Null clears the stored name.
    * @minLength 1
    * @maxLength 500
    */
   branchName?: string | null;
   /**
+   * Replace the initial task prompt; only the session creator can change it. Use createMessage to send a follow-up task.
    * @minLength 1
    * @maxLength 1000000
    */
   description?: string;
+  /**
+   * Replace the initial prompt rich-text document, or null to clear it. Only the session creator can change it.
+   */
   richContent?: (SessionDocumentNode & MessagesAPI.TipTapDocument) | null;
   /**
-   * Set 0 to archive the session and stop its VM, or 1 to restore it without restarting work. Omit to preserve the current level.
+   * Archive or restore the session and set its priority: 0 archives and stops its VM; 1 restores without restarting work; 2–100 also keep it unarchived and set its priority level. Omit to preserve the current level.
    * @minimum 0
    * @maximum 100
    */
   level?: number;
   /**
+   * Replace the enabled MCP server or connection IDs. An empty array clears the selection.
    * @maxItems 100
    */
   mcpServers?: Array<string>;
+  /**
+   * Switch between Build (normal) and Plan (planning) modes.
+   */
   mode?: 'normal' | 'planning';
+  /**
+   * Change the project environment used for the workspace. Null clears the session override.
+   */
   projectId?: string | null;
+  /**
+   * Change the workspace VM size. Null clears the session override.
+   */
   sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   /**
+   * Change the default pull request target branch. Null clears the session override.
    * @minLength 1
    * @maxLength 500
    */
   targetBranch?: string | null;
   /**
+   * Rename the session.
    * @minLength 1
    * @maxLength 1000
    */
   title?: string;
+  /**
+   * Change session visibility: private or visible to workspace (public). Only the session creator can change it.
+   */
   visibility?: 'private' | 'public';
 }
 
@@ -1126,7 +1227,13 @@ export namespace SessionUpdateParams {
      * @maxLength 100
      */
     reasoningLevel?: string;
+    /**
+     * Use Build (normal) to execute work or Plan (planning) to plan before writing code.
+     */
     mode?: 'normal' | 'planning';
+    /**
+     * Preferred execution speed when supported by the selected runtime.
+     */
     speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptions.Goal;
   }
@@ -1382,11 +1489,13 @@ export interface SessionDeleteResponse {
 
 export interface SessionForkParams {
   /**
+   * Optional first task for the independent fork. Existing messages are not replayed.
    * @minLength 1
    * @maxLength 1000000
    */
   prompt?: string;
   /**
+   * Display title for the forked session.
    * @minLength 1
    * @maxLength 1000
    */
@@ -1629,6 +1738,9 @@ export namespace SessionForkResponse {
 }
 
 export interface SessionStopParams {
+  /**
+   * Also cancel pending queued messages instead of continuing with the next queued message. Does not archive the session.
+   */
   cancelQueued?: boolean;
 }
 
@@ -1656,8 +1768,12 @@ export interface SessionStopResponse {
 }
 
 export interface SessionListEventsParams {
+  /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
+   */
   cursor?: string | number;
   /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
    * @default 50
    * @minimum 1
    * @maximum 100
