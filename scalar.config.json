@@ -345,6 +345,34 @@
             "list": "get /v1/sessions/{sessionId}/diffs",
             "retrieve": "get /v1/sessions/{sessionId}/diffs/{diffId}"
           }
+        },
+        "inputs": {
+          "methods": {
+            "list": "get /v1/sessions/{sessionId}/inputs",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/sessions/{sessionId}/inputs/{inputId}",
+              "verb": "patch",
+              "path": "/v1/sessions/{sessionId}/inputs/{inputId}",
+              "bodyParamName": "body"
+            }
+          }
+        },
+        "queue": {
+          "methods": {
+            "update": {
+              "kind": "http",
+              "endpoint": "put /v1/sessions/{sessionId}/queue",
+              "verb": "put",
+              "path": "/v1/sessions/{sessionId}/queue",
+              "bodyParamName": "body"
+            }
+          }
+        },
+        "commands": {
+          "methods": {
+            "list": "get /v1/sessions/{sessionId}/commands"
+          }
         }
       }
     },
