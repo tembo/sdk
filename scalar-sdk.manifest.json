@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.36.6",
+  "generatorVersion": "0.36.8",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -27121,19 +27121,33 @@
       "path": "/v1/integrations/sync/status",
       "pathParams": [],
       "publicPathParams": [],
-      "queryParams": [],
-      "publicQueryParams": [],
+      "queryParams": [
+        "integrationId"
+      ],
+      "publicQueryParams": [
+        "integrationId"
+      ],
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [],
       "publicBodyParams": [],
       "bodyParamDetails": [],
       "pathParamDetails": [],
-      "queryParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "integrationId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        }
+      ],
       "headerParamDetails": [],
       "cookieParams": [],
       "publicCookieParams": [],
       "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "IntegrationRetrieveSyncStatusParams"
+      },
       "response": {
         "status": "200",
         "contentType": "application/json",

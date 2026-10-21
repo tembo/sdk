@@ -205,18 +205,22 @@ export class Integrations extends APIResource {
   }
 
   /**
-   * Count active sync jobs for integrations with enabled repositories.
+   * Count active sync jobs for an integration or eligible integrations.
    *
+   * @param {IntegrationRetrieveSyncStatusParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<IntegrationRetrieveSyncStatusResponse>} Retrieve eligible integration sync status
+   * @returns {APIPromise<IntegrationRetrieveSyncStatusResponse>} Retrieve integration sync status
    *
    * @example
    * ```ts
    * const integration = await client.integrations.retrieveSyncStatus();
    * ```
    */
-  retrieveSyncStatus(options?: RequestOptions): APIPromise<IntegrationRetrieveSyncStatusResponse> {
-    return this._client.get('/v1/integrations/sync/status', options);
+  retrieveSyncStatus(
+    query: IntegrationRetrieveSyncStatusParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<IntegrationRetrieveSyncStatusResponse> {
+    return this._client.get('/v1/integrations/sync/status', { query, ...options });
   }
 
   /**
@@ -874,6 +878,13 @@ export interface IntegrationSyncAllResponse {
   pullRequestSyncJobCount: number;
 }
 
+export interface IntegrationRetrieveSyncStatusParams {
+  /**
+   * @format uuid
+   */
+  integrationId?: string;
+}
+
 export interface IntegrationRetrieveSyncStatusResponse {
   /**
    * @minimum 0
@@ -1025,6 +1036,7 @@ export declare namespace Integrations {
     type IntegrationAuthorizeParams as IntegrationAuthorizeParams,
     type IntegrationSyncParams as IntegrationSyncParams,
     type IntegrationSyncAllParams as IntegrationSyncAllParams,
+    type IntegrationRetrieveSyncStatusParams as IntegrationRetrieveSyncStatusParams,
     type IntegrationListSentryEnvironmentsParams as IntegrationListSentryEnvironmentsParams,
     type IntegrationListSlackChannelsParams as IntegrationListSlackChannelsParams,
   };
