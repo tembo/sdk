@@ -235,3 +235,30 @@ test('pin and project duplicate mappings cover new routes and preserve request b
   assert.equal(pins.methods.update.bodyParamName, 'body');
   assert.equal(sdkConfig.resources.projects.methods.duplicate, 'post /v1/projects/{projectId}/duplicate');
 });
+
+test('session input, queue, and command mappings cover new routes and preserve request bodies', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const { inputs, queue, commands } = sdkConfig.resources.sessions.subresources;
+  assert.ok(inputs);
+  assert.ok(queue);
+  assert.ok(commands);
+  validateCoverage(
+    {
+      paths: {
+        '/v1/sessions/{sessionId}/inputs': { get: {} },
+        '/v1/sessions/{sessionId}/inputs/{inputId}': { patch: {} },
+        '/v1/sessions/{sessionId}/queue': { put: {} },
+        '/v1/sessions/{sessionId}/commands': { get: {} },
+      },
+    },
+    { resources: { sessions: { subresources: { inputs, queue, commands } } } },
+  );
+  assert.equal(inputs.methods.list, 'get /v1/sessions/{sessionId}/inputs');
+  assert.equal(inputs.methods.update.verb, 'patch');
+  assert.equal(inputs.methods.update.path, '/v1/sessions/{sessionId}/inputs/{inputId}');
+  assert.equal(inputs.methods.update.bodyParamName, 'body');
+  assert.equal(queue.methods.update.verb, 'put');
+  assert.equal(queue.methods.update.path, '/v1/sessions/{sessionId}/queue');
+  assert.equal(queue.methods.update.bodyParamName, 'body');
+  assert.equal(commands.methods.list, 'get /v1/sessions/{sessionId}/commands');
+});

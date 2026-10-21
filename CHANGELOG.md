@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.15.0](https://github.com/tembo/sdk/compare/v0.14.0...v0.15.0) (2026-10-21)
+
+
+### Features
+
+* **api:** add operation sessions.inputs.list (+3 more changes) ([0f38799](https://github.com/tembo/sdk/commit/0f3879971096d870fb3af4e426d9a1af8c7be7a1))
+* **api:** update SDK surface (2 changes) ([963e1bc](https://github.com/tembo/sdk/commit/963e1bc79754682aa926788531398884c9df3559))
+* **config:** map session inputs, queue, and commands endpoints ([2106745](https://github.com/tembo/sdk/commit/21067453e0ecf53986aa16759a065dd68335e1ba))
+* **config:** map session inputs, queue, and commands endpoints ([ed8f771](https://github.com/tembo/sdk/commit/ed8f7716646e553fab3ee7b05ebece5a69a210a7))
+
 ## [0.14.0](https://github.com/tembo/sdk/compare/v0.13.0...v0.14.0) (2026-10-19)
 
 

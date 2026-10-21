@@ -168,6 +168,7 @@ export type {
   IntegrationSyncResponse,
   IntegrationSyncAllParams,
   IntegrationSyncAllResponse,
+  IntegrationRetrieveSyncStatusParams,
   IntegrationRetrieveSyncStatusResponse,
   IntegrationRetrieveRateLimitResponse,
   IntegrationListSentryEnvironmentsParams,
