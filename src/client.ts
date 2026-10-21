@@ -222,6 +222,7 @@ import {
   type IntegrationAuthorizeParams,
   type IntegrationSyncParams,
   type IntegrationSyncAllParams,
+  type IntegrationRetrieveSyncStatusParams,
   type IntegrationListSentryEnvironmentsParams,
   type IntegrationListSlackChannelsParams,
 } from './resources/integrations/integrations';
@@ -1282,6 +1283,7 @@ export declare namespace Tembo {
     type IntegrationAuthorizeParams as IntegrationAuthorizeParams,
     type IntegrationSyncParams as IntegrationSyncParams,
     type IntegrationSyncAllParams as IntegrationSyncAllParams,
+    type IntegrationRetrieveSyncStatusParams as IntegrationRetrieveSyncStatusParams,
     type IntegrationListSentryEnvironmentsParams as IntegrationListSentryEnvironmentsParams,
     type IntegrationListSlackChannelsParams as IntegrationListSlackChannelsParams,
   };

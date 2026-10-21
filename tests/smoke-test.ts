@@ -2714,8 +2714,21 @@ const cases: {
     operation: 'retrieveSyncStatus',
     method: 'GET',
     path: '/v1/integrations/sync/status',
+    label: 'required params',
     run: async () => {
       const integration = await client.integrations.retrieveSyncStatus();
+    },
+  },
+
+  {
+    operation: 'retrieveSyncStatus',
+    method: 'GET',
+    path: '/v1/integrations/sync/status',
+    label: 'all params',
+    run: async () => {
+      const integration = await client.integrations.retrieveSyncStatus({
+        integrationId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+      });
     },
   },
 
