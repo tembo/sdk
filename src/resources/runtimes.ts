@@ -163,6 +163,10 @@ export namespace RuntimeListResponse {
         | 'deepseek-v4p1-flash';
       label: string;
       provider: string;
+      /**
+       * Selected subscription, API provider, or CLI API billing source for this runtime and model.
+       */
+      inferenceSource: string | null;
       isDefault: boolean;
       isPlatformDefault: boolean;
       reasoningLevels: Array<string>;
