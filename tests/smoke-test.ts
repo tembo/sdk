@@ -1501,6 +1501,47 @@ const cases: {
   },
 
   {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/sessions/{sessionId}/inputs',
+    run: async () => {
+      const input = await client.sessions.inputs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/sessions/{sessionId}/inputs/{inputId}',
+    run: async () => {
+      const input = await client.sessions.inputs.update('inputId', {
+        sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        answers: {},
+      });
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PUT',
+    path: '/v1/sessions/{sessionId}/queue',
+    run: async () => {
+      const queue = await client.sessions.queue.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        messageIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/sessions/{sessionId}/commands',
+    run: async () => {
+      const command = await client.sessions.commands.list('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
     operation: 'updateDefaults',
     method: 'PUT',
     path: '/v1/projects/defaults',

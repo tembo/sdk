@@ -20,10 +20,19 @@ import {
   type DiffListParams,
   type DiffRetrieveParams,
 } from './diffs';
+import * as InputsAPI from './inputs';
+import { Inputs, type InputListResponse, type InputUpdateResponse, type InputUpdateParams } from './inputs';
+import * as QueueAPI from './queue';
+import { Queue, type QueueUpdateResponse, type QueueUpdateParams } from './queue';
+import * as CommandsAPI from './commands';
+import { Commands, type CommandListResponse } from './commands';
 
 export class Sessions extends APIResource {
   sources: SourcesAPI.Sources = new SourcesAPI.Sources(this._client);
   diffs: DiffsAPI.Diffs = new DiffsAPI.Diffs(this._client);
+  inputs: InputsAPI.Inputs = new InputsAPI.Inputs(this._client);
+  queue: QueueAPI.Queue = new QueueAPI.Queue(this._client);
+  commands: CommandsAPI.Commands = new CommandsAPI.Commands(this._client);
 
   /**
    * List and search sessions, including active or archived sessions, with repository, project, creator, and source filters and cursor pagination.
@@ -1817,6 +1826,9 @@ export namespace SessionListEventsResponse {
 }
 Sessions.Sources = Sources;
 Sessions.Diffs = Diffs;
+Sessions.Inputs = Inputs;
+Sessions.Queue = Queue;
+Sessions.Commands = Commands;
 
 export declare namespace Sessions {
   export {
@@ -1852,4 +1864,19 @@ export declare namespace Sessions {
     type DiffListParams as DiffListParams,
     type DiffRetrieveParams as DiffRetrieveParams,
   };
+
+  export {
+    Inputs as Inputs,
+    type InputListResponse as InputListResponse,
+    type InputUpdateResponse as InputUpdateResponse,
+    type InputUpdateParams as InputUpdateParams,
+  };
+
+  export {
+    Queue as Queue,
+    type QueueUpdateResponse as QueueUpdateResponse,
+    type QueueUpdateParams as QueueUpdateParams,
+  };
+
+  export { Commands as Commands, type CommandListResponse as CommandListResponse };
 }

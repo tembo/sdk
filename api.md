@@ -104,6 +104,13 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Sessions Diffs`](#sessions-diffs)
     - [List session diffs](#list-session-diffs)
     - [Retrieve a session diff](#retrieve-a-session-diff)
+  - [`Sessions Inputs`](#sessions-inputs)
+    - [List session inputs](#list-session-inputs)
+    - [Update a session input](#update-a-session-input)
+  - [`Sessions Queue`](#sessions-queue)
+    - [Update a session queue](#update-a-session-queue)
+  - [`Sessions Commands`](#sessions-commands)
+    - [List session commands](#list-session-commands)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
   - [List projects](#list-projects)
@@ -1363,6 +1370,67 @@ Retrieve one recorded session diff and its content.
 const diff = await client.sessions.diffs.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
   sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
 });
+```
+
+### `Sessions Inputs`
+
+#### List session inputs
+
+List pending questions for the active session agent.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`InputListResponse`](./src/resources/sessions/inputs.ts) |
+
+```ts
+const input = await client.sessions.inputs.list('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+#### Update a session input
+
+Answer a pending session question.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`InputUpdateParams`](./src/resources/sessions/inputs.ts) |
+| Response | [`InputUpdateResponse`](./src/resources/sessions/inputs.ts) |
+
+```ts
+const input = await client.sessions.inputs.update('inputId', {
+  sessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  answers: {},
+});
+```
+
+### `Sessions Queue`
+
+#### Update a session queue
+
+Replace the order of messages waiting in a session queue.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`QueueUpdateParams`](./src/resources/sessions/queue.ts) |
+| Response | [`QueueUpdateResponse`](./src/resources/sessions/queue.ts) |
+
+```ts
+const queue = await client.sessions.queue.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+  messageIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
+});
+```
+
+### `Sessions Commands`
+
+#### List session commands
+
+List slash commands available to the session runtime.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`CommandListResponse`](./src/resources/sessions/commands.ts) |
+
+```ts
+const command = await client.sessions.commands.list('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
 ## `Projects`
