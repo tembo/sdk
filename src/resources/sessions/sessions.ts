@@ -682,6 +682,10 @@ export namespace SessionCreateParams {
      */
     speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptions.Goal;
+    /**
+     * Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model.
+     */
+    ultracode?: boolean;
   }
 
   export namespace AgentOptions {
@@ -1245,6 +1249,10 @@ export namespace SessionUpdateParams {
      */
     speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptions.Goal;
+    /**
+     * Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model.
+     */
+    ultracode?: boolean;
   }
 
   export namespace AgentOptions {

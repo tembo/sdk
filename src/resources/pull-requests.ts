@@ -96,6 +96,10 @@ export interface PullRequestListParams {
    */
   includeTotal?: boolean;
   /**
+   * Include each open pull request's position in its stack of dependent pull requests. Public responses do not include stacks.
+   */
+  includeStacks?: boolean;
+  /**
    * Filter by repository IDs, supplied as a comma-separated list.
    */
   repositoryIds?: Array<string>;
