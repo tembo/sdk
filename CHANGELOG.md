@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.16.0](https://github.com/tembo/sdk/compare/v0.15.0...v0.16.0) (2026-10-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Schema `agent_options_input` shape changed.
+
+### Features
+
+* **api:** update schema agent_options_input (+7 more changes) ([20a380a](https://github.com/tembo/sdk/commit/20a380ac0a90512197c2dd8e2fcec41dd9ef5bcd))
+
+
+### Chores
+
+* **openapi:** refresh public API snapshot for v0.2.879 ([fcede40](https://github.com/tembo/sdk/commit/fcede406fc6fd399ae0002b8dddc33eb7dd4fa21))
+* **openapi:** refresh public API snapshot for v0.2.879 ([32b9aa2](https://github.com/tembo/sdk/commit/32b9aa249a29eabb3ab3fb00281ea95d158ba140))
+* release 0.16.0 ([106c8ee](https://github.com/tembo/sdk/commit/106c8ee4e86a590f9e0bdbb58ccde9b8679fb861))
+
 ## [0.15.0](https://github.com/tembo/sdk/compare/v0.14.0...v0.15.0) (2026-10-21)
 
 

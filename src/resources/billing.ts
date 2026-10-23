@@ -250,6 +250,24 @@ export interface BillingListUsageParams {
    * @maxLength 255
    */
   sessionId?: string;
+  /**
+   * Only sessions created at or after this ISO 8601 timestamp.
+   * @format date-time
+   */
+  createdAfter?: string;
+  /**
+   * Only sessions created before this ISO 8601 timestamp.
+   * @format date-time
+   */
+  createdBefore?: string;
+  /**
+   * Filter by creator IDs, supplied as a comma-separated list.
+   */
+  createdBy?: Array<string>;
+  /**
+   * Filter by model names, supplied as a comma-separated list.
+   */
+  models?: Array<string>;
 }
 
 export interface BillingListUsageResponse {

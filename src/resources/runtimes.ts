@@ -105,6 +105,10 @@ export namespace RuntimeListResponse {
       modes: Array<'normal' | 'planning'>;
       speeds: Array<'normal' | 'fast' | 'ultrafast'>;
       supportsGoals: boolean;
+      /**
+       * Models that support ultracode workflow orchestration.
+       */
+      ultracodeModels: Array<string>;
     }
 
     export interface Availability {

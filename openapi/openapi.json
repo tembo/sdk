@@ -980,6 +980,10 @@
                   }
                 },
                 "additionalProperties": false
+              },
+              "ultracode": {
+                "type": "boolean",
+                "description": "Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model."
               }
             },
             "additionalProperties": true
@@ -1027,6 +1031,10 @@
               }
             },
             "additionalProperties": false
+          },
+          "ultracode": {
+            "type": "boolean",
+            "description": "Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model."
           }
         },
         "additionalProperties": false
@@ -17333,12 +17341,20 @@
                               },
                               "supportsGoals": {
                                 "type": "boolean"
+                              },
+                              "ultracodeModels": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "description": "Models that support ultracode workflow orchestration."
                               }
                             },
                             "required": [
                               "modes",
                               "speeds",
-                              "supportsGoals"
+                              "supportsGoals",
+                              "ultracodeModels"
                             ],
                             "additionalProperties": false
                           },
@@ -36986,6 +37002,14 @@
           },
           {
             "in": "query",
+            "name": "includeStacks",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Include each open pull request's position in its stack of dependent pull requests. Public responses do not include stacks."
+          },
+          {
+            "in": "query",
             "name": "repositoryIds",
             "schema": {
               "type": "array",
@@ -50850,6 +50874,49 @@
               "maxLength": 255
             },
             "description": "Filter billing usage to this session."
+          },
+          {
+            "in": "query",
+            "name": "createdAfter",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only sessions created at or after this ISO 8601 timestamp."
+          },
+          {
+            "in": "query",
+            "name": "createdBefore",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "description": "Only sessions created before this ISO 8601 timestamp."
+          },
+          {
+            "in": "query",
+            "name": "createdBy",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "description": "Filter by creator IDs, supplied as a comma-separated list."
+          },
+          {
+            "in": "query",
+            "name": "models",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 200
+              }
+            },
+            "description": "Filter by model names, supplied as a comma-separated list."
           }
         ]
       }
