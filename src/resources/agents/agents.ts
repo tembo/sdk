@@ -219,6 +219,10 @@ export namespace AgentOptionsInput {
      */
     speed?: 'normal' | 'fast' | 'ultrafast';
     goal?: AgentOptionsInputItem.Goal;
+    /**
+     * Whether the agent orchestrates multi-agent workflows for every task when supported by the selected runtime and model.
+     */
+    ultracode?: boolean;
     [k: string]: unknown;
   }
 
