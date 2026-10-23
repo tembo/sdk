@@ -2076,6 +2076,7 @@ const cases: {
         hasTemboSession: true,
         includeAuthors: true,
         includeTotal: true,
+        includeStacks: true,
         repositoryIds: ['repositoryId'],
         reviewerIds: ['reviewerId'],
         mergedAfter: '2024-01-01T00:00:00.000Z',
@@ -2997,6 +2998,10 @@ const cases: {
         cursor: 'cursor',
         limit: 50,
         sessionId: 'sessionId',
+        createdAfter: '2024-01-01T00:00:00.000Z',
+        createdBefore: '2024-01-01T00:00:00.000Z',
+        createdBy: ['createdBy'],
+        models: ['model'],
       });
     },
   },

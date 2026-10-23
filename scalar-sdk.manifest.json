@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.36.8",
+  "generatorVersion": "0.36.9",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -848,6 +848,16 @@
                   ],
                   "additionalProperties": false
                 }
+              },
+              {
+                "name": "ultracode",
+                "publicName": "ultracode",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "primitive",
+                  "type": "boolean"
+                }
               }
             ],
             "additionalProperties": {
@@ -965,6 +975,16 @@
                 }
               ],
               "additionalProperties": false
+            }
+          },
+          {
+            "name": "ultracode",
+            "publicName": "ultracode",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
             }
           }
         ],
@@ -22144,6 +22164,7 @@
         "hasTemboSession",
         "includeAuthors",
         "includeTotal",
+        "includeStacks",
         "repositoryIds",
         "reviewerIds",
         "mergedAfter",
@@ -22164,6 +22185,7 @@
         "hasTemboSession",
         "includeAuthors",
         "includeTotal",
+        "includeStacks",
         "repositoryIds",
         "reviewerIds",
         "mergedAfter",
@@ -22242,6 +22264,12 @@
         },
         {
           "name": "includeTotal",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "includeStacks",
           "required": false,
           "style": "form",
           "explode": true
@@ -29503,12 +29531,20 @@
       "queryParams": [
         "cursor",
         "limit",
-        "sessionId"
+        "sessionId",
+        "createdAfter",
+        "createdBefore",
+        "createdBy",
+        "models"
       ],
       "publicQueryParams": [
         "cursor",
         "limit",
-        "sessionId"
+        "sessionId",
+        "createdAfter",
+        "createdBefore",
+        "createdBy",
+        "models"
       ],
       "headerParams": [],
       "publicHeaderParams": [],
@@ -29532,6 +29568,30 @@
         },
         {
           "name": "sessionId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "createdAfter",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "createdBefore",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "createdBy",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "models",
           "required": false,
           "style": "form",
           "explode": true
