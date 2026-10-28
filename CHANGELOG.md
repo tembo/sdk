@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.17.0](https://github.com/tembo/sdk/compare/v0.16.0...v0.17.0) (2026-10-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 3 breaking changes to the SDK surface.
+    - Removed operation `organizations.subscriptions.reset` (`POST /v1/organizations/{organizationId}/subscriptions/reset`).
+    - Removed operation `users.delete` (`DELETE /v1/users/{userId}`).
+    - Removed operation `users.subscriptions.reset` (`POST /v1/users/{userId}/subscriptions/reset`).
+
+### Features
+
+* **api:** update SDK surface (10 changes) ([4f0d563](https://github.com/tembo/sdk/commit/4f0d563db5e10416b4ea10ea451bccb2499d841e))
+* **api:** update SDK surface (3 changes) ([e23c1cb](https://github.com/tembo/sdk/commit/e23c1cbe8409891d5eaadc947d784d3d6e6be121))
+* **config:** map user environment variables, drop removed endpoints ([ade0060](https://github.com/tembo/sdk/commit/ade006005d6eb03710232047b8adb9dc3ccd3c87))
+* **config:** map user environment variables, drop removed endpoints ([e8e03b7](https://github.com/tembo/sdk/commit/e8e03b724920f35733a3989faafa6aa1059b39d8))
+
 ## [0.16.0](https://github.com/tembo/sdk/compare/v0.15.0...v0.16.0) (2026-10-23)
 
 
