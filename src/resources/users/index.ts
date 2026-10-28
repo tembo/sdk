@@ -13,6 +13,14 @@ export type {
 } from './connected-accounts';
 export { Subscriptions } from './subscriptions';
 export type { SubscriptionRetrieveResponse } from './subscriptions';
+export { EnvironmentVariables } from './environment-variables';
+export type {
+  EnvironmentVariableListResponse,
+  EnvironmentVariableCreateParams,
+  EnvironmentVariableCreateResponse,
+  EnvironmentVariableDeleteParams,
+  EnvironmentVariableDeleteResponse,
+} from './environment-variables';
 export { ProfilePicture } from './profile-picture';
 export type {
   ProfilePictureUpdateParams,
