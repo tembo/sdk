@@ -42,12 +42,7 @@ import {
   type SettingValidateCredentialsParams,
 } from './settings';
 import * as SubscriptionsAPI from './subscriptions';
-import {
-  Subscriptions,
-  type SubscriptionRetrieveResponse,
-  type SubscriptionResetResponse,
-  type SubscriptionResetParams,
-} from './subscriptions';
+import { Subscriptions, type SubscriptionRetrieveResponse } from './subscriptions';
 
 export class Organizations extends APIResource {
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
@@ -288,7 +283,5 @@ export declare namespace Organizations {
   export {
     Subscriptions as Subscriptions,
     type SubscriptionRetrieveResponse as SubscriptionRetrieveResponse,
-    type SubscriptionResetResponse as SubscriptionResetResponse,
-    type SubscriptionResetParams as SubscriptionResetParams,
   };
 }

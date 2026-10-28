@@ -20,12 +20,16 @@ import {
   type ConnectedAccountRetrieveParams,
 } from './connected-accounts';
 import * as SubscriptionsAPI from './subscriptions';
+import { Subscriptions, type SubscriptionRetrieveResponse } from './subscriptions';
+import * as EnvironmentVariablesAPI from './environment-variables';
 import {
-  Subscriptions,
-  type SubscriptionRetrieveResponse,
-  type SubscriptionResetResponse,
-  type SubscriptionResetParams,
-} from './subscriptions';
+  EnvironmentVariables,
+  type EnvironmentVariableListResponse,
+  type EnvironmentVariableCreateResponse,
+  type EnvironmentVariableDeleteResponse,
+  type EnvironmentVariableCreateParams,
+  type EnvironmentVariableDeleteParams,
+} from './environment-variables';
 import * as ProfilePictureAPI from './profile-picture';
 import {
   ProfilePicture,
@@ -40,6 +44,8 @@ export class Users extends APIResource {
     this._client,
   );
   subscriptions: SubscriptionsAPI.Subscriptions = new SubscriptionsAPI.Subscriptions(this._client);
+  environmentVariables: EnvironmentVariablesAPI.EnvironmentVariables =
+    new EnvironmentVariablesAPI.EnvironmentVariables(this._client);
   profilePicture: ProfilePictureAPI.ProfilePicture = new ProfilePictureAPI.ProfilePicture(this._client);
 
   /**
@@ -71,23 +77,6 @@ export class Users extends APIResource {
    */
   retrieve(userID: string, options?: RequestOptions): APIPromise<UserRetrieveResponse> {
     return this._client.get(__scalarPath`/v1/users/${userID}`, options);
-  }
-
-  /**
-   * Queue permanent deletion of your user account.
-   *
-   * @param {string} userID
-   * @param {UserDeleteParams} body - The request body to send.
-   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<UserDeleteResponse>} Delete a user
-   *
-   * @example
-   * ```ts
-   * const user = await client.users.delete('userId', {});
-   * ```
-   */
-  delete(userID: string, body: UserDeleteParams, options?: RequestOptions): APIPromise<UserDeleteResponse> {
-    return this._client.delete(__scalarPath`/v1/users/${userID}`, { body, ...options });
   }
 }
 
@@ -130,57 +119,14 @@ export interface UserRetrieveResponse {
    */
   updatedAt: string;
 }
-
-export interface UserDeleteParams {
-  /**
-   * Optional account-deletion feedback. Account deletion is queued regardless of whether feedback is supplied.
-   */
-  deletionQuestionnaire?: UserDeleteParams.DeletionQuestionnaire;
-}
-
-export namespace UserDeleteParams {
-  export interface DeletionQuestionnaire {
-    /**
-     * @maxItems 20
-     */
-    reasons: Array<string>;
-    /**
-     * @format date-time
-     */
-    submittedAt: string;
-    /**
-     * @minLength 1
-     * @maxLength 2000
-     */
-    otherReason?: string;
-  }
-}
-
-export interface UserDeleteResponse {
-  /**
-   * @minLength 1
-   * @maxLength 255
-   */
-  deletionJobId: string;
-  deletionQueued: true;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   */
-  id: string;
-}
 Users.Settings = Settings;
 Users.ConnectedAccounts = ConnectedAccounts;
 Users.Subscriptions = Subscriptions;
+Users.EnvironmentVariables = EnvironmentVariables;
 Users.ProfilePicture = ProfilePicture;
 
 export declare namespace Users {
-  export {
-    type UserMeResponse as UserMeResponse,
-    type UserRetrieveResponse as UserRetrieveResponse,
-    type UserDeleteResponse as UserDeleteResponse,
-    type UserDeleteParams as UserDeleteParams,
-  };
+  export { type UserMeResponse as UserMeResponse, type UserRetrieveResponse as UserRetrieveResponse };
 
   export {
     Settings as Settings,
@@ -200,8 +146,15 @@ export declare namespace Users {
   export {
     Subscriptions as Subscriptions,
     type SubscriptionRetrieveResponse as SubscriptionRetrieveResponse,
-    type SubscriptionResetResponse as SubscriptionResetResponse,
-    type SubscriptionResetParams as SubscriptionResetParams,
+  };
+
+  export {
+    EnvironmentVariables as EnvironmentVariables,
+    type EnvironmentVariableListResponse as EnvironmentVariableListResponse,
+    type EnvironmentVariableCreateResponse as EnvironmentVariableCreateResponse,
+    type EnvironmentVariableDeleteResponse as EnvironmentVariableDeleteResponse,
+    type EnvironmentVariableCreateParams as EnvironmentVariableCreateParams,
+    type EnvironmentVariableDeleteParams as EnvironmentVariableDeleteParams,
   };
 
   export {

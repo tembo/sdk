@@ -94,12 +94,7 @@ export type { ModelListParams, ModelListResponse, ModelUpdateParams, ModelUpdate
 export { Runtimes } from './runtimes';
 export type { RuntimeListParams, RuntimeListResponse } from './runtimes';
 export { Users } from './users/users';
-export type {
-  UserMeResponse,
-  UserRetrieveResponse,
-  UserDeleteParams,
-  UserDeleteResponse,
-} from './users/users';
+export type { UserMeResponse, UserRetrieveResponse } from './users/users';
 export { Sessions } from './sessions/sessions';
 export type {
   SessionEventData,
