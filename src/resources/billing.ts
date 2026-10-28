@@ -21,7 +21,7 @@ export class Billing extends APIResource {
   }
 
   /**
-   * List session usage with cursor pagination.
+   * List session usage by default, or include warm pool compute with the type filter. Uses cursor pagination.
    *
    * @param {BillingListUsageParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -234,7 +234,7 @@ export interface BillingListUsageParams {
   /**
    * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @minLength 1
-   * @maxLength 255
+   * @maxLength 2048
    */
   cursor?: string;
   /**
@@ -245,18 +245,22 @@ export interface BillingListUsageParams {
    */
   limit?: number;
   /**
+   * Usage types to include. Defaults to sessions for backwards compatibility.
+   */
+  type?: 'all' | 'sessions' | 'warm-pool';
+  /**
    * Filter billing usage to this session.
    * @minLength 1
    * @maxLength 255
    */
   sessionId?: string;
   /**
-   * Only sessions created at or after this ISO 8601 timestamp.
+   * Include sessions created or warm pool runtime at or after this ISO 8601 timestamp.
    * @format date-time
    */
   createdAfter?: string;
   /**
-   * Only sessions created before this ISO 8601 timestamp.
+   * Include sessions created or warm pool runtime before this ISO 8601 timestamp.
    * @format date-time
    */
   createdBefore?: string;
@@ -274,10 +278,9 @@ export interface BillingListUsageResponse {
   /**
    * @maxItems 100
    */
-  items: Array<BillingListUsageResponse.Item>;
+  items: Array<BillingListUsageResponse.Item | BillingListUsageResponse.Item2>;
   /**
-   * @minLength 1
-   * @maxLength 255
+   * @maxLength 2048
    */
   nextCursor: string | null;
   /**
@@ -312,6 +315,39 @@ export namespace BillingListUsageResponse {
      * @minimum 0
      */
     totalCredits: number;
+    type: 'session';
+  }
+
+  export interface Item2 {
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    virtualMachineId: string;
+    /**
+     * @format date-time
+     */
+    startedAt: string;
+    /**
+     * @format date-time
+     */
+    endedAt: string | null;
+    /**
+     * @minimum 0
+     */
+    runtimeMs: number;
+    cpu: number;
+    memoryMb: number;
+    /**
+     * @minimum 0
+     */
+    computeCredits: number;
+    type: 'warm-pool';
   }
 }
 export declare namespace Billing {

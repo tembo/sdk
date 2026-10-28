@@ -103,7 +103,7 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.
+   * Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.
    *
    * @param {string} sessionID
    * @param {SessionUpdateParams} body - The request body to send.
@@ -657,6 +657,10 @@ export interface SessionCreateParams {
    */
   queueRightAway?: boolean;
   /**
+   * Size the VM automatically. Only for sessions created without a project (projectId "tembo").
+   */
+  automaticSizing?: boolean;
+  /**
    * Whether to create a chat session or a terminal session.
    */
   sessionMode?: 'chat' | 'terminal';
@@ -740,6 +744,10 @@ export interface SessionCreateResponse {
   updatedAt: string;
   visibility: 'public' | 'private';
   artifacts: Array<SessionCreateResponse.Artifact>;
+  /**
+   * Whether the session VM is sized automatically.
+   */
+  automaticSizing: boolean;
   description: string | null;
   diffSummary: SessionCreateResponse.DiffSummary | null;
   /**
@@ -970,6 +978,10 @@ export interface SessionRetrieveResponse {
   updatedAt: string;
   visibility: 'public' | 'private';
   artifacts: Array<SessionRetrieveResponse.Artifact>;
+  /**
+   * Whether the session VM is sized automatically.
+   */
+  automaticSizing: boolean;
   description: string | null;
   diffSummary: SessionRetrieveResponse.DiffSummary | null;
   /**
@@ -1161,6 +1173,13 @@ export namespace SessionRetrieveResponse {
 
 export interface SessionUpdateParams {
   /**
+   * Request in-place memory growth for a running adaptive sandbox, within project limits. Submit separately from other session changes. Returns the session while the resize runs asynchronously; sandbox metrics report its progress.
+   * @minimum 1024
+   * @maximum 131072
+   * @multipleOf 1024
+   */
+  memoryMb?: number;
+  /**
    * Change the agent and model key. Null clears the session override.
    * @minLength 1
    * @maxLength 500
@@ -1307,6 +1326,10 @@ export interface SessionUpdateResponse {
   updatedAt: string;
   visibility: 'public' | 'private';
   artifacts: Array<SessionUpdateResponse.Artifact>;
+  /**
+   * Whether the session VM is sized automatically.
+   */
+  automaticSizing: boolean;
   description: string | null;
   diffSummary: SessionUpdateResponse.DiffSummary | null;
   /**
@@ -1565,6 +1588,10 @@ export interface SessionForkResponse {
   updatedAt: string;
   visibility: 'public' | 'private';
   artifacts: Array<SessionForkResponse.Artifact>;
+  /**
+   * Whether the session VM is sized automatically.
+   */
+  automaticSizing: boolean;
   description: string | null;
   diffSummary: SessionForkResponse.DiffSummary | null;
   /**
