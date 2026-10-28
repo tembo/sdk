@@ -150,14 +150,7 @@
         },
         "subscriptions": {
           "methods": {
-            "retrieve": "get /v1/organizations/{organizationId}/subscriptions",
-            "reset": {
-              "kind": "http",
-              "endpoint": "post /v1/organizations/{organizationId}/subscriptions/reset",
-              "verb": "post",
-              "path": "/v1/organizations/{organizationId}/subscriptions/reset",
-              "bodyParamName": "body"
-            }
+            "retrieve": "get /v1/organizations/{organizationId}/subscriptions"
           }
         }
       }
@@ -245,14 +238,7 @@
     "users": {
       "methods": {
         "me": "get /v1/users/me",
-        "retrieve": "get /v1/users/{userId}",
-        "delete": {
-          "kind": "http",
-          "endpoint": "delete /v1/users/{userId}",
-          "verb": "delete",
-          "path": "/v1/users/{userId}",
-          "bodyParamName": "body"
-        }
+        "retrieve": "get /v1/users/{userId}"
       },
       "subresources": {
         "settings": {
@@ -275,14 +261,20 @@
         },
         "subscriptions": {
           "methods": {
-            "retrieve": "get /v1/users/{userId}/subscriptions",
-            "reset": {
+            "retrieve": "get /v1/users/{userId}/subscriptions"
+          }
+        },
+        "environment_variables": {
+          "methods": {
+            "list": "get /v1/users/{userId}/environment-variables",
+            "create": {
               "kind": "http",
-              "endpoint": "post /v1/users/{userId}/subscriptions/reset",
+              "endpoint": "post /v1/users/{userId}/environment-variables",
               "verb": "post",
-              "path": "/v1/users/{userId}/subscriptions/reset",
+              "path": "/v1/users/{userId}/environment-variables",
               "bodyParamName": "body"
-            }
+            },
+            "delete": "delete /v1/users/{userId}/environment-variables/{environmentVariableId}"
           }
         },
         "profile_picture": {
