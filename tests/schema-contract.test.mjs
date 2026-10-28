@@ -48,12 +48,13 @@ test('SDK mappings cover current manually reviewed operations', () => {
   const publicOperations = {
     paths: {
       '/v1/users/me': { get: {} },
-      '/v1/users/{userId}': { get: {}, delete: {} },
+      '/v1/users/{userId}': { get: {} },
       '/v1/users/{userId}/settings': { get: {}, patch: {} },
       '/v1/users/{userId}/connected-accounts': { get: {} },
       '/v1/users/{userId}/connected-accounts/{connectedAccountId}': { get: {} },
       '/v1/users/{userId}/subscriptions': { get: {} },
-      '/v1/users/{userId}/subscriptions/reset': { post: {} },
+      '/v1/users/{userId}/environment-variables': { get: {}, post: {} },
+      '/v1/users/{userId}/environment-variables/{environmentVariableId}': { delete: {} },
       '/v1/users/{userId}/profile-picture': { get: {}, put: {}, delete: {} },
       '/v1/sessions/{sessionId}/fork': { post: {} },
       '/v1/runtimes': { get: {} },
@@ -70,7 +71,7 @@ test('SDK mappings cover current manually reviewed operations', () => {
   assert.equal(sdkConfig.resources.sessions.methods.fork.bodyParamName, 'body');
 });
 
-test('subscription mappings cover user and organization reads and preserve reset request bodies', () => {
+test('subscription mappings cover user and organization reads without removed reset routes', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
   for (const { resourceName, identifier } of [
     { resourceName: 'organizations', identifier: 'organizationId' },
@@ -78,19 +79,8 @@ test('subscription mappings cover user and organization reads and preserve reset
   ]) {
     const subscriptions = sdkConfig.resources[resourceName].subresources.subscriptions;
     const prefix = `/v1/${resourceName}/{${identifier}}/subscriptions`;
-    validateCoverage(
-      {
-        paths: {
-          [prefix]: { get: {} },
-          [`${prefix}/reset`]: { post: {} },
-        },
-      },
-      { resources: { subscriptions } },
-    );
-    assert.equal(subscriptions.methods.reset.bodyParamName, 'body');
-    assert.equal(subscriptions.methods.reset.kind, 'http');
-    assert.equal(subscriptions.methods.reset.verb, 'post');
-    assert.equal(subscriptions.methods.reset.path, `${prefix}/reset`);
+    validateCoverage({ paths: { [prefix]: { get: {} } } }, { resources: { subscriptions } });
+    assert.equal(subscriptions.methods.reset, undefined);
   }
   const validate = sdkConfig.resources.organizations.subresources.settings.methods.validate_credentials;
   assert.equal(validate.bodyParamName, 'body');
@@ -261,4 +251,30 @@ test('session input, queue, and command mappings cover new routes and preserve r
   assert.equal(queue.methods.update.path, '/v1/sessions/{sessionId}/queue');
   assert.equal(queue.methods.update.bodyParamName, 'body');
   assert.equal(commands.methods.list, 'get /v1/sessions/{sessionId}/commands');
+});
+
+test('user environment variable mappings cover new routes and preserve the create request body', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const users = sdkConfig.resources.users;
+  const environmentVariables = users.subresources.environment_variables;
+  assert.ok(environmentVariables);
+  validateCoverage(
+    {
+      paths: {
+        '/v1/users/{userId}/environment-variables': { get: {}, post: {} },
+        '/v1/users/{userId}/environment-variables/{environmentVariableId}': { delete: {} },
+      },
+    },
+    { resources: { users: { subresources: { environment_variables: environmentVariables } } } },
+  );
+  assert.equal(environmentVariables.methods.list, 'get /v1/users/{userId}/environment-variables');
+  assert.equal(environmentVariables.methods.create.kind, 'http');
+  assert.equal(environmentVariables.methods.create.verb, 'post');
+  assert.equal(environmentVariables.methods.create.path, '/v1/users/{userId}/environment-variables');
+  assert.equal(environmentVariables.methods.create.bodyParamName, 'body');
+  assert.equal(
+    environmentVariables.methods.delete,
+    'delete /v1/users/{userId}/environment-variables/{environmentVariableId}',
+  );
+  assert.equal(users.methods.delete, undefined);
 });

@@ -11007,218 +11007,6 @@
         ]
       }
     },
-    "/v1/organizations/{organizationId}/subscriptions/reset": {
-      "post": {
-        "operationId": "resetOrganizationSubscription",
-        "summary": "Reset organization subscription usage",
-        "description": "Redeem an earned ChatGPT rate-limit reset.",
-        "tags": [
-          "Organizations"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Reset organization subscription usage",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "outcome": {
-                      "type": "string",
-                      "enum": [
-                        "reset",
-                        "alreadyRedeemed",
-                        "nothingToReset",
-                        "noCredit"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "outcome"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request or missing organization information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Organization administrator access is required",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Organization resource not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "Organization operation conflicts with existing state",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Organization operation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "The subscription provider is unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Required organization storage is unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "organizationId",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "idempotencyKey": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique UUID for this reset attempt. Reuse the same UUID when retrying to avoid redeeming another reset credit."
-                  },
-                  "provider": {
-                    "type": "string",
-                    "const": "chatgpt",
-                    "description": "Subscription provider whose rate-limit reset credit to redeem. Currently only chatgpt is supported."
-                  }
-                },
-                "required": [
-                  "idempotencyKey",
-                  "provider"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/mcp-connections": {
       "get": {
         "operationId": "listMcpConnections",
@@ -13202,6 +12990,13 @@
                             ],
                             "format": "uuid"
                           },
+                          "assetUrl": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "uri"
+                          },
                           "category": {
                             "type": [
                               "string",
@@ -13353,6 +13148,7 @@
                           "type",
                           "updatedAt",
                           "assetId",
+                          "assetUrl",
                           "category",
                           "contentType",
                           "description",
@@ -17938,183 +17734,6 @@
             "required": true
           }
         ]
-      },
-      "delete": {
-        "operationId": "deleteUser",
-        "summary": "Delete a user",
-        "description": "Queue permanent deletion of your user account.",
-        "tags": [
-          "Users"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Delete a user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "deletionJobId": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 255
-                    },
-                    "deletionQueued": {
-                      "type": "boolean",
-                      "const": true
-                    },
-                    "id": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 255
-                    }
-                  },
-                  "required": [
-                    "deletionJobId",
-                    "deletionQueued",
-                    "id"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request or missing required organization or user information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User or connected account not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "User operation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 255
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "deletionQuestionnaire": {
-                    "type": "object",
-                    "properties": {
-                      "reasons": {
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "minLength": 1,
-                          "maxLength": 255
-                        },
-                        "maxItems": 20
-                      },
-                      "otherReason": {
-                        "type": "string",
-                        "minLength": 1,
-                        "maxLength": 2000
-                      },
-                      "submittedAt": {
-                        "type": "string",
-                        "format": "date-time"
-                      }
-                    },
-                    "required": [
-                      "reasons",
-                      "submittedAt"
-                    ],
-                    "additionalProperties": false,
-                    "description": "Optional account-deletion feedback. Account deletion is queued regardless of whether feedback is supplied."
-                  }
-                },
-                "additionalProperties": false
-              }
-            }
-          }
-        }
       }
     },
     "/v1/users/{userId}/connected-accounts": {
@@ -19931,6 +19550,488 @@
         }
       }
     },
+    "/v1/users/{userId}/environment-variables": {
+      "get": {
+        "operationId": "listUserEnvironmentVariables",
+        "summary": "List personal environment variables",
+        "description": "List your personal environment variables in the current organization. Values are never returned.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List personal environment variables",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "key": {
+                            "type": "string",
+                            "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                            "minLength": 1,
+                            "maxLength": 255
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "createdAt",
+                          "id",
+                          "key",
+                          "updatedAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createUserEnvironmentVariable",
+        "summary": "Create a personal environment variable",
+        "description": "Store an encrypted environment variable that is injected into every session you start in the current organization.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a personal environment variable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "key": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "createdAt",
+                    "id",
+                    "key",
+                    "updatedAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "An environment variable with this key already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                    "minLength": 1,
+                    "maxLength": 255,
+                    "description": "Environment variable name, e.g. GITHUB_TOKEN."
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000,
+                    "description": "Plaintext value to encrypt and store. List operations never return it."
+                  }
+                },
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/users/{userId}/environment-variables/{environmentVariableId}": {
+      "delete": {
+        "operationId": "deleteUserEnvironmentVariable",
+        "summary": "Delete a personal environment variable",
+        "description": "Permanently delete a personal environment variable. Sessions started afterwards no longer receive it.",
+        "tags": [
+          "Users"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a personal environment variable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    }
+                  },
+                  "required": [
+                    "deleted",
+                    "id"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User or connected account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "User operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "userId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "environmentVariableId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
     "/v1/users/{userId}/subscriptions": {
       "get": {
         "operationId": "retrieveUserSubscriptions",
@@ -20811,201 +20912,6 @@
             "required": true
           }
         ]
-      }
-    },
-    "/v1/users/{userId}/subscriptions/reset": {
-      "post": {
-        "operationId": "resetUserSubscription",
-        "summary": "Reset user subscription usage",
-        "description": "Redeem an earned ChatGPT rate-limit reset.",
-        "tags": [
-          "Users"
-        ],
-        "security": [
-          {
-            "apiKey": []
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Reset user subscription usage",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "outcome": {
-                      "type": "string",
-                      "enum": [
-                        "reset",
-                        "alreadyRedeemed",
-                        "nothingToReset",
-                        "noCredit"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "outcome"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request or missing required organization or user information.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User or connected account not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "409": {
-            "description": "The subscription is disconnected or requires reconnecting",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "User operation failed",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          },
-          "502": {
-            "description": "The subscription provider is unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    }
-                  },
-                  "required": [
-                    "error"
-                  ],
-                  "additionalProperties": false
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "in": "path",
-            "name": "userId",
-            "schema": {
-              "type": "string",
-              "minLength": 1,
-              "maxLength": 255
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "idempotencyKey": {
-                    "type": "string",
-                    "format": "uuid",
-                    "description": "Unique UUID for this reset attempt. Reuse the same UUID when retrying to avoid redeeming another reset credit."
-                  },
-                  "provider": {
-                    "type": "string",
-                    "const": "chatgpt",
-                    "description": "Subscription provider whose rate-limit reset credit to redeem. Currently only chatgpt is supported."
-                  }
-                },
-                "required": [
-                  "idempotencyKey",
-                  "provider"
-                ],
-                "additionalProperties": false
-              }
-            }
-          }
-        }
       }
     },
     "/v1/users/{userId}/profile-picture": {
@@ -23377,6 +23283,10 @@
                         "additionalProperties": false
                       }
                     },
+                    "automaticSizing": {
+                      "type": "boolean",
+                      "description": "Whether the session VM is sized automatically."
+                    },
                     "description": {
                       "type": [
                         "string",
@@ -23621,6 +23531,7 @@
                     "updatedAt",
                     "visibility",
                     "artifacts",
+                    "automaticSizing",
                     "description",
                     "diffSummary",
                     "htmlUrl",
@@ -23885,6 +23796,10 @@
                   "queueRightAway": {
                     "type": "boolean",
                     "description": "Whether to queue the initial task immediately instead of only creating the session."
+                  },
+                  "automaticSizing": {
+                    "type": "boolean",
+                    "description": "Size the VM automatically. Only for sessions created without a project (projectId \"tembo\")."
                   },
                   "sessionMode": {
                     "type": "string",
@@ -24297,6 +24212,10 @@
                         "additionalProperties": false
                       }
                     },
+                    "automaticSizing": {
+                      "type": "boolean",
+                      "description": "Whether the session VM is sized automatically."
+                    },
                     "description": {
                       "type": [
                         "string",
@@ -24541,6 +24460,7 @@
                     "updatedAt",
                     "visibility",
                     "artifacts",
+                    "automaticSizing",
                     "description",
                     "diffSummary",
                     "htmlUrl",
@@ -25100,6 +25020,10 @@
                         "additionalProperties": false
                       }
                     },
+                    "automaticSizing": {
+                      "type": "boolean",
+                      "description": "Whether the session VM is sized automatically."
+                    },
                     "description": {
                       "type": [
                         "string",
@@ -25344,6 +25268,7 @@
                     "updatedAt",
                     "visibility",
                     "artifacts",
+                    "automaticSizing",
                     "description",
                     "diffSummary",
                     "htmlUrl",
@@ -25507,7 +25432,7 @@
       "patch": {
         "operationId": "updateSession",
         "summary": "Update a session",
-        "description": "Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.",
+        "description": "Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.",
         "tags": [
           "Sessions"
         ],
@@ -25871,6 +25796,10 @@
                         "additionalProperties": false
                       }
                     },
+                    "automaticSizing": {
+                      "type": "boolean",
+                      "description": "Whether the session VM is sized automatically."
+                    },
                     "description": {
                       "type": [
                         "string",
@@ -26115,6 +26044,7 @@
                     "updatedAt",
                     "visibility",
                     "artifacts",
+                    "automaticSizing",
                     "description",
                     "diffSummary",
                     "htmlUrl",
@@ -26281,6 +26211,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "memoryMb": {
+                    "type": "integer",
+                    "multipleOf": 1024,
+                    "minimum": 1024,
+                    "maximum": 131072,
+                    "description": "Request in-place memory growth for a running adaptive sandbox, within project limits. Submit separately from other session changes. Returns the session while the resize runs asynchronously; sandbox metrics report its progress."
+                  },
                   "agent": {
                     "type": [
                       "string",
@@ -30445,14 +30382,6 @@
                             "minLength": 1,
                             "maxLength": 255
                           },
-                          "includeDeps": {
-                            "type": "boolean",
-                            "default": true
-                          },
-                          "includeSkills": {
-                            "type": "boolean",
-                            "default": true
-                          },
                           "name": {
                             "type": "string"
                           },
@@ -30501,6 +30430,105 @@
                               ],
                               "additionalProperties": false
                             }
+                          },
+                          "resourceSettings": {
+                            "oneOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "automaticSizing": {
+                                    "type": "boolean",
+                                    "const": true
+                                  },
+                                  "allocation": {
+                                    "type": "object",
+                                    "properties": {
+                                      "cpuMin": {
+                                        "type": "integer",
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "cpuMax": {
+                                        "type": "integer",
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "memoryMinMb": {
+                                        "type": "integer",
+                                        "multipleOf": 1024,
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "memoryMaxMb": {
+                                        "type": "integer",
+                                        "multipleOf": 1024,
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "diskSizeGb": {
+                                        "type": "integer",
+                                        "exclusiveMinimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "memoryMinMb",
+                                      "memoryMaxMb",
+                                      "diskSizeGb"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "automaticSizing"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "automaticSizing": {
+                                    "type": "boolean",
+                                    "const": false
+                                  },
+                                  "allocation": {
+                                    "type": "object",
+                                    "properties": {
+                                      "cpuMin": {
+                                        "type": "integer",
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "cpuMax": {
+                                        "type": "integer",
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "memoryMinMb": {
+                                        "type": "integer",
+                                        "multipleOf": 1024,
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "memoryMaxMb": {
+                                        "type": "integer",
+                                        "multipleOf": 1024,
+                                        "exclusiveMinimum": 0
+                                      },
+                                      "diskSizeGb": {
+                                        "type": "integer",
+                                        "exclusiveMinimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "memoryMinMb",
+                                      "memoryMaxMb",
+                                      "diskSizeGb"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                },
+                                "required": [
+                                  "automaticSizing"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           },
                           "agentInstructions": {
                             "type": [
@@ -30598,18 +30626,55 @@
                           },
                           "warmPoolEnabled": {
                             "type": "boolean"
+                          },
+                          "warmPoolSchedule": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "properties": {
+                              "timezone": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 100
+                              },
+                              "days": {
+                                "type": "array",
+                                "items": {
+                                  "type": "integer",
+                                  "minimum": 0,
+                                  "maximum": 6
+                                },
+                                "minItems": 1,
+                                "maxItems": 7
+                              },
+                              "startTime": {
+                                "type": "string",
+                                "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                              },
+                              "endTime": {
+                                "type": "string",
+                                "pattern": "^(?:([01]\\d|2[0-3]):[0-5]\\d|24:00)$"
+                              }
+                            },
+                            "required": [
+                              "timezone",
+                              "days",
+                              "startTime",
+                              "endTime"
+                            ],
+                            "additionalProperties": false
                           }
                         },
                         "required": [
                           "createdAt",
                           "description",
                           "id",
-                          "includeDeps",
-                          "includeSkills",
                           "name",
                           "setupScript",
                           "updatedAt",
                           "activeSnapshots",
+                          "resourceSettings",
                           "agentInstructions",
                           "codeRepositoryIds",
                           "color",
@@ -30617,7 +30682,8 @@
                           "icon",
                           "onboardingDefault",
                           "sizes",
-                          "warmPoolEnabled"
+                          "warmPoolEnabled",
+                          "warmPoolSchedule"
                         ],
                         "additionalProperties": false
                       }
@@ -30826,14 +30892,6 @@
                           "minLength": 1,
                           "maxLength": 255
                         },
-                        "includeDeps": {
-                          "type": "boolean",
-                          "default": true
-                        },
-                        "includeSkills": {
-                          "type": "boolean",
-                          "default": true
-                        },
                         "name": {
                           "type": "string"
                         },
@@ -30882,6 +30940,105 @@
                             ],
                             "additionalProperties": false
                           }
+                        },
+                        "resourceSettings": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "automaticSizing": {
+                                  "type": "boolean",
+                                  "const": true
+                                },
+                                "allocation": {
+                                  "type": "object",
+                                  "properties": {
+                                    "cpuMin": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "cpuMax": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMinMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMaxMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "diskSizeGb": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    }
+                                  },
+                                  "required": [
+                                    "memoryMinMb",
+                                    "memoryMaxMb",
+                                    "diskSizeGb"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "automaticSizing"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "automaticSizing": {
+                                  "type": "boolean",
+                                  "const": false
+                                },
+                                "allocation": {
+                                  "type": "object",
+                                  "properties": {
+                                    "cpuMin": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "cpuMax": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMinMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMaxMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "diskSizeGb": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    }
+                                  },
+                                  "required": [
+                                    "memoryMinMb",
+                                    "memoryMaxMb",
+                                    "diskSizeGb"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "automaticSizing"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         },
                         "agentInstructions": {
                           "type": [
@@ -30979,18 +31136,55 @@
                         },
                         "warmPoolEnabled": {
                           "type": "boolean"
+                        },
+                        "warmPoolSchedule": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "timezone": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            },
+                            "days": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 6
+                              },
+                              "minItems": 1,
+                              "maxItems": 7
+                            },
+                            "startTime": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            },
+                            "endTime": {
+                              "type": "string",
+                              "pattern": "^(?:([01]\\d|2[0-3]):[0-5]\\d|24:00)$"
+                            }
+                          },
+                          "required": [
+                            "timezone",
+                            "days",
+                            "startTime",
+                            "endTime"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "required": [
                         "createdAt",
                         "description",
                         "id",
-                        "includeDeps",
-                        "includeSkills",
                         "name",
                         "setupScript",
                         "updatedAt",
                         "activeSnapshots",
+                        "resourceSettings",
                         "agentInstructions",
                         "codeRepositoryIds",
                         "color",
@@ -30998,7 +31192,8 @@
                         "icon",
                         "onboardingDefault",
                         "sizes",
-                        "warmPoolEnabled"
+                        "warmPoolEnabled",
+                        "warmPoolSchedule"
                       ],
                       "additionalProperties": false
                     }
@@ -31123,14 +31318,6 @@
                     "maxLength": 300,
                     "description": "Short project description, or null to clear it."
                   },
-                  "includeDeps": {
-                    "type": "boolean",
-                    "description": "Include project dependencies when building the environment. Defaults to true on creation."
-                  },
-                  "includeSkills": {
-                    "type": "boolean",
-                    "description": "Include skills in the project environment. Defaults to true on creation."
-                  },
                   "name": {
                     "type": "string",
                     "minLength": 1,
@@ -31208,6 +31395,14 @@
                     ],
                     "description": "Project display icon."
                   },
+                  "includeDeps": {
+                    "type": "boolean",
+                    "description": "Deprecated and ignored. Project builds always install dependencies."
+                  },
+                  "includeSkills": {
+                    "type": "boolean",
+                    "description": "Deprecated and ignored. Project builds always include skills."
+                  },
                   "onboardingDefault": {
                     "type": "boolean",
                     "description": "Make this project the onboarding default for the organization."
@@ -31253,12 +31448,113 @@
                       ]
                     },
                     "minItems": 1,
+                    "default": [
+                      "medium"
+                    ],
                     "description": "Workspace VM sizes to build for this project."
+                  },
+                  "resourceSettings": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "automaticSizing": {
+                            "type": "boolean",
+                            "const": true
+                          },
+                          "allocation": {
+                            "type": "object",
+                            "properties": {
+                              "cpuMin": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "cpuMax": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMinMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMaxMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "diskSizeGb": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": [
+                              "memoryMinMb",
+                              "memoryMaxMb",
+                              "diskSizeGb"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "automaticSizing"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "automaticSizing": {
+                            "type": "boolean",
+                            "const": false
+                          },
+                          "allocation": {
+                            "type": "object",
+                            "properties": {
+                              "cpuMin": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "cpuMax": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMinMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMaxMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "diskSizeGb": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": [
+                              "memoryMinMb",
+                              "memoryMaxMb",
+                              "diskSizeGb"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "automaticSizing"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ],
+                    "default": {
+                      "automaticSizing": false
+                    }
                   }
                 },
                 "required": [
-                  "name",
-                  "sizes"
+                  "name"
                 ],
                 "additionalProperties": false
               }
@@ -31302,14 +31598,6 @@
                       "type": "string",
                       "minLength": 1,
                       "maxLength": 255
-                    },
-                    "includeDeps": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "includeSkills": {
-                      "type": "boolean",
-                      "default": true
                     },
                     "name": {
                       "type": "string"
@@ -31359,6 +31647,105 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "resourceSettings": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "automaticSizing": {
+                              "type": "boolean",
+                              "const": true
+                            },
+                            "allocation": {
+                              "type": "object",
+                              "properties": {
+                                "cpuMin": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "cpuMax": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMinMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMaxMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "diskSizeGb": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                }
+                              },
+                              "required": [
+                                "memoryMinMb",
+                                "memoryMaxMb",
+                                "diskSizeGb"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "automaticSizing"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "automaticSizing": {
+                              "type": "boolean",
+                              "const": false
+                            },
+                            "allocation": {
+                              "type": "object",
+                              "properties": {
+                                "cpuMin": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "cpuMax": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMinMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMaxMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "diskSizeGb": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                }
+                              },
+                              "required": [
+                                "memoryMinMb",
+                                "memoryMaxMb",
+                                "diskSizeGb"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "automaticSizing"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "agentInstructions": {
                       "type": [
@@ -31456,18 +31843,55 @@
                     },
                     "warmPoolEnabled": {
                       "type": "boolean"
+                    },
+                    "warmPoolSchedule": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "timezone": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "days": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 6
+                          },
+                          "minItems": 1,
+                          "maxItems": 7
+                        },
+                        "startTime": {
+                          "type": "string",
+                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                        },
+                        "endTime": {
+                          "type": "string",
+                          "pattern": "^(?:([01]\\d|2[0-3]):[0-5]\\d|24:00)$"
+                        }
+                      },
+                      "required": [
+                        "timezone",
+                        "days",
+                        "startTime",
+                        "endTime"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": [
                     "createdAt",
                     "description",
                     "id",
-                    "includeDeps",
-                    "includeSkills",
                     "name",
                     "setupScript",
                     "updatedAt",
                     "activeSnapshots",
+                    "resourceSettings",
                     "agentInstructions",
                     "codeRepositoryIds",
                     "color",
@@ -31475,7 +31899,8 @@
                     "icon",
                     "onboardingDefault",
                     "sizes",
-                    "warmPoolEnabled"
+                    "warmPoolEnabled",
+                    "warmPoolSchedule"
                   ],
                   "additionalProperties": false
                 }
@@ -31626,14 +32051,6 @@
                       "minLength": 1,
                       "maxLength": 255
                     },
-                    "includeDeps": {
-                      "type": "boolean",
-                      "default": true
-                    },
-                    "includeSkills": {
-                      "type": "boolean",
-                      "default": true
-                    },
                     "name": {
                       "type": "string"
                     },
@@ -31682,6 +32099,105 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "resourceSettings": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "automaticSizing": {
+                              "type": "boolean",
+                              "const": true
+                            },
+                            "allocation": {
+                              "type": "object",
+                              "properties": {
+                                "cpuMin": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "cpuMax": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMinMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMaxMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "diskSizeGb": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                }
+                              },
+                              "required": [
+                                "memoryMinMb",
+                                "memoryMaxMb",
+                                "diskSizeGb"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "automaticSizing"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "automaticSizing": {
+                              "type": "boolean",
+                              "const": false
+                            },
+                            "allocation": {
+                              "type": "object",
+                              "properties": {
+                                "cpuMin": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "cpuMax": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMinMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "memoryMaxMb": {
+                                  "type": "integer",
+                                  "multipleOf": 1024,
+                                  "exclusiveMinimum": 0
+                                },
+                                "diskSizeGb": {
+                                  "type": "integer",
+                                  "exclusiveMinimum": 0
+                                }
+                              },
+                              "required": [
+                                "memoryMinMb",
+                                "memoryMaxMb",
+                                "diskSizeGb"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "automaticSizing"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "agentInstructions": {
                       "type": [
@@ -31779,18 +32295,55 @@
                     },
                     "warmPoolEnabled": {
                       "type": "boolean"
+                    },
+                    "warmPoolSchedule": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "timezone": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 100
+                        },
+                        "days": {
+                          "type": "array",
+                          "items": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 6
+                          },
+                          "minItems": 1,
+                          "maxItems": 7
+                        },
+                        "startTime": {
+                          "type": "string",
+                          "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                        },
+                        "endTime": {
+                          "type": "string",
+                          "pattern": "^(?:([01]\\d|2[0-3]):[0-5]\\d|24:00)$"
+                        }
+                      },
+                      "required": [
+                        "timezone",
+                        "days",
+                        "startTime",
+                        "endTime"
+                      ],
+                      "additionalProperties": false
                     }
                   },
                   "required": [
                     "createdAt",
                     "description",
                     "id",
-                    "includeDeps",
-                    "includeSkills",
                     "name",
                     "setupScript",
                     "updatedAt",
                     "activeSnapshots",
+                    "resourceSettings",
                     "agentInstructions",
                     "codeRepositoryIds",
                     "color",
@@ -31798,7 +32351,8 @@
                     "icon",
                     "onboardingDefault",
                     "sizes",
-                    "warmPoolEnabled"
+                    "warmPoolEnabled",
+                    "warmPoolSchedule"
                   ],
                   "additionalProperties": false
                 }
@@ -31928,14 +32482,6 @@
                     "maxLength": 300,
                     "description": "Short project description, or null to clear it."
                   },
-                  "includeDeps": {
-                    "type": "boolean",
-                    "description": "Include project dependencies when building the environment. Defaults to true on creation."
-                  },
-                  "includeSkills": {
-                    "type": "boolean",
-                    "description": "Include skills in the project environment. Defaults to true on creation."
-                  },
                   "name": {
                     "type": "string",
                     "minLength": 1,
@@ -32013,6 +32559,113 @@
                     ],
                     "description": "Project display icon."
                   },
+                  "includeDeps": {
+                    "type": "boolean",
+                    "description": "Deprecated and ignored. Project builds always install dependencies."
+                  },
+                  "includeSkills": {
+                    "type": "boolean",
+                    "description": "Deprecated and ignored. Project builds always include skills."
+                  },
+                  "resourceSettings": {
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "automaticSizing": {
+                            "type": "boolean",
+                            "const": true
+                          },
+                          "allocation": {
+                            "type": "object",
+                            "properties": {
+                              "cpuMin": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "cpuMax": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMinMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMaxMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "diskSizeGb": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": [
+                              "memoryMinMb",
+                              "memoryMaxMb",
+                              "diskSizeGb"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "automaticSizing"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "automaticSizing": {
+                            "type": "boolean",
+                            "const": false
+                          },
+                          "allocation": {
+                            "type": "object",
+                            "properties": {
+                              "cpuMin": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "cpuMax": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMinMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "memoryMaxMb": {
+                                "type": "integer",
+                                "multipleOf": 1024,
+                                "exclusiveMinimum": 0
+                              },
+                              "diskSizeGb": {
+                                "type": "integer",
+                                "exclusiveMinimum": 0
+                              }
+                            },
+                            "required": [
+                              "memoryMinMb",
+                              "memoryMaxMb",
+                              "diskSizeGb"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "automaticSizing"
+                        ],
+                        "additionalProperties": false
+                      }
+                    ],
+                    "default": {
+                      "automaticSizing": false
+                    }
+                  },
                   "defaultForSizes": {
                     "type": "array",
                     "items": {
@@ -32083,6 +32736,45 @@
                     },
                     "minItems": 1,
                     "description": "Replace the workspace VM sizes built for this project."
+                  },
+                  "warmPoolSchedule": {
+                    "type": [
+                      "object",
+                      "null"
+                    ],
+                    "properties": {
+                      "timezone": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 100
+                      },
+                      "days": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 6
+                        },
+                        "minItems": 1,
+                        "maxItems": 7
+                      },
+                      "startTime": {
+                        "type": "string",
+                        "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                      },
+                      "endTime": {
+                        "type": "string",
+                        "pattern": "^(?:([01]\\d|2[0-3]):[0-5]\\d|24:00)$"
+                      }
+                    },
+                    "required": [
+                      "timezone",
+                      "days",
+                      "startTime",
+                      "endTime"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Weekly availability for prewarmed VMs. Null means always on; days use 0=Sunday. Overnight windows end the following day."
                   },
                   "warmPoolEnabled": {
                     "type": "boolean",
@@ -32291,14 +32983,6 @@
                           "minLength": 1,
                           "maxLength": 255
                         },
-                        "includeDeps": {
-                          "type": "boolean",
-                          "default": true
-                        },
-                        "includeSkills": {
-                          "type": "boolean",
-                          "default": true
-                        },
                         "name": {
                           "type": "string"
                         },
@@ -32347,6 +33031,105 @@
                             ],
                             "additionalProperties": false
                           }
+                        },
+                        "resourceSettings": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "automaticSizing": {
+                                  "type": "boolean",
+                                  "const": true
+                                },
+                                "allocation": {
+                                  "type": "object",
+                                  "properties": {
+                                    "cpuMin": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "cpuMax": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMinMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMaxMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "diskSizeGb": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    }
+                                  },
+                                  "required": [
+                                    "memoryMinMb",
+                                    "memoryMaxMb",
+                                    "diskSizeGb"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "automaticSizing"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "automaticSizing": {
+                                  "type": "boolean",
+                                  "const": false
+                                },
+                                "allocation": {
+                                  "type": "object",
+                                  "properties": {
+                                    "cpuMin": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "cpuMax": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMinMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "memoryMaxMb": {
+                                      "type": "integer",
+                                      "multipleOf": 1024,
+                                      "exclusiveMinimum": 0
+                                    },
+                                    "diskSizeGb": {
+                                      "type": "integer",
+                                      "exclusiveMinimum": 0
+                                    }
+                                  },
+                                  "required": [
+                                    "memoryMinMb",
+                                    "memoryMaxMb",
+                                    "diskSizeGb"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "automaticSizing"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         },
                         "agentInstructions": {
                           "type": [
@@ -32444,18 +33227,55 @@
                         },
                         "warmPoolEnabled": {
                           "type": "boolean"
+                        },
+                        "warmPoolSchedule": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "timezone": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 100
+                            },
+                            "days": {
+                              "type": "array",
+                              "items": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 6
+                              },
+                              "minItems": 1,
+                              "maxItems": 7
+                            },
+                            "startTime": {
+                              "type": "string",
+                              "pattern": "^([01]\\d|2[0-3]):[0-5]\\d$"
+                            },
+                            "endTime": {
+                              "type": "string",
+                              "pattern": "^(?:([01]\\d|2[0-3]):[0-5]\\d|24:00)$"
+                            }
+                          },
+                          "required": [
+                            "timezone",
+                            "days",
+                            "startTime",
+                            "endTime"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "required": [
                         "createdAt",
                         "description",
                         "id",
-                        "includeDeps",
-                        "includeSkills",
                         "name",
                         "setupScript",
                         "updatedAt",
                         "activeSnapshots",
+                        "resourceSettings",
                         "agentInstructions",
                         "codeRepositoryIds",
                         "color",
@@ -32463,7 +33283,8 @@
                         "icon",
                         "onboardingDefault",
                         "sizes",
-                        "warmPoolEnabled"
+                        "warmPoolEnabled",
+                        "warmPoolSchedule"
                       ],
                       "additionalProperties": false
                     }
@@ -33153,6 +33974,9 @@
                             "type": "string",
                             "format": "date-time"
                           },
+                          "automaticSizing": {
+                            "type": "boolean"
+                          },
                           "buildDurationMs": {
                             "type": [
                               "number",
@@ -33174,25 +33998,20 @@
                             ],
                             "exclusiveMinimum": 0
                           },
+                          "diskSizeGb": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "exclusiveMinimum": 0
+                          },
                           "hasSetupScript": {
                             "type": [
                               "boolean",
                               "null"
                             ]
                           },
-                          "includesDeps": {
-                            "type": [
-                              "boolean",
-                              "null"
-                            ]
-                          },
                           "includesRepos": {
-                            "type": [
-                              "boolean",
-                              "null"
-                            ]
-                          },
-                          "includesSkills": {
                             "type": [
                               "boolean",
                               "null"
@@ -33288,13 +34107,13 @@
                           "name",
                           "pinnedAt",
                           "updatedAt",
+                          "automaticSizing",
                           "buildDurationMs",
                           "builtAt",
                           "cpu",
+                          "diskSizeGb",
                           "hasSetupScript",
-                          "includesDeps",
                           "includesRepos",
-                          "includesSkills",
                           "isKvm",
                           "memoryMb",
                           "projectId",
@@ -33507,6 +34326,9 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "automaticSizing": {
+                      "type": "boolean"
+                    },
                     "buildDurationMs": {
                       "type": [
                         "number",
@@ -33528,25 +34350,20 @@
                       ],
                       "exclusiveMinimum": 0
                     },
+                    "diskSizeGb": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "exclusiveMinimum": 0
+                    },
                     "hasSetupScript": {
                       "type": [
                         "boolean",
                         "null"
                       ]
                     },
-                    "includesDeps": {
-                      "type": [
-                        "boolean",
-                        "null"
-                      ]
-                    },
                     "includesRepos": {
-                      "type": [
-                        "boolean",
-                        "null"
-                      ]
-                    },
-                    "includesSkills": {
                       "type": [
                         "boolean",
                         "null"
@@ -33642,13 +34459,13 @@
                     "name",
                     "pinnedAt",
                     "updatedAt",
+                    "automaticSizing",
                     "buildDurationMs",
                     "builtAt",
                     "cpu",
+                    "diskSizeGb",
                     "hasSetupScript",
-                    "includesDeps",
                     "includesRepos",
-                    "includesSkills",
                     "isKvm",
                     "memoryMb",
                     "projectId",
@@ -33832,6 +34649,9 @@
                       "type": "string",
                       "format": "date-time"
                     },
+                    "automaticSizing": {
+                      "type": "boolean"
+                    },
                     "buildDurationMs": {
                       "type": [
                         "number",
@@ -33853,25 +34673,20 @@
                       ],
                       "exclusiveMinimum": 0
                     },
+                    "diskSizeGb": {
+                      "type": [
+                        "number",
+                        "null"
+                      ],
+                      "exclusiveMinimum": 0
+                    },
                     "hasSetupScript": {
                       "type": [
                         "boolean",
                         "null"
                       ]
                     },
-                    "includesDeps": {
-                      "type": [
-                        "boolean",
-                        "null"
-                      ]
-                    },
                     "includesRepos": {
-                      "type": [
-                        "boolean",
-                        "null"
-                      ]
-                    },
-                    "includesSkills": {
                       "type": [
                         "boolean",
                         "null"
@@ -33967,13 +34782,13 @@
                     "name",
                     "pinnedAt",
                     "updatedAt",
+                    "automaticSizing",
                     "buildDurationMs",
                     "builtAt",
                     "cpu",
+                    "diskSizeGb",
                     "hasSetupScript",
-                    "includesDeps",
                     "includesRepos",
-                    "includesSkills",
                     "isKvm",
                     "memoryMb",
                     "projectId",
@@ -34332,6 +35147,9 @@
                             "minLength": 1,
                             "maxLength": 255
                           },
+                          "automaticSizing": {
+                            "type": "boolean"
+                          },
                           "completedAt": {
                             "type": [
                               "string",
@@ -34351,12 +35169,6 @@
                               "string",
                               "null"
                             ]
-                          },
-                          "includeDeps": {
-                            "type": "boolean"
-                          },
-                          "includeSkills": {
-                            "type": "boolean"
                           },
                           "name": {
                             "type": [
@@ -34470,11 +35282,10 @@
                         "required": [
                           "createdAt",
                           "id",
+                          "automaticSizing",
                           "completedAt",
                           "durationMs",
                           "failure",
-                          "includeDeps",
-                          "includeSkills",
                           "name",
                           "progress",
                           "projectId",
@@ -34850,6 +35661,9 @@
                       "minLength": 1,
                       "maxLength": 255
                     },
+                    "automaticSizing": {
+                      "type": "boolean"
+                    },
                     "completedAt": {
                       "type": [
                         "string",
@@ -34869,12 +35683,6 @@
                         "string",
                         "null"
                       ]
-                    },
-                    "includeDeps": {
-                      "type": "boolean"
-                    },
-                    "includeSkills": {
-                      "type": "boolean"
                     },
                     "name": {
                       "type": [
@@ -34988,11 +35796,10 @@
                   "required": [
                     "createdAt",
                     "id",
+                    "automaticSizing",
                     "completedAt",
                     "durationMs",
                     "failure",
-                    "includeDeps",
-                    "includeSkills",
                     "name",
                     "progress",
                     "projectId",
@@ -50654,7 +51461,7 @@
       "get": {
         "operationId": "listBillingUsage",
         "summary": "List billing usage",
-        "description": "List session usage with cursor pagination.",
+        "description": "List session usage by default, or include warm pool compute with the type filter. Uses cursor pagination.",
         "tags": [
           "Billing"
         ],
@@ -50674,53 +51481,118 @@
                     "items": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "agent": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "agent": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "title": {
+                                "type": "string"
+                              },
+                              "kind": {
+                                "type": "string"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "managedInferenceCredits": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "computeCredits": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "totalCredits": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "type": {
+                                "type": "string",
+                                "const": "session"
+                              }
+                            },
+                            "required": [
+                              "agent",
+                              "id",
+                              "title",
+                              "kind",
+                              "createdAt",
+                              "managedInferenceCredits",
+                              "computeCredits",
+                              "totalCredits",
+                              "type"
+                            ],
+                            "additionalProperties": false
                           },
-                          "id": {
-                            "type": "string",
-                            "minLength": 1,
-                            "maxLength": 255
-                          },
-                          "title": {
-                            "type": "string"
-                          },
-                          "kind": {
-                            "type": "string"
-                          },
-                          "createdAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "managedInferenceCredits": {
-                            "type": "number",
-                            "minimum": 0
-                          },
-                          "computeCredits": {
-                            "type": "number",
-                            "minimum": 0
-                          },
-                          "totalCredits": {
-                            "type": "number",
-                            "minimum": 0
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "virtualMachineId": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "startedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "endedAt": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "format": "date-time"
+                              },
+                              "runtimeMs": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "cpu": {
+                                "type": "number"
+                              },
+                              "memoryMb": {
+                                "type": "number"
+                              },
+                              "computeCredits": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "type": {
+                                "type": "string",
+                                "const": "warm-pool"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "virtualMachineId",
+                              "startedAt",
+                              "endedAt",
+                              "runtimeMs",
+                              "cpu",
+                              "memoryMb",
+                              "computeCredits",
+                              "type"
+                            ],
+                            "additionalProperties": false
                           }
-                        },
-                        "required": [
-                          "agent",
-                          "id",
-                          "title",
-                          "kind",
-                          "createdAt",
-                          "managedInferenceCredits",
-                          "computeCredits",
-                          "totalCredits"
-                        ],
-                        "additionalProperties": false
+                        ]
                       },
                       "maxItems": 100
                     },
@@ -50729,8 +51601,7 @@
                         "string",
                         "null"
                       ],
-                      "minLength": 1,
-                      "maxLength": 255
+                      "maxLength": 2048
                     },
                     "asOf": {
                       "type": "string",
@@ -50850,7 +51721,7 @@
             "schema": {
               "type": "string",
               "minLength": 1,
-              "maxLength": 255
+              "maxLength": 2048
             },
             "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
@@ -50864,6 +51735,19 @@
               "default": 50
             },
             "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "all",
+                "sessions",
+                "warm-pool"
+              ]
+            },
+            "description": "Usage types to include. Defaults to sessions for backwards compatibility."
           },
           {
             "in": "query",
@@ -50882,7 +51766,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "Only sessions created at or after this ISO 8601 timestamp."
+            "description": "Include sessions created or warm pool runtime at or after this ISO 8601 timestamp."
           },
           {
             "in": "query",
@@ -50891,7 +51775,7 @@
               "type": "string",
               "format": "date-time"
             },
-            "description": "Only sessions created before this ISO 8601 timestamp."
+            "description": "Include sessions created or warm pool runtime before this ISO 8601 timestamp."
           },
           {
             "in": "query",
