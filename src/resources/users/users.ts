@@ -21,6 +21,15 @@ import {
 } from './connected-accounts';
 import * as SubscriptionsAPI from './subscriptions';
 import { Subscriptions, type SubscriptionRetrieveResponse } from './subscriptions';
+import * as EnvironmentVariablesAPI from './environment-variables';
+import {
+  EnvironmentVariables,
+  type EnvironmentVariableListResponse,
+  type EnvironmentVariableCreateResponse,
+  type EnvironmentVariableDeleteResponse,
+  type EnvironmentVariableCreateParams,
+  type EnvironmentVariableDeleteParams,
+} from './environment-variables';
 import * as ProfilePictureAPI from './profile-picture';
 import {
   ProfilePicture,
@@ -35,6 +44,8 @@ export class Users extends APIResource {
     this._client,
   );
   subscriptions: SubscriptionsAPI.Subscriptions = new SubscriptionsAPI.Subscriptions(this._client);
+  environmentVariables: EnvironmentVariablesAPI.EnvironmentVariables =
+    new EnvironmentVariablesAPI.EnvironmentVariables(this._client);
   profilePicture: ProfilePictureAPI.ProfilePicture = new ProfilePictureAPI.ProfilePicture(this._client);
 
   /**
@@ -111,6 +122,7 @@ export interface UserRetrieveResponse {
 Users.Settings = Settings;
 Users.ConnectedAccounts = ConnectedAccounts;
 Users.Subscriptions = Subscriptions;
+Users.EnvironmentVariables = EnvironmentVariables;
 Users.ProfilePicture = ProfilePicture;
 
 export declare namespace Users {
@@ -134,6 +146,15 @@ export declare namespace Users {
   export {
     Subscriptions as Subscriptions,
     type SubscriptionRetrieveResponse as SubscriptionRetrieveResponse,
+  };
+
+  export {
+    EnvironmentVariables as EnvironmentVariables,
+    type EnvironmentVariableListResponse as EnvironmentVariableListResponse,
+    type EnvironmentVariableCreateResponse as EnvironmentVariableCreateResponse,
+    type EnvironmentVariableDeleteResponse as EnvironmentVariableDeleteResponse,
+    type EnvironmentVariableCreateParams as EnvironmentVariableCreateParams,
+    type EnvironmentVariableDeleteParams as EnvironmentVariableDeleteParams,
   };
 
   export {

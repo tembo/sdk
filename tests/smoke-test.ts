@@ -1152,6 +1152,41 @@ const cases: {
   },
 
   {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/users/{userId}/environment-variables',
+    run: async () => {
+      const environmentVariable = await client.users.environmentVariables.list('userId');
+    },
+  },
+
+  {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/users/{userId}/environment-variables',
+    run: async () => {
+      const environmentVariable = await client.users.environmentVariables.create('userId', {
+        key: 'x',
+        value: 'x',
+      });
+    },
+  },
+
+  {
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/users/{userId}/environment-variables/{environmentVariableId}',
+    run: async () => {
+      const environmentVariable = await client.users.environmentVariables.delete(
+        '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        {
+          userId: 'userId',
+        },
+      );
+    },
+  },
+
+  {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/users/{userId}/profile-picture',

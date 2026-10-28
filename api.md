@@ -82,6 +82,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
   - [`Users Subscriptions`](#users-subscriptions)
     - [Retrieve user subscriptions](#retrieve-user-subscriptions)
+  - [`Users EnvironmentVariables`](#users-environmentvariables)
+    - [List personal environment variables](#list-personal-environment-variables)
+    - [Create a personal environment variable](#create-a-personal-environment-variable)
+    - [Delete a personal environment variable](#delete-a-personal-environment-variable)
   - [`Users ProfilePicture`](#users-profilepicture)
     - [Retrieve a user profile picture](#retrieve-a-user-profile-picture)
     - [Update your profile picture](#update-your-profile-picture)
@@ -1100,6 +1104,54 @@ Retrieve connection statuses and available ChatGPT and Claude usage. Provider us
 
 ```ts
 const subscription = await client.users.subscriptions.retrieve('userId');
+```
+
+### `Users EnvironmentVariables`
+
+#### List personal environment variables
+
+List your personal environment variables in the current organization. Values are never returned.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`EnvironmentVariableListResponse`](./src/resources/users/environment-variables.ts) |
+
+```ts
+const environmentVariable = await client.users.environmentVariables.list('userId');
+```
+
+#### Create a personal environment variable
+
+Store an encrypted environment variable that is injected into every session you start in the current organization.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`EnvironmentVariableCreateParams`](./src/resources/users/environment-variables.ts) |
+| Response | [`EnvironmentVariableCreateResponse`](./src/resources/users/environment-variables.ts) |
+
+```ts
+const environmentVariable = await client.users.environmentVariables.create('userId', {
+  key: 'x',
+  value: 'x',
+});
+```
+
+#### Delete a personal environment variable
+
+Permanently delete a personal environment variable. Sessions started afterwards no longer receive it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`EnvironmentVariableDeleteParams`](./src/resources/users/environment-variables.ts) |
+| Response | [`EnvironmentVariableDeleteResponse`](./src/resources/users/environment-variables.ts) |
+
+```ts
+const environmentVariable = await client.users.environmentVariables.delete(
+  '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+  {
+    userId: 'userId',
+  },
+);
 ```
 
 ### `Users ProfilePicture`
