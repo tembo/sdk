@@ -98,8 +98,6 @@ export type {
   RuntimeListResponse,
   UserMeResponse,
   UserRetrieveResponse,
-  UserDeleteParams,
-  UserDeleteResponse,
   SessionEventData,
   SessionDocumentNode,
   SessionListParams,

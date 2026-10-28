@@ -44,8 +44,4 @@ export type {
   SettingValidateCredentialsResponse,
 } from './settings';
 export { Subscriptions } from './subscriptions';
-export type {
-  SubscriptionRetrieveResponse,
-  SubscriptionResetParams,
-  SubscriptionResetResponse,
-} from './subscriptions';
+export type { SubscriptionRetrieveResponse } from './subscriptions';

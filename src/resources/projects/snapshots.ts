@@ -151,6 +151,7 @@ export namespace SnapshotListResponse {
      * @format date-time
      */
     updatedAt: string;
+    automaticSizing: boolean;
     /**
      * @minimum 0
      */
@@ -163,10 +164,12 @@ export namespace SnapshotListResponse {
      * @exclusiveMinimum 0
      */
     cpu: number | null;
+    /**
+     * @exclusiveMinimum 0
+     */
+    diskSizeGb: number | null;
     hasSetupScript: boolean | null;
-    includesDeps: boolean | null;
     includesRepos: boolean | null;
-    includesSkills: boolean | null;
     isKvm: boolean | null;
     /**
      * @exclusiveMinimum 0
@@ -224,6 +227,7 @@ export interface SnapshotRetrieveResponse {
    * @format date-time
    */
   updatedAt: string;
+  automaticSizing: boolean;
   /**
    * @minimum 0
    */
@@ -236,10 +240,12 @@ export interface SnapshotRetrieveResponse {
    * @exclusiveMinimum 0
    */
   cpu: number | null;
+  /**
+   * @exclusiveMinimum 0
+   */
+  diskSizeGb: number | null;
   hasSetupScript: boolean | null;
-  includesDeps: boolean | null;
   includesRepos: boolean | null;
-  includesSkills: boolean | null;
   isKvm: boolean | null;
   /**
    * @exclusiveMinimum 0
@@ -306,6 +312,7 @@ export interface SnapshotUpdateResponse {
    * @format date-time
    */
   updatedAt: string;
+  automaticSizing: boolean;
   /**
    * @minimum 0
    */
@@ -318,10 +325,12 @@ export interface SnapshotUpdateResponse {
    * @exclusiveMinimum 0
    */
   cpu: number | null;
+  /**
+   * @exclusiveMinimum 0
+   */
+  diskSizeGb: number | null;
   hasSetupScript: boolean | null;
-  includesDeps: boolean | null;
   includesRepos: boolean | null;
-  includesSkills: boolean | null;
   isKvm: boolean | null;
   /**
    * @exclusiveMinimum 0

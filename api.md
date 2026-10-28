@@ -47,7 +47,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Validate organization provider credentials](#validate-organization-provider-credentials)
   - [`Organizations Subscriptions`](#organizations-subscriptions)
     - [Retrieve organization subscriptions](#retrieve-organization-subscriptions)
-    - [Reset organization subscription usage](#reset-organization-subscription-usage)
 - [`McpConnections`](#mcpconnections)
   - [List MCP connections](#list-mcp-connections)
   - [Create an MCP connection](#create-an-mcp-connection)
@@ -75,7 +74,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Users`](#users)
   - [Retrieve the current user](#retrieve-the-current-user)
   - [Retrieve a user](#retrieve-a-user)
-  - [Delete a user](#delete-a-user)
   - [`Users Settings`](#users-settings)
     - [Retrieve user settings](#retrieve-user-settings)
     - [Update user settings](#update-user-settings)
@@ -84,7 +82,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve a user connected account](#retrieve-a-user-connected-account)
   - [`Users Subscriptions`](#users-subscriptions)
     - [Retrieve user subscriptions](#retrieve-user-subscriptions)
-    - [Reset user subscription usage](#reset-user-subscription-usage)
   - [`Users ProfilePicture`](#users-profilepicture)
     - [Retrieve a user profile picture](#retrieve-a-user-profile-picture)
     - [Update your profile picture](#update-your-profile-picture)
@@ -729,22 +726,6 @@ Retrieve connection statuses and available ChatGPT and Claude usage. Provider us
 const subscription = await client.organizations.subscriptions.retrieve('organizationId');
 ```
 
-#### Reset organization subscription usage
-
-Redeem an earned ChatGPT rate-limit reset.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`SubscriptionResetParams`](./src/resources/organizations/subscriptions.ts) |
-| Response | [`SubscriptionResetResponse`](./src/resources/organizations/subscriptions.ts) |
-
-```ts
-const subscription = await client.organizations.subscriptions.reset('organizationId', {
-  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-  provider: 'chatgpt',
-});
-```
-
 ## `McpConnections`
 
 ### List MCP connections
@@ -1048,19 +1029,6 @@ Retrieve a user profile visible to the caller.
 const user = await client.users.retrieve('userId');
 ```
 
-### Delete a user
-
-Queue permanent deletion of your user account.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`UserDeleteParams`](./src/resources/users/users.ts) |
-| Response | [`UserDeleteResponse`](./src/resources/users/users.ts) |
-
-```ts
-const user = await client.users.delete('userId', {});
-```
-
 ### `Users Settings`
 
 #### Retrieve user settings
@@ -1132,22 +1100,6 @@ Retrieve connection statuses and available ChatGPT and Claude usage. Provider us
 
 ```ts
 const subscription = await client.users.subscriptions.retrieve('userId');
-```
-
-#### Reset user subscription usage
-
-Redeem an earned ChatGPT rate-limit reset.
-
-| Direction | Type |
-| --- | --- |
-| Request | [`SubscriptionResetParams`](./src/resources/users/subscriptions.ts) |
-| Response | [`SubscriptionResetResponse`](./src/resources/users/subscriptions.ts) |
-
-```ts
-const subscription = await client.users.subscriptions.reset('userId', {
-  idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-  provider: 'chatgpt',
-});
 ```
 
 ### `Users ProfilePicture`
@@ -1244,7 +1196,7 @@ const session = await client.sessions.retrieve('7c9e6679-7425-40de-944b-e07fc1f9
 
 ### Update a session
 
-Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions.
+Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.
 
 | Direction | Type |
 | --- | --- |
@@ -1478,7 +1430,8 @@ Create a reusable project environment.
 ```ts
 const project = await client.projects.create({
   name: 'x',
-  sizes: ['nano'],
+  sizes: ['medium'],
+  resourceSettings: { automaticSizing: false },
 });
 ```
 
@@ -1504,7 +1457,9 @@ Update project repositories, setup script, agent instructions, environment varia
 | Response | [`ProjectUpdateResponse`](./src/resources/projects/projects.ts) |
 
 ```ts
-const project = await client.projects.update('projectId', {});
+const project = await client.projects.update('projectId', {
+  resourceSettings: { automaticSizing: false },
+});
 ```
 
 ### Delete a project
@@ -2551,7 +2506,7 @@ const billing = await client.billing.retrieve();
 
 ### List billing usage
 
-List session usage with cursor pagination.
+List session usage by default, or include warm pool compute with the type filter. Uses cursor pagination.
 
 | Direction | Type |
 | --- | --- |

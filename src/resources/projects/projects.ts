@@ -113,7 +113,8 @@ export class Projects extends APIResource {
    * ```ts
    * const project = await client.projects.create({
    *   name: 'x',
-   *   sizes: ['nano'],
+   *   sizes: ['medium'],
+   *   resourceSettings: { automaticSizing: false },
    * });
    * ```
    */
@@ -147,7 +148,9 @@ export class Projects extends APIResource {
    *
    * @example
    * ```ts
-   * const project = await client.projects.update('projectId', {});
+   * const project = await client.projects.update('projectId', {
+   *   resourceSettings: { automaticSizing: false },
+   * });
    * ```
    */
   update(
@@ -265,8 +268,6 @@ export namespace ProjectListResponse {
      * @maxLength 255
      */
     id: string;
-    includeDeps: boolean;
-    includeSkills: boolean;
     name: string;
     setupScript: string | null;
     /**
@@ -274,6 +275,7 @@ export namespace ProjectListResponse {
      */
     updatedAt: string;
     activeSnapshots: Array<Item.ActiveSnapshot>;
+    resourceSettings: Item.ResourceSettings | Item.ResourceSettings2 | null;
     /**
      * @maxLength 20000
      */
@@ -310,6 +312,7 @@ export namespace ProjectListResponse {
     onboardingDefault: boolean;
     sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
     warmPoolEnabled: boolean;
+    warmPoolSchedule: Item.WarmPoolSchedule | null;
   }
 
   export namespace Item {
@@ -325,6 +328,91 @@ export namespace ProjectListResponse {
        */
       builtAt: string;
     }
+
+    export interface ResourceSettings {
+      automaticSizing: true;
+      allocation?: ResourceSettings.Allocation;
+    }
+
+    export namespace ResourceSettings {
+      export interface Allocation {
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMinMb: number;
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMaxMb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        diskSizeGb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMin?: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMax?: number;
+      }
+    }
+
+    export interface ResourceSettings2 {
+      automaticSizing: false;
+      allocation?: ResourceSettings2.Allocation;
+    }
+
+    export namespace ResourceSettings2 {
+      export interface Allocation {
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMinMb: number;
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMaxMb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        diskSizeGb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMin?: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMax?: number;
+      }
+    }
+
+    export interface WarmPoolSchedule {
+      /**
+       * @minLength 1
+       * @maxLength 100
+       */
+      timezone: string;
+      /**
+       * @minItems 1
+       * @maxItems 7
+       */
+      days: Array<number>;
+      /**
+       * @pattern ^([01]\d|2[0-3]):[0-5]\d$
+       */
+      startTime: string;
+      /**
+       * @pattern ^(?:([01]\d|2[0-3]):[0-5]\d|24:00)$
+       */
+      endTime: string;
+    }
   }
 }
 
@@ -336,23 +424,10 @@ export interface ProjectCreateParams {
    */
   name: string;
   /**
-   * Workspace VM sizes to build for this project.
-   * @minItems 1
-   */
-  sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
-  /**
    * Short project description, or null to clear it.
    * @maxLength 300
    */
   description?: string | null;
-  /**
-   * Include project dependencies when building the environment. Defaults to true on creation.
-   */
-  includeDeps?: boolean;
-  /**
-   * Include skills in the project environment. Defaults to true on creation.
-   */
-  includeSkills?: boolean;
   /**
    * Setup script to run while building the environment, or null to clear it.
    * @maxLength 100000
@@ -398,6 +473,14 @@ export interface ProjectCreateParams {
     | 'mobile'
     | 'package';
   /**
+   * Deprecated and ignored. Project builds always install dependencies.
+   */
+  includeDeps?: boolean;
+  /**
+   * Deprecated and ignored. Project builds always include skills.
+   */
+  includeSkills?: boolean;
+  /**
    * Make this project the onboarding default for the organization.
    */
   onboardingDefault?: boolean;
@@ -409,6 +492,16 @@ export interface ProjectCreateParams {
    * Recurring schedule for rebuilding the project environment.
    */
   schedule?: ProjectCreateParams.Schedule;
+  /**
+   * Workspace VM sizes to build for this project.
+   * @default ["medium"]
+   * @minItems 1
+   */
+  sizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
+  /**
+   * @default {"automaticSizing":false}
+   */
+  resourceSettings?: ProjectCreateParams.ResourceSettings | ProjectCreateParams.ResourceSettings2;
 }
 
 export namespace ProjectCreateParams {
@@ -425,6 +518,70 @@ export namespace ProjectCreateParams {
      * @maxLength 100
      */
     timezone?: string;
+  }
+
+  export interface ResourceSettings {
+    automaticSizing: true;
+    allocation?: ResourceSettings.Allocation;
+  }
+
+  export namespace ResourceSettings {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
+  }
+
+  export interface ResourceSettings2 {
+    automaticSizing: false;
+    allocation?: ResourceSettings2.Allocation;
+  }
+
+  export namespace ResourceSettings2 {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
   }
 }
 
@@ -445,8 +602,6 @@ export namespace ProjectCreateResponse {
      * @maxLength 255
      */
     id: string;
-    includeDeps: boolean;
-    includeSkills: boolean;
     name: string;
     setupScript: string | null;
     /**
@@ -454,6 +609,7 @@ export namespace ProjectCreateResponse {
      */
     updatedAt: string;
     activeSnapshots: Array<Project.ActiveSnapshot>;
+    resourceSettings: Project.ResourceSettings | Project.ResourceSettings2 | null;
     /**
      * @maxLength 20000
      */
@@ -490,6 +646,7 @@ export namespace ProjectCreateResponse {
     onboardingDefault: boolean;
     sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
     warmPoolEnabled: boolean;
+    warmPoolSchedule: Project.WarmPoolSchedule | null;
   }
 
   export namespace Project {
@@ -505,6 +662,91 @@ export namespace ProjectCreateResponse {
        */
       builtAt: string;
     }
+
+    export interface ResourceSettings {
+      automaticSizing: true;
+      allocation?: ResourceSettings.Allocation;
+    }
+
+    export namespace ResourceSettings {
+      export interface Allocation {
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMinMb: number;
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMaxMb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        diskSizeGb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMin?: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMax?: number;
+      }
+    }
+
+    export interface ResourceSettings2 {
+      automaticSizing: false;
+      allocation?: ResourceSettings2.Allocation;
+    }
+
+    export namespace ResourceSettings2 {
+      export interface Allocation {
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMinMb: number;
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMaxMb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        diskSizeGb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMin?: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMax?: number;
+      }
+    }
+
+    export interface WarmPoolSchedule {
+      /**
+       * @minLength 1
+       * @maxLength 100
+       */
+      timezone: string;
+      /**
+       * @minItems 1
+       * @maxItems 7
+       */
+      days: Array<number>;
+      /**
+       * @pattern ^([01]\d|2[0-3]):[0-5]\d$
+       */
+      startTime: string;
+      /**
+       * @pattern ^(?:([01]\d|2[0-3]):[0-5]\d|24:00)$
+       */
+      endTime: string;
+    }
   }
 }
 
@@ -519,8 +761,6 @@ export interface ProjectRetrieveResponse {
    * @maxLength 255
    */
   id: string;
-  includeDeps: boolean;
-  includeSkills: boolean;
   name: string;
   setupScript: string | null;
   /**
@@ -528,6 +768,10 @@ export interface ProjectRetrieveResponse {
    */
   updatedAt: string;
   activeSnapshots: Array<ProjectRetrieveResponse.ActiveSnapshot>;
+  resourceSettings:
+    | ProjectRetrieveResponse.ResourceSettings
+    | ProjectRetrieveResponse.ResourceSettings2
+    | null;
   /**
    * @maxLength 20000
    */
@@ -564,6 +808,7 @@ export interface ProjectRetrieveResponse {
   onboardingDefault: boolean;
   sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   warmPoolEnabled: boolean;
+  warmPoolSchedule: ProjectRetrieveResponse.WarmPoolSchedule | null;
 }
 
 export namespace ProjectRetrieveResponse {
@@ -579,6 +824,91 @@ export namespace ProjectRetrieveResponse {
      */
     builtAt: string;
   }
+
+  export interface ResourceSettings {
+    automaticSizing: true;
+    allocation?: ResourceSettings.Allocation;
+  }
+
+  export namespace ResourceSettings {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
+  }
+
+  export interface ResourceSettings2 {
+    automaticSizing: false;
+    allocation?: ResourceSettings2.Allocation;
+  }
+
+  export namespace ResourceSettings2 {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
+  }
+
+  export interface WarmPoolSchedule {
+    /**
+     * @minLength 1
+     * @maxLength 100
+     */
+    timezone: string;
+    /**
+     * @minItems 1
+     * @maxItems 7
+     */
+    days: Array<number>;
+    /**
+     * @pattern ^([01]\d|2[0-3]):[0-5]\d$
+     */
+    startTime: string;
+    /**
+     * @pattern ^(?:([01]\d|2[0-3]):[0-5]\d|24:00)$
+     */
+    endTime: string;
+  }
 }
 
 export interface ProjectUpdateParams {
@@ -587,14 +917,6 @@ export interface ProjectUpdateParams {
    * @maxLength 300
    */
   description?: string | null;
-  /**
-   * Include project dependencies when building the environment. Defaults to true on creation.
-   */
-  includeDeps?: boolean;
-  /**
-   * Include skills in the project environment. Defaults to true on creation.
-   */
-  includeSkills?: boolean;
   /**
    * Project display name.
    * @minLength 1
@@ -646,6 +968,18 @@ export interface ProjectUpdateParams {
     | 'mobile'
     | 'package';
   /**
+   * Deprecated and ignored. Project builds always install dependencies.
+   */
+  includeDeps?: boolean;
+  /**
+   * Deprecated and ignored. Project builds always include skills.
+   */
+  includeSkills?: boolean;
+  /**
+   * @default {"automaticSizing":false}
+   */
+  resourceSettings?: ProjectUpdateParams.ResourceSettings | ProjectUpdateParams.ResourceSettings2;
+  /**
    * VM sizes for which this project is the organization default. An empty array removes its default assignments.
    */
   defaultForSizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
@@ -663,12 +997,80 @@ export interface ProjectUpdateParams {
    */
   sizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   /**
+   * Weekly availability for prewarmed VMs. Null means always on; days use 0=Sunday. Overnight windows end the following day.
+   */
+  warmPoolSchedule?: ProjectUpdateParams.WarmPoolSchedule | null;
+  /**
    * Enable or disable prewarmed VMs for this project.
    */
   warmPoolEnabled?: boolean;
 }
 
 export namespace ProjectUpdateParams {
+  export interface ResourceSettings {
+    automaticSizing: true;
+    allocation?: ResourceSettings.Allocation;
+  }
+
+  export namespace ResourceSettings {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
+  }
+
+  export interface ResourceSettings2 {
+    automaticSizing: false;
+    allocation?: ResourceSettings2.Allocation;
+  }
+
+  export namespace ResourceSettings2 {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
+  }
+
   export interface Schedule {
     /**
      * Replace the recurring project build cron expression.
@@ -687,6 +1089,27 @@ export namespace ProjectUpdateParams {
      */
     timezone?: string | null;
   }
+
+  export interface WarmPoolSchedule {
+    /**
+     * @minLength 1
+     * @maxLength 100
+     */
+    timezone: string;
+    /**
+     * @minItems 1
+     * @maxItems 7
+     */
+    days: Array<number>;
+    /**
+     * @pattern ^([01]\d|2[0-3]):[0-5]\d$
+     */
+    startTime: string;
+    /**
+     * @pattern ^(?:([01]\d|2[0-3]):[0-5]\d|24:00)$
+     */
+    endTime: string;
+  }
 }
 
 export interface ProjectUpdateResponse {
@@ -700,8 +1123,6 @@ export interface ProjectUpdateResponse {
    * @maxLength 255
    */
   id: string;
-  includeDeps: boolean;
-  includeSkills: boolean;
   name: string;
   setupScript: string | null;
   /**
@@ -709,6 +1130,7 @@ export interface ProjectUpdateResponse {
    */
   updatedAt: string;
   activeSnapshots: Array<ProjectUpdateResponse.ActiveSnapshot>;
+  resourceSettings: ProjectUpdateResponse.ResourceSettings | ProjectUpdateResponse.ResourceSettings2 | null;
   /**
    * @maxLength 20000
    */
@@ -745,6 +1167,7 @@ export interface ProjectUpdateResponse {
   onboardingDefault: boolean;
   sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   warmPoolEnabled: boolean;
+  warmPoolSchedule: ProjectUpdateResponse.WarmPoolSchedule | null;
 }
 
 export namespace ProjectUpdateResponse {
@@ -759,6 +1182,91 @@ export namespace ProjectUpdateResponse {
      * @format date-time
      */
     builtAt: string;
+  }
+
+  export interface ResourceSettings {
+    automaticSizing: true;
+    allocation?: ResourceSettings.Allocation;
+  }
+
+  export namespace ResourceSettings {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
+  }
+
+  export interface ResourceSettings2 {
+    automaticSizing: false;
+    allocation?: ResourceSettings2.Allocation;
+  }
+
+  export namespace ResourceSettings2 {
+    export interface Allocation {
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMinMb: number;
+      /**
+       * @exclusiveMinimum 0
+       * @multipleOf 1024
+       */
+      memoryMaxMb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      diskSizeGb: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMin?: number;
+      /**
+       * @exclusiveMinimum 0
+       */
+      cpuMax?: number;
+    }
+  }
+
+  export interface WarmPoolSchedule {
+    /**
+     * @minLength 1
+     * @maxLength 100
+     */
+    timezone: string;
+    /**
+     * @minItems 1
+     * @maxItems 7
+     */
+    days: Array<number>;
+    /**
+     * @pattern ^([01]\d|2[0-3]):[0-5]\d$
+     */
+    startTime: string;
+    /**
+     * @pattern ^(?:([01]\d|2[0-3]):[0-5]\d|24:00)$
+     */
+    endTime: string;
   }
 }
 
@@ -788,8 +1296,6 @@ export namespace ProjectDuplicateResponse {
      * @maxLength 255
      */
     id: string;
-    includeDeps: boolean;
-    includeSkills: boolean;
     name: string;
     setupScript: string | null;
     /**
@@ -797,6 +1303,7 @@ export namespace ProjectDuplicateResponse {
      */
     updatedAt: string;
     activeSnapshots: Array<Project.ActiveSnapshot>;
+    resourceSettings: Project.ResourceSettings | Project.ResourceSettings2 | null;
     /**
      * @maxLength 20000
      */
@@ -833,6 +1340,7 @@ export namespace ProjectDuplicateResponse {
     onboardingDefault: boolean;
     sizes: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
     warmPoolEnabled: boolean;
+    warmPoolSchedule: Project.WarmPoolSchedule | null;
   }
 
   export namespace Project {
@@ -847,6 +1355,91 @@ export namespace ProjectDuplicateResponse {
        * @format date-time
        */
       builtAt: string;
+    }
+
+    export interface ResourceSettings {
+      automaticSizing: true;
+      allocation?: ResourceSettings.Allocation;
+    }
+
+    export namespace ResourceSettings {
+      export interface Allocation {
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMinMb: number;
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMaxMb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        diskSizeGb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMin?: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMax?: number;
+      }
+    }
+
+    export interface ResourceSettings2 {
+      automaticSizing: false;
+      allocation?: ResourceSettings2.Allocation;
+    }
+
+    export namespace ResourceSettings2 {
+      export interface Allocation {
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMinMb: number;
+        /**
+         * @exclusiveMinimum 0
+         * @multipleOf 1024
+         */
+        memoryMaxMb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        diskSizeGb: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMin?: number;
+        /**
+         * @exclusiveMinimum 0
+         */
+        cpuMax?: number;
+      }
+    }
+
+    export interface WarmPoolSchedule {
+      /**
+       * @minLength 1
+       * @maxLength 100
+       */
+      timezone: string;
+      /**
+       * @minItems 1
+       * @maxItems 7
+       */
+      days: Array<number>;
+      /**
+       * @pattern ^([01]\d|2[0-3]):[0-5]\d$
+       */
+      startTime: string;
+      /**
+       * @pattern ^(?:([01]\d|2[0-3]):[0-5]\d|24:00)$
+       */
+      endTime: string;
     }
   }
 }

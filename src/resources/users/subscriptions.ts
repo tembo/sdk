@@ -21,30 +21,6 @@ export class Subscriptions extends APIResource {
   retrieve(userID: string, options?: RequestOptions): APIPromise<SubscriptionRetrieveResponse> {
     return this._client.get(__scalarPath`/v1/users/${userID}/subscriptions`, options);
   }
-
-  /**
-   * Redeem an earned ChatGPT rate-limit reset.
-   *
-   * @param {string} userID
-   * @param {SubscriptionResetParams} body - The request body to send.
-   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<SubscriptionResetResponse>} Reset user subscription usage
-   *
-   * @example
-   * ```ts
-   * const subscription = await client.users.subscriptions.reset('userId', {
-   *   idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-   *   provider: 'chatgpt',
-   * });
-   * ```
-   */
-  reset(
-    userID: string,
-    body: SubscriptionResetParams,
-    options?: RequestOptions,
-  ): APIPromise<SubscriptionResetResponse> {
-    return this._client.post(__scalarPath`/v1/users/${userID}/subscriptions/reset`, { body, ...options });
-  }
 }
 
 export interface SubscriptionRetrieveResponse {
@@ -366,26 +342,6 @@ export namespace SubscriptionRetrieveResponse {
     connected: boolean;
   }
 }
-
-export interface SubscriptionResetParams {
-  /**
-   * Unique UUID for this reset attempt. Reuse the same UUID when retrying to avoid redeeming another reset credit.
-   * @format uuid
-   */
-  idempotencyKey: string;
-  /**
-   * Subscription provider whose rate-limit reset credit to redeem. Currently only chatgpt is supported.
-   */
-  provider: 'chatgpt';
-}
-
-export interface SubscriptionResetResponse {
-  outcome: 'reset' | 'alreadyRedeemed' | 'nothingToReset' | 'noCredit';
-}
 export declare namespace Subscriptions {
-  export {
-    type SubscriptionRetrieveResponse as SubscriptionRetrieveResponse,
-    type SubscriptionResetResponse as SubscriptionResetResponse,
-    type SubscriptionResetParams as SubscriptionResetParams,
-  };
+  export { type SubscriptionRetrieveResponse as SubscriptionRetrieveResponse };
 }

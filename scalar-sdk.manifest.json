@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.36.9",
+  "generatorVersion": "0.36.11",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -11457,176 +11457,6 @@
       "transport": "http"
     },
     {
-      "resource": "organizations.subscriptions",
-      "publicResource": "organizations.subscriptions",
-      "operation": "reset",
-      "publicOperation": "reset",
-      "deprecated": false,
-      "method": "POST",
-      "path": "/v1/organizations/{organizationId}/subscriptions/reset",
-      "pathParams": [
-        "organizationId"
-      ],
-      "publicPathParams": [
-        "organizationId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [
-        "idempotencyKey",
-        "provider"
-      ],
-      "publicBodyParams": [
-        "idempotencyKey",
-        "provider"
-      ],
-      "bodyParamDetails": [
-        {
-          "name": "idempotencyKey",
-          "required": true
-        },
-        {
-          "name": "provider",
-          "required": true
-        }
-      ],
-      "pathParamDetails": [
-        {
-          "name": "organizationId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "SubscriptionResetParams"
-      },
-      "requestBody": {
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ],
-        "required": true,
-        "publicName": "body",
-        "publicIdentifier": "body"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "403",
-          "404",
-          "409",
-          "500",
-          "502",
-          "503"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "503",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
       "resource": "mcpConnections",
       "publicResource": "mcpConnections",
       "operation": "list",
@@ -14225,134 +14055,6 @@
       "transport": "http"
     },
     {
-      "resource": "users",
-      "publicResource": "users",
-      "operation": "delete",
-      "publicOperation": "delete",
-      "deprecated": false,
-      "method": "DELETE",
-      "path": "/v1/users/{userId}",
-      "pathParams": [
-        "userId"
-      ],
-      "publicPathParams": [
-        "userId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [
-        "deletionQuestionnaire"
-      ],
-      "publicBodyParams": [
-        "deletionQuestionnaire"
-      ],
-      "bodyParamDetails": [
-        {
-          "name": "deletionQuestionnaire",
-          "required": false
-        }
-      ],
-      "pathParamDetails": [
-        {
-          "name": "userId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "UserDeleteParams"
-      },
-      "requestBody": {
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ],
-        "required": true,
-        "publicName": "body",
-        "publicIdentifier": "body"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "403",
-          "404",
-          "500"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
       "resource": "users.settings",
       "publicResource": "users.settings",
       "operation": "retrieve",
@@ -15017,164 +14719,6 @@
         },
         {
           "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "500",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "502",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        }
-      ],
-      "responseLinks": [],
-      "transport": "http"
-    },
-    {
-      "resource": "users.subscriptions",
-      "publicResource": "users.subscriptions",
-      "operation": "reset",
-      "publicOperation": "reset",
-      "deprecated": false,
-      "method": "POST",
-      "path": "/v1/users/{userId}/subscriptions/reset",
-      "pathParams": [
-        "userId"
-      ],
-      "publicPathParams": [
-        "userId"
-      ],
-      "queryParams": [],
-      "publicQueryParams": [],
-      "headerParams": [],
-      "publicHeaderParams": [],
-      "bodyParams": [
-        "idempotencyKey",
-        "provider"
-      ],
-      "publicBodyParams": [
-        "idempotencyKey",
-        "provider"
-      ],
-      "bodyParamDetails": [
-        {
-          "name": "idempotencyKey",
-          "required": true
-        },
-        {
-          "name": "provider",
-          "required": true
-        }
-      ],
-      "pathParamDetails": [
-        {
-          "name": "userId",
-          "required": true,
-          "style": "simple",
-          "explode": false
-        }
-      ],
-      "queryParamDetails": [],
-      "headerParamDetails": [],
-      "cookieParams": [],
-      "publicCookieParams": [],
-      "cookieParamDetails": [],
-      "paramsModel": {
-        "publicName": "SubscriptionResetParams"
-      },
-      "requestBody": {
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ],
-        "required": true,
-        "publicName": "body",
-        "publicIdentifier": "body"
-      },
-      "response": {
-        "status": "200",
-        "contentType": "application/json",
-        "encoding": "json",
-        "contents": [
-          {
-            "contentType": "application/json",
-            "encoding": "json"
-          }
-        ]
-      },
-      "result": {
-        "successStatus": "200",
-        "errorStatuses": [
-          "400",
-          "403",
-          "404",
-          "409",
-          "500",
-          "502"
-        ]
-      },
-      "errorResponses": [
-        {
-          "status": "400",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "403",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "404",
-          "contentType": "application/json",
-          "encoding": "json",
-          "contents": [
-            {
-              "contentType": "application/json",
-              "encoding": "json"
-            }
-          ]
-        },
-        {
-          "status": "409",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
@@ -15951,6 +15495,7 @@
         "richContent",
         "pullRequestId",
         "queueRightAway",
+        "automaticSizing",
         "sessionMode",
         "startupAgent"
       ],
@@ -15970,6 +15515,7 @@
         "richContent",
         "pullRequestId",
         "queueRightAway",
+        "automaticSizing",
         "sessionMode",
         "startupAgent"
       ],
@@ -16032,6 +15578,10 @@
         },
         {
           "name": "queueRightAway",
+          "required": false
+        },
+        {
+          "name": "automaticSizing",
           "required": false
         },
         {
@@ -16331,6 +15881,7 @@
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [
+        "memoryMb",
         "agent",
         "agentOptions",
         "baseBranch",
@@ -16347,6 +15898,7 @@
         "visibility"
       ],
       "publicBodyParams": [
+        "memoryMb",
         "agent",
         "agentOptions",
         "baseBranch",
@@ -16363,6 +15915,10 @@
         "visibility"
       ],
       "bodyParamDetails": [
+        {
+          "name": "memoryMb",
+          "required": false
+        },
         {
           "name": "agent",
           "required": false
@@ -18779,45 +18335,39 @@
       "publicHeaderParams": [],
       "bodyParams": [
         "description",
-        "includeDeps",
-        "includeSkills",
         "name",
         "setupScript",
         "codeRepositoryIds",
         "agentInstructions",
         "color",
         "icon",
+        "includeDeps",
+        "includeSkills",
         "onboardingDefault",
         "runNow",
         "schedule",
-        "sizes"
+        "sizes",
+        "resourceSettings"
       ],
       "publicBodyParams": [
         "description",
-        "includeDeps",
-        "includeSkills",
         "name",
         "setupScript",
         "codeRepositoryIds",
         "agentInstructions",
         "color",
         "icon",
+        "includeDeps",
+        "includeSkills",
         "onboardingDefault",
         "runNow",
         "schedule",
-        "sizes"
+        "sizes",
+        "resourceSettings"
       ],
       "bodyParamDetails": [
         {
           "name": "description",
-          "required": false
-        },
-        {
-          "name": "includeDeps",
-          "required": false
-        },
-        {
-          "name": "includeSkills",
           "required": false
         },
         {
@@ -18845,6 +18395,14 @@
           "required": false
         },
         {
+          "name": "includeDeps",
+          "required": false
+        },
+        {
+          "name": "includeSkills",
+          "required": false
+        },
+        {
           "name": "onboardingDefault",
           "required": false
         },
@@ -18858,7 +18416,11 @@
         },
         {
           "name": "sizes",
-          "required": true
+          "required": false
+        },
+        {
+          "name": "resourceSettings",
+          "required": false
         }
       ],
       "pathParamDetails": [],
@@ -19102,47 +18664,43 @@
       "publicHeaderParams": [],
       "bodyParams": [
         "description",
-        "includeDeps",
-        "includeSkills",
         "name",
         "setupScript",
         "codeRepositoryIds",
         "agentInstructions",
         "color",
         "icon",
+        "includeDeps",
+        "includeSkills",
+        "resourceSettings",
         "defaultForSizes",
         "environmentVariables",
         "schedule",
         "sizes",
+        "warmPoolSchedule",
         "warmPoolEnabled"
       ],
       "publicBodyParams": [
         "description",
-        "includeDeps",
-        "includeSkills",
         "name",
         "setupScript",
         "codeRepositoryIds",
         "agentInstructions",
         "color",
         "icon",
+        "includeDeps",
+        "includeSkills",
+        "resourceSettings",
         "defaultForSizes",
         "environmentVariables",
         "schedule",
         "sizes",
+        "warmPoolSchedule",
         "warmPoolEnabled"
       ],
       "bodyParamDetails": [
         {
           "name": "description",
-          "required": false
-        },
-        {
-          "name": "includeDeps",
-          "required": false
-        },
-        {
-          "name": "includeSkills",
           "required": false
         },
         {
@@ -19170,6 +18728,18 @@
           "required": false
         },
         {
+          "name": "includeDeps",
+          "required": false
+        },
+        {
+          "name": "includeSkills",
+          "required": false
+        },
+        {
+          "name": "resourceSettings",
+          "required": false
+        },
+        {
           "name": "defaultForSizes",
           "required": false
         },
@@ -19183,6 +18753,10 @@
         },
         {
           "name": "sizes",
+          "required": false
+        },
+        {
+          "name": "warmPoolSchedule",
           "required": false
         },
         {
@@ -29531,6 +29105,7 @@
       "queryParams": [
         "cursor",
         "limit",
+        "type",
         "sessionId",
         "createdAfter",
         "createdBefore",
@@ -29540,6 +29115,7 @@
       "publicQueryParams": [
         "cursor",
         "limit",
+        "type",
         "sessionId",
         "createdAfter",
         "createdBefore",
@@ -29565,6 +29141,12 @@
           "style": "form",
           "explode": true,
           "defaultValue": 50
+        },
+        {
+          "name": "type",
+          "required": false,
+          "style": "form",
+          "explode": true
         },
         {
           "name": "sessionId",

@@ -123,13 +123,7 @@ import {
   type ModelUpdateParams,
 } from './resources/models';
 import { Runtimes, type RuntimeListResponse, type RuntimeListParams } from './resources/runtimes';
-import {
-  Users,
-  type UserMeResponse,
-  type UserRetrieveResponse,
-  type UserDeleteResponse,
-  type UserDeleteParams,
-} from './resources/users/users';
+import { Users, type UserMeResponse, type UserRetrieveResponse } from './resources/users/users';
 import {
   Sessions,
   type SessionEventData,
@@ -1181,8 +1175,6 @@ export declare namespace Tembo {
     Users as Users,
     type UserMeResponse as UserMeResponse,
     type UserRetrieveResponse as UserRetrieveResponse,
-    type UserDeleteResponse as UserDeleteResponse,
-    type UserDeleteParams as UserDeleteParams,
   };
 
   export {

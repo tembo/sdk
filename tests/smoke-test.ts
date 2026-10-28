@@ -647,18 +647,6 @@ const cases: {
   },
 
   {
-    operation: 'reset',
-    method: 'POST',
-    path: '/v1/organizations/{organizationId}/subscriptions/reset',
-    run: async () => {
-      const subscription = await client.organizations.subscriptions.reset('organizationId', {
-        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        provider: 'chatgpt',
-      });
-    },
-  },
-
-  {
     operation: 'list',
     method: 'GET',
     path: '/v1/mcp-connections',
@@ -1070,31 +1058,6 @@ const cases: {
   },
 
   {
-    operation: 'delete',
-    method: 'DELETE',
-    path: '/v1/users/{userId}',
-    label: 'required params',
-    run: async () => {
-      const user = await client.users.delete('userId', {});
-    },
-  },
-
-  {
-    operation: 'delete',
-    method: 'DELETE',
-    path: '/v1/users/{userId}',
-    label: 'all params',
-    run: async () => {
-      const user = await client.users.delete('userId', {
-        deletionQuestionnaire: {
-          reasons: ['x'],
-          submittedAt: '2024-01-01T00:00:00.000Z',
-        },
-      });
-    },
-  },
-
-  {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/users/{userId}/settings',
@@ -1185,18 +1148,6 @@ const cases: {
     path: '/v1/users/{userId}/subscriptions',
     run: async () => {
       const subscription = await client.users.subscriptions.retrieve('userId');
-    },
-  },
-
-  {
-    operation: 'reset',
-    method: 'POST',
-    path: '/v1/users/{userId}/subscriptions/reset',
-    run: async () => {
-      const subscription = await client.users.subscriptions.reset('userId', {
-        idempotencyKey: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
-        provider: 'chatgpt',
-      });
     },
   },
 
@@ -1320,6 +1271,7 @@ const cases: {
     label: 'all params',
     run: async () => {
       const session = await client.sessions.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        memoryMb: 1024,
         agent: 'x',
         agentOptions: {},
         baseBranch: 'x',
@@ -1588,7 +1540,8 @@ const cases: {
     run: async () => {
       const project = await client.projects.create({
         name: 'x',
-        sizes: ['nano'],
+        sizes: ['medium'],
+        resourceSettings: { automaticSizing: false },
       });
     },
   },
@@ -1601,20 +1554,21 @@ const cases: {
     run: async () => {
       const project = await client.projects.create({
         description: '',
-        includeDeps: false,
-        includeSkills: false,
         name: 'x',
         setupScript: '',
         codeRepositoryIds: ['x'],
         agentInstructions: '',
         color: 'neutral',
         icon: 'folder',
+        includeDeps: false,
+        includeSkills: false,
         onboardingDefault: false,
         runNow: false,
         schedule: {
           cron: 'x',
         },
-        sizes: ['nano'],
+        sizes: ['medium'],
+        resourceSettings: { automaticSizing: false },
       });
     },
   },
@@ -1634,7 +1588,9 @@ const cases: {
     path: '/v1/projects/{projectId}',
     label: 'required params',
     run: async () => {
-      const project = await client.projects.update('projectId', {});
+      const project = await client.projects.update('projectId', {
+        resourceSettings: { automaticSizing: false },
+      });
     },
   },
 
@@ -1646,18 +1602,25 @@ const cases: {
     run: async () => {
       const project = await client.projects.update('projectId', {
         description: '',
-        includeDeps: false,
-        includeSkills: false,
         name: 'x',
         setupScript: '',
         codeRepositoryIds: ['x'],
         agentInstructions: '',
         color: 'neutral',
         icon: 'folder',
+        includeDeps: false,
+        includeSkills: false,
+        resourceSettings: { automaticSizing: false },
         defaultForSizes: ['nano'],
         environmentVariables: {},
         schedule: {},
         sizes: ['nano'],
+        warmPoolSchedule: {
+          timezone: 'x',
+          days: [0],
+          startTime: '',
+          endTime: '',
+        },
         warmPoolEnabled: false,
       });
     },
@@ -2997,6 +2960,7 @@ const cases: {
       const billing = await client.billing.listUsage({
         cursor: 'cursor',
         limit: 50,
+        type: 'all',
         sessionId: 'sessionId',
         createdAfter: '2024-01-01T00:00:00.000Z',
         createdBefore: '2024-01-01T00:00:00.000Z',

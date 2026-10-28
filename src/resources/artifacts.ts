@@ -144,6 +144,10 @@ export namespace ArtifactListResponse {
      * @format uuid
      */
     assetId: string | null;
+    /**
+     * @format uri
+     */
+    assetUrl: string | null;
     category:
       | 'code_walkthrough'
       | 'bug_report'

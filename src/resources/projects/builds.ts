@@ -135,6 +135,7 @@ export namespace BuildListResponse {
      * @maxLength 255
      */
     id: string;
+    automaticSizing: boolean;
     /**
      * @format date-time
      */
@@ -144,8 +145,6 @@ export namespace BuildListResponse {
      */
     durationMs: number | null;
     failure: string | null;
-    includeDeps: boolean;
-    includeSkills: boolean;
     name: string | null;
     progress: Item.Progress | null;
     /**
@@ -223,6 +222,7 @@ export interface BuildRetrieveResponse {
    * @maxLength 255
    */
   id: string;
+  automaticSizing: boolean;
   /**
    * @format date-time
    */
@@ -232,8 +232,6 @@ export interface BuildRetrieveResponse {
    */
   durationMs: number | null;
   failure: string | null;
-  includeDeps: boolean;
-  includeSkills: boolean;
   name: string | null;
   progress: BuildRetrieveResponse.Progress | null;
   /**
