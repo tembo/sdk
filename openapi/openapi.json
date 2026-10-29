@@ -9015,6 +9015,10 @@
                           "type": "boolean",
                           "description": "Enable experimental MCP features for the organization."
                         },
+                        "fallbackToApiOnSubscriptionLimit": {
+                          "type": "boolean",
+                          "description": "Use the API key or Tembo inference when every connected subscription is out of usage."
+                        },
                         "featureMentionAuthor": {
                           "type": "boolean",
                           "description": "Enable mentioning the author in supported integration responses."
@@ -9091,6 +9095,7 @@
                         "enableGraphiteBot",
                         "enableGreptileBot",
                         "experimentalMcp",
+                        "fallbackToApiOnSubscriptionLimit",
                         "featureMentionAuthor",
                         "maxBotReviews",
                         "maxSolutions",
@@ -9246,7 +9251,7 @@
       "patch": {
         "operationId": "updateOrganizationSettings",
         "summary": "Update organization settings",
-        "description": "Configure organization defaults for agent/model, VM size and keep-alive; inference credentials; agent prompts and commit/PR instructions; bot feedback, signing, reports, and insights. Only supplied settings are changed.",
+        "description": "Configure organization defaults for agent/model, VM size and keep-alive; inference credentials and subscription fallback; agent prompts and commit/PR instructions; bot feedback, signing, reports, and insights. Only supplied settings are changed.",
         "tags": [
           "Organizations"
         ],
@@ -9345,6 +9350,10 @@
                           "type": "boolean",
                           "description": "Enable experimental MCP features for the organization."
                         },
+                        "fallbackToApiOnSubscriptionLimit": {
+                          "type": "boolean",
+                          "description": "Use the API key or Tembo inference when every connected subscription is out of usage."
+                        },
                         "featureMentionAuthor": {
                           "type": "boolean",
                           "description": "Enable mentioning the author in supported integration responses."
@@ -9421,6 +9430,7 @@
                         "enableGraphiteBot",
                         "enableGreptileBot",
                         "experimentalMcp",
+                        "fallbackToApiOnSubscriptionLimit",
                         "featureMentionAuthor",
                         "maxBotReviews",
                         "maxSolutions",
@@ -15725,6 +15735,7 @@
                               "claude-opus-4-5",
                               "claude-4-5-haiku",
                               "gpt-6.1-sol",
+                              "gpt-6.1-terra",
                               "gpt-6-astra",
                               "gpt-6-sol",
                               "gpt-6-luna",
@@ -16185,6 +16196,7 @@
                         "claude-opus-4-5",
                         "claude-4-5-haiku",
                         "gpt-6.1-sol",
+                        "gpt-6.1-terra",
                         "gpt-6-astra",
                         "gpt-6-sol",
                         "gpt-6-luna",
@@ -16324,6 +16336,7 @@
                 "claude-opus-4-5",
                 "claude-4-5-haiku",
                 "gpt-6.1-sol",
+                "gpt-6.1-terra",
                 "gpt-6-astra",
                 "gpt-6-sol",
                 "gpt-6-luna",
@@ -16408,6 +16421,7 @@
                         "claude-opus-4-5",
                         "claude-4-5-haiku",
                         "gpt-6.1-sol",
+                        "gpt-6.1-terra",
                         "gpt-6-astra",
                         "gpt-6-sol",
                         "gpt-6-luna",
@@ -16948,6 +16962,7 @@
                 "claude-opus-4-5",
                 "claude-4-5-haiku",
                 "gpt-6.1-sol",
+                "gpt-6.1-terra",
                 "gpt-6-astra",
                 "gpt-6-sol",
                 "gpt-6-luna",
@@ -17073,6 +17088,7 @@
                               "claude-opus-4-5",
                               "claude-4-5-haiku",
                               "gpt-6.1-sol",
+                              "gpt-6.1-terra",
                               "gpt-6-astra",
                               "gpt-6-sol",
                               "gpt-6-luna",
@@ -17216,6 +17232,7 @@
                                     "claude-opus-4-5",
                                     "claude-4-5-haiku",
                                     "gpt-6.1-sol",
+                                    "gpt-6.1-terra",
                                     "gpt-6-astra",
                                     "gpt-6-sol",
                                     "gpt-6-luna",
@@ -23848,7 +23865,7 @@
       "post": {
         "operationId": "forkSession",
         "summary": "Fork a session",
-        "description": "Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context.",
+        "description": "Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context. The fork returns right away and its messages queue until its workspace finishes booting.",
         "tags": [
           "Sessions"
         ],
