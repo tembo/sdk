@@ -364,6 +364,11 @@ export interface SessionListParams {
    */
   includeTotal?: boolean;
   /**
+   * Filter sessions created by this session.
+   * @format uuid
+   */
+  parentSessionId?: string;
+  /**
    * Filter by participant IDs, supplied as a comma-separated list.
    */
   participant?: Array<string>;
@@ -731,6 +736,11 @@ export interface SessionCreateResponse {
   lastSeenAt: string;
   level: number;
   mode: 'normal' | 'planning';
+  /**
+   * The session whose agent created this session.
+   * @format uuid
+   */
+  parentSessionId: string | null;
   projectId: string | null;
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   sessionType: 'Chat' | 'Terminal';
@@ -965,6 +975,11 @@ export interface SessionRetrieveResponse {
   lastSeenAt: string;
   level: number;
   mode: 'normal' | 'planning';
+  /**
+   * The session whose agent created this session.
+   * @format uuid
+   */
+  parentSessionId: string | null;
   projectId: string | null;
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   sessionType: 'Chat' | 'Terminal';
@@ -1313,6 +1328,11 @@ export interface SessionUpdateResponse {
   lastSeenAt: string;
   level: number;
   mode: 'normal' | 'planning';
+  /**
+   * The session whose agent created this session.
+   * @format uuid
+   */
+  parentSessionId: string | null;
   projectId: string | null;
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   sessionType: 'Chat' | 'Terminal';
@@ -1575,6 +1595,11 @@ export interface SessionForkResponse {
   lastSeenAt: string;
   level: number;
   mode: 'normal' | 'planning';
+  /**
+   * The session whose agent created this session.
+   * @format uuid
+   */
+  parentSessionId: string | null;
   projectId: string | null;
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   sessionType: 'Chat' | 'Terminal';

@@ -1248,6 +1248,7 @@ const cases: {
         hasProject: true,
         includeArchived: true,
         includeTotal: false,
+        parentSessionId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         participant: ['participant'],
         pendingReviewerKeys: ['pendingReviewerKey'],
         projectIds: ['projectId'],
