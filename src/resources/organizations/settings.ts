@@ -23,7 +23,7 @@ export class Settings extends APIResource {
   }
 
   /**
-   * Configure organization defaults for agent/model, VM size and keep-alive; inference credentials; agent prompts and commit/PR instructions; bot feedback, signing, reports, and insights. Only supplied settings are changed.
+   * Configure organization defaults for agent/model, VM size and keep-alive; inference credentials and subscription fallback; agent prompts and commit/PR instructions; bot feedback, signing, reports, and insights. Only supplied settings are changed.
    *
    * @param {string} organizationID
    * @param {SettingUpdateParams} body - The request body to send.
@@ -147,6 +147,10 @@ export namespace SettingRetrieveResponse {
      * Enable experimental MCP features for the organization.
      */
     experimentalMcp: boolean;
+    /**
+     * Use the API key or Tembo inference when every connected subscription is out of usage.
+     */
+    fallbackToApiOnSubscriptionLimit: boolean;
     /**
      * Enable mentioning the author in supported integration responses.
      */
@@ -471,6 +475,10 @@ export namespace SettingUpdateResponse {
      * Enable experimental MCP features for the organization.
      */
     experimentalMcp: boolean;
+    /**
+     * Use the API key or Tembo inference when every connected subscription is out of usage.
+     */
+    fallbackToApiOnSubscriptionLimit: boolean;
     /**
      * Enable mentioning the author in supported integration responses.
      */
