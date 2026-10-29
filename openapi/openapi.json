@@ -22800,6 +22800,15 @@
           },
           {
             "in": "query",
+            "name": "parentSessionId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Filter sessions created by this session."
+          },
+          {
+            "in": "query",
             "name": "participant",
             "schema": {
               "type": "array",
@@ -23038,6 +23047,14 @@
                         "planning"
                       ],
                       "default": "normal"
+                    },
+                    "parentSessionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "The session whose agent created this session."
                     },
                     "projectId": {
                       "type": [
@@ -23540,6 +23557,7 @@
                     "lastSeenAt",
                     "level",
                     "mode",
+                    "parentSessionId",
                     "projectId",
                     "sandboxSize",
                     "sessionType",
@@ -23968,6 +23986,14 @@
                       ],
                       "default": "normal"
                     },
+                    "parentSessionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "The session whose agent created this session."
+                    },
                     "projectId": {
                       "type": [
                         "string",
@@ -24469,6 +24495,7 @@
                     "lastSeenAt",
                     "level",
                     "mode",
+                    "parentSessionId",
                     "projectId",
                     "sandboxSize",
                     "sessionType",
@@ -24776,6 +24803,14 @@
                       ],
                       "default": "normal"
                     },
+                    "parentSessionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "The session whose agent created this session."
+                    },
                     "projectId": {
                       "type": [
                         "string",
@@ -25277,6 +25312,7 @@
                     "lastSeenAt",
                     "level",
                     "mode",
+                    "parentSessionId",
                     "projectId",
                     "sandboxSize",
                     "sessionType",
@@ -25552,6 +25588,14 @@
                       ],
                       "default": "normal"
                     },
+                    "parentSessionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "The session whose agent created this session."
+                    },
                     "projectId": {
                       "type": [
                         "string",
@@ -26053,6 +26097,7 @@
                     "lastSeenAt",
                     "level",
                     "mode",
+                    "parentSessionId",
                     "projectId",
                     "sandboxSize",
                     "sessionType",
@@ -28885,6 +28930,10 @@
                                       "inProgress"
                                     ],
                                     "additionalProperties": false
+                                  },
+                                  "isUnread": {
+                                    "type": "boolean",
+                                    "description": "Whether the latest turn finished after the caller last viewed the session."
                                   }
                                 },
                                 "required": [
@@ -29489,6 +29538,10 @@
                                 "inProgress"
                               ],
                               "additionalProperties": false
+                            },
+                            "isUnread": {
+                              "type": "boolean",
+                              "description": "Whether the latest turn finished after the caller last viewed the session."
                             }
                           },
                           "required": [
