@@ -140,7 +140,7 @@ export class Sessions extends APIResource {
   }
 
   /**
-   * Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context.
+   * Create an independent session from a fresh workspace snapshot, or the latest saved snapshot when stopped, without replaying messages or adding context. The fork returns right away and its messages queue until its workspace finishes booting.
    *
    * @param {string} sessionID
    * @param {SessionForkParams} body - The request body to send.
