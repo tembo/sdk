@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.17.1](https://github.com/tembo/sdk/compare/v0.17.0...v0.17.1) (2026-10-29)
+
+
+### Chores
+
+* **api:** update generated SDK content ([488b8d5](https://github.com/tembo/sdk/commit/488b8d55c789425a5e9c15642879ca75b8e183f4))
+* **openapi:** refresh public API snapshot for v0.2.882 ([0408a9d](https://github.com/tembo/sdk/commit/0408a9dfa18d3c725724a94dc8cf2c6def2218ef))
+* **openapi:** refresh public API snapshot for v0.2.882 ([c893d5b](https://github.com/tembo/sdk/commit/c893d5bbb236a08a81bdebe8f9eff7c148b4ad19))
+
 ## [0.17.0](https://github.com/tembo/sdk/compare/v0.16.0...v0.17.0) (2026-10-28)
 
 
