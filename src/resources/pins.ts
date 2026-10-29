@@ -160,6 +160,10 @@ export namespace PinListResponse {
       pullRequests: Array<Resource.PullRequest>;
       diffSummary: Resource.DiffSummary | null;
       state: Resource.State;
+      /**
+       * Whether the latest turn finished after the caller last viewed the session.
+       */
+      isUnread?: boolean;
     }
 
     export namespace Resource {
@@ -378,6 +382,10 @@ export namespace PinCreateResponse {
       pullRequests: Array<Resource.PullRequest>;
       diffSummary: Resource.DiffSummary | null;
       state: Resource.State;
+      /**
+       * Whether the latest turn finished after the caller last viewed the session.
+       */
+      isUnread?: boolean;
     }
 
     export namespace Resource {
