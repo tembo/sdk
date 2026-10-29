@@ -15555,6 +15555,7 @@
         "hasProject",
         "includeArchived",
         "includeTotal",
+        "parentSessionId",
         "participant",
         "pendingReviewerKeys",
         "projectIds",
@@ -15577,6 +15578,7 @@
         "hasProject",
         "includeArchived",
         "includeTotal",
+        "parentSessionId",
         "participant",
         "pendingReviewerKeys",
         "projectIds",
@@ -15657,6 +15659,12 @@
           "style": "form",
           "explode": true,
           "defaultValue": false
+        },
+        {
+          "name": "parentSessionId",
+          "required": false,
+          "style": "form",
+          "explode": true
         },
         {
           "name": "participant",

@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.18.0](https://github.com/tembo/sdk/compare/v0.17.1...v0.18.0) (2026-10-29)
+
+
+### Features
+
+* **api:** add query param parentSessionId on sessions.list ([dd879f4](https://github.com/tembo/sdk/commit/dd879f462cfd8254cdca9c37680b3997318c2b00))
+
+
+### Chores
+
+* **openapi:** refresh public API snapshot for v0.2.883 ([90a496e](https://github.com/tembo/sdk/commit/90a496e5cf15196ef82dae9fb47d7e43cf115019))
+* **openapi:** refresh public API snapshot for v0.2.883 ([901a707](https://github.com/tembo/sdk/commit/901a70722a36552c061a59572ab83074a4a62d01))
+
 ## [0.17.1](https://github.com/tembo/sdk/compare/v0.17.0...v0.17.1) (2026-10-29)
 
 
