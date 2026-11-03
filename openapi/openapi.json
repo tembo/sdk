@@ -4447,6 +4447,14 @@
                           "content": {
                             "type": "string"
                           },
+                          "encoding": {
+                            "type": "string",
+                            "enum": [
+                              "utf8",
+                              "base64"
+                            ],
+                            "default": "utf8"
+                          },
                           "filename": {
                             "type": "string"
                           },
@@ -4457,6 +4465,7 @@
                         },
                         "required": [
                           "content",
+                          "encoding",
                           "filename",
                           "id"
                         ],
@@ -4558,7 +4567,16 @@
                       "properties": {
                         "content": {
                           "type": "string",
-                          "description": "Complete text content of the skill file."
+                          "description": "Complete file content: plain text, or base64 when encoding is base64."
+                        },
+                        "encoding": {
+                          "type": "string",
+                          "enum": [
+                            "utf8",
+                            "base64"
+                          ],
+                          "default": "utf8",
+                          "description": "utf8 for text files; base64 for binary files such as images."
                         },
                         "filename": {
                           "type": "string",
@@ -4635,6 +4653,14 @@
                           "content": {
                             "type": "string"
                           },
+                          "encoding": {
+                            "type": "string",
+                            "enum": [
+                              "utf8",
+                              "base64"
+                            ],
+                            "default": "utf8"
+                          },
                           "filename": {
                             "type": "string"
                           },
@@ -4645,6 +4671,7 @@
                         },
                         "required": [
                           "content",
+                          "encoding",
                           "filename",
                           "id"
                         ],
@@ -4781,6 +4808,14 @@
                           "content": {
                             "type": "string"
                           },
+                          "encoding": {
+                            "type": "string",
+                            "enum": [
+                              "utf8",
+                              "base64"
+                            ],
+                            "default": "utf8"
+                          },
                           "filename": {
                             "type": "string"
                           },
@@ -4791,6 +4826,7 @@
                         },
                         "required": [
                           "content",
+                          "encoding",
                           "filename",
                           "id"
                         ],
@@ -4903,7 +4939,16 @@
                       "properties": {
                         "content": {
                           "type": "string",
-                          "description": "Complete text content of the skill file."
+                          "description": "Complete file content: plain text, or base64 when encoding is base64."
+                        },
+                        "encoding": {
+                          "type": "string",
+                          "enum": [
+                            "utf8",
+                            "base64"
+                          ],
+                          "default": "utf8",
+                          "description": "utf8 for text files; base64 for binary files such as images."
                         },
                         "filename": {
                           "type": "string",
@@ -15722,51 +15767,8 @@
                         "properties": {
                           "name": {
                             "type": "string",
-                            "enum": [
-                              "claude-opus-5-5",
-                              "claude-fable-5-1",
-                              "claude-fable-5",
-                              "claude-opus-5",
-                              "claude-sonnet-5-5",
-                              "claude-haiku-5-5",
-                              "claude-opus-4-8",
-                              "claude-opus-4-7",
-                              "claude-opus-4-6",
-                              "claude-opus-4-5",
-                              "claude-4-5-haiku",
-                              "gpt-6.1-sol",
-                              "gpt-6.1-terra",
-                              "gpt-6-astra",
-                              "gpt-6-sol",
-                              "gpt-6-luna",
-                              "gpt-5.6-sol",
-                              "gpt-5.6-terra",
-                              "gpt-5.6-luna",
-                              "gpt-5.5-pro",
-                              "gpt-5.5",
-                              "gpt-5.4",
-                              "gpt-5.4-mini",
-                              "gpt-5.4-nano",
-                              "gpt-5.3-codex",
-                              "gpt-5.3-codex-spark",
-                              "gpt-5.2-codex",
-                              "gpt-5.2",
-                              "glm-5p3",
-                              "glm-5p3-flash",
-                              "composer-1.5",
-                              "composer-2",
-                              "composer-2-fast",
-                              "composer-2.5",
-                              "gemini-3.1-pro",
-                              "gemini-3.5-flash",
-                              "grok-4.7",
-                              "grok",
-                              "kimi-k3",
-                              "minimax-m2p7",
-                              "minimax-m3",
-                              "deepseek-v4-pro",
-                              "deepseek-v4p1-flash"
-                            ]
+                            "minLength": 1,
+                            "maxLength": 200
                           },
                           "label": {
                             "type": "string"
@@ -16183,52 +16185,8 @@
                         "string",
                         "null"
                       ],
-                      "enum": [
-                        "claude-opus-5-5",
-                        "claude-fable-5-1",
-                        "claude-fable-5",
-                        "claude-opus-5",
-                        "claude-sonnet-5-5",
-                        "claude-haiku-5-5",
-                        "claude-opus-4-8",
-                        "claude-opus-4-7",
-                        "claude-opus-4-6",
-                        "claude-opus-4-5",
-                        "claude-4-5-haiku",
-                        "gpt-6.1-sol",
-                        "gpt-6.1-terra",
-                        "gpt-6-astra",
-                        "gpt-6-sol",
-                        "gpt-6-luna",
-                        "gpt-5.6-sol",
-                        "gpt-5.6-terra",
-                        "gpt-5.6-luna",
-                        "gpt-5.5-pro",
-                        "gpt-5.5",
-                        "gpt-5.4",
-                        "gpt-5.4-mini",
-                        "gpt-5.4-nano",
-                        "gpt-5.3-codex",
-                        "gpt-5.3-codex-spark",
-                        "gpt-5.2-codex",
-                        "gpt-5.2",
-                        "glm-5p3",
-                        "glm-5p3-flash",
-                        "composer-1.5",
-                        "composer-2",
-                        "composer-2-fast",
-                        "composer-2.5",
-                        "gemini-3.1-pro",
-                        "gemini-3.5-flash",
-                        "grok-4.7",
-                        "grok",
-                        "kimi-k3",
-                        "minimax-m2p7",
-                        "minimax-m3",
-                        "deepseek-v4-pro",
-                        "deepseek-v4p1-flash",
-                        null
-                      ]
+                      "minLength": 1,
+                      "maxLength": 200
                     }
                   },
                   "required": [
@@ -16323,51 +16281,8 @@
             "name": "cursor",
             "schema": {
               "type": "string",
-              "enum": [
-                "claude-opus-5-5",
-                "claude-fable-5-1",
-                "claude-fable-5",
-                "claude-opus-5",
-                "claude-sonnet-5-5",
-                "claude-haiku-5-5",
-                "claude-opus-4-8",
-                "claude-opus-4-7",
-                "claude-opus-4-6",
-                "claude-opus-4-5",
-                "claude-4-5-haiku",
-                "gpt-6.1-sol",
-                "gpt-6.1-terra",
-                "gpt-6-astra",
-                "gpt-6-sol",
-                "gpt-6-luna",
-                "gpt-5.6-sol",
-                "gpt-5.6-terra",
-                "gpt-5.6-luna",
-                "gpt-5.5-pro",
-                "gpt-5.5",
-                "gpt-5.4",
-                "gpt-5.4-mini",
-                "gpt-5.4-nano",
-                "gpt-5.3-codex",
-                "gpt-5.3-codex-spark",
-                "gpt-5.2-codex",
-                "gpt-5.2",
-                "glm-5p3",
-                "glm-5p3-flash",
-                "composer-1.5",
-                "composer-2",
-                "composer-2-fast",
-                "composer-2.5",
-                "gemini-3.1-pro",
-                "gemini-3.5-flash",
-                "grok-4.7",
-                "grok",
-                "kimi-k3",
-                "minimax-m2p7",
-                "minimax-m3",
-                "deepseek-v4-pro",
-                "deepseek-v4p1-flash"
-              ]
+              "minLength": 1,
+              "maxLength": 200
             },
             "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
@@ -16408,51 +16323,8 @@
                   "properties": {
                     "name": {
                       "type": "string",
-                      "enum": [
-                        "claude-opus-5-5",
-                        "claude-fable-5-1",
-                        "claude-fable-5",
-                        "claude-opus-5",
-                        "claude-sonnet-5-5",
-                        "claude-haiku-5-5",
-                        "claude-opus-4-8",
-                        "claude-opus-4-7",
-                        "claude-opus-4-6",
-                        "claude-opus-4-5",
-                        "claude-4-5-haiku",
-                        "gpt-6.1-sol",
-                        "gpt-6.1-terra",
-                        "gpt-6-astra",
-                        "gpt-6-sol",
-                        "gpt-6-luna",
-                        "gpt-5.6-sol",
-                        "gpt-5.6-terra",
-                        "gpt-5.6-luna",
-                        "gpt-5.5-pro",
-                        "gpt-5.5",
-                        "gpt-5.4",
-                        "gpt-5.4-mini",
-                        "gpt-5.4-nano",
-                        "gpt-5.3-codex",
-                        "gpt-5.3-codex-spark",
-                        "gpt-5.2-codex",
-                        "gpt-5.2",
-                        "glm-5p3",
-                        "glm-5p3-flash",
-                        "composer-1.5",
-                        "composer-2",
-                        "composer-2-fast",
-                        "composer-2.5",
-                        "gemini-3.1-pro",
-                        "gemini-3.5-flash",
-                        "grok-4.7",
-                        "grok",
-                        "kimi-k3",
-                        "minimax-m2p7",
-                        "minimax-m3",
-                        "deepseek-v4-pro",
-                        "deepseek-v4p1-flash"
-                      ]
+                      "minLength": 1,
+                      "maxLength": 200
                     },
                     "label": {
                       "type": "string"
@@ -16949,51 +16821,8 @@
             "name": "modelName",
             "schema": {
               "type": "string",
-              "enum": [
-                "claude-opus-5-5",
-                "claude-fable-5-1",
-                "claude-fable-5",
-                "claude-opus-5",
-                "claude-sonnet-5-5",
-                "claude-haiku-5-5",
-                "claude-opus-4-8",
-                "claude-opus-4-7",
-                "claude-opus-4-6",
-                "claude-opus-4-5",
-                "claude-4-5-haiku",
-                "gpt-6.1-sol",
-                "gpt-6.1-terra",
-                "gpt-6-astra",
-                "gpt-6-sol",
-                "gpt-6-luna",
-                "gpt-5.6-sol",
-                "gpt-5.6-terra",
-                "gpt-5.6-luna",
-                "gpt-5.5-pro",
-                "gpt-5.5",
-                "gpt-5.4",
-                "gpt-5.4-mini",
-                "gpt-5.4-nano",
-                "gpt-5.3-codex",
-                "gpt-5.3-codex-spark",
-                "gpt-5.2-codex",
-                "gpt-5.2",
-                "glm-5p3",
-                "glm-5p3-flash",
-                "composer-1.5",
-                "composer-2",
-                "composer-2-fast",
-                "composer-2.5",
-                "gemini-3.1-pro",
-                "gemini-3.5-flash",
-                "grok-4.7",
-                "grok",
-                "kimi-k3",
-                "minimax-m2p7",
-                "minimax-m3",
-                "deepseek-v4-pro",
-                "deepseek-v4p1-flash"
-              ]
+              "minLength": 1,
+              "maxLength": 200
             },
             "required": true
           }
@@ -17075,51 +16904,8 @@
                           },
                           "defaultModelName": {
                             "type": "string",
-                            "enum": [
-                              "claude-opus-5-5",
-                              "claude-fable-5-1",
-                              "claude-fable-5",
-                              "claude-opus-5",
-                              "claude-sonnet-5-5",
-                              "claude-haiku-5-5",
-                              "claude-opus-4-8",
-                              "claude-opus-4-7",
-                              "claude-opus-4-6",
-                              "claude-opus-4-5",
-                              "claude-4-5-haiku",
-                              "gpt-6.1-sol",
-                              "gpt-6.1-terra",
-                              "gpt-6-astra",
-                              "gpt-6-sol",
-                              "gpt-6-luna",
-                              "gpt-5.6-sol",
-                              "gpt-5.6-terra",
-                              "gpt-5.6-luna",
-                              "gpt-5.5-pro",
-                              "gpt-5.5",
-                              "gpt-5.4",
-                              "gpt-5.4-mini",
-                              "gpt-5.4-nano",
-                              "gpt-5.3-codex",
-                              "gpt-5.3-codex-spark",
-                              "gpt-5.2-codex",
-                              "gpt-5.2",
-                              "glm-5p3",
-                              "glm-5p3-flash",
-                              "composer-1.5",
-                              "composer-2",
-                              "composer-2-fast",
-                              "composer-2.5",
-                              "gemini-3.1-pro",
-                              "gemini-3.5-flash",
-                              "grok-4.7",
-                              "grok",
-                              "kimi-k3",
-                              "minimax-m2p7",
-                              "minimax-m3",
-                              "deepseek-v4-pro",
-                              "deepseek-v4p1-flash"
-                            ]
+                            "minLength": 1,
+                            "maxLength": 200
                           },
                           "requiresApiKey": {
                             "type": "boolean"
@@ -17219,51 +17005,8 @@
                               "properties": {
                                 "name": {
                                   "type": "string",
-                                  "enum": [
-                                    "claude-opus-5-5",
-                                    "claude-fable-5-1",
-                                    "claude-fable-5",
-                                    "claude-opus-5",
-                                    "claude-sonnet-5-5",
-                                    "claude-haiku-5-5",
-                                    "claude-opus-4-8",
-                                    "claude-opus-4-7",
-                                    "claude-opus-4-6",
-                                    "claude-opus-4-5",
-                                    "claude-4-5-haiku",
-                                    "gpt-6.1-sol",
-                                    "gpt-6.1-terra",
-                                    "gpt-6-astra",
-                                    "gpt-6-sol",
-                                    "gpt-6-luna",
-                                    "gpt-5.6-sol",
-                                    "gpt-5.6-terra",
-                                    "gpt-5.6-luna",
-                                    "gpt-5.5-pro",
-                                    "gpt-5.5",
-                                    "gpt-5.4",
-                                    "gpt-5.4-mini",
-                                    "gpt-5.4-nano",
-                                    "gpt-5.3-codex",
-                                    "gpt-5.3-codex-spark",
-                                    "gpt-5.2-codex",
-                                    "gpt-5.2",
-                                    "glm-5p3",
-                                    "glm-5p3-flash",
-                                    "composer-1.5",
-                                    "composer-2",
-                                    "composer-2-fast",
-                                    "composer-2.5",
-                                    "gemini-3.1-pro",
-                                    "gemini-3.5-flash",
-                                    "grok-4.7",
-                                    "grok",
-                                    "kimi-k3",
-                                    "minimax-m2p7",
-                                    "minimax-m3",
-                                    "deepseek-v4-pro",
-                                    "deepseek-v4p1-flash"
-                                  ]
+                                  "minLength": 1,
+                                  "maxLength": 200
                                 },
                                 "label": {
                                   "type": "string"
@@ -18283,6 +18026,9 @@
                         "showArchivedSessions": {
                           "type": "boolean"
                         },
+                        "showActivity": {
+                          "type": "boolean"
+                        },
                         "width": {
                           "type": "number"
                         },
@@ -18761,6 +18507,9 @@
                           ]
                         },
                         "showArchivedSessions": {
+                          "type": "boolean"
+                        },
+                        "showActivity": {
                           "type": "boolean"
                         },
                         "width": {
@@ -19246,6 +18995,9 @@
                         ]
                       },
                       "showArchivedSessions": {
+                        "type": "boolean"
+                      },
+                      "showActivity": {
                         "type": "boolean"
                       },
                       "width": {
@@ -44192,6 +43944,25 @@
               }
             }
           },
+          "403": {
+            "description": "The workspace requires a linked GitHub account to run agents",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
           "404": {
             "description": "Resource not found",
             "content": {
@@ -48868,7 +48639,7 @@
       "patch": {
         "operationId": "updateIntegration",
         "summary": "Update an integration",
-        "description": "Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.",
+        "description": "Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; rotate GitLab service account access tokens; set or remove Atlassian service-account credentials.",
         "tags": [
           "Integrations"
         ],
@@ -49242,6 +49013,31 @@
                     },
                     "required": [
                       "postgres"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "gitlab": {
+                        "type": "object",
+                        "properties": {
+                          "accessToken": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 65536,
+                            "description": "GitLab access token used to connect the integration."
+                          }
+                        },
+                        "required": [
+                          "accessToken"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Replace GitLab credentials with a service account access token, keeping repositories and projects connected."
+                      }
+                    },
+                    "required": [
+                      "gitlab"
                     ],
                     "additionalProperties": false
                   },
