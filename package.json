@@ -7,6 +7,10 @@
     "type": "git",
     "url": "git+https://github.com/tembo/sdk.git"
   },
+  "bugs": {
+    "url": "https://github.com/tembo/sdk/issues"
+  },
+  "homepage": "https://github.com/tembo/sdk",
   "type": "module",
   "sideEffects": false,
   "main": "./dist/cjs/index.js",

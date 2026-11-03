@@ -24,7 +24,7 @@ export interface LiveWSParameters extends Record<string, unknown> {
 export interface LiveWSReconnectOptions {
   /** Called before each reconnect attempt. */
   onReconnecting(event: ReconnectingEvent<LiveWSParameters>): ReconnectingOverrides<LiveWSParameters> | void;
-  /** Maximum number of reconnection attempts. Default: 5. Set to 0 to disable reconnection. */
+  /** Maximum number of reconnection attempts. Default: 5. Set to 0 to disable reconnection. The count carries across drops until a reconnected socket stays up for `maxDelay` (and at least a second), so a server that drops each connection again within that time ends it. */
   maxRetries?: number;
   /** Initial backoff delay in milliseconds. Default: 500. */
   initialDelay?: number;
@@ -48,6 +48,10 @@ export abstract class LiveWSBase<TSocket extends WebSocketLike> extends LiveEmit
   private _reconnectOptions: LiveWSReconnectOptions | null;
   private _sendQueue: SendQueue<unknown>;
   private _isReconnecting = false;
+  /** Reconnect attempts spent since the connection last stayed up, carried across drops so a server that accepts and drops at once uses up `maxRetries`. */
+  private _spentAttempts = 0;
+  /** When the last reconnect opened a socket (monotonic ms), to tell a connection that held from one that flaps. */
+  private _reconnectedAt: number | undefined;
   private _intentionallyClosed = false;
   private _closeCode = 1000;
   private _closeReason = 'OK';
@@ -265,7 +269,14 @@ export abstract class LiveWSBase<TSocket extends WebSocketLike> extends LiveEmit
     const maxRetries = this._reconnectOptions.maxRetries ?? 5;
     const initialDelay = this._reconnectOptions.initialDelay ?? 500;
     const maxDelay = this._reconnectOptions.maxDelay ?? 8000;
-    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    // Only a reconnected socket that stayed up for the longest backoff (and at least a second) starts the count again at 1.
+    if (
+      this._reconnectedAt === undefined ||
+      performance.now() - this._reconnectedAt >= Math.max(maxDelay, 1000)
+    )
+      this._spentAttempts = 0;
+    for (let attempt = this._spentAttempts + 1; attempt <= maxRetries; attempt++) {
+      this._spentAttempts = attempt;
       if (!this._canReconnect(closeCode)) {
         this._isReconnecting = false;
         this._emitPermanentClose(
@@ -330,6 +341,7 @@ export abstract class LiveWSBase<TSocket extends WebSocketLike> extends LiveEmit
         });
         await this._awaitOpen(this.socket);
         this._internalEvents._emit('socketSwap', oldSocket, this.socket);
+        this._reconnectedAt = performance.now();
         this._isReconnecting = false;
         this._flushSendQueue();
         this._emit('reconnected');

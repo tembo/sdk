@@ -101,6 +101,7 @@ export namespace SettingRetrieveResponse {
     sessionSortBy?: 'createdAt' | 'updatedAt';
     sessionOrganization?: 'list' | 'project';
     showArchivedSessions?: boolean;
+    showActivity?: boolean;
     width?: number;
     rightSidebar?: Record<string, AppSidebarPreferences.RightSidebar>;
   }
@@ -313,6 +314,7 @@ export namespace SettingUpdateParams {
     sessionSortBy?: 'createdAt' | 'updatedAt';
     sessionOrganization?: 'list' | 'project';
     showArchivedSessions?: boolean;
+    showActivity?: boolean;
     /**
      * @minimum 0
      * @maximum 10000
@@ -517,6 +519,7 @@ export namespace SettingUpdateResponse {
     sessionSortBy?: 'createdAt' | 'updatedAt';
     sessionOrganization?: 'list' | 'project';
     showArchivedSessions?: boolean;
+    showActivity?: boolean;
     width?: number;
     rightSidebar?: Record<string, AppSidebarPreferences.RightSidebar>;
   }

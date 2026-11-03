@@ -322,6 +322,7 @@ const skill = await client.skills.create({
   files: [
     {
       content: '',
+      encoding: 'utf8',
       filename: 'x',
     },
   ],
@@ -987,7 +988,7 @@ Enable or disable an organization model, or select its inference provider.
 | Response | [`ModelUpdateResponse`](./src/resources/models.ts) |
 
 ```ts
-const model = await client.models.update('claude-opus-5-5', {});
+const model = await client.models.update('modelName', {});
 ```
 
 ## `Runtimes`
@@ -2326,7 +2327,7 @@ const integration = await client.integrations.retrieve('7c9e6679-7425-40de-944b-
 
 ### Update an integration
 
-Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.
+Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; rotate GitLab service account access tokens; set or remove Atlassian service-account credentials.
 
 | Direction | Type |
 | --- | --- |
