@@ -161,6 +161,7 @@ const cases: {
         files: [
           {
             content: '',
+            encoding: 'utf8',
             filename: 'x',
           },
         ],
@@ -199,6 +200,7 @@ const cases: {
         files: [
           {
             content: '',
+            encoding: 'utf8',
             filename: 'x',
           },
         ],
@@ -985,7 +987,7 @@ const cases: {
     label: 'all params',
     run: async () => {
       const model = await client.models.list({
-        cursor: 'claude-opus-5-5',
+        cursor: 'cursor',
         limit: 50,
       });
     },
@@ -997,7 +999,7 @@ const cases: {
     path: '/v1/models/{modelName}',
     label: 'required params',
     run: async () => {
-      const model = await client.models.update('claude-opus-5-5', {});
+      const model = await client.models.update('modelName', {});
     },
   },
 
@@ -1007,7 +1009,7 @@ const cases: {
     path: '/v1/models/{modelName}',
     label: 'all params',
     run: async () => {
-      const model = await client.models.update('claude-opus-5-5', {
+      const model = await client.models.update('modelName', {
         enabled: false,
         inferenceProvider: 'TemboManagedInference',
       });

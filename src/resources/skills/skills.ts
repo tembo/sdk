@@ -53,6 +53,7 @@ export class Skills extends APIResource {
    *   files: [
    *     {
    *       content: '',
+   *       encoding: 'utf8',
    *       filename: 'x',
    *     },
    *   ],
@@ -202,7 +203,7 @@ export interface SkillCreateParams {
 export namespace SkillCreateParams {
   export interface File {
     /**
-     * Complete text content of the skill file.
+     * Complete file content: plain text, or base64 when encoding is base64.
      */
     content: string;
     /**
@@ -210,6 +211,11 @@ export namespace SkillCreateParams {
      * @minLength 1
      */
     filename: string;
+    /**
+     * utf8 for text files; base64 for binary files such as images.
+     * @default utf8
+     */
+    encoding?: 'utf8' | 'base64';
   }
 }
 
@@ -234,6 +240,7 @@ export interface SkillCreateResponse {
 export namespace SkillCreateResponse {
   export interface File {
     content: string;
+    encoding: 'utf8' | 'base64';
     filename: string;
     /**
      * @format uuid
@@ -263,6 +270,7 @@ export interface SkillRetrieveResponse {
 export namespace SkillRetrieveResponse {
   export interface File {
     content: string;
+    encoding: 'utf8' | 'base64';
     filename: string;
     /**
      * @format uuid
@@ -291,7 +299,7 @@ export interface SkillUpdateParams {
 export namespace SkillUpdateParams {
   export interface File {
     /**
-     * Complete text content of the skill file.
+     * Complete file content: plain text, or base64 when encoding is base64.
      */
     content: string;
     /**
@@ -299,6 +307,11 @@ export namespace SkillUpdateParams {
      * @minLength 1
      */
     filename: string;
+    /**
+     * utf8 for text files; base64 for binary files such as images.
+     * @default utf8
+     */
+    encoding?: 'utf8' | 'base64';
   }
 }
 
@@ -323,6 +336,7 @@ export interface SkillUpdateResponse {
 export namespace SkillUpdateResponse {
   export interface File {
     content: string;
+    encoding: 'utf8' | 'base64';
     filename: string;
     /**
      * @format uuid
