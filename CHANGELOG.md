@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.19.0](https://github.com/tembo/sdk/compare/v0.18.0...v0.19.0) (2026-11-03)
+
+
+### Features
+
+* **api:** add 403 error response on agents.runs.create (+1 more change) ([851a18b](https://github.com/tembo/sdk/commit/851a18b27f804da5f0af6dee0b95f64ccf03fb31))
+
+
+### Chores
+
+* **openapi:** refresh public API snapshot for v0.2.885 ([31e25e8](https://github.com/tembo/sdk/commit/31e25e8e7bc3b2483c2b1fa3f645d0cb9bff947b))
+* **openapi:** refresh public API snapshot for v0.2.885 ([83c999b](https://github.com/tembo/sdk/commit/83c999bc3ad29e57eba43119faadef78e3401b1e))
+
 ## [0.18.0](https://github.com/tembo/sdk/compare/v0.17.1...v0.18.0) (2026-10-29)
 
 
