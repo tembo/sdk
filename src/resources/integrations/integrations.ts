@@ -86,7 +86,7 @@ export class Integrations extends APIResource {
   }
 
   /**
-   * Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; set or remove Atlassian service-account credentials.
+   * Update integration settings such as the default repository, Slack channel restrictions, automatic solving, or Sentry environments; replace AWS or PostgreSQL configuration; rotate GitLab service account access tokens; set or remove Atlassian service-account credentials.
    *
    * @param {string} integrationID
    * @param {IntegrationUpdateParams} body - The request body to send.
@@ -670,6 +670,7 @@ export type IntegrationUpdateParams =
   | IntegrationUpdateParams.Settings
   | IntegrationUpdateParams.Aws
   | IntegrationUpdateParams.Postgres
+  | IntegrationUpdateParams.Gitlab
   | IntegrationUpdateParams.AtlassianServiceAccount;
 
 export declare namespace IntegrationUpdateParams {
@@ -748,6 +749,24 @@ export declare namespace IntegrationUpdateParams {
        * @maxLength 1000000
        */
       caCertificate?: string;
+    }
+  }
+
+  export interface Gitlab {
+    /**
+     * Replace GitLab credentials with a service account access token, keeping repositories and projects connected.
+     */
+    gitlab: Gitlab.Gitlab;
+  }
+
+  export namespace Gitlab {
+    export interface Gitlab {
+      /**
+       * GitLab access token used to connect the integration.
+       * @minLength 1
+       * @maxLength 65536
+       */
+      accessToken: string;
     }
   }
 

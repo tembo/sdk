@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.36.11",
+  "generatorVersion": "0.37.1",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -24974,6 +24974,7 @@
         "successStatus": "201",
         "errorStatuses": [
           "400",
+          "403",
           "404",
           "409",
           "500"
@@ -24982,6 +24983,17 @@
       "errorResponses": [
         {
           "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "403",
           "contentType": "application/json",
           "encoding": "json",
           "contents": [
