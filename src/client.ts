@@ -337,7 +337,11 @@ export class Tembo {
   logger: Logger;
   logLevel: LogLevel | undefined;
   fetchOptions: MergedRequestInit | undefined;
-  private fetch: Fetch;
+  /**
+   * The `fetch` implementation every request is sent through: the `fetch` client option, or the
+   * platform default. A replacement must honor the same contract as that option.
+   */
+  fetch: Fetch;
   #encoder: Opts.RequestEncoder;
   protected idempotencyHeader?: string;
   private _baseURLOverridden: boolean;
@@ -602,7 +606,12 @@ export class Tembo {
       timeout,
       controller,
     );
-    const response = await this.#fetchFollowingRedirects(url, req, controller).catch(castToError);
+    // A subclass's own `fetchWithTimeout` sends the request; the deadline above still covers the body.
+    const viaOverride = this.fetchWithTimeout !== Tembo.prototype.fetchWithTimeout;
+    const response = await (viaOverride
+      ? Promise.resolve().then(() => this.fetchWithTimeout(url, req, timeout, controller))
+      : this.#fetchFollowingRedirects(url, req, controller)
+    ).catch(castToError);
     const headersTime = Date.now();
 
     if (response instanceof globalThis.Error) {
@@ -740,8 +749,17 @@ export class Tembo {
 
   /**
    * Sends one request with a deadline on its response headers, following redirects as the client
-   * does. The SDK's own requests no longer go through this method, so overriding it does not
-   * change them; pass a custom `fetch` in the client options to wrap every request instead.
+   * does.
+   *
+   * Override it in a subclass to wrap every HTTP request this client sends to its API, retries included;
+   * call `super.fetchWithTimeout` to send, which keeps the client's redirect handling. When a redirect
+   * leaves the origin that drops the client's own credential headers, but a header an override adds
+   * goes on to the redirect target, so a secret belongs in a client option rather than added here.
+   * A client that does not override it skips this method and sends directly.
+   *
+   * The SDK's own deadline aborts `controller` and stays armed until a buffered body is read, so it
+   * cuts off an override that sends through `super` or passes `controller.signal` on; a larger `ms`
+   * passed to `super` cannot extend it, so set the `timeout` option instead.
    */
   async fetchWithTimeout(
     url: RequestInfo,
@@ -1067,9 +1085,21 @@ export class Tembo {
     appendAuthCookies(headers.values, await this.authCookiesAsync());
 
     this.validateAuth(url, headers.values, options);
+    // Last, so a subclass sees the headers as they leave here, after the SDK has checked the auth.
+    await this.validateHeaders(headers);
 
     return headers.values;
   }
+
+  /**
+   * Runs once for every HTTP request built from the client's headers, at the end of header building,
+   * with the headers it will be sent with: `values` holds them and `nulls` the names the call removed
+   * with a `null`.
+   * Throwing, or rejecting from an `async` override, which is awaited, rejects the request before it
+   * is sent. Does nothing unless a subclass overrides it.
+   * `fetchOptions.headers` and `prepareRequest` are applied afterwards, so the hook does not see them.
+   */
+  protected validateHeaders({ values, nulls }: NullableHeaders): void {}
 
   private _makeAbort(controller: AbortController) {
     // note: we can't just inline this method inside `#armDeadline()` because then the closure

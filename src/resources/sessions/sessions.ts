@@ -1834,6 +1834,21 @@ export interface SessionStopResponse {
    * @minimum 0
    */
   cancelledRuntimeTurns: number;
+  /**
+   * Canonical session state after stopping and reconciling queued work.
+   */
+  state?: SessionStopResponse.State;
+}
+
+export namespace SessionStopResponse {
+  export interface State {
+    isQueued: boolean;
+    isCancelled: boolean;
+    isCompleted: boolean;
+    isFailed: boolean;
+    inProgress: boolean;
+    current?: 'inProgress' | 'queued' | 'completed' | 'failed' | 'cancelled';
+  }
 }
 
 export interface SessionListEventsParams {
