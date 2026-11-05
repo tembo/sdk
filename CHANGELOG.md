@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.20.0](https://github.com/tembo/sdk/compare/v0.19.0...v0.20.0) (2026-11-05)
+
+
+### Features
+
+* **api:** update SDK surface (2 changes) ([3d431ec](https://github.com/tembo/sdk/commit/3d431ec0460394926f5ddc1c527214c496d512fe))
+
+
+### Chores
+
+* **openapi:** refresh public API snapshot for v0.2.887 ([1c16875](https://github.com/tembo/sdk/commit/1c168752be7adc169217f2d735b972b564d90ba5))
+* **openapi:** refresh public API snapshot for v0.2.887 ([4321b91](https://github.com/tembo/sdk/commit/4321b91cebd56ce332f7957ed4dfb53039a69d9f))
+
 ## [0.19.0](https://github.com/tembo/sdk/compare/v0.18.0...v0.19.0) (2026-11-03)
 
 
