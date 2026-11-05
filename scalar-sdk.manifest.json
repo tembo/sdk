@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.37.1",
+  "generatorVersion": "0.38.0",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -14181,6 +14181,7 @@
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [
+        "defaultSessionVisibilityByWorkspace",
         "autoRestartVm",
         "defaultProjectId",
         "gpgKey",
@@ -14202,6 +14203,7 @@
         "customSystemPrompt"
       ],
       "publicBodyParams": [
+        "defaultSessionVisibilityByWorkspace",
         "autoRestartVm",
         "defaultProjectId",
         "gpgKey",
@@ -14223,6 +14225,10 @@
         "customSystemPrompt"
       ],
       "bodyParamDetails": [
+        {
+          "name": "defaultSessionVisibilityByWorkspace",
+          "required": false
+        },
         {
           "name": "autoRestartVm",
           "required": false

@@ -1085,6 +1085,7 @@ const cases: {
     label: 'all params',
     run: async () => {
       const setting = await client.users.settings.update('userId', {
+        defaultSessionVisibilityByWorkspace: {},
         autoRestartVm: false,
         defaultProjectId: 'x',
         gpgKey: '',

@@ -47,6 +47,7 @@ export class Settings extends APIResource {
 export interface SettingRetrieveResponse {
   autoRestartVm?: boolean;
   defaultProjectId?: string | null;
+  defaultSessionVisibilityByWorkspace?: Record<string, 'private' | 'public'>;
   gpgKey?: string;
   includeTemboCommitAttribution?: boolean;
   desktopNotificationsEnabled?: boolean;
@@ -180,6 +181,10 @@ export namespace SettingRetrieveResponse {
 }
 
 export interface SettingUpdateParams {
+  /**
+   * Default visibility for your new sessions, keyed by workspace ID.
+   */
+  defaultSessionVisibilityByWorkspace?: Record<string, 'private' | 'public'>;
   /**
    * Automatically restart a session VM when needed.
    */
@@ -465,6 +470,7 @@ export namespace SettingUpdateParams {
 export interface SettingUpdateResponse {
   autoRestartVm?: boolean;
   defaultProjectId?: string | null;
+  defaultSessionVisibilityByWorkspace?: Record<string, 'private' | 'public'>;
   gpgKey?: string;
   includeTemboCommitAttribution?: boolean;
   desktopNotificationsEnabled?: boolean;
