@@ -17922,6 +17922,16 @@
                         "null"
                       ]
                     },
+                    "defaultSessionVisibilityByWorkspace": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                          "private",
+                          "public"
+                        ]
+                      }
+                    },
                     "gpgKey": {
                       "type": "string"
                     },
@@ -18405,6 +18415,16 @@
                         "null"
                       ]
                     },
+                    "defaultSessionVisibilityByWorkspace": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string",
+                        "enum": [
+                          "private",
+                          "public"
+                        ]
+                      }
+                    },
                     "gpgKey": {
                       "type": "string"
                     },
@@ -18865,6 +18885,22 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "defaultSessionVisibilityByWorkspace": {
+                    "type": "object",
+                    "propertyNames": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 255
+                    },
+                    "additionalProperties": {
+                      "type": "string",
+                      "enum": [
+                        "private",
+                        "public"
+                      ]
+                    },
+                    "description": "Default visibility for your new sessions, keyed by workspace ID."
+                  },
                   "autoRestartVm": {
                     "type": "boolean",
                     "description": "Automatically restart a session VM when needed."
@@ -27143,6 +27179,45 @@
                     "cancelledRuntimeTurns": {
                       "type": "integer",
                       "minimum": 0
+                    },
+                    "state": {
+                      "type": "object",
+                      "properties": {
+                        "current": {
+                          "type": "string",
+                          "enum": [
+                            "inProgress",
+                            "queued",
+                            "completed",
+                            "failed",
+                            "cancelled"
+                          ]
+                        },
+                        "isQueued": {
+                          "type": "boolean"
+                        },
+                        "isCancelled": {
+                          "type": "boolean"
+                        },
+                        "isCompleted": {
+                          "type": "boolean"
+                        },
+                        "isFailed": {
+                          "type": "boolean"
+                        },
+                        "inProgress": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "isQueued",
+                        "isCancelled",
+                        "isCompleted",
+                        "isFailed",
+                        "inProgress"
+                      ],
+                      "additionalProperties": false,
+                      "description": "Canonical session state after stopping and reconciling queued work."
                     }
                   },
                   "required": [
