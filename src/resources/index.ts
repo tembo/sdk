@@ -109,6 +109,8 @@ export type {
   SessionDeleteResponse,
   SessionForkParams,
   SessionForkResponse,
+  SessionImportParams,
+  SessionImportResponse,
   SessionStopParams,
   SessionStopResponse,
   SessionListEventsParams,
