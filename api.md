@@ -97,6 +97,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Update a session](#update-a-session)
   - [Delete a session](#delete-a-session)
   - [Fork a session](#fork-a-session)
+  - [Import a chat as a session](#import-a-chat-as-a-session)
   - [Stop a session](#stop-a-session)
   - [List session events](#list-session-events)
   - [`Sessions Sources`](#sessions-sources)
@@ -1284,6 +1285,31 @@ Create an independent session from a fresh workspace snapshot, or the latest sav
 ```ts
 const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
   queueRightAway: true,
+});
+```
+
+### Import a chat as a session
+
+Create a private session from a chat in another coding agent app, such as Conductor, with its messages and agent activity. No agent run starts until a follow-up is sent, which receives the imported history as context. Importing the same chat again returns the existing session.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`SessionImportParams`](./src/resources/sessions/sessions.ts) |
+| Response | [`SessionImportResponse`](./src/resources/sessions/sessions.ts) |
+
+```ts
+const session = await client.sessions.import({
+  source: 'conductor',
+  externalId: 'x',
+  title: 'x',
+  messages: [
+    {
+      id: 'x',
+      role: 'user',
+      content: '',
+      sentAt: '2024-01-01T00:00:00.000Z',
+    },
+  ],
 });
 ```
 

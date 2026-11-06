@@ -91,6 +91,8 @@ export type TriggerFilters =
   | TriggerFilters.TriggerFiltersItem40
   | TriggerFilters.TriggerFiltersItem41
   | TriggerFilters.TriggerFiltersItem42
+  | TriggerFilters.TriggerFiltersItem43
+  | TriggerFilters.TriggerFiltersItem44
   | Record<string, unknown>;
 
 export namespace TriggerFilters {
@@ -187,33 +189,63 @@ export namespace TriggerFilters {
 
   export interface TriggerFiltersItem24 extends GitlabIssueOpenedFilters {}
 
-  export interface TriggerFiltersItem25 extends GitlabMergeRequestClosedFilters {}
+  export interface TriggerFiltersItem25 {
+    /**
+     * Only trigger if the issue is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger if one of the added labels matches these labels
+     */
+    labels?: Array<string>;
+    /**
+     * Only trigger if the label was added by one of the specified users
+     */
+    addedBy?: Array<string>;
+  }
 
-  export interface TriggerFiltersItem26 extends GitlabMergeRequestMergedFilters {}
+  export interface TriggerFiltersItem26 {
+    /**
+     * Only trigger if the issue is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger if the issue has at least one of the specified labels
+     */
+    labels?: Array<string>;
+    /**
+     * Only trigger if the issue was updated by one of the specified users
+     */
+    updatedBy?: Array<string>;
+  }
 
-  export interface TriggerFiltersItem27 extends GitlabMergeRequestOpenedFilters {}
+  export interface TriggerFiltersItem27 extends GitlabMergeRequestClosedFilters {}
 
-  export interface TriggerFiltersItem28 extends GitlabMergeRequestUpdatedFilters {}
+  export interface TriggerFiltersItem28 extends GitlabMergeRequestMergedFilters {}
 
-  export interface TriggerFiltersItem29 extends GitlabPipelineFailedFilters {}
+  export interface TriggerFiltersItem29 extends GitlabMergeRequestOpenedFilters {}
 
-  export interface TriggerFiltersItem30 extends GitlabRefCreatedFilters {}
+  export interface TriggerFiltersItem30 extends GitlabMergeRequestUpdatedFilters {}
 
-  export interface TriggerFiltersItem31 extends LinearIssueCreateFilters {}
+  export interface TriggerFiltersItem31 extends GitlabPipelineFailedFilters {}
 
-  export interface TriggerFiltersItem32 extends LinearIssueLabelAddedFilters {}
+  export interface TriggerFiltersItem32 extends GitlabRefCreatedFilters {}
 
-  export interface TriggerFiltersItem33 extends LinearIssueStatusChangedFilters {}
+  export interface TriggerFiltersItem33 extends LinearIssueCreateFilters {}
 
-  export interface TriggerFiltersItem34 extends LinearIssueUpdatedFilters {}
+  export interface TriggerFiltersItem34 extends LinearIssueLabelAddedFilters {}
 
-  export interface TriggerFiltersItem35 extends SentryIssueCreatedFilters {}
+  export interface TriggerFiltersItem35 extends LinearIssueStatusChangedFilters {}
 
-  export interface TriggerFiltersItem36 extends SlackMessageReactionAddedFilters {}
+  export interface TriggerFiltersItem36 extends LinearIssueUpdatedFilters {}
 
-  export interface TriggerFiltersItem37 extends SlackMessageSentInChannelFilters {}
+  export interface TriggerFiltersItem37 extends SentryIssueCreatedFilters {}
 
-  export interface TriggerFiltersItem38 {
+  export interface TriggerFiltersItem38 extends SlackMessageReactionAddedFilters {}
+
+  export interface TriggerFiltersItem39 extends SlackMessageSentInChannelFilters {}
+
+  export interface TriggerFiltersItem40 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -225,7 +257,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem39 {
+  export interface TriggerFiltersItem41 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -241,7 +273,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem40 {
+  export interface TriggerFiltersItem42 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -257,7 +289,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem41 {
+  export interface TriggerFiltersItem43 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -277,7 +309,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem42 {
+  export interface TriggerFiltersItem44 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */

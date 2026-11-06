@@ -50,6 +50,7 @@ export interface SettingRetrieveResponse {
   defaultSessionVisibilityByWorkspace?: Record<string, 'private' | 'public'>;
   gpgKey?: string;
   includeTemboCommitAttribution?: boolean;
+  openPullRequestsAsBot?: boolean;
   desktopNotificationsEnabled?: boolean;
   desktopNotificationPreferences?: SettingRetrieveResponse.DesktopNotificationPreferences;
   hasDesktopApp?: boolean;
@@ -66,6 +67,7 @@ export interface SettingRetrieveResponse {
    * @pattern ^[^:]+:[^:]+(?::[^:]+)?$
    */
   defaultAgent?: string;
+  defaultFastMode?: boolean;
   followUpBehavior?: 'queue' | 'steer';
   /**
    * @maxLength 4096
@@ -205,6 +207,10 @@ export interface SettingUpdateParams {
    */
   includeTemboCommitAttribution?: boolean;
   /**
+   * Open GitHub pull requests as the Tembo bot instead of your personal account.
+   */
+  openPullRequestsAsBot?: boolean;
+  /**
    * Enable or disable desktop notifications.
    */
   desktopNotificationsEnabled?: boolean;
@@ -260,6 +266,10 @@ export interface SettingUpdateParams {
    * @pattern ^[^:]+:[^:]+(?::[^:]+)?$
    */
   defaultAgent?: string | null;
+  /**
+   * Enable Fast mode by default for new sessions with supported agents.
+   */
+  defaultFastMode?: boolean;
   /**
    * Default follow-up delivery: queue a new turn or steer an active turn.
    */
@@ -473,6 +483,7 @@ export interface SettingUpdateResponse {
   defaultSessionVisibilityByWorkspace?: Record<string, 'private' | 'public'>;
   gpgKey?: string;
   includeTemboCommitAttribution?: boolean;
+  openPullRequestsAsBot?: boolean;
   desktopNotificationsEnabled?: boolean;
   desktopNotificationPreferences?: SettingUpdateResponse.DesktopNotificationPreferences;
   hasDesktopApp?: boolean;
@@ -489,6 +500,7 @@ export interface SettingUpdateResponse {
    * @pattern ^[^:]+:[^:]+(?::[^:]+)?$
    */
   defaultAgent?: string;
+  defaultFastMode?: boolean;
   followUpBehavior?: 'queue' | 'steer';
   /**
    * @maxLength 4096
