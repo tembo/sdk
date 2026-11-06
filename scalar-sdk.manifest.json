@@ -1425,16 +1425,6 @@
             }
           },
           {
-            "name": "isProgressUpdate",
-            "publicName": "isProgressUpdate",
-            "required": false,
-            "deprecated": false,
-            "type": {
-              "kind": "primitive",
-              "type": "boolean"
-            }
-          },
-          {
             "name": "toolName",
             "publicName": "toolName",
             "required": false,
@@ -11009,6 +10999,7 @@
         "cloneDepth",
         "commitInstructions",
         "cursorApiKey",
+        "customReviewBots",
         "customSystemPrompt",
         "defaultAgent",
         "defaultKeepAliveMinutes",
@@ -11051,6 +11042,7 @@
         "cloneDepth",
         "commitInstructions",
         "cursorApiKey",
+        "customReviewBots",
         "customSystemPrompt",
         "defaultAgent",
         "defaultKeepAliveMinutes",
@@ -11115,6 +11107,10 @@
         },
         {
           "name": "cursorApiKey",
+          "required": false
+        },
+        {
+          "name": "customReviewBots",
           "required": false
         },
         {
