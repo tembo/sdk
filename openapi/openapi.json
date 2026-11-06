@@ -899,6 +899,9 @@
               "final_answer"
             ]
           },
+          "isProgressUpdate": {
+            "type": "boolean"
+          },
           "toolName": {
             "type": "string"
           },
@@ -1200,6 +1203,9 @@
               "final_answer"
             ]
           },
+          "isProgressUpdate": {
+            "type": "boolean"
+          },
           "toolName": {
             "type": "string",
             "maxLength": 1000
@@ -1435,6 +1441,22 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/GitlabIssueOpenedFilters"
+              }
+            ],
+            "additionalProperties": {}
+          },
+          {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GitlabIssueLabelAddedFilters"
+              }
+            ],
+            "additionalProperties": {}
+          },
+          {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GitlabIssueUpdatedFilters"
               }
             ],
             "additionalProperties": {}
@@ -2395,6 +2417,58 @@
           "temboIssues": {
             "type": "boolean",
             "description": "Enable agent for Tembo-created issues (disabled by default)"
+          }
+        }
+      },
+      "GitlabIssueLabelAddedFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the issue is in one of the repositories"
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if one of the added labels matches these labels"
+          },
+          "addedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the label was added by one of the specified users"
+          }
+        }
+      },
+      "GitlabIssueUpdatedFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the issue is in one of the repositories"
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the issue has at least one of the specified labels"
+          },
+          "updatedBy": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the issue was updated by one of the specified users"
           }
         }
       },
@@ -10185,6 +10259,7 @@
                                 "plus",
                                 "pro",
                                 "prolite",
+                                "promax",
                                 "team",
                                 "self_serve_business_prolite",
                                 "self_serve_business_usage_based",
@@ -10227,6 +10302,7 @@
                                       "plus",
                                       "pro",
                                       "prolite",
+                                      "promax",
                                       "team",
                                       "self_serve_business_prolite",
                                       "self_serve_business_usage_based",
@@ -17938,6 +18014,9 @@
                     "includeTemboCommitAttribution": {
                       "type": "boolean"
                     },
+                    "openPullRequestsAsBot": {
+                      "type": "boolean"
+                    },
                     "desktopNotificationsEnabled": {
                       "type": "boolean"
                     },
@@ -18278,6 +18357,9 @@
                     "defaultAgent": {
                       "type": "string",
                       "pattern": "^[^:]+:[^:]+(?::[^:]+)?$"
+                    },
+                    "defaultFastMode": {
+                      "type": "boolean"
                     },
                     "followUpBehavior": {
                       "type": "string",
@@ -18431,6 +18513,9 @@
                     "includeTemboCommitAttribution": {
                       "type": "boolean"
                     },
+                    "openPullRequestsAsBot": {
+                      "type": "boolean"
+                    },
                     "desktopNotificationsEnabled": {
                       "type": "boolean"
                     },
@@ -18772,6 +18857,9 @@
                       "type": "string",
                       "pattern": "^[^:]+:[^:]+(?::[^:]+)?$"
                     },
+                    "defaultFastMode": {
+                      "type": "boolean"
+                    },
                     "followUpBehavior": {
                       "type": "string",
                       "enum": [
@@ -18922,6 +19010,10 @@
                   "includeTemboCommitAttribution": {
                     "type": "boolean",
                     "description": "Include Tembo attribution in agent-created commits."
+                  },
+                  "openPullRequestsAsBot": {
+                    "type": "boolean",
+                    "description": "Open GitHub pull requests as the Tembo bot instead of your personal account."
                   },
                   "desktopNotificationsEnabled": {
                     "type": "boolean",
@@ -19333,6 +19425,10 @@
                     "pattern": "^[^:]+:[^:]+(?::[^:]+)?$",
                     "maxLength": 255,
                     "description": "Default coding agent and model key. Null clears the preference."
+                  },
+                  "defaultFastMode": {
+                    "type": "boolean",
+                    "description": "Enable Fast mode by default for new sessions with supported agents."
                   },
                   "followUpBehavior": {
                     "type": "string",
@@ -19878,6 +19974,7 @@
                                 "plus",
                                 "pro",
                                 "prolite",
+                                "promax",
                                 "team",
                                 "self_serve_business_prolite",
                                 "self_serve_business_usage_based",
@@ -19920,6 +20017,7 @@
                                       "plus",
                                       "pro",
                                       "prolite",
+                                      "promax",
                                       "team",
                                       "self_serve_business_prolite",
                                       "self_serve_business_usage_based",
@@ -24477,6 +24575,858 @@
                     "description": "Start the supplied prompt immediately. Without a prompt, the fork waits for a new message."
                   }
                 },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/sessions/import": {
+      "post": {
+        "operationId": "importSession",
+        "summary": "Import a chat as a session",
+        "description": "Create a private session from a chat in another coding agent app, such as Conductor, with its messages and agent activity. No agent run starts until a follow-up is sent, which receives the imported history as context. Importing the same chat again returns the existing session.",
+        "tags": [
+          "Sessions"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Import a chat as a session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "agent": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "agentId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid"
+                    },
+                    "artifactType": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "PullRequest",
+                        "ToolCall",
+                        "Plan",
+                        "Response",
+                        "File",
+                        "Service",
+                        "Source",
+                        null
+                      ]
+                    },
+                    "baseBranch": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "branchName": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "externalId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "externalUrl": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "kind": {
+                      "type": "string"
+                    },
+                    "lastQueuedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    },
+                    "lastSeenAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "level": {
+                      "type": "integer"
+                    },
+                    "mode": {
+                      "type": "string",
+                      "enum": [
+                        "normal",
+                        "planning"
+                      ],
+                      "default": "normal"
+                    },
+                    "parentSessionId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "The session whose agent created this session."
+                    },
+                    "projectId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "sandboxSize": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "nano",
+                        "micro",
+                        "small",
+                        "medium",
+                        "large",
+                        "xl",
+                        "xxl",
+                        "ultra",
+                        null
+                      ]
+                    },
+                    "sessionType": {
+                      "type": "string",
+                      "enum": [
+                        "Chat",
+                        "Terminal"
+                      ],
+                      "default": "Chat"
+                    },
+                    "targetBranch": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "visibility": {
+                      "type": "string",
+                      "enum": [
+                        "public",
+                        "private"
+                      ],
+                      "default": "public"
+                    },
+                    "artifacts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "PullRequest",
+                              "ToolCall",
+                              "Plan",
+                              "Response",
+                              "File",
+                              "Service",
+                              "Source"
+                            ]
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "pullRequests": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string",
+                                  "format": "uuid"
+                                },
+                                "url": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "title": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "status": {
+                                  "type": "string",
+                                  "enum": [
+                                    "open",
+                                    "merged",
+                                    "closed"
+                                  ]
+                                },
+                                "isDraft": {
+                                  "type": "boolean"
+                                },
+                                "sourceBranch": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "createdAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "agent": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ]
+                                },
+                                "diff": {
+                                  "type": [
+                                    "object",
+                                    "null"
+                                  ],
+                                  "properties": {
+                                    "additions": {
+                                      "type": "integer",
+                                      "minimum": 0
+                                    },
+                                    "deletions": {
+                                      "type": "integer",
+                                      "minimum": 0
+                                    },
+                                    "data": {
+                                      "type": "string",
+                                      "maxLength": 1000000
+                                    }
+                                  }
+                                },
+                                "updatedAt": {
+                                  "type": "string",
+                                  "format": "date-time"
+                                },
+                                "baseBranch": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ],
+                                  "maxLength": 500
+                                },
+                                "headSha": {
+                                  "type": [
+                                    "string",
+                                    "null"
+                                  ],
+                                  "maxLength": 200
+                                },
+                                "author": {
+                                  "type": [
+                                    "object",
+                                    "null"
+                                  ],
+                                  "properties": {
+                                    "avatarUrl": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ],
+                                      "format": "uri"
+                                    },
+                                    "login": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ],
+                                      "maxLength": 500
+                                    }
+                                  },
+                                  "required": [
+                                    "avatarUrl",
+                                    "login"
+                                  ],
+                                  "additionalProperties": false
+                                },
+                                "codeRepository": {
+                                  "type": [
+                                    "object",
+                                    "null"
+                                  ],
+                                  "properties": {
+                                    "id": {
+                                      "type": "string",
+                                      "format": "uuid"
+                                    },
+                                    "name": {
+                                      "type": "string"
+                                    },
+                                    "owner": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "baseBranch": {
+                                      "type": [
+                                        "string",
+                                        "null"
+                                      ]
+                                    },
+                                    "provider": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "id",
+                                    "name",
+                                    "owner",
+                                    "baseBranch",
+                                    "provider"
+                                  ],
+                                  "additionalProperties": false
+                                }
+                              },
+                              "required": [
+                                "id",
+                                "url",
+                                "title",
+                                "status",
+                                "isDraft",
+                                "sourceBranch",
+                                "createdAt",
+                                "agent",
+                                "diff",
+                                "updatedAt",
+                                "baseBranch",
+                                "headSha",
+                                "author",
+                                "codeRepository"
+                              ],
+                              "additionalProperties": false
+                            }
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "type",
+                          "createdAt",
+                          "updatedAt",
+                          "pullRequests"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "automaticSizing": {
+                      "type": "boolean",
+                      "description": "Whether the session VM is sized automatically."
+                    },
+                    "description": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "diffSummary": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "additions": {
+                          "type": "integer"
+                        },
+                        "deletions": {
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "additions",
+                        "deletions"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "htmlUrl": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "isPinned": {
+                      "type": "boolean"
+                    },
+                    "project": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "icon": {
+                          "type": "string",
+                          "enum": [
+                            "folder",
+                            "code",
+                            "terminal",
+                            "book",
+                            "brain",
+                            "bug",
+                            "building",
+                            "cloud",
+                            "globe",
+                            "idea",
+                            "tools",
+                            "magic",
+                            "processor",
+                            "sandbox",
+                            "server",
+                            "tasks",
+                            "tactics",
+                            "images",
+                            "database",
+                            "api",
+                            "mobile",
+                            "package"
+                          ]
+                        },
+                        "color": {
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "red",
+                            "orange",
+                            "yellow",
+                            "green",
+                            "teal",
+                            "blue",
+                            "purple",
+                            "pink"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "icon",
+                        "color"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "sessionSource": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "name": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "type": "string"
+                        },
+                        "repositories": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "format": "uuid"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "provider": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name",
+                              "provider"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "type",
+                        "repositories"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "sourcePullRequest": {
+                      "type": [
+                        "object",
+                        "null"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "format": "uuid"
+                        },
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "title": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "open",
+                            "merged",
+                            "closed"
+                          ]
+                        },
+                        "isDraft": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "url",
+                        "title",
+                        "status",
+                        "isDraft"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "state": {
+                      "type": "object",
+                      "properties": {
+                        "current": {
+                          "type": "string",
+                          "enum": [
+                            "inProgress",
+                            "queued",
+                            "completed",
+                            "failed",
+                            "cancelled"
+                          ]
+                        },
+                        "isQueued": {
+                          "type": "boolean"
+                        },
+                        "isCancelled": {
+                          "type": "boolean"
+                        },
+                        "isCompleted": {
+                          "type": "boolean"
+                        },
+                        "isFailed": {
+                          "type": "boolean"
+                        },
+                        "inProgress": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "isQueued",
+                        "isCancelled",
+                        "isCompleted",
+                        "isFailed",
+                        "inProgress"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "agent",
+                    "agentId",
+                    "artifactType",
+                    "baseBranch",
+                    "branchName",
+                    "createdAt",
+                    "externalId",
+                    "externalUrl",
+                    "id",
+                    "kind",
+                    "lastQueuedAt",
+                    "lastSeenAt",
+                    "level",
+                    "mode",
+                    "parentSessionId",
+                    "projectId",
+                    "sandboxSize",
+                    "sessionType",
+                    "targetBranch",
+                    "title",
+                    "updatedAt",
+                    "visibility",
+                    "artifacts",
+                    "automaticSizing",
+                    "description",
+                    "diffSummary",
+                    "htmlUrl",
+                    "isPinned",
+                    "project",
+                    "sessionSource",
+                    "sourcePullRequest",
+                    "state"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "The session is private",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The caller is not permitted to perform this operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Session resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Session operation conflicts with existing data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Session operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Session runtime or provider operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "source": {
+                    "type": "string",
+                    "const": "conductor",
+                    "description": "Application the chat is imported from."
+                  },
+                  "externalId": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "description": "Chat ID in the source application. Importing the same chat again returns the existing session."
+                  },
+                  "title": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500,
+                    "description": "Title of the chat."
+                  },
+                  "messages": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 200
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "assistant",
+                            "summary"
+                          ],
+                          "description": "Who wrote the row. Assistant rows hold a Claude Agent SDK message as JSON."
+                        },
+                        "content": {
+                          "type": "string",
+                          "maxLength": 1000000
+                        },
+                        "sentAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "role",
+                        "content",
+                        "sentAt"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 10000,
+                    "description": "Chat messages in the order they were sent."
+                  }
+                },
+                "required": [
+                  "source",
+                  "externalId",
+                  "title",
+                  "messages"
+                ],
                 "additionalProperties": false
               }
             }
@@ -38468,10 +39418,6 @@
                             ],
                             "additionalProperties": false
                           },
-                          "runCount": {
-                            "type": "integer",
-                            "minimum": 0
-                          },
                           "scheduleCount": {
                             "type": "integer",
                             "minimum": 0
@@ -38518,7 +39464,6 @@
                           "archivedAt",
                           "enabledAt",
                           "lastRun",
-                          "runCount",
                           "scheduleCount",
                           "triggerCount",
                           "hasPausedSchedule",
@@ -38539,9 +39484,8 @@
                     "filterOptions": {
                       "type": "object",
                       "properties": {
-                        "totalCount": {
-                          "type": "integer",
-                          "minimum": 0
+                        "hasAgents": {
+                          "type": "boolean"
                         },
                         "integrationTypes": {
                           "type": "array",
@@ -38551,7 +39495,7 @@
                         }
                       },
                       "required": [
-                        "totalCount",
+                        "hasAgents",
                         "integrationTypes"
                       ],
                       "additionalProperties": false
@@ -38990,10 +39934,6 @@
                       ],
                       "additionalProperties": false
                     },
-                    "runCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    },
                     "scheduleCount": {
                       "type": "integer",
                       "minimum": 0
@@ -39046,7 +39986,6 @@
                     "userState",
                     "codeRepositories",
                     "lastRun",
-                    "runCount",
                     "scheduleCount",
                     "triggerCount",
                     "hasPausedSchedule",
@@ -40217,10 +41156,6 @@
                       ],
                       "additionalProperties": false
                     },
-                    "runCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    },
                     "scheduleCount": {
                       "type": "integer",
                       "minimum": 0
@@ -40273,7 +41208,6 @@
                     "userState",
                     "codeRepositories",
                     "lastRun",
-                    "runCount",
                     "scheduleCount",
                     "triggerCount",
                     "hasPausedSchedule",
@@ -40632,10 +41566,6 @@
                       ],
                       "additionalProperties": false
                     },
-                    "runCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    },
                     "scheduleCount": {
                       "type": "integer",
                       "minimum": 0
@@ -40688,7 +41618,6 @@
                     "userState",
                     "codeRepositories",
                     "lastRun",
-                    "runCount",
                     "scheduleCount",
                     "triggerCount",
                     "hasPausedSchedule",
@@ -41708,10 +42637,6 @@
                       ],
                       "additionalProperties": false
                     },
-                    "runCount": {
-                      "type": "integer",
-                      "minimum": 0
-                    },
                     "scheduleCount": {
                       "type": "integer",
                       "minimum": 0
@@ -41764,7 +42689,6 @@
                     "userState",
                     "codeRepositories",
                     "lastRun",
-                    "runCount",
                     "scheduleCount",
                     "triggerCount",
                     "hasPausedSchedule",
@@ -46435,10 +47359,8 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "activeJobCount": {
-                      "type": "integer",
-                      "minimum": 0,
-                      "maximum": 9007199254740991
+                    "hasActiveJobs": {
+                      "type": "boolean"
                     },
                     "eligibleIntegrationCount": {
                       "type": "integer",
@@ -46447,7 +47369,7 @@
                     }
                   },
                   "required": [
-                    "activeJobCount",
+                    "hasActiveJobs",
                     "eligibleIntegrationCount"
                   ],
                   "additionalProperties": false
@@ -51742,6 +52664,18 @@
               }
             },
             "description": "Filter by model names, supplied as a comma-separated list."
+          },
+          {
+            "in": "query",
+            "name": "agentIds",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            },
+            "description": "Filter by the agents that created sessions, supplied as a comma-separated list of agent IDs."
           }
         ]
       }
