@@ -1367,6 +1367,27 @@ const cases: {
   },
 
   {
+    operation: 'import',
+    method: 'POST',
+    path: '/v1/sessions/import',
+    run: async () => {
+      const session = await client.sessions.import({
+        source: 'conductor',
+        externalId: 'x',
+        title: 'x',
+        messages: [
+          {
+            id: 'x',
+            role: 'user',
+            content: '',
+            sentAt: '2024-01-01T00:00:00.000Z',
+          },
+        ],
+      });
+    },
+  },
+
+  {
     operation: 'stop',
     method: 'POST',
     path: '/v1/sessions/{sessionId}/stop',
