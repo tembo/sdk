@@ -899,9 +899,6 @@
               "final_answer"
             ]
           },
-          "isProgressUpdate": {
-            "type": "boolean"
-          },
           "toolName": {
             "type": "string"
           },
@@ -1202,9 +1199,6 @@
               "commentary",
               "final_answer"
             ]
-          },
-          "isProgressUpdate": {
-            "type": "boolean"
           },
           "toolName": {
             "type": "string",
@@ -9068,6 +9062,17 @@
                           "maxLength": 64000,
                           "description": "Organization instructions for agent commit messages."
                         },
+                        "customReviewBots": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9][A-Za-z0-9-]*(\\[bot\\])?$",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "maxItems": 25,
+                          "description": "Additional GitHub bot logins Tembo responds to without an @tembo mention."
+                        },
                         "customSystemPrompt": {
                           "type": "string",
                           "maxLength": 64000,
@@ -9201,6 +9206,7 @@
                       "required": [
                         "cloneDepth",
                         "commitInstructions",
+                        "customReviewBots",
                         "customSystemPrompt",
                         "defaultAgent",
                         "defaultKeepAliveMinutes",
@@ -9403,6 +9409,17 @@
                           "maxLength": 64000,
                           "description": "Organization instructions for agent commit messages."
                         },
+                        "customReviewBots": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "pattern": "^[A-Za-z0-9][A-Za-z0-9-]*(\\[bot\\])?$",
+                            "minLength": 1,
+                            "maxLength": 100
+                          },
+                          "maxItems": 25,
+                          "description": "Additional GitHub bot logins Tembo responds to without an @tembo mention."
+                        },
                         "customSystemPrompt": {
                           "type": "string",
                           "maxLength": 64000,
@@ -9536,6 +9553,7 @@
                       "required": [
                         "cloneDepth",
                         "commitInstructions",
+                        "customReviewBots",
                         "customSystemPrompt",
                         "defaultAgent",
                         "defaultKeepAliveMinutes",
@@ -9747,6 +9765,17 @@
                     "type": "string",
                     "maxLength": 64000,
                     "description": "API key for Cursor agent access."
+                  },
+                  "customReviewBots": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9-]*(\\[bot\\])?$",
+                      "minLength": 1,
+                      "maxLength": 100
+                    },
+                    "maxItems": 25,
+                    "description": "Additional GitHub bot logins Tembo responds to without an @tembo mention."
                   },
                   "customSystemPrompt": {
                     "type": "string",
