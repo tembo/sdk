@@ -262,7 +262,6 @@ export interface SessionEventData {
   accumulatedText?: string;
   deltaType?: 'text_delta' | 'input_json_delta';
   responsePhase?: 'commentary' | 'final_answer';
-  isProgressUpdate?: boolean;
   /**
    * @maxLength 1000
    */
