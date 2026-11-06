@@ -905,11 +905,7 @@ export interface IntegrationRetrieveSyncStatusParams {
 }
 
 export interface IntegrationRetrieveSyncStatusResponse {
-  /**
-   * @minimum 0
-   * @maximum 9007199254740991
-   */
-  activeJobCount: number;
+  hasActiveJobs: boolean;
   /**
    * @minimum 0
    * @maximum 9007199254740991

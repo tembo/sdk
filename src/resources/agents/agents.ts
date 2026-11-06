@@ -341,10 +341,6 @@ export namespace AgentListResponse {
     /**
      * @minimum 0
      */
-    runCount: number;
-    /**
-     * @minimum 0
-     */
     scheduleCount: number;
     /**
      * @minimum 0
@@ -385,10 +381,7 @@ export namespace AgentListResponse {
   }
 
   export interface FilterOptions {
-    /**
-     * @minimum 0
-     */
-    totalCount: number;
+    hasAgents: boolean;
     integrationTypes: Array<string>;
   }
 }
@@ -594,10 +587,6 @@ export interface AgentCreateResponse {
   /**
    * @minimum 0
    */
-  runCount: number;
-  /**
-   * @minimum 0
-   */
   scheduleCount: number;
   /**
    * @minimum 0
@@ -709,10 +698,6 @@ export interface AgentRetrieveResponse {
    */
   codeRepositories: Array<AgentRetrieveResponse.CodeRepository>;
   lastRun: AgentRetrieveResponse.LastRun | null;
-  /**
-   * @minimum 0
-   */
-  runCount: number;
   /**
    * @minimum 0
    */
@@ -905,10 +890,6 @@ export interface AgentUpdateResponse {
    */
   codeRepositories: Array<AgentUpdateResponse.CodeRepository>;
   lastRun: AgentUpdateResponse.LastRun | null;
-  /**
-   * @minimum 0
-   */
-  runCount: number;
   /**
    * @minimum 0
    */

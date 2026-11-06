@@ -272,6 +272,10 @@ export interface BillingListUsageParams {
    * Filter by model names, supplied as a comma-separated list.
    */
   models?: Array<string>;
+  /**
+   * Filter by the agents that created sessions, supplied as a comma-separated list of agent IDs.
+   */
+  agentIds?: Array<string>;
 }
 
 export interface BillingListUsageResponse {

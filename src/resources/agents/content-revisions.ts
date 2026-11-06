@@ -231,10 +231,6 @@ export interface ContentRevisionRestoreResponse {
   /**
    * @minimum 0
    */
-  runCount: number;
-  /**
-   * @minimum 0
-   */
   scheduleCount: number;
   /**
    * @minimum 0
