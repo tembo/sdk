@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.22.0](https://github.com/tembo/sdk/compare/v0.21.0...v0.22.0) (2026-11-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Removed optional property `session_event_data.isProgressUpdate`.
+
+### Features
+
+* **api:** update SDK surface (2 changes) ([87b63ba](https://github.com/tembo/sdk/commit/87b63ba2ae01f13191c506158a51ad1aad6243c5))
+
+
+### Chores
+
+* **openapi:** refresh public API snapshot for v0.2.889 ([9c42525](https://github.com/tembo/sdk/commit/9c42525e23a29292f9b97f652aaad19240314b6b))
+* **openapi:** refresh public API snapshot for v0.2.889 ([45ae10b](https://github.com/tembo/sdk/commit/45ae10bd49951feb95036a1b717fa8491e7b3531))
+
 ## [0.21.0](https://github.com/tembo/sdk/compare/v0.20.0...v0.21.0) (2026-11-06)
 
 
