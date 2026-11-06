@@ -92,6 +92,11 @@ export namespace SettingRetrieveResponse {
      */
     commitInstructions: string;
     /**
+     * Additional GitHub bot logins Tembo responds to without an @tembo mention.
+     * @maxItems 25
+     */
+    customReviewBots: Array<string>;
+    /**
      * Custom system instructions supplied to organization agents.
      * @maxLength 64000
      */
@@ -254,6 +259,11 @@ export interface SettingUpdateParams {
    * @maxLength 64000
    */
   cursorApiKey?: string;
+  /**
+   * Additional GitHub bot logins Tembo responds to without an @tembo mention.
+   * @maxItems 25
+   */
+  customReviewBots?: Array<string>;
   /**
    * Custom system instructions supplied to organization agents.
    * @maxLength 64000
@@ -419,6 +429,11 @@ export namespace SettingUpdateResponse {
      * @maxLength 64000
      */
     commitInstructions: string;
+    /**
+     * Additional GitHub bot logins Tembo responds to without an @tembo mention.
+     * @maxItems 25
+     */
+    customReviewBots: Array<string>;
     /**
      * Custom system instructions supplied to organization agents.
      * @maxLength 64000
