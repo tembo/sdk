@@ -591,6 +591,7 @@ const cases: {
         cloneDepth: 1,
         commitInstructions: '',
         cursorApiKey: '',
+        customReviewBots: ['x'],
         customSystemPrompt: '',
         defaultAgent: '',
         defaultKeepAliveMinutes: 0,
