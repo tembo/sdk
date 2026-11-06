@@ -278,3 +278,17 @@ test('user environment variable mappings cover new routes and preserve the creat
   );
   assert.equal(users.methods.delete, undefined);
 });
+
+test('session import mapping covers the import route and preserves the request body', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const { import: importSession } = sdkConfig.resources.sessions.methods;
+  assert.ok(importSession);
+  validateCoverage(
+    { paths: { '/v1/sessions/import': { post: {} } } },
+    { resources: { sessions: { methods: { import: importSession } } } },
+  );
+  assert.equal(importSession.kind, 'http');
+  assert.equal(importSession.verb, 'post');
+  assert.equal(importSession.path, '/v1/sessions/import');
+  assert.equal(importSession.bodyParamName, 'body');
+});
