@@ -1090,6 +1090,7 @@ const cases: {
         defaultProjectId: 'x',
         gpgKey: '',
         includeTemboCommitAttribution: false,
+        openPullRequestsAsBot: false,
         desktopNotificationsEnabled: false,
         desktopNotificationPreferences: {},
         hasDesktopApp: false,
@@ -1103,6 +1104,7 @@ const cases: {
         diffLightTheme: '',
         diffDarkTheme: '',
         defaultAgent: '',
+        defaultFastMode: false,
         followUpBehavior: 'queue',
         customSystemPrompt: '',
       });
@@ -1360,6 +1362,27 @@ const cases: {
         prompt: 'x',
         title: 'x',
         queueRightAway: true,
+      });
+    },
+  },
+
+  {
+    operation: 'import',
+    method: 'POST',
+    path: '/v1/sessions/import',
+    run: async () => {
+      const session = await client.sessions.import({
+        source: 'conductor',
+        externalId: 'x',
+        title: 'x',
+        messages: [
+          {
+            id: 'x',
+            role: 'user',
+            content: '',
+            sentAt: '2024-01-01T00:00:00.000Z',
+          },
+        ],
       });
     },
   },
@@ -3005,6 +3028,7 @@ const cases: {
         createdBefore: '2024-01-01T00:00:00.000Z',
         createdBy: ['createdBy'],
         models: ['model'],
+        agentIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
       });
     },
   },

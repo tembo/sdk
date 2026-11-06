@@ -163,6 +163,34 @@ export class Sessions extends APIResource {
   }
 
   /**
+   * Create a private session from a chat in another coding agent app, such as Conductor, with its messages and agent activity. No agent run starts until a follow-up is sent, which receives the imported history as context. Importing the same chat again returns the existing session.
+   *
+   * @param {SessionImportParams} body - The request body to send.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<SessionImportResponse>} Import a chat as a session
+   *
+   * @example
+   * ```ts
+   * const session = await client.sessions.import({
+   *   source: 'conductor',
+   *   externalId: 'x',
+   *   title: 'x',
+   *   messages: [
+   *     {
+   *       id: 'x',
+   *       role: 'user',
+   *       content: '',
+   *       sentAt: '2024-01-01T00:00:00.000Z',
+   *     },
+   *   ],
+   * });
+   * ```
+   */
+  import(body: SessionImportParams, options?: RequestOptions): APIPromise<SessionImportResponse> {
+    return this._client.post('/v1/sessions/import', { body, ...options });
+  }
+
+  /**
    * Interrupt active session work without archiving it. Continue with the next queued message, or set cancelQueued=true to cancel pending messages too.
    *
    * @param {string} sessionID
@@ -236,6 +264,7 @@ export interface SessionEventData {
   accumulatedText?: string;
   deltaType?: 'text_delta' | 'input_json_delta';
   responsePhase?: 'commentary' | 'final_answer';
+  isProgressUpdate?: boolean;
   /**
    * @maxLength 1000
    */
@@ -1806,6 +1835,292 @@ export namespace SessionForkResponse {
   }
 }
 
+export interface SessionImportParams {
+  /**
+   * Application the chat is imported from.
+   */
+  source: 'conductor';
+  /**
+   * Chat ID in the source application. Importing the same chat again returns the existing session.
+   * @minLength 1
+   * @maxLength 200
+   */
+  externalId: string;
+  /**
+   * Title of the chat.
+   * @minLength 1
+   * @maxLength 500
+   */
+  title: string;
+  /**
+   * Chat messages in the order they were sent.
+   * @minItems 1
+   * @maxItems 10000
+   */
+  messages: Array<SessionImportParams.Message>;
+}
+
+export namespace SessionImportParams {
+  export interface Message {
+    /**
+     * @minLength 1
+     * @maxLength 200
+     */
+    id: string;
+    /**
+     * Who wrote the row. Assistant rows hold a Claude Agent SDK message as JSON.
+     */
+    role: 'user' | 'assistant' | 'summary';
+    /**
+     * @maxLength 1000000
+     */
+    content: string;
+    /**
+     * @format date-time
+     */
+    sentAt: string;
+  }
+}
+
+export interface SessionImportResponse {
+  agent: string | null;
+  /**
+   * @format uuid
+   */
+  agentId: string | null;
+  artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
+  baseBranch: string | null;
+  branchName: string | null;
+  /**
+   * @format date-time
+   */
+  createdAt: string;
+  externalId: string | null;
+  externalUrl: string | null;
+  /**
+   * @format uuid
+   */
+  id: string;
+  kind: string;
+  /**
+   * @format date-time
+   */
+  lastQueuedAt: string | null;
+  /**
+   * @format date-time
+   */
+  lastSeenAt: string;
+  level: number;
+  mode: 'normal' | 'planning';
+  /**
+   * The session whose agent created this session.
+   * @format uuid
+   */
+  parentSessionId: string | null;
+  projectId: string | null;
+  sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
+  sessionType: 'Chat' | 'Terminal';
+  targetBranch: string | null;
+  title: string;
+  /**
+   * @format date-time
+   */
+  updatedAt: string;
+  visibility: 'public' | 'private';
+  artifacts: Array<SessionImportResponse.Artifact>;
+  /**
+   * Whether the session VM is sized automatically.
+   */
+  automaticSizing: boolean;
+  description: string | null;
+  diffSummary: SessionImportResponse.DiffSummary | null;
+  /**
+   * @format uri
+   */
+  htmlUrl: string;
+  isPinned: boolean;
+  project: SessionImportResponse.Project | null;
+  sessionSource: SessionImportResponse.SessionSource;
+  sourcePullRequest: SessionImportResponse.SourcePullRequest | null;
+  state: SessionImportResponse.State;
+}
+
+export namespace SessionImportResponse {
+  export interface Artifact {
+    /**
+     * @format uuid
+     */
+    id: string;
+    type: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source';
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    pullRequests: Array<Artifact.PullRequest>;
+  }
+
+  export namespace Artifact {
+    export interface PullRequest {
+      /**
+       * @format uuid
+       */
+      id: string;
+      /**
+       * @format uri
+       */
+      url: string;
+      title: string | null;
+      status: 'open' | 'merged' | 'closed';
+      isDraft: boolean;
+      sourceBranch: string | null;
+      /**
+       * @format date-time
+       */
+      createdAt: string;
+      agent: string | null;
+      diff: PullRequest.Diff | null;
+      /**
+       * @format date-time
+       */
+      updatedAt: string;
+      /**
+       * @maxLength 500
+       */
+      baseBranch: string | null;
+      /**
+       * @maxLength 200
+       */
+      headSha: string | null;
+      author: PullRequest.Author | null;
+      codeRepository: PullRequest.CodeRepository | null;
+    }
+
+    export namespace PullRequest {
+      export interface Diff {
+        /**
+         * @minimum 0
+         */
+        additions?: number;
+        /**
+         * @minimum 0
+         */
+        deletions?: number;
+        /**
+         * @maxLength 1000000
+         */
+        data?: string;
+      }
+
+      export interface Author {
+        /**
+         * @format uri
+         */
+        avatarUrl: string | null;
+        /**
+         * @maxLength 500
+         */
+        login: string | null;
+      }
+
+      export interface CodeRepository {
+        /**
+         * @format uuid
+         */
+        id: string;
+        name: string;
+        owner: string | null;
+        baseBranch: string | null;
+        provider: string;
+      }
+    }
+  }
+
+  export interface DiffSummary {
+    additions: number;
+    deletions: number;
+  }
+
+  export interface Project {
+    /**
+     * @format uuid
+     */
+    id: string;
+    name: string;
+    icon:
+      | 'folder'
+      | 'code'
+      | 'terminal'
+      | 'book'
+      | 'brain'
+      | 'bug'
+      | 'building'
+      | 'cloud'
+      | 'globe'
+      | 'idea'
+      | 'tools'
+      | 'magic'
+      | 'processor'
+      | 'sandbox'
+      | 'server'
+      | 'tasks'
+      | 'tactics'
+      | 'images'
+      | 'database'
+      | 'api'
+      | 'mobile'
+      | 'package';
+    color: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+  }
+
+  export interface SessionSource {
+    /**
+     * @format uuid
+     */
+    id: string;
+    name: string;
+    type: string;
+    repositories: Array<SessionSource.Repository>;
+  }
+
+  export namespace SessionSource {
+    export interface Repository {
+      /**
+       * @format uuid
+       */
+      id: string;
+      name: string;
+      provider: string;
+    }
+  }
+
+  export interface SourcePullRequest {
+    /**
+     * @format uuid
+     */
+    id: string;
+    /**
+     * @format uri
+     */
+    url: string;
+    title: string | null;
+    status: 'open' | 'merged' | 'closed';
+    isDraft: boolean;
+  }
+
+  export interface State {
+    isQueued: boolean;
+    isCancelled: boolean;
+    isCompleted: boolean;
+    isFailed: boolean;
+    inProgress: boolean;
+    current?: 'inProgress' | 'queued' | 'completed' | 'failed' | 'cancelled';
+  }
+}
+
 export interface SessionStopParams {
   /**
    * Also cancel pending queued messages instead of continuing with the next queued message. Does not archive the session.
@@ -1917,12 +2232,14 @@ export declare namespace Sessions {
     type SessionUpdateResponse as SessionUpdateResponse,
     type SessionDeleteResponse as SessionDeleteResponse,
     type SessionForkResponse as SessionForkResponse,
+    type SessionImportResponse as SessionImportResponse,
     type SessionStopResponse as SessionStopResponse,
     type SessionListEventsResponse as SessionListEventsResponse,
     type SessionListParams as SessionListParams,
     type SessionCreateParams as SessionCreateParams,
     type SessionUpdateParams as SessionUpdateParams,
     type SessionForkParams as SessionForkParams,
+    type SessionImportParams as SessionImportParams,
     type SessionStopParams as SessionStopParams,
     type SessionListEventsParams as SessionListEventsParams,
   };

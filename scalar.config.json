@@ -322,6 +322,13 @@
           "path": "/v1/sessions/{sessionId}/fork",
           "bodyParamName": "body"
         },
+        "import": {
+          "kind": "http",
+          "endpoint": "post /v1/sessions/import",
+          "verb": "post",
+          "path": "/v1/sessions/import",
+          "bodyParamName": "body"
+        },
         "stop": "post /v1/sessions/{sessionId}/stop",
         "list_events": "get /v1/sessions/{sessionId}/events"
       },
