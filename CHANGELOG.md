@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.22.1](https://github.com/tembo/sdk/compare/v0.22.0...v0.22.1) (2026-11-09)
+
+
+### Chores
+
+* **api:** update generated SDK content ([c44e464](https://github.com/tembo/sdk/commit/c44e464ccbac28057726cd5c9c3ebc692dadd906))
+* **openapi:** refresh public API snapshot for v0.2.890 ([5b6a67b](https://github.com/tembo/sdk/commit/5b6a67b874b11840cfec04073e8c2594fd6e2221))
+* **openapi:** refresh snapshot for v0.2.890, restore tsconfig ([504cdb8](https://github.com/tembo/sdk/commit/504cdb81fff256c850d8747a6d464ac508fb7058))
+
 ## [0.22.0](https://github.com/tembo/sdk/compare/v0.21.0...v0.22.0) (2026-11-06)
 
 
