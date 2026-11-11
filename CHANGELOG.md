@@ -1,5 +1,26 @@
 # Changelog
 
+## [0.23.0](https://github.com/tembo/sdk/compare/v0.22.1...v0.23.0) (2026-11-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 3 breaking changes to the SDK surface.
+    - Added required body field `roleId` to `organizations.members.create`.
+    - Removed body field `role` from `organizations.members.create`.
+    - Removed body field `role` from `organizations.members.update`.
+
+### Features
+
+* **api:** add operation organizations.roles.list (+10 more changes) ([ac235a7](https://github.com/tembo/sdk/commit/ac235a7fabaf71e96924ac6f763ad15a5d0183dd))
+* **api:** update SDK surface (6 changes) ([5bbc1b8](https://github.com/tembo/sdk/commit/5bbc1b8dfc3a83740bf45397ada3c2506437aa59))
+
+
+### Chores
+
+* **openapi:** refresh snapshot for v0.2.891 and map new endpoints ([bd81b15](https://github.com/tembo/sdk/commit/bd81b15df0e425bf916973f2d71cf8861d1c8cc8))
+* **openapi:** refresh snapshot for v0.2.891 and map new endpoints ([639fd0f](https://github.com/tembo/sdk/commit/639fd0fbda09382b9f5aff23b2bf5e0d98b6587d))
+
 ## [0.22.1](https://github.com/tembo/sdk/compare/v0.22.0...v0.22.1) (2026-11-09)
 
 
