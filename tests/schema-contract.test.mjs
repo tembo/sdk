@@ -292,3 +292,40 @@ test('session import mapping covers the import route and preserves the request b
   assert.equal(importSession.path, '/v1/sessions/import');
   assert.equal(importSession.bodyParamName, 'body');
 });
+
+test('folder, organization role, artifact asset, and project defaults mappings cover new routes', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const { folders, organizations, artifacts, projects } = sdkConfig.resources;
+  const roles = organizations.subresources.roles;
+  validateCoverage(
+    {
+      paths: {
+        '/v1/folders': { get: {}, post: {} },
+        '/v1/folders/{folderId}': { patch: {}, delete: {} },
+        '/v1/organizations/{organizationId}/roles': { get: {}, post: {} },
+        '/v1/organizations/{organizationId}/roles/{roleId}': { get: {}, patch: {}, delete: {} },
+        '/v1/artifacts/assets/{assetId}': { get: {} },
+        '/v1/projects/defaults': { get: {} },
+      },
+    },
+    {
+      resources: {
+        folders,
+        organizations: { subresources: { roles } },
+        artifacts: { methods: { retrieve_asset_url: artifacts.methods.retrieve_asset_url } },
+        projects: { methods: { retrieve_defaults: projects.methods.retrieve_defaults } },
+      },
+    },
+  );
+  for (const method of [
+    folders.methods.create,
+    folders.methods.update,
+    roles.methods.create,
+    roles.methods.update,
+  ]) {
+    assert.equal(method.bodyParamName, 'body');
+  }
+  // Archiving a role requires a replacement role ID in the DELETE request body.
+  assert.equal(roles.methods.delete.verb, 'delete');
+  assert.equal(roles.methods.delete.bodyParamName, 'body');
+});

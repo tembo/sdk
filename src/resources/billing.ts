@@ -79,6 +79,7 @@ export namespace BillingRetrieveResponse {
     endsAt: string;
     allowance: number;
     remainingAllowance: number;
+    purchasedCredits: number;
     exhausted: boolean;
   }
 

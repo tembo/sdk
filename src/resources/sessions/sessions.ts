@@ -381,6 +381,11 @@ export interface SessionListParams {
    */
   externalIds?: Array<string>;
   /**
+   * Only sessions in this sidebar folder of the authenticated user. Takes precedence over inFolder.
+   * @format uuid
+   */
+  folderId?: string;
+  /**
    * Filter by whether a session has an assigned project.
    */
   hasProject?: boolean;
@@ -393,6 +398,10 @@ export interface SessionListParams {
    * @default false
    */
   includeTotal?: boolean;
+  /**
+   * Filter by whether a session is in one of the authenticated user's sidebar folders.
+   */
+  inFolder?: boolean;
   /**
    * Filter sessions created by this session.
    * @format uuid
@@ -488,6 +497,11 @@ export namespace SessionListResponse {
     visibility: 'public' | 'private';
     artifacts: Array<Item.Artifact>;
     diffSummary: Item.DiffSummary | null;
+    /**
+     * Sidebar folder the authenticated user filed this session in.
+     * @format uuid
+     */
+    folderId: string | null;
     isPinned: boolean;
     project: Item.Project | null;
     sessionSource: Item.SessionSource;
@@ -789,6 +803,11 @@ export interface SessionCreateResponse {
   description: string | null;
   diffSummary: SessionCreateResponse.DiffSummary | null;
   /**
+   * Sidebar folder the authenticated user filed this session in.
+   * @format uuid
+   */
+  folderId: string | null;
+  /**
    * @format uri
    */
   htmlUrl: string;
@@ -1027,6 +1046,11 @@ export interface SessionRetrieveResponse {
   automaticSizing: boolean;
   description: string | null;
   diffSummary: SessionRetrieveResponse.DiffSummary | null;
+  /**
+   * Sidebar folder the authenticated user filed this session in.
+   * @format uuid
+   */
+  folderId: string | null;
   /**
    * @format uri
    */
@@ -1381,6 +1405,11 @@ export interface SessionUpdateResponse {
   description: string | null;
   diffSummary: SessionUpdateResponse.DiffSummary | null;
   /**
+   * Sidebar folder the authenticated user filed this session in.
+   * @format uuid
+   */
+  folderId: string | null;
+  /**
    * @format uri
    */
   htmlUrl: string;
@@ -1648,6 +1677,11 @@ export interface SessionForkResponse {
   description: string | null;
   diffSummary: SessionForkResponse.DiffSummary | null;
   /**
+   * Sidebar folder the authenticated user filed this session in.
+   * @format uuid
+   */
+  folderId: string | null;
+  /**
    * @format uri
    */
   htmlUrl: string;
@@ -1838,7 +1872,7 @@ export interface SessionImportParams {
   /**
    * Application the chat is imported from.
    */
-  source: 'conductor';
+  source: 'conductor' | 'chatgpt' | 'claude' | 'devin';
   /**
    * Chat ID in the source application. Importing the same chat again returns the existing session.
    * @minLength 1
@@ -1867,7 +1901,7 @@ export namespace SessionImportParams {
      */
     id: string;
     /**
-     * Who wrote the row. Assistant rows hold a Claude Agent SDK message as JSON.
+     * Who wrote the row. Conductor assistant rows hold Claude Agent SDK JSON; local ChatGPT/Codex, Claude Code, and Devin rows hold native message JSON for API conversion.
      */
     role: 'user' | 'assistant' | 'summary';
     /**
@@ -1933,6 +1967,11 @@ export interface SessionImportResponse {
   automaticSizing: boolean;
   description: string | null;
   diffSummary: SessionImportResponse.DiffSummary | null;
+  /**
+   * Sidebar folder the authenticated user filed this session in.
+   * @format uuid
+   */
+  folderId: string | null;
   /**
    * @format uri
    */

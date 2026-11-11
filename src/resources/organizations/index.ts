@@ -22,6 +22,18 @@ export type {
   MemberDeleteParams,
   MemberDeleteResponse,
 } from './members';
+export { Roles } from './roles';
+export type {
+  RoleListResponse,
+  RoleCreateParams,
+  RoleCreateResponse,
+  RoleRetrieveParams,
+  RoleRetrieveResponse,
+  RoleUpdateParams,
+  RoleUpdateResponse,
+  RoleDeleteParams,
+  RoleDeleteResponse,
+} from './roles';
 export { Secrets } from './secrets';
 export type {
   SecretListParams,

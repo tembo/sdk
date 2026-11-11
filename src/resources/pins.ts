@@ -25,7 +25,7 @@ export class Pins extends APIResource {
   }
 
   /**
-   * Pin a session, pull request, or project you have permission to access.
+   * Pin a session, pull request, or project you have permission to access, or one of your folders.
    *
    * @param {PinCreateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
@@ -44,9 +44,9 @@ export class Pins extends APIResource {
   }
 
   /**
-   * Reorder a pinned session, pull request, or project before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
+   * Reorder a pinned session, pull request, project, or folder before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.
    *
-   * @param {string} resourceID - ID of the pinned session, pull request, or project, not a separate pin ID.
+   * @param {string} resourceID - ID of the pinned session, pull request, project, or folder, not a separate pin ID.
    * @param {PinUpdateParams} params - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<PinUpdateResponse>} Update a pin
@@ -75,9 +75,9 @@ export class Pins extends APIResource {
   }
 
   /**
-   * Unpin a session, pull request, or project for the authenticated user without deleting or archiving the resource.
+   * Unpin a session, pull request, project, or folder for the authenticated user without deleting or archiving the resource.
    *
-   * @param {string} resourceID - ID of the pinned session, pull request, or project, not a separate pin ID.
+   * @param {string} resourceID - ID of the pinned session, pull request, project, or folder, not a separate pin ID.
    * @param {PinDeleteParams} params - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<PinDeleteResponse>} Delete a pin
@@ -102,7 +102,7 @@ export class Pins extends APIResource {
 export interface PinListParams {
   /**
    * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
-   * @pattern ^(session|pull_request|project):[0-9a-f-]{36}$
+   * @pattern ^(session|pull_request|project|folder):[0-9a-f-]{36}$
    */
   cursor?: string;
   /**
@@ -118,10 +118,15 @@ export interface PinListResponse {
   /**
    * Accessible pinned resources in pin order.
    */
-  resources: Array<PinListResponse.Resource | PinListResponse.Resource2 | PinListResponse.Resource3>;
+  resources: Array<
+    | PinListResponse.Resource
+    | PinListResponse.Resource2
+    | PinListResponse.Resource3
+    | PinListResponse.Resource4
+  >;
   /**
    * Cursor for the next page, even when resources is empty; null at the end.
-   * @pattern ^(session|pull_request|project):[0-9a-f-]{36}$
+   * @pattern ^(session|pull_request|project|folder):[0-9a-f-]{36}$
    */
   nextCursor: string | null;
 }
@@ -159,6 +164,11 @@ export namespace PinListResponse {
       sessionSource: Resource.SessionSource;
       pullRequests: Array<Resource.PullRequest>;
       diffSummary: Resource.DiffSummary | null;
+      /**
+       * Sidebar folder you filed this session in.
+       * @format uuid
+       */
+      folderId: string | null;
       state: Resource.State;
       /**
        * Whether the latest turn finished after the caller last viewed the session.
@@ -298,15 +308,31 @@ export namespace PinListResponse {
       color: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
     }
   }
+
+  export interface Resource4 {
+    type: 'folder';
+    resource: Resource4.Resource;
+  }
+
+  export namespace Resource4 {
+    export interface Resource {
+      /**
+       * @format uuid
+       */
+      id: string;
+      name: string;
+      color: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+    }
+  }
 }
 
 export interface PinCreateParams {
   /**
-   * Kind of resource to pin or unpin: session, pull_request, or project.
+   * Kind of resource to pin or unpin: session, pull_request, project, or folder.
    */
-  type: 'session' | 'pull_request' | 'project';
+  type: 'session' | 'pull_request' | 'project' | 'folder';
   /**
-   * ID of the session, pull request, or project, not a separate pin ID.
+   * ID of the session, pull request, project, or folder, not a separate pin ID.
    * @format uuid
    */
   id: string;
@@ -331,11 +357,11 @@ export namespace PinCreateParams {
   export namespace Placement {
     export interface Target {
       /**
-       * Kind of resource to pin or unpin: session, pull_request, or project.
+       * Kind of resource to pin or unpin: session, pull_request, project, or folder.
        */
-      type: 'session' | 'pull_request' | 'project';
+      type: 'session' | 'pull_request' | 'project' | 'folder';
       /**
-       * ID of the session, pull request, or project, not a separate pin ID.
+       * ID of the session, pull request, project, or folder, not a separate pin ID.
        * @format uuid
        */
       id: string;
@@ -346,7 +372,8 @@ export namespace PinCreateParams {
 export type PinCreateResponse =
   | PinCreateResponse.PinCreateResponseItem
   | PinCreateResponse.PinCreateResponseItem2
-  | PinCreateResponse.PinCreateResponseItem3;
+  | PinCreateResponse.PinCreateResponseItem3
+  | PinCreateResponse.PinCreateResponseItem4;
 
 export namespace PinCreateResponse {
   export interface PinCreateResponseItem {
@@ -381,6 +408,11 @@ export namespace PinCreateResponse {
       sessionSource: Resource.SessionSource;
       pullRequests: Array<Resource.PullRequest>;
       diffSummary: Resource.DiffSummary | null;
+      /**
+       * Sidebar folder you filed this session in.
+       * @format uuid
+       */
+      folderId: string | null;
       state: Resource.State;
       /**
        * Whether the latest turn finished after the caller last viewed the session.
@@ -520,13 +552,29 @@ export namespace PinCreateResponse {
       color: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
     }
   }
+
+  export interface PinCreateResponseItem4 {
+    type: 'folder';
+    resource: PinCreateResponseItem4.Resource;
+  }
+
+  export namespace PinCreateResponseItem4 {
+    export interface Resource {
+      /**
+       * @format uuid
+       */
+      id: string;
+      name: string;
+      color: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+    }
+  }
 }
 
 export interface PinUpdateParams {
   /**
-   * Path param: Kind of resource to pin or unpin: session, pull_request, or project.
+   * Path param: Kind of resource to pin or unpin: session, pull_request, project, or folder.
    */
-  resourceType: 'session' | 'pull_request' | 'project';
+  resourceType: 'session' | 'pull_request' | 'project' | 'folder';
   /**
    * Body param: Reorder an existing pin before or after another pin. Use createPin to pin a resource and deletePin to unpin it.
    */
@@ -548,11 +596,11 @@ export namespace PinUpdateParams {
   export namespace Placement {
     export interface Target {
       /**
-       * Kind of resource to pin or unpin: session, pull_request, or project.
+       * Kind of resource to pin or unpin: session, pull_request, project, or folder.
        */
-      type: 'session' | 'pull_request' | 'project';
+      type: 'session' | 'pull_request' | 'project' | 'folder';
       /**
-       * ID of the session, pull request, or project, not a separate pin ID.
+       * ID of the session, pull request, project, or folder, not a separate pin ID.
        * @format uuid
        */
       id: string;
@@ -566,18 +614,18 @@ export interface PinUpdateResponse {
 
 export interface PinDeleteParams {
   /**
-   * Kind of resource to pin or unpin: session, pull_request, or project.
+   * Kind of resource to pin or unpin: session, pull_request, project, or folder.
    */
-  resourceType: 'session' | 'pull_request' | 'project';
+  resourceType: 'session' | 'pull_request' | 'project' | 'folder';
 }
 
 export interface PinDeleteResponse {
   /**
-   * Kind of resource to pin or unpin: session, pull_request, or project.
+   * Kind of resource to pin or unpin: session, pull_request, project, or folder.
    */
-  type: 'session' | 'pull_request' | 'project';
+  type: 'session' | 'pull_request' | 'project' | 'folder';
   /**
-   * ID of the session, pull request, or project, not a separate pin ID.
+   * ID of the session, pull request, project, or folder, not a separate pin ID.
    * @format uuid
    */
   id: string;

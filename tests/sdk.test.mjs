@@ -66,10 +66,13 @@ test('manifest and configured methods satisfy the branch contract', () => {
   assert.equal(new Set(endpoints).size, endpoints.length, 'Scalar resource mappings must be unique');
   if (!allowPendingScalarMappings) assert.deepEqual(endpoints.sort(), expected);
   const { client } = mockClient();
+  // The TypeScript emitter upper-cases a `Url` word that the manifest keeps camel-cased
+  // (`retrieveAssetUrl` is emitted as `retrieveAssetURL`).
+  const emittedName = (name) => name.replace(/Url(?=[A-Z]|$)/g, 'URL');
   for (const operation of manifest.operations) {
     const resource = operation.publicResource.split('.').reduce((value, key) => value[key], client);
     assert.equal(
-      typeof resource[operation.publicOperation],
+      typeof (resource[operation.publicOperation] ?? resource[emittedName(operation.publicOperation)]),
       'function',
       `${operation.publicResource}.${operation.publicOperation}`,
     );

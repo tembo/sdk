@@ -130,16 +130,23 @@ export namespace InsightRetrieveResponse {
       tasksCompleted: number;
       prsCreated: number;
       prsMerged: number;
+      /**
+       * Recorded model cost plus VM compute fees in USD across the organization divided by Tembo-created PRs in the selected sync window. Excludes subscription fees and inference billing markup. Null when there are no PRs or no recorded costs.
+       */
+      modelCostPerPrUsd: number | null;
       temboContribution: number;
+      /**
+       * Recent period compared with the previous one. Null when the previous period has no baseline, such as when the organization joined during it.
+       */
       changes: Summary.Changes;
     }
 
     export namespace Summary {
       export interface Changes {
-        prsCreated: number;
-        prsMerged: number;
-        tasksCompleted: number;
-        temboContribution: number;
+        prsCreated: number | null;
+        prsMerged: number | null;
+        tasksCompleted: number | null;
+        temboContribution: number | null;
       }
     }
 
@@ -198,16 +205,23 @@ export namespace InsightUpdateResponse {
       tasksCompleted: number;
       prsCreated: number;
       prsMerged: number;
+      /**
+       * Recorded model cost plus VM compute fees in USD across the organization divided by Tembo-created PRs in the selected sync window. Excludes subscription fees and inference billing markup. Null when there are no PRs or no recorded costs.
+       */
+      modelCostPerPrUsd: number | null;
       temboContribution: number;
+      /**
+       * Recent period compared with the previous one. Null when the previous period has no baseline, such as when the organization joined during it.
+       */
       changes: Summary.Changes;
     }
 
     export namespace Summary {
       export interface Changes {
-        prsCreated: number;
-        prsMerged: number;
-        tasksCompleted: number;
-        temboContribution: number;
+        prsCreated: number | null;
+        prsMerged: number | null;
+        tasksCompleted: number | null;
+        temboContribution: number | null;
       }
     }
 

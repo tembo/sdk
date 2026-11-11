@@ -5240,6 +5240,13 @@
                             "prsMerged": {
                               "type": "integer"
                             },
+                            "modelCostPerPrUsd": {
+                              "type": [
+                                "number",
+                                "null"
+                              ],
+                              "description": "Recorded model cost plus VM compute fees in USD across the organization divided by Tembo-created PRs in the selected sync window. Excludes subscription fees and inference billing markup. Null when there are no PRs or no recorded costs."
+                            },
                             "temboContribution": {
                               "type": "number"
                             },
@@ -5247,16 +5254,28 @@
                               "type": "object",
                               "properties": {
                                 "prsCreated": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 },
                                 "prsMerged": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 },
                                 "tasksCompleted": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 },
                                 "temboContribution": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 }
                               },
                               "required": [
@@ -5265,13 +5284,15 @@
                                 "tasksCompleted",
                                 "temboContribution"
                               ],
-                              "additionalProperties": false
+                              "additionalProperties": false,
+                              "description": "Recent period compared with the previous one. Null when the previous period has no baseline, such as when the organization joined during it."
                             }
                           },
                           "required": [
                             "tasksCompleted",
                             "prsCreated",
                             "prsMerged",
+                            "modelCostPerPrUsd",
                             "temboContribution",
                             "changes"
                           ],
@@ -5502,6 +5523,13 @@
                             "prsMerged": {
                               "type": "integer"
                             },
+                            "modelCostPerPrUsd": {
+                              "type": [
+                                "number",
+                                "null"
+                              ],
+                              "description": "Recorded model cost plus VM compute fees in USD across the organization divided by Tembo-created PRs in the selected sync window. Excludes subscription fees and inference billing markup. Null when there are no PRs or no recorded costs."
+                            },
                             "temboContribution": {
                               "type": "number"
                             },
@@ -5509,16 +5537,28 @@
                               "type": "object",
                               "properties": {
                                 "prsCreated": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 },
                                 "prsMerged": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 },
                                 "tasksCompleted": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 },
                                 "temboContribution": {
-                                  "type": "number"
+                                  "type": [
+                                    "number",
+                                    "null"
+                                  ]
                                 }
                               },
                               "required": [
@@ -5527,13 +5567,15 @@
                                 "tasksCompleted",
                                 "temboContribution"
                               ],
-                              "additionalProperties": false
+                              "additionalProperties": false,
+                              "description": "Recent period compared with the previous one. Null when the previous period has no baseline, such as when the organization joined during it."
                             }
                           },
                           "required": [
                             "tasksCompleted",
                             "prsCreated",
                             "prsMerged",
+                            "modelCostPerPrUsd",
                             "temboContribution",
                             "changes"
                           ],
@@ -6536,6 +6578,8 @@
                                   "file:write",
                                   "pin:read",
                                   "pin:write",
+                                  "folder:read",
+                                  "folder:write",
                                   "queue:job:read",
                                   "queue:job:write",
                                   "queue:host_manager_job:read",
@@ -6837,6 +6881,8 @@
                                   "file:write",
                                   "pin:read",
                                   "pin:write",
+                                  "folder:read",
+                                  "folder:write",
                                   "queue:job:read",
                                   "queue:job:write",
                                   "queue:host_manager_job:read",
@@ -7436,78 +7482,165 @@
                     "items": {
                       "type": "array",
                       "items": {
-                        "type": "object",
-                        "properties": {
-                          "createdAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "id": {
-                            "type": "string",
-                            "minLength": 1,
-                            "maxLength": 255
-                          },
-                          "role": {
-                            "type": "string",
-                            "enum": [
-                              "org:admin",
-                              "org:member"
-                            ]
-                          },
-                          "updatedAt": {
-                            "type": "string",
-                            "format": "date-time"
-                          },
-                          "userId": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
-                          },
-                          "emailAddress": {
-                            "type": "string",
-                            "format": "email"
-                          },
-                          "firstName": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
-                          },
-                          "imageUrl": {
-                            "type": [
-                              "string",
-                              "null"
+                        "oneOf": [
+                          {
+                            "type": "object",
+                            "properties": {
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "userId": {
+                                "type": "string"
+                              },
+                              "emailAddress": {
+                                "type": "string",
+                                "format": "email"
+                              },
+                              "firstName": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "imageUrl": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "format": "uri"
+                              },
+                              "lastName": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "role": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "status": {
+                                "type": "string",
+                                "const": "active"
+                              }
+                            },
+                            "required": [
+                              "createdAt",
+                              "id",
+                              "updatedAt",
+                              "userId",
+                              "emailAddress",
+                              "firstName",
+                              "imageUrl",
+                              "lastName",
+                              "role",
+                              "status"
                             ],
-                            "format": "uri"
+                            "additionalProperties": false
                           },
-                          "lastName": {
-                            "type": [
-                              "string",
-                              "null"
-                            ]
-                          },
-                          "status": {
-                            "type": "string",
-                            "enum": [
-                              "active",
-                              "pending"
-                            ]
+                          {
+                            "type": "object",
+                            "properties": {
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "userId": {
+                                "type": "null"
+                              },
+                              "emailAddress": {
+                                "type": "string",
+                                "format": "email"
+                              },
+                              "firstName": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "imageUrl": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ],
+                                "format": "uri"
+                              },
+                              "lastName": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "role": {
+                                "type": [
+                                  "object",
+                                  "null"
+                                ],
+                                "properties": {
+                                  "id": {
+                                    "type": "string"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "status": {
+                                "type": "string",
+                                "const": "pending"
+                              }
+                            },
+                            "required": [
+                              "createdAt",
+                              "id",
+                              "updatedAt",
+                              "userId",
+                              "emailAddress",
+                              "firstName",
+                              "imageUrl",
+                              "lastName",
+                              "role",
+                              "status"
+                            ],
+                            "additionalProperties": false
                           }
-                        },
-                        "required": [
-                          "createdAt",
-                          "id",
-                          "role",
-                          "updatedAt",
-                          "userId",
-                          "emailAddress",
-                          "firstName",
-                          "imageUrl",
-                          "lastName",
-                          "status"
-                        ],
-                        "additionalProperties": false
+                        ]
                       }
                     },
                     "nextCursor": {
@@ -7714,78 +7847,165 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "id": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 255
-                    },
-                    "role": {
-                      "type": "string",
-                      "enum": [
-                        "org:admin",
-                        "org:member"
-                      ]
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "userId": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "emailAddress": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "firstName": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "imageUrl": {
-                      "type": [
-                        "string",
-                        "null"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "emailAddress": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "imageUrl": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uri"
+                        },
+                        "lastName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "role": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "status": {
+                          "type": "string",
+                          "const": "active"
+                        }
+                      },
+                      "required": [
+                        "createdAt",
+                        "id",
+                        "updatedAt",
+                        "userId",
+                        "emailAddress",
+                        "firstName",
+                        "imageUrl",
+                        "lastName",
+                        "role",
+                        "status"
                       ],
-                      "format": "uri"
+                      "additionalProperties": false
                     },
-                    "lastName": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "active",
-                        "pending"
-                      ]
+                    {
+                      "type": "object",
+                      "properties": {
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "userId": {
+                          "type": "null"
+                        },
+                        "emailAddress": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "imageUrl": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uri"
+                        },
+                        "lastName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "role": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "status": {
+                          "type": "string",
+                          "const": "pending"
+                        }
+                      },
+                      "required": [
+                        "createdAt",
+                        "id",
+                        "updatedAt",
+                        "userId",
+                        "emailAddress",
+                        "firstName",
+                        "imageUrl",
+                        "lastName",
+                        "role",
+                        "status"
+                      ],
+                      "additionalProperties": false
                     }
-                  },
-                  "required": [
-                    "createdAt",
-                    "id",
-                    "role",
-                    "updatedAt",
-                    "userId",
-                    "emailAddress",
-                    "firstName",
-                    "imageUrl",
-                    "lastName",
-                    "status"
-                  ],
-                  "additionalProperties": false
+                  ]
                 }
               }
             }
@@ -7927,18 +8147,14 @@
                     "format": "email",
                     "description": "Email address of the user to add or invite."
                   },
-                  "role": {
+                  "roleId": {
                     "type": "string",
-                    "enum": [
-                      "org:admin",
-                      "org:member"
-                    ],
-                    "default": "org:member",
-                    "description": "Organization role to grant: org:admin or org:member."
+                    "minLength": 1
                   }
                 },
                 "required": [
-                  "emailAddress"
+                  "emailAddress",
+                  "roleId"
                 ],
                 "additionalProperties": false
               }
@@ -7966,78 +8182,165 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "id": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 255
-                    },
-                    "role": {
-                      "type": "string",
-                      "enum": [
-                        "org:admin",
-                        "org:member"
-                      ]
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "userId": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "emailAddress": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "firstName": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "imageUrl": {
-                      "type": [
-                        "string",
-                        "null"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "emailAddress": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "imageUrl": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uri"
+                        },
+                        "lastName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "role": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "status": {
+                          "type": "string",
+                          "const": "active"
+                        }
+                      },
+                      "required": [
+                        "createdAt",
+                        "id",
+                        "updatedAt",
+                        "userId",
+                        "emailAddress",
+                        "firstName",
+                        "imageUrl",
+                        "lastName",
+                        "role",
+                        "status"
                       ],
-                      "format": "uri"
+                      "additionalProperties": false
                     },
-                    "lastName": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "active",
-                        "pending"
-                      ]
+                    {
+                      "type": "object",
+                      "properties": {
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "userId": {
+                          "type": "null"
+                        },
+                        "emailAddress": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "imageUrl": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uri"
+                        },
+                        "lastName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "role": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "status": {
+                          "type": "string",
+                          "const": "pending"
+                        }
+                      },
+                      "required": [
+                        "createdAt",
+                        "id",
+                        "updatedAt",
+                        "userId",
+                        "emailAddress",
+                        "firstName",
+                        "imageUrl",
+                        "lastName",
+                        "role",
+                        "status"
+                      ],
+                      "additionalProperties": false
                     }
-                  },
-                  "required": [
-                    "createdAt",
-                    "id",
-                    "role",
-                    "updatedAt",
-                    "userId",
-                    "emailAddress",
-                    "firstName",
-                    "imageUrl",
-                    "lastName",
-                    "status"
-                  ],
-                  "additionalProperties": false
+                  ]
                 }
               }
             }
@@ -8196,78 +8499,165 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "id": {
-                      "type": "string",
-                      "minLength": 1,
-                      "maxLength": 255
-                    },
-                    "role": {
-                      "type": "string",
-                      "enum": [
-                        "org:admin",
-                        "org:member"
-                      ]
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "userId": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "emailAddress": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "firstName": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "imageUrl": {
-                      "type": [
-                        "string",
-                        "null"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "userId": {
+                          "type": "string"
+                        },
+                        "emailAddress": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "imageUrl": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uri"
+                        },
+                        "lastName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "role": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "status": {
+                          "type": "string",
+                          "const": "active"
+                        }
+                      },
+                      "required": [
+                        "createdAt",
+                        "id",
+                        "updatedAt",
+                        "userId",
+                        "emailAddress",
+                        "firstName",
+                        "imageUrl",
+                        "lastName",
+                        "role",
+                        "status"
                       ],
-                      "format": "uri"
+                      "additionalProperties": false
                     },
-                    "lastName": {
-                      "type": [
-                        "string",
-                        "null"
-                      ]
-                    },
-                    "status": {
-                      "type": "string",
-                      "enum": [
-                        "active",
-                        "pending"
-                      ]
+                    {
+                      "type": "object",
+                      "properties": {
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "id": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 255
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "userId": {
+                          "type": "null"
+                        },
+                        "emailAddress": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "firstName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "imageUrl": {
+                          "type": [
+                            "string",
+                            "null"
+                          ],
+                          "format": "uri"
+                        },
+                        "lastName": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "role": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "status": {
+                          "type": "string",
+                          "const": "pending"
+                        }
+                      },
+                      "required": [
+                        "createdAt",
+                        "id",
+                        "updatedAt",
+                        "userId",
+                        "emailAddress",
+                        "firstName",
+                        "imageUrl",
+                        "lastName",
+                        "role",
+                        "status"
+                      ],
+                      "additionalProperties": false
                     }
-                  },
-                  "required": [
-                    "createdAt",
-                    "id",
-                    "role",
-                    "updatedAt",
-                    "userId",
-                    "emailAddress",
-                    "firstName",
-                    "imageUrl",
-                    "lastName",
-                    "status"
-                  ],
-                  "additionalProperties": false
+                  ]
                 }
               }
             }
@@ -8414,18 +8804,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "role": {
-                    "type": "string",
-                    "enum": [
-                      "org:admin",
-                      "org:member"
-                    ],
-                    "description": "New organization role: org:admin or org:member."
+                  "roleId": {
+                    "type": "string"
                   }
                 },
-                "required": [
-                  "role"
-                ],
                 "additionalProperties": false
               }
             }
@@ -11749,6 +12131,1772 @@
         ]
       }
     },
+    "/v1/organizations/{organizationId}/roles": {
+      "get": {
+        "operationId": "listOrganizationRoles",
+        "summary": "List organization roles",
+        "tags": [
+          "Organization roles"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List organization roles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "isDefault": {
+                        "type": "boolean"
+                      },
+                      "permissions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "organization:read",
+                            "organization:write",
+                            "organization:member:read",
+                            "organization:member:write",
+                            "organization:invitation:read",
+                            "organization:invitation:write",
+                            "organization:role:read",
+                            "organization:role:write",
+                            "organization:secret:read",
+                            "organization:secret:write",
+                            "organization:setting:read",
+                            "organization:setting:write",
+                            "organization:configuration:read",
+                            "organization:configuration:write",
+                            "organization:subscription:read",
+                            "organization:subscription:write",
+                            "organization:onboarding:read",
+                            "organization:onboarding:write",
+                            "organization:logo:read",
+                            "organization:logo:write",
+                            "organization:slack_connect:read",
+                            "organization:slack_connect:write",
+                            "billing:read",
+                            "billing:write",
+                            "billing:trial:read",
+                            "billing:trial:write",
+                            "billing:usage:read",
+                            "billing:usage:write",
+                            "billing:payment:read",
+                            "billing:payment:write",
+                            "billing:payment_method:read",
+                            "billing:payment_method:write",
+                            "billing:checkout:read",
+                            "billing:checkout:write",
+                            "billing:subscription_checkout:read",
+                            "billing:subscription_checkout:write",
+                            "billing:portal:read",
+                            "billing:portal:write",
+                            "billing:on_demand:read",
+                            "billing:on_demand:write",
+                            "billing:credit:read",
+                            "billing:credit:write",
+                            "billing:custom_price:read",
+                            "billing:custom_price:write",
+                            "billing:custom_plan:read",
+                            "billing:custom_plan:write",
+                            "billing:overage_report:read",
+                            "billing:overage_report:write",
+                            "api_key:read",
+                            "api_key:write",
+                            "user:read",
+                            "user:write",
+                            "user:setting:read",
+                            "user:setting:write",
+                            "user:environment_variable:read",
+                            "user:environment_variable:write",
+                            "user:subscription:read",
+                            "user:subscription:write",
+                            "user:connected_account:read",
+                            "user:connected_account:write",
+                            "user:organization:read",
+                            "user:organization:write",
+                            "user:profile_picture:read",
+                            "user:profile_picture:write",
+                            "user:deletion:read",
+                            "user:deletion:write",
+                            "agent:read",
+                            "agent:write",
+                            "agent:schedule:read",
+                            "agent:schedule:write",
+                            "agent:trigger:read",
+                            "agent:trigger:write",
+                            "agent:run:read",
+                            "agent:run:write",
+                            "agent:instruction_revision:read",
+                            "agent:instruction_revision:write",
+                            "agent:template:read",
+                            "agent:template:write",
+                            "session:read",
+                            "session:write",
+                            "session:message:read",
+                            "session:message:write",
+                            "session:artifact:read",
+                            "session:artifact:write",
+                            "session:source:read",
+                            "session:source:write",
+                            "session:command:read",
+                            "session:command:write",
+                            "session:input:read",
+                            "session:input:write",
+                            "session:queue:read",
+                            "session:queue:write",
+                            "session:event:read",
+                            "session:event:write",
+                            "session:file:read",
+                            "session:file:write",
+                            "session:diff:read",
+                            "session:diff:write",
+                            "session:workspace:read",
+                            "session:workspace:write",
+                            "session:workspace_file:read",
+                            "session:workspace_file:write",
+                            "session:workspace_diff:read",
+                            "session:workspace_diff:write",
+                            "session:workspace_preview:read",
+                            "session:workspace_preview:write",
+                            "pull_request:read",
+                            "pull_request:write",
+                            "pull_request:merge:read",
+                            "pull_request:merge:write",
+                            "pull_request:attachment:read",
+                            "pull_request:attachment:write",
+                            "pull_request:session:read",
+                            "pull_request:session:write",
+                            "pull_request:message:read",
+                            "pull_request:message:write",
+                            "pull_request:comment:read",
+                            "pull_request:comment:write",
+                            "pull_request:review:read",
+                            "pull_request:review:write",
+                            "pull_request:reaction:read",
+                            "pull_request:reaction:write",
+                            "pull_request:commit:read",
+                            "pull_request:commit:write",
+                            "pull_request:check:read",
+                            "pull_request:check:write",
+                            "pull_request:file:read",
+                            "pull_request:file:write",
+                            "pull_request:reviewer:read",
+                            "pull_request:reviewer:write",
+                            "pull_request:label:read",
+                            "pull_request:label:write",
+                            "pull_request:thread:read",
+                            "pull_request:thread:write",
+                            "pull_request:tour:read",
+                            "pull_request:tour:write",
+                            "pull_request:branch_status:read",
+                            "pull_request:branch_status:write",
+                            "pull_request:stack:read",
+                            "pull_request:stack:write",
+                            "repository:read",
+                            "repository:write",
+                            "repository:branch:read",
+                            "repository:branch:write",
+                            "repository:file:read",
+                            "repository:file:write",
+                            "repository:pull_request:read",
+                            "repository:pull_request:write",
+                            "repository:user:read",
+                            "repository:user:write",
+                            "repository:label:read",
+                            "repository:label:write",
+                            "integration:read",
+                            "integration:write",
+                            "integration:trigger:read",
+                            "integration:trigger:write",
+                            "integration:provider:read",
+                            "integration:provider:write",
+                            "integration:configuration:read",
+                            "integration:configuration:write",
+                            "integration:snyk_organization:read",
+                            "integration:snyk_organization:write",
+                            "integration:sentry_environment:read",
+                            "integration:sentry_environment:write",
+                            "integration:slack_channel:read",
+                            "integration:slack_channel:write",
+                            "integration:rate_limit:read",
+                            "integration:rate_limit:write",
+                            "mcp_connection:read",
+                            "mcp_connection:write",
+                            "mcp_connection:shared:read",
+                            "mcp_connection:shared:write",
+                            "model:read",
+                            "model:write",
+                            "project:read",
+                            "project:write",
+                            "project:environment_variable:read",
+                            "project:environment_variable:write",
+                            "project:snapshot:read",
+                            "project:snapshot:write",
+                            "project:build:read",
+                            "project:build:write",
+                            "project:build_detail:read",
+                            "project:build_detail:write",
+                            "project:schedule:read",
+                            "project:schedule:write",
+                            "project:default:read",
+                            "project:default:write",
+                            "project:system_snapshot:read",
+                            "project:system_snapshot:write",
+                            "project:organization_snapshot:read",
+                            "project:organization_snapshot:write",
+                            "sandbox:read",
+                            "sandbox:write",
+                            "sandbox:metric:read",
+                            "sandbox:metric:write",
+                            "sandbox:event:read",
+                            "sandbox:event:write",
+                            "sandbox:size:read",
+                            "sandbox:size:write",
+                            "sandbox:virtual_machine:read",
+                            "sandbox:virtual_machine:write",
+                            "device:read",
+                            "device:write",
+                            "skill:read",
+                            "skill:write",
+                            "skill:marketplace:read",
+                            "skill:marketplace:write",
+                            "insight:read",
+                            "insight:write",
+                            "insight:member:read",
+                            "insight:member:write",
+                            "insight:repository:read",
+                            "insight:repository:write",
+                            "insight:usage:read",
+                            "insight:usage:write",
+                            "file:read",
+                            "file:write",
+                            "pin:read",
+                            "pin:write",
+                            "folder:read",
+                            "folder:write",
+                            "queue:job:read",
+                            "queue:job:write",
+                            "queue:host_manager_job:read",
+                            "queue:host_manager_job:write",
+                            "queue:worker:read",
+                            "queue:worker:write",
+                            "queue:scheduled_job:read",
+                            "queue:scheduled_job:write",
+                            "queue:triggered_job:read",
+                            "queue:triggered_job:write",
+                            "runtime:read",
+                            "runtime:write",
+                            "session:source_credential:read",
+                            "session:source_credential:write",
+                            "device:all:write",
+                            "insight:user:read"
+                          ]
+                        },
+                        "maxItems": 238
+                      },
+                      "memberCount": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "isCurrentRole": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "description",
+                      "isDefault",
+                      "permissions",
+                      "memberCount",
+                      "isCurrentRole"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createOrganizationRole",
+        "summary": "Create a organization role",
+        "tags": [
+          "Organization roles"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a organization role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "default": ""
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "organization:read",
+                        "organization:write",
+                        "organization:member:read",
+                        "organization:member:write",
+                        "organization:invitation:read",
+                        "organization:invitation:write",
+                        "organization:role:read",
+                        "organization:role:write",
+                        "organization:secret:read",
+                        "organization:secret:write",
+                        "organization:setting:read",
+                        "organization:setting:write",
+                        "organization:configuration:read",
+                        "organization:configuration:write",
+                        "organization:subscription:read",
+                        "organization:subscription:write",
+                        "organization:onboarding:read",
+                        "organization:onboarding:write",
+                        "organization:logo:read",
+                        "organization:logo:write",
+                        "organization:slack_connect:read",
+                        "organization:slack_connect:write",
+                        "billing:read",
+                        "billing:write",
+                        "billing:trial:read",
+                        "billing:trial:write",
+                        "billing:usage:read",
+                        "billing:usage:write",
+                        "billing:payment:read",
+                        "billing:payment:write",
+                        "billing:payment_method:read",
+                        "billing:payment_method:write",
+                        "billing:checkout:read",
+                        "billing:checkout:write",
+                        "billing:subscription_checkout:read",
+                        "billing:subscription_checkout:write",
+                        "billing:portal:read",
+                        "billing:portal:write",
+                        "billing:on_demand:read",
+                        "billing:on_demand:write",
+                        "billing:credit:read",
+                        "billing:credit:write",
+                        "billing:custom_price:read",
+                        "billing:custom_price:write",
+                        "billing:custom_plan:read",
+                        "billing:custom_plan:write",
+                        "billing:overage_report:read",
+                        "billing:overage_report:write",
+                        "api_key:read",
+                        "api_key:write",
+                        "user:read",
+                        "user:write",
+                        "user:setting:read",
+                        "user:setting:write",
+                        "user:environment_variable:read",
+                        "user:environment_variable:write",
+                        "user:subscription:read",
+                        "user:subscription:write",
+                        "user:connected_account:read",
+                        "user:connected_account:write",
+                        "user:organization:read",
+                        "user:organization:write",
+                        "user:profile_picture:read",
+                        "user:profile_picture:write",
+                        "user:deletion:read",
+                        "user:deletion:write",
+                        "agent:read",
+                        "agent:write",
+                        "agent:schedule:read",
+                        "agent:schedule:write",
+                        "agent:trigger:read",
+                        "agent:trigger:write",
+                        "agent:run:read",
+                        "agent:run:write",
+                        "agent:instruction_revision:read",
+                        "agent:instruction_revision:write",
+                        "agent:template:read",
+                        "agent:template:write",
+                        "session:read",
+                        "session:write",
+                        "session:message:read",
+                        "session:message:write",
+                        "session:artifact:read",
+                        "session:artifact:write",
+                        "session:source:read",
+                        "session:source:write",
+                        "session:command:read",
+                        "session:command:write",
+                        "session:input:read",
+                        "session:input:write",
+                        "session:queue:read",
+                        "session:queue:write",
+                        "session:event:read",
+                        "session:event:write",
+                        "session:file:read",
+                        "session:file:write",
+                        "session:diff:read",
+                        "session:diff:write",
+                        "session:workspace:read",
+                        "session:workspace:write",
+                        "session:workspace_file:read",
+                        "session:workspace_file:write",
+                        "session:workspace_diff:read",
+                        "session:workspace_diff:write",
+                        "session:workspace_preview:read",
+                        "session:workspace_preview:write",
+                        "pull_request:read",
+                        "pull_request:write",
+                        "pull_request:merge:read",
+                        "pull_request:merge:write",
+                        "pull_request:attachment:read",
+                        "pull_request:attachment:write",
+                        "pull_request:session:read",
+                        "pull_request:session:write",
+                        "pull_request:message:read",
+                        "pull_request:message:write",
+                        "pull_request:comment:read",
+                        "pull_request:comment:write",
+                        "pull_request:review:read",
+                        "pull_request:review:write",
+                        "pull_request:reaction:read",
+                        "pull_request:reaction:write",
+                        "pull_request:commit:read",
+                        "pull_request:commit:write",
+                        "pull_request:check:read",
+                        "pull_request:check:write",
+                        "pull_request:file:read",
+                        "pull_request:file:write",
+                        "pull_request:reviewer:read",
+                        "pull_request:reviewer:write",
+                        "pull_request:label:read",
+                        "pull_request:label:write",
+                        "pull_request:thread:read",
+                        "pull_request:thread:write",
+                        "pull_request:tour:read",
+                        "pull_request:tour:write",
+                        "pull_request:branch_status:read",
+                        "pull_request:branch_status:write",
+                        "pull_request:stack:read",
+                        "pull_request:stack:write",
+                        "repository:read",
+                        "repository:write",
+                        "repository:branch:read",
+                        "repository:branch:write",
+                        "repository:file:read",
+                        "repository:file:write",
+                        "repository:pull_request:read",
+                        "repository:pull_request:write",
+                        "repository:user:read",
+                        "repository:user:write",
+                        "repository:label:read",
+                        "repository:label:write",
+                        "integration:read",
+                        "integration:write",
+                        "integration:trigger:read",
+                        "integration:trigger:write",
+                        "integration:provider:read",
+                        "integration:provider:write",
+                        "integration:configuration:read",
+                        "integration:configuration:write",
+                        "integration:snyk_organization:read",
+                        "integration:snyk_organization:write",
+                        "integration:sentry_environment:read",
+                        "integration:sentry_environment:write",
+                        "integration:slack_channel:read",
+                        "integration:slack_channel:write",
+                        "integration:rate_limit:read",
+                        "integration:rate_limit:write",
+                        "mcp_connection:read",
+                        "mcp_connection:write",
+                        "mcp_connection:shared:read",
+                        "mcp_connection:shared:write",
+                        "model:read",
+                        "model:write",
+                        "project:read",
+                        "project:write",
+                        "project:environment_variable:read",
+                        "project:environment_variable:write",
+                        "project:snapshot:read",
+                        "project:snapshot:write",
+                        "project:build:read",
+                        "project:build:write",
+                        "project:build_detail:read",
+                        "project:build_detail:write",
+                        "project:schedule:read",
+                        "project:schedule:write",
+                        "project:default:read",
+                        "project:default:write",
+                        "project:system_snapshot:read",
+                        "project:system_snapshot:write",
+                        "project:organization_snapshot:read",
+                        "project:organization_snapshot:write",
+                        "sandbox:read",
+                        "sandbox:write",
+                        "sandbox:metric:read",
+                        "sandbox:metric:write",
+                        "sandbox:event:read",
+                        "sandbox:event:write",
+                        "sandbox:size:read",
+                        "sandbox:size:write",
+                        "sandbox:virtual_machine:read",
+                        "sandbox:virtual_machine:write",
+                        "device:read",
+                        "device:write",
+                        "skill:read",
+                        "skill:write",
+                        "skill:marketplace:read",
+                        "skill:marketplace:write",
+                        "insight:read",
+                        "insight:write",
+                        "insight:member:read",
+                        "insight:member:write",
+                        "insight:repository:read",
+                        "insight:repository:write",
+                        "insight:usage:read",
+                        "insight:usage:write",
+                        "file:read",
+                        "file:write",
+                        "pin:read",
+                        "pin:write",
+                        "folder:read",
+                        "folder:write",
+                        "queue:job:read",
+                        "queue:job:write",
+                        "queue:host_manager_job:read",
+                        "queue:host_manager_job:write",
+                        "queue:worker:read",
+                        "queue:worker:write",
+                        "queue:scheduled_job:read",
+                        "queue:scheduled_job:write",
+                        "queue:triggered_job:read",
+                        "queue:triggered_job:write",
+                        "runtime:read",
+                        "runtime:write",
+                        "session:source_credential:read",
+                        "session:source_credential:write",
+                        "device:all:write",
+                        "insight:user:read"
+                      ]
+                    },
+                    "maxItems": 238
+                  }
+                },
+                "required": [
+                  "name",
+                  "permissions"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/roles/{roleId}": {
+      "get": {
+        "operationId": "retrieveOrganizationRole",
+        "summary": "Retrieve an organization role",
+        "tags": [
+          "Organization roles"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve an organization role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "isDefault": {
+                      "type": "boolean"
+                    },
+                    "permissions": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "organization:read",
+                          "organization:write",
+                          "organization:member:read",
+                          "organization:member:write",
+                          "organization:invitation:read",
+                          "organization:invitation:write",
+                          "organization:role:read",
+                          "organization:role:write",
+                          "organization:secret:read",
+                          "organization:secret:write",
+                          "organization:setting:read",
+                          "organization:setting:write",
+                          "organization:configuration:read",
+                          "organization:configuration:write",
+                          "organization:subscription:read",
+                          "organization:subscription:write",
+                          "organization:onboarding:read",
+                          "organization:onboarding:write",
+                          "organization:logo:read",
+                          "organization:logo:write",
+                          "organization:slack_connect:read",
+                          "organization:slack_connect:write",
+                          "billing:read",
+                          "billing:write",
+                          "billing:trial:read",
+                          "billing:trial:write",
+                          "billing:usage:read",
+                          "billing:usage:write",
+                          "billing:payment:read",
+                          "billing:payment:write",
+                          "billing:payment_method:read",
+                          "billing:payment_method:write",
+                          "billing:checkout:read",
+                          "billing:checkout:write",
+                          "billing:subscription_checkout:read",
+                          "billing:subscription_checkout:write",
+                          "billing:portal:read",
+                          "billing:portal:write",
+                          "billing:on_demand:read",
+                          "billing:on_demand:write",
+                          "billing:credit:read",
+                          "billing:credit:write",
+                          "billing:custom_price:read",
+                          "billing:custom_price:write",
+                          "billing:custom_plan:read",
+                          "billing:custom_plan:write",
+                          "billing:overage_report:read",
+                          "billing:overage_report:write",
+                          "api_key:read",
+                          "api_key:write",
+                          "user:read",
+                          "user:write",
+                          "user:setting:read",
+                          "user:setting:write",
+                          "user:environment_variable:read",
+                          "user:environment_variable:write",
+                          "user:subscription:read",
+                          "user:subscription:write",
+                          "user:connected_account:read",
+                          "user:connected_account:write",
+                          "user:organization:read",
+                          "user:organization:write",
+                          "user:profile_picture:read",
+                          "user:profile_picture:write",
+                          "user:deletion:read",
+                          "user:deletion:write",
+                          "agent:read",
+                          "agent:write",
+                          "agent:schedule:read",
+                          "agent:schedule:write",
+                          "agent:trigger:read",
+                          "agent:trigger:write",
+                          "agent:run:read",
+                          "agent:run:write",
+                          "agent:instruction_revision:read",
+                          "agent:instruction_revision:write",
+                          "agent:template:read",
+                          "agent:template:write",
+                          "session:read",
+                          "session:write",
+                          "session:message:read",
+                          "session:message:write",
+                          "session:artifact:read",
+                          "session:artifact:write",
+                          "session:source:read",
+                          "session:source:write",
+                          "session:command:read",
+                          "session:command:write",
+                          "session:input:read",
+                          "session:input:write",
+                          "session:queue:read",
+                          "session:queue:write",
+                          "session:event:read",
+                          "session:event:write",
+                          "session:file:read",
+                          "session:file:write",
+                          "session:diff:read",
+                          "session:diff:write",
+                          "session:workspace:read",
+                          "session:workspace:write",
+                          "session:workspace_file:read",
+                          "session:workspace_file:write",
+                          "session:workspace_diff:read",
+                          "session:workspace_diff:write",
+                          "session:workspace_preview:read",
+                          "session:workspace_preview:write",
+                          "pull_request:read",
+                          "pull_request:write",
+                          "pull_request:merge:read",
+                          "pull_request:merge:write",
+                          "pull_request:attachment:read",
+                          "pull_request:attachment:write",
+                          "pull_request:session:read",
+                          "pull_request:session:write",
+                          "pull_request:message:read",
+                          "pull_request:message:write",
+                          "pull_request:comment:read",
+                          "pull_request:comment:write",
+                          "pull_request:review:read",
+                          "pull_request:review:write",
+                          "pull_request:reaction:read",
+                          "pull_request:reaction:write",
+                          "pull_request:commit:read",
+                          "pull_request:commit:write",
+                          "pull_request:check:read",
+                          "pull_request:check:write",
+                          "pull_request:file:read",
+                          "pull_request:file:write",
+                          "pull_request:reviewer:read",
+                          "pull_request:reviewer:write",
+                          "pull_request:label:read",
+                          "pull_request:label:write",
+                          "pull_request:thread:read",
+                          "pull_request:thread:write",
+                          "pull_request:tour:read",
+                          "pull_request:tour:write",
+                          "pull_request:branch_status:read",
+                          "pull_request:branch_status:write",
+                          "pull_request:stack:read",
+                          "pull_request:stack:write",
+                          "repository:read",
+                          "repository:write",
+                          "repository:branch:read",
+                          "repository:branch:write",
+                          "repository:file:read",
+                          "repository:file:write",
+                          "repository:pull_request:read",
+                          "repository:pull_request:write",
+                          "repository:user:read",
+                          "repository:user:write",
+                          "repository:label:read",
+                          "repository:label:write",
+                          "integration:read",
+                          "integration:write",
+                          "integration:trigger:read",
+                          "integration:trigger:write",
+                          "integration:provider:read",
+                          "integration:provider:write",
+                          "integration:configuration:read",
+                          "integration:configuration:write",
+                          "integration:snyk_organization:read",
+                          "integration:snyk_organization:write",
+                          "integration:sentry_environment:read",
+                          "integration:sentry_environment:write",
+                          "integration:slack_channel:read",
+                          "integration:slack_channel:write",
+                          "integration:rate_limit:read",
+                          "integration:rate_limit:write",
+                          "mcp_connection:read",
+                          "mcp_connection:write",
+                          "mcp_connection:shared:read",
+                          "mcp_connection:shared:write",
+                          "model:read",
+                          "model:write",
+                          "project:read",
+                          "project:write",
+                          "project:environment_variable:read",
+                          "project:environment_variable:write",
+                          "project:snapshot:read",
+                          "project:snapshot:write",
+                          "project:build:read",
+                          "project:build:write",
+                          "project:build_detail:read",
+                          "project:build_detail:write",
+                          "project:schedule:read",
+                          "project:schedule:write",
+                          "project:default:read",
+                          "project:default:write",
+                          "project:system_snapshot:read",
+                          "project:system_snapshot:write",
+                          "project:organization_snapshot:read",
+                          "project:organization_snapshot:write",
+                          "sandbox:read",
+                          "sandbox:write",
+                          "sandbox:metric:read",
+                          "sandbox:metric:write",
+                          "sandbox:event:read",
+                          "sandbox:event:write",
+                          "sandbox:size:read",
+                          "sandbox:size:write",
+                          "sandbox:virtual_machine:read",
+                          "sandbox:virtual_machine:write",
+                          "device:read",
+                          "device:write",
+                          "skill:read",
+                          "skill:write",
+                          "skill:marketplace:read",
+                          "skill:marketplace:write",
+                          "insight:read",
+                          "insight:write",
+                          "insight:member:read",
+                          "insight:member:write",
+                          "insight:repository:read",
+                          "insight:repository:write",
+                          "insight:usage:read",
+                          "insight:usage:write",
+                          "file:read",
+                          "file:write",
+                          "pin:read",
+                          "pin:write",
+                          "folder:read",
+                          "folder:write",
+                          "queue:job:read",
+                          "queue:job:write",
+                          "queue:host_manager_job:read",
+                          "queue:host_manager_job:write",
+                          "queue:worker:read",
+                          "queue:worker:write",
+                          "queue:scheduled_job:read",
+                          "queue:scheduled_job:write",
+                          "queue:triggered_job:read",
+                          "queue:triggered_job:write",
+                          "runtime:read",
+                          "runtime:write",
+                          "session:source_credential:read",
+                          "session:source_credential:write",
+                          "device:all:write",
+                          "insight:user:read"
+                        ]
+                      },
+                      "maxItems": 238
+                    },
+                    "memberCount": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "isCurrentRole": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "isDefault",
+                    "permissions",
+                    "memberCount",
+                    "isCurrentRole"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "roleId",
+            "required": true
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateOrganizationRole",
+        "summary": "Update a organization role",
+        "tags": [
+          "Organization roles"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update a organization role",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "description": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "default": ""
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "organization:read",
+                        "organization:write",
+                        "organization:member:read",
+                        "organization:member:write",
+                        "organization:invitation:read",
+                        "organization:invitation:write",
+                        "organization:role:read",
+                        "organization:role:write",
+                        "organization:secret:read",
+                        "organization:secret:write",
+                        "organization:setting:read",
+                        "organization:setting:write",
+                        "organization:configuration:read",
+                        "organization:configuration:write",
+                        "organization:subscription:read",
+                        "organization:subscription:write",
+                        "organization:onboarding:read",
+                        "organization:onboarding:write",
+                        "organization:logo:read",
+                        "organization:logo:write",
+                        "organization:slack_connect:read",
+                        "organization:slack_connect:write",
+                        "billing:read",
+                        "billing:write",
+                        "billing:trial:read",
+                        "billing:trial:write",
+                        "billing:usage:read",
+                        "billing:usage:write",
+                        "billing:payment:read",
+                        "billing:payment:write",
+                        "billing:payment_method:read",
+                        "billing:payment_method:write",
+                        "billing:checkout:read",
+                        "billing:checkout:write",
+                        "billing:subscription_checkout:read",
+                        "billing:subscription_checkout:write",
+                        "billing:portal:read",
+                        "billing:portal:write",
+                        "billing:on_demand:read",
+                        "billing:on_demand:write",
+                        "billing:credit:read",
+                        "billing:credit:write",
+                        "billing:custom_price:read",
+                        "billing:custom_price:write",
+                        "billing:custom_plan:read",
+                        "billing:custom_plan:write",
+                        "billing:overage_report:read",
+                        "billing:overage_report:write",
+                        "api_key:read",
+                        "api_key:write",
+                        "user:read",
+                        "user:write",
+                        "user:setting:read",
+                        "user:setting:write",
+                        "user:environment_variable:read",
+                        "user:environment_variable:write",
+                        "user:subscription:read",
+                        "user:subscription:write",
+                        "user:connected_account:read",
+                        "user:connected_account:write",
+                        "user:organization:read",
+                        "user:organization:write",
+                        "user:profile_picture:read",
+                        "user:profile_picture:write",
+                        "user:deletion:read",
+                        "user:deletion:write",
+                        "agent:read",
+                        "agent:write",
+                        "agent:schedule:read",
+                        "agent:schedule:write",
+                        "agent:trigger:read",
+                        "agent:trigger:write",
+                        "agent:run:read",
+                        "agent:run:write",
+                        "agent:instruction_revision:read",
+                        "agent:instruction_revision:write",
+                        "agent:template:read",
+                        "agent:template:write",
+                        "session:read",
+                        "session:write",
+                        "session:message:read",
+                        "session:message:write",
+                        "session:artifact:read",
+                        "session:artifact:write",
+                        "session:source:read",
+                        "session:source:write",
+                        "session:command:read",
+                        "session:command:write",
+                        "session:input:read",
+                        "session:input:write",
+                        "session:queue:read",
+                        "session:queue:write",
+                        "session:event:read",
+                        "session:event:write",
+                        "session:file:read",
+                        "session:file:write",
+                        "session:diff:read",
+                        "session:diff:write",
+                        "session:workspace:read",
+                        "session:workspace:write",
+                        "session:workspace_file:read",
+                        "session:workspace_file:write",
+                        "session:workspace_diff:read",
+                        "session:workspace_diff:write",
+                        "session:workspace_preview:read",
+                        "session:workspace_preview:write",
+                        "pull_request:read",
+                        "pull_request:write",
+                        "pull_request:merge:read",
+                        "pull_request:merge:write",
+                        "pull_request:attachment:read",
+                        "pull_request:attachment:write",
+                        "pull_request:session:read",
+                        "pull_request:session:write",
+                        "pull_request:message:read",
+                        "pull_request:message:write",
+                        "pull_request:comment:read",
+                        "pull_request:comment:write",
+                        "pull_request:review:read",
+                        "pull_request:review:write",
+                        "pull_request:reaction:read",
+                        "pull_request:reaction:write",
+                        "pull_request:commit:read",
+                        "pull_request:commit:write",
+                        "pull_request:check:read",
+                        "pull_request:check:write",
+                        "pull_request:file:read",
+                        "pull_request:file:write",
+                        "pull_request:reviewer:read",
+                        "pull_request:reviewer:write",
+                        "pull_request:label:read",
+                        "pull_request:label:write",
+                        "pull_request:thread:read",
+                        "pull_request:thread:write",
+                        "pull_request:tour:read",
+                        "pull_request:tour:write",
+                        "pull_request:branch_status:read",
+                        "pull_request:branch_status:write",
+                        "pull_request:stack:read",
+                        "pull_request:stack:write",
+                        "repository:read",
+                        "repository:write",
+                        "repository:branch:read",
+                        "repository:branch:write",
+                        "repository:file:read",
+                        "repository:file:write",
+                        "repository:pull_request:read",
+                        "repository:pull_request:write",
+                        "repository:user:read",
+                        "repository:user:write",
+                        "repository:label:read",
+                        "repository:label:write",
+                        "integration:read",
+                        "integration:write",
+                        "integration:trigger:read",
+                        "integration:trigger:write",
+                        "integration:provider:read",
+                        "integration:provider:write",
+                        "integration:configuration:read",
+                        "integration:configuration:write",
+                        "integration:snyk_organization:read",
+                        "integration:snyk_organization:write",
+                        "integration:sentry_environment:read",
+                        "integration:sentry_environment:write",
+                        "integration:slack_channel:read",
+                        "integration:slack_channel:write",
+                        "integration:rate_limit:read",
+                        "integration:rate_limit:write",
+                        "mcp_connection:read",
+                        "mcp_connection:write",
+                        "mcp_connection:shared:read",
+                        "mcp_connection:shared:write",
+                        "model:read",
+                        "model:write",
+                        "project:read",
+                        "project:write",
+                        "project:environment_variable:read",
+                        "project:environment_variable:write",
+                        "project:snapshot:read",
+                        "project:snapshot:write",
+                        "project:build:read",
+                        "project:build:write",
+                        "project:build_detail:read",
+                        "project:build_detail:write",
+                        "project:schedule:read",
+                        "project:schedule:write",
+                        "project:default:read",
+                        "project:default:write",
+                        "project:system_snapshot:read",
+                        "project:system_snapshot:write",
+                        "project:organization_snapshot:read",
+                        "project:organization_snapshot:write",
+                        "sandbox:read",
+                        "sandbox:write",
+                        "sandbox:metric:read",
+                        "sandbox:metric:write",
+                        "sandbox:event:read",
+                        "sandbox:event:write",
+                        "sandbox:size:read",
+                        "sandbox:size:write",
+                        "sandbox:virtual_machine:read",
+                        "sandbox:virtual_machine:write",
+                        "device:read",
+                        "device:write",
+                        "skill:read",
+                        "skill:write",
+                        "skill:marketplace:read",
+                        "skill:marketplace:write",
+                        "insight:read",
+                        "insight:write",
+                        "insight:member:read",
+                        "insight:member:write",
+                        "insight:repository:read",
+                        "insight:repository:write",
+                        "insight:usage:read",
+                        "insight:usage:write",
+                        "file:read",
+                        "file:write",
+                        "pin:read",
+                        "pin:write",
+                        "folder:read",
+                        "folder:write",
+                        "queue:job:read",
+                        "queue:job:write",
+                        "queue:host_manager_job:read",
+                        "queue:host_manager_job:write",
+                        "queue:worker:read",
+                        "queue:worker:write",
+                        "queue:scheduled_job:read",
+                        "queue:scheduled_job:write",
+                        "queue:triggered_job:read",
+                        "queue:triggered_job:write",
+                        "runtime:read",
+                        "runtime:write",
+                        "session:source_credential:read",
+                        "session:source_credential:write",
+                        "device:all:write",
+                        "insight:user:read"
+                      ]
+                    },
+                    "maxItems": 238
+                  },
+                  "isDefault": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "roleId",
+            "required": true
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteOrganizationRole",
+        "summary": "Archive a role with an explicit replacement",
+        "tags": [
+          "Organization roles"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Archive a role with an explicit replacement",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Role validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "replacementRoleId": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                },
+                "required": [
+                  "replacementRoleId"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "roleId",
+            "required": true
+          }
+        ]
+      }
+    },
     "/v1/mcp-connections": {
       "get": {
         "operationId": "listMcpConnections",
@@ -14957,6 +17105,116 @@
           {
             "in": "path",
             "name": "artifactId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/artifacts/assets/{assetId}": {
+      "get": {
+        "operationId": "retrieveArtifactAssetUrl",
+        "summary": "Retrieve a signed asset URL",
+        "description": "Get a fresh signed download URL for an uploaded session asset by its asset ID.",
+        "tags": [
+          "Artifacts"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve a signed asset URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "assetId": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "assetUrl": {
+                      "type": "string",
+                      "format": "uri"
+                    }
+                  },
+                  "required": [
+                    "assetId",
+                    "assetUrl"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Artifact, session, or backing asset not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Artifact operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "assetId",
             "schema": {
               "type": "string",
               "format": "uuid"
@@ -22833,6 +25091,14 @@
                             ],
                             "additionalProperties": false
                           },
+                          "folderId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ],
+                            "format": "uuid",
+                            "description": "Sidebar folder the authenticated user filed this session in."
+                          },
                           "isPinned": {
                             "type": "boolean"
                           },
@@ -23033,6 +25299,7 @@
                           "visibility",
                           "artifacts",
                           "diffSummary",
+                          "folderId",
                           "isPinned",
                           "project",
                           "sessionSource",
@@ -23271,6 +25538,15 @@
           },
           {
             "in": "query",
+            "name": "folderId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Only sessions in this sidebar folder of the authenticated user. Takes precedence over inFolder."
+          },
+          {
+            "in": "query",
             "name": "hasProject",
             "schema": {
               "type": "boolean"
@@ -23294,6 +25570,14 @@
               "default": false
             },
             "description": "Include totalCount. Not supported with state=active."
+          },
+          {
+            "in": "query",
+            "name": "inFolder",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Filter by whether a session is in one of the authenticated user's sidebar folders."
           },
           {
             "in": "query",
@@ -23843,6 +26127,14 @@
                       ],
                       "additionalProperties": false
                     },
+                    "folderId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "Sidebar folder the authenticated user filed this session in."
+                    },
                     "htmlUrl": {
                       "type": "string",
                       "format": "uri"
@@ -24066,6 +26358,7 @@
                     "automaticSizing",
                     "description",
                     "diffSummary",
+                    "folderId",
                     "htmlUrl",
                     "isPinned",
                     "project",
@@ -24781,6 +27074,14 @@
                       ],
                       "additionalProperties": false
                     },
+                    "folderId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "Sidebar folder the authenticated user filed this session in."
+                    },
                     "htmlUrl": {
                       "type": "string",
                       "format": "uri"
@@ -25004,6 +27305,7 @@
                     "automaticSizing",
                     "description",
                     "diffSummary",
+                    "folderId",
                     "htmlUrl",
                     "isPinned",
                     "project",
@@ -25598,6 +27900,14 @@
                       ],
                       "additionalProperties": false
                     },
+                    "folderId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "Sidebar folder the authenticated user filed this session in."
+                    },
                     "htmlUrl": {
                       "type": "string",
                       "format": "uri"
@@ -25821,6 +28131,7 @@
                     "automaticSizing",
                     "description",
                     "diffSummary",
+                    "folderId",
                     "htmlUrl",
                     "isPinned",
                     "project",
@@ -25976,7 +28287,12 @@
                 "properties": {
                   "source": {
                     "type": "string",
-                    "const": "conductor",
+                    "enum": [
+                      "conductor",
+                      "chatgpt",
+                      "claude",
+                      "devin"
+                    ],
                     "description": "Application the chat is imported from."
                   },
                   "externalId": {
@@ -26008,7 +28324,7 @@
                             "assistant",
                             "summary"
                           ],
-                          "description": "Who wrote the row. Assistant rows hold a Claude Agent SDK message as JSON."
+                          "description": "Who wrote the row. Conductor assistant rows hold Claude Agent SDK JSON; local ChatGPT/Codex, Claude Code, and Devin rows hold native message JSON for API conversion."
                         },
                         "content": {
                           "type": "string",
@@ -26450,6 +28766,14 @@
                       ],
                       "additionalProperties": false
                     },
+                    "folderId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "Sidebar folder the authenticated user filed this session in."
+                    },
                     "htmlUrl": {
                       "type": "string",
                       "format": "uri"
@@ -26673,6 +28997,7 @@
                     "automaticSizing",
                     "description",
                     "diffSummary",
+                    "folderId",
                     "htmlUrl",
                     "isPinned",
                     "project",
@@ -27235,6 +29560,14 @@
                       ],
                       "additionalProperties": false
                     },
+                    "folderId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "uuid",
+                      "description": "Sidebar folder the authenticated user filed this session in."
+                    },
                     "htmlUrl": {
                       "type": "string",
                       "format": "uri"
@@ -27458,6 +29791,7 @@
                     "automaticSizing",
                     "description",
                     "diffSummary",
+                    "folderId",
                     "htmlUrl",
                     "isPinned",
                     "project",
@@ -30281,6 +32615,14 @@
                                     ],
                                     "additionalProperties": false
                                   },
+                                  "folderId": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ],
+                                    "format": "uuid",
+                                    "description": "Sidebar folder you filed this session in."
+                                  },
                                   "state": {
                                     "type": "object",
                                     "properties": {
@@ -30341,6 +32683,7 @@
                                   "sessionSource",
                                   "pullRequests",
                                   "diffSummary",
+                                  "folderId",
                                   "state"
                                 ],
                                 "additionalProperties": false
@@ -30542,6 +32885,52 @@
                               "resource"
                             ],
                             "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "const": "folder"
+                              },
+                              "resource": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "color": {
+                                    "type": "string",
+                                    "enum": [
+                                      "neutral",
+                                      "red",
+                                      "orange",
+                                      "yellow",
+                                      "green",
+                                      "teal",
+                                      "blue",
+                                      "purple",
+                                      "pink"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "id",
+                                  "name",
+                                  "color"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "resource"
+                            ],
+                            "additionalProperties": false
                           }
                         ]
                       },
@@ -30552,7 +32941,7 @@
                         "string",
                         "null"
                       ],
-                      "pattern": "^(session|pull_request|project):[0-9a-f-]{36}$",
+                      "pattern": "^(session|pull_request|project|folder):[0-9a-f-]{36}$",
                       "description": "Cursor for the next page, even when resources is empty; null at the end."
                     }
                   },
@@ -30629,7 +33018,7 @@
             "name": "cursor",
             "schema": {
               "type": "string",
-              "pattern": "^(session|pull_request|project):[0-9a-f-]{36}$"
+              "pattern": "^(session|pull_request|project|folder):[0-9a-f-]{36}$"
             },
             "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
           },
@@ -30649,7 +33038,7 @@
       "post": {
         "operationId": "createPin",
         "summary": "Create a pin",
-        "description": "Pin a session, pull request, or project you have permission to access.",
+        "description": "Pin a session, pull request, or project you have permission to access, or one of your folders.",
         "tags": [
           "Pins"
         ],
@@ -30889,6 +33278,14 @@
                               ],
                               "additionalProperties": false
                             },
+                            "folderId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ],
+                              "format": "uuid",
+                              "description": "Sidebar folder you filed this session in."
+                            },
                             "state": {
                               "type": "object",
                               "properties": {
@@ -30949,6 +33346,7 @@
                             "sessionSource",
                             "pullRequests",
                             "diffSummary",
+                            "folderId",
                             "state"
                           ],
                           "additionalProperties": false
@@ -31150,6 +33548,52 @@
                         "resource"
                       ],
                       "additionalProperties": false
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "folder"
+                        },
+                        "resource": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "format": "uuid"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "color": {
+                              "type": "string",
+                              "enum": [
+                                "neutral",
+                                "red",
+                                "orange",
+                                "yellow",
+                                "green",
+                                "teal",
+                                "blue",
+                                "purple",
+                                "pink"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "color"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "resource"
+                      ],
+                      "additionalProperties": false
                     }
                   ]
                 }
@@ -31226,14 +33670,15 @@
                     "enum": [
                       "session",
                       "pull_request",
-                      "project"
+                      "project",
+                      "folder"
                     ],
-                    "description": "Kind of resource to pin or unpin: session, pull_request, or project."
+                    "description": "Kind of resource to pin or unpin: session, pull_request, project, or folder."
                   },
                   "id": {
                     "type": "string",
                     "format": "uuid",
-                    "description": "ID of the session, pull request, or project, not a separate pin ID."
+                    "description": "ID of the session, pull request, project, or folder, not a separate pin ID."
                   },
                   "placement": {
                     "type": "object",
@@ -31246,14 +33691,15 @@
                             "enum": [
                               "session",
                               "pull_request",
-                              "project"
+                              "project",
+                              "folder"
                             ],
-                            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
+                            "description": "Kind of resource to pin or unpin: session, pull_request, project, or folder."
                           },
                           "id": {
                             "type": "string",
                             "format": "uuid",
-                            "description": "ID of the session, pull request, or project, not a separate pin ID."
+                            "description": "ID of the session, pull request, project, or folder, not a separate pin ID."
                           }
                         },
                         "required": [
@@ -31295,7 +33741,7 @@
       "patch": {
         "operationId": "updatePin",
         "summary": "Update a pin",
-        "description": "Reorder a pinned session, pull request, or project before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.",
+        "description": "Reorder a pinned session, pull request, project, or folder before or after another pin for the authenticated user. Use createPin to pin a resource and deletePin to unpin it.",
         "tags": [
           "Pins"
         ],
@@ -31391,11 +33837,12 @@
               "enum": [
                 "session",
                 "pull_request",
-                "project"
+                "project",
+                "folder"
               ]
             },
             "required": true,
-            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
+            "description": "Kind of resource to pin or unpin: session, pull_request, project, or folder."
           },
           {
             "in": "path",
@@ -31405,7 +33852,7 @@
               "format": "uuid"
             },
             "required": true,
-            "description": "ID of the pinned session, pull request, or project, not a separate pin ID."
+            "description": "ID of the pinned session, pull request, project, or folder, not a separate pin ID."
           }
         ],
         "requestBody": {
@@ -31426,14 +33873,15 @@
                             "enum": [
                               "session",
                               "pull_request",
-                              "project"
+                              "project",
+                              "folder"
                             ],
-                            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
+                            "description": "Kind of resource to pin or unpin: session, pull_request, project, or folder."
                           },
                           "id": {
                             "type": "string",
                             "format": "uuid",
-                            "description": "ID of the session, pull request, or project, not a separate pin ID."
+                            "description": "ID of the session, pull request, project, or folder, not a separate pin ID."
                           }
                         },
                         "required": [
@@ -31472,7 +33920,7 @@
       "delete": {
         "operationId": "deletePin",
         "summary": "Delete a pin",
-        "description": "Unpin a session, pull request, or project for the authenticated user without deleting or archiving the resource.",
+        "description": "Unpin a session, pull request, project, or folder for the authenticated user without deleting or archiving the resource.",
         "tags": [
           "Pins"
         ],
@@ -31494,14 +33942,15 @@
                       "enum": [
                         "session",
                         "pull_request",
-                        "project"
+                        "project",
+                        "folder"
                       ],
-                      "description": "Kind of resource to pin or unpin: session, pull_request, or project."
+                      "description": "Kind of resource to pin or unpin: session, pull_request, project, or folder."
                     },
                     "id": {
                       "type": "string",
                       "format": "uuid",
-                      "description": "ID of the session, pull request, or project, not a separate pin ID."
+                      "description": "ID of the session, pull request, project, or folder, not a separate pin ID."
                     },
                     "deleted": {
                       "type": "boolean",
@@ -31585,11 +34034,12 @@
               "enum": [
                 "session",
                 "pull_request",
-                "project"
+                "project",
+                "folder"
               ]
             },
             "required": true,
-            "description": "Kind of resource to pin or unpin: session, pull_request, or project."
+            "description": "Kind of resource to pin or unpin: session, pull_request, project, or folder."
           },
           {
             "in": "path",
@@ -31599,7 +34049,656 @@
               "format": "uuid"
             },
             "required": true,
-            "description": "ID of the pinned session, pull request, or project, not a separate pin ID."
+            "description": "ID of the pinned session, pull request, project, or folder, not a separate pin ID."
+          }
+        ]
+      }
+    },
+    "/v1/folders": {
+      "get": {
+        "operationId": "listFolders",
+        "summary": "List folders",
+        "description": "List the sidebar folders you use to organize sessions. Use listSessions with folderId to list the sessions in a folder.",
+        "tags": [
+          "Folders"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List folders",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "color": {
+                            "type": "string",
+                            "enum": [
+                              "neutral",
+                              "red",
+                              "orange",
+                              "yellow",
+                              "green",
+                              "teal",
+                              "blue",
+                              "purple",
+                              "pink"
+                            ],
+                            "description": "Folder icon color, from the same palette as project icons."
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "color",
+                          "createdAt",
+                          "updatedAt"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Your folders in sidebar order."
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Folder or session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Folder limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createFolder",
+        "summary": "Create a folder",
+        "description": "Create a sidebar folder for organizing sessions. New folders go first in your folder list; use createPin to pin one.",
+        "tags": [
+          "Folders"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a folder",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "red",
+                        "orange",
+                        "yellow",
+                        "green",
+                        "teal",
+                        "blue",
+                        "purple",
+                        "pink"
+                      ],
+                      "description": "Folder icon color, from the same palette as project icons."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "color",
+                    "createdAt",
+                    "updatedAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Folder or session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Folder limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "description": "Folder name shown in the sidebar."
+                  },
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "neutral",
+                      "red",
+                      "orange",
+                      "yellow",
+                      "green",
+                      "teal",
+                      "blue",
+                      "purple",
+                      "pink"
+                    ],
+                    "description": "Folder icon color. Defaults to neutral."
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/folders/{folderId}": {
+      "patch": {
+        "operationId": "updateFolder",
+        "summary": "Update a folder",
+        "description": "Rename one of your sidebar folders, change its icon color, move it in your folder list, or add, reorder, or remove its sessions. Use updatePin to move a pinned folder among your pins.",
+        "tags": [
+          "Folders"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update a folder",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "color": {
+                      "type": "string",
+                      "enum": [
+                        "neutral",
+                        "red",
+                        "orange",
+                        "yellow",
+                        "green",
+                        "teal",
+                        "blue",
+                        "purple",
+                        "pink"
+                      ],
+                      "description": "Folder icon color, from the same palette as project icons."
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "color",
+                    "createdAt",
+                    "updatedAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Folder or session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Folder limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "folderId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100,
+                    "description": "Folder name shown in the sidebar."
+                  },
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "neutral",
+                      "red",
+                      "orange",
+                      "yellow",
+                      "green",
+                      "teal",
+                      "blue",
+                      "purple",
+                      "pink"
+                    ],
+                    "description": "Folder icon color, from the same palette as project icons."
+                  },
+                  "placement": {
+                    "type": "object",
+                    "properties": {
+                      "target": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "Another of your folders to place this folder next to."
+                      },
+                      "position": {
+                        "type": "string",
+                        "enum": [
+                          "before",
+                          "after"
+                        ],
+                        "description": "Whether to place this folder before or after the target."
+                      }
+                    },
+                    "required": [
+                      "target",
+                      "position"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Where to put this folder in your sidebar folder list. Pinned folders are ordered with updatePin instead."
+                  },
+                  "addSession": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "placement": {
+                        "type": "object",
+                        "properties": {
+                          "target": {
+                            "type": "string",
+                            "format": "uuid",
+                            "description": "Session in this folder to place the added session next to."
+                          },
+                          "position": {
+                            "type": "string",
+                            "enum": [
+                              "before",
+                              "after"
+                            ],
+                            "description": "Whether to place the session before or after the target."
+                          }
+                        },
+                        "required": [
+                          "target",
+                          "position"
+                        ],
+                        "additionalProperties": false,
+                        "description": "Where to put the session in the folder. Omit to put a newly added session first and leave one already here where it is."
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Session to put in this folder, taking it out of any other folder of yours, or to reorder within it."
+                  },
+                  "removeSession": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Session to take out of this folder."
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteFolder",
+        "summary": "Delete a folder",
+        "description": "Delete one of your sidebar folders. Its sessions are kept and return to your recent sessions.",
+        "tags": [
+          "Folders"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a folder",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or missing caller scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Folder or session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Folder limit reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "folderId",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true
           }
         ]
       }
@@ -31790,6 +34889,165 @@
                   "sandboxSize"
                 ],
                 "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "retrieveProjectDefaults",
+        "summary": "Retrieve project defaults",
+        "description": "Get the default sandbox size and the largest size the plan allows.",
+        "tags": [
+          "Projects"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve project defaults",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "sandboxSize": {
+                      "type": "string",
+                      "enum": [
+                        "nano",
+                        "micro",
+                        "small",
+                        "medium",
+                        "large",
+                        "xl",
+                        "xxl",
+                        "ultra"
+                      ],
+                      "description": "Default workspace VM size for the organization."
+                    },
+                    "maxSandboxSize": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "nano",
+                        "micro",
+                        "small",
+                        "medium",
+                        "large",
+                        "xl",
+                        "xxl",
+                        "ultra",
+                        null
+                      ],
+                      "description": "Largest VM size the organization plan allows, or null when unlimited."
+                    }
+                  },
+                  "required": [
+                    "sandboxSize",
+                    "maxSandboxSize"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Project resource conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Project operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
               }
             }
           }
@@ -45495,7 +48753,7 @@
       "post": {
         "operationId": "createAgentRun",
         "summary": "Create an agent run",
-        "description": "Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.",
+        "description": "Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution, and includes the run ID to poll for its status and session.",
         "tags": [
           "Agents"
         ],
@@ -45516,6 +48774,11 @@
                       "type": "string",
                       "format": "uuid"
                     },
+                    "runId": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "ID of the agent run. Retrieve it with GET /v1/agents/{agentId}/runs/{runId}; its sessionId is set once the run starts its session."
+                    },
                     "agentId": {
                       "type": "string",
                       "format": "uuid"
@@ -45527,6 +48790,7 @@
                   },
                   "required": [
                     "jobId",
+                    "runId",
                     "agentId",
                     "status"
                   ],
@@ -52531,6 +55795,9 @@
                         "remainingAllowance": {
                           "type": "number"
                         },
+                        "purchasedCredits": {
+                          "type": "number"
+                        },
                         "exhausted": {
                           "type": "boolean"
                         }
@@ -52541,6 +55808,7 @@
                         "endsAt",
                         "allowance",
                         "remainingAllowance",
+                        "purchasedCredits",
                         "exhausted"
                       ],
                       "default": null
