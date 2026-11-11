@@ -108,6 +108,33 @@
             "delete": "delete /v1/organizations/{organizationId}/members/{memberId}"
           }
         },
+        "roles": {
+          "methods": {
+            "list": "get /v1/organizations/{organizationId}/roles",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/roles",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/roles",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/organizations/{organizationId}/roles/{roleId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/organizations/{organizationId}/roles/{roleId}",
+              "verb": "patch",
+              "path": "/v1/organizations/{organizationId}/roles/{roleId}",
+              "bodyParamName": "body"
+            },
+            "delete": {
+              "kind": "http",
+              "endpoint": "delete /v1/organizations/{organizationId}/roles/{roleId}",
+              "verb": "delete",
+              "path": "/v1/organizations/{organizationId}/roles/{roleId}",
+              "bodyParamName": "body"
+            }
+          }
+        },
         "secrets": {
           "methods": {
             "list": "get /v1/organizations/{organizationId}/secrets",
@@ -177,6 +204,7 @@
           "bodyParamName": "body"
         },
         "retrieve": "get /v1/artifacts/{artifactId}",
+        "retrieve_asset_url": "get /v1/artifacts/assets/{assetId}",
         "delete": "delete /v1/artifacts/{artifactId}"
       }
     },
@@ -384,6 +412,7 @@
           "path": "/v1/projects/defaults",
           "bodyParamName": "body"
         },
+        "retrieve_defaults": "get /v1/projects/defaults",
         "list": "get /v1/projects",
         "create": {
           "kind": "http",
@@ -706,6 +735,26 @@
       "methods": {
         "retrieve": "get /v1/billing",
         "list_usage": "get /v1/billing/usage"
+      }
+    },
+    "folders": {
+      "methods": {
+        "list": "get /v1/folders",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/folders",
+          "verb": "post",
+          "path": "/v1/folders",
+          "bodyParamName": "body"
+        },
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/folders/{folderId}",
+          "verb": "patch",
+          "path": "/v1/folders/{folderId}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/folders/{folderId}"
       }
     },
     "live": {
