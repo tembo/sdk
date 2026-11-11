@@ -487,6 +487,80 @@ const cases: {
   {
     operation: 'list',
     method: 'GET',
+    path: '/v1/organizations/{organizationId}/roles',
+    run: async () => {
+      const role = await client.organizations.roles.list('organizationId');
+    },
+  },
+
+  {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/organizations/{organizationId}/roles',
+    run: async () => {
+      const role = await client.organizations.roles.create('organizationId', {
+        name: 'x',
+        description: '',
+        permissions: ['organization:read'],
+      });
+    },
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/organizations/{organizationId}/roles/{roleId}',
+    run: async () => {
+      const role = await client.organizations.roles.retrieve('roleId', {
+        organizationId: 'organizationId',
+      });
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/organizations/{organizationId}/roles/{roleId}',
+    label: 'required params',
+    run: async () => {
+      const role = await client.organizations.roles.update('roleId', {
+        organizationId: 'organizationId',
+        description: '',
+      });
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/organizations/{organizationId}/roles/{roleId}',
+    label: 'all params',
+    run: async () => {
+      const role = await client.organizations.roles.update('roleId', {
+        organizationId: 'organizationId',
+        name: 'x',
+        description: '',
+        permissions: ['organization:read'],
+        isDefault: false,
+      });
+    },
+  },
+
+  {
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/organizations/{organizationId}/roles/{roleId}',
+    run: async () => {
+      const role = await client.organizations.roles.delete('roleId', {
+        organizationId: 'organizationId',
+        replacementRoleId: 'x',
+      });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
     path: '/v1/organizations/{organizationId}/secrets',
     label: 'required params',
     run: async () => {
@@ -861,6 +935,15 @@ const cases: {
     path: '/v1/artifacts/{artifactId}',
     run: async () => {
       const artifact = await client.artifacts.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  },
+
+  {
+    operation: 'retrieveAssetUrl',
+    method: 'GET',
+    path: '/v1/artifacts/assets/{assetId}',
+    run: async () => {
+      const artifact = await client.artifacts.retrieveAssetURL('7c9e6679-7425-40de-944b-e07fc1f90ae7');
     },
   },
 
@@ -1580,6 +1663,15 @@ const cases: {
         projectId: 'x',
         sandboxSize: 'nano',
       });
+    },
+  },
+
+  {
+    operation: 'retrieveDefaults',
+    method: 'GET',
+    path: '/v1/projects/defaults',
+    run: async () => {
+      const project = await client.projects.retrieveDefaults();
     },
   },
 
@@ -3046,6 +3138,82 @@ const cases: {
         models: ['model'],
         agentIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
       });
+    },
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/folders',
+    run: async () => {
+      const folder = await client.folders.list();
+    },
+  },
+
+  {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/folders',
+    label: 'required params',
+    run: async () => {
+      const folder = await client.folders.create({
+        name: 'x',
+      });
+    },
+  },
+
+  {
+    operation: 'create',
+    method: 'POST',
+    path: '/v1/folders',
+    label: 'all params',
+    run: async () => {
+      const folder = await client.folders.create({
+        name: 'x',
+        color: 'neutral',
+      });
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/folders/{folderId}',
+    label: 'required params',
+    run: async () => {
+      const folder = await client.folders.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
+    },
+  },
+
+  {
+    operation: 'update',
+    method: 'PATCH',
+    path: '/v1/folders/{folderId}',
+    label: 'all params',
+    run: async () => {
+      const folder = await client.folders.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        name: 'x',
+        color: 'neutral',
+        placement: {
+          target: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+          position: 'before',
+        },
+        addSession: {
+          id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        },
+        removeSession: {
+          id: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        },
+      });
+    },
+  },
+
+  {
+    operation: 'delete',
+    method: 'DELETE',
+    path: '/v1/folders/{folderId}',
+    run: async () => {
+      const folder = await client.folders.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
     },
   },
 

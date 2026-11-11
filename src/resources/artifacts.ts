@@ -67,6 +67,22 @@ export class Artifacts extends APIResource {
   }
 
   /**
+   * Get a fresh signed download URL for an uploaded session asset by its asset ID.
+   *
+   * @param {string} assetID
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ArtifactRetrieveAssetURLResponse>} Retrieve a signed asset URL
+   *
+   * @example
+   * ```ts
+   * const artifact = await client.artifacts.retrieveAssetURL('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+   * ```
+   */
+  retrieveAssetURL(assetID: string, options?: RequestOptions): APIPromise<ArtifactRetrieveAssetURLResponse> {
+    return this._client.get(__scalarPath`/v1/artifacts/assets/${assetID}`, options);
+  }
+
+  /**
    * Delete an organization artifact and its backing asset when present.
    *
    * @param {string} artifactID
@@ -505,6 +521,17 @@ export namespace ArtifactRetrieveResponse {
   }
 }
 
+export interface ArtifactRetrieveAssetURLResponse {
+  /**
+   * @format uuid
+   */
+  assetId: string;
+  /**
+   * @format uri
+   */
+  assetUrl: string;
+}
+
 export interface ArtifactDeleteResponse {
   deleted: true;
   /**
@@ -517,6 +544,7 @@ export declare namespace Artifacts {
     type ArtifactListResponse as ArtifactListResponse,
     type ArtifactCreateResponse as ArtifactCreateResponse,
     type ArtifactRetrieveResponse as ArtifactRetrieveResponse,
+    type ArtifactRetrieveAssetURLResponse as ArtifactRetrieveAssetURLResponse,
     type ArtifactDeleteResponse as ArtifactDeleteResponse,
     type ArtifactListParams as ArtifactListParams,
     type ArtifactCreateParams as ArtifactCreateParams,
