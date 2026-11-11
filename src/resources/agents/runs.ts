@@ -30,7 +30,7 @@ export class Runs extends APIResource {
   }
 
   /**
-   * Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution.
+   * Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution, and includes the run ID to poll for its status and session.
    *
    * @param {string} agentID
    * @param {RunCreateParams} [body] - The request body to send.
@@ -129,6 +129,11 @@ export interface RunCreateResponse {
    * @format uuid
    */
   jobId: string;
+  /**
+   * ID of the agent run. Retrieve it with GET /v1/agents/{agentId}/runs/{runId}; its sessionId is set once the run starts its session.
+   * @format uuid
+   */
+  runId: string;
   /**
    * @format uuid
    */

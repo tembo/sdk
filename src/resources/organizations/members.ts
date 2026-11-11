@@ -42,7 +42,7 @@ export class Members extends APIResource {
    * ```ts
    * const member = await client.organizations.members.create('organizationId', {
    *   emailAddress: 'user@example.com',
-   *   role: 'org:member',
+   *   roleId: 'x',
    * });
    * ```
    */
@@ -90,7 +90,6 @@ export class Members extends APIResource {
    * ```ts
    * const member = await client.organizations.members.update('memberId', {
    *   organizationId: 'organizationId',
-   *   role: 'org:admin',
    * });
    * ```
    */
@@ -162,7 +161,7 @@ export interface MemberListParams {
 }
 
 export interface MemberListResponse {
-  items: Array<MemberListResponse.Item>;
+  items: Array<MemberListResponse.Item | MemberListResponse.Item2>;
   nextCursor: string | null;
 }
 
@@ -177,12 +176,11 @@ export namespace MemberListResponse {
      * @maxLength 255
      */
     id: string;
-    role: 'org:admin' | 'org:member';
     /**
      * @format date-time
      */
     updatedAt: string;
-    userId: string | null;
+    userId: string;
     /**
      * @format email
      */
@@ -193,7 +191,51 @@ export namespace MemberListResponse {
      */
     imageUrl: string | null;
     lastName: string | null;
-    status: 'active' | 'pending';
+    role: Item.Role;
+    status: 'active';
+  }
+
+  export namespace Item {
+    export interface Role {
+      id: string;
+      name: string;
+    }
+  }
+
+  export interface Item2 {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    userId: null;
+    /**
+     * @format email
+     */
+    emailAddress: string;
+    firstName: string | null;
+    /**
+     * @format uri
+     */
+    imageUrl: string | null;
+    lastName: string | null;
+    role: Item2.Role | null;
+    status: 'pending';
+  }
+
+  export namespace Item2 {
+    export interface Role {
+      id: string;
+      name: string;
+    }
   }
 }
 
@@ -204,72 +246,169 @@ export interface MemberCreateParams {
    */
   emailAddress: string;
   /**
-   * Organization role to grant: org:admin or org:member.
-   * @default org:member
+   * @minLength 1
    */
-  role?: 'org:admin' | 'org:member';
+  roleId: string;
 }
 
-export interface MemberCreateResponse {
-  /**
-   * @format date-time
-   */
-  createdAt: string;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   */
-  id: string;
-  role: 'org:admin' | 'org:member';
-  /**
-   * @format date-time
-   */
-  updatedAt: string;
-  userId: string | null;
-  /**
-   * @format email
-   */
-  emailAddress: string;
-  firstName: string | null;
-  /**
-   * @format uri
-   */
-  imageUrl: string | null;
-  lastName: string | null;
-  status: 'active' | 'pending';
+export type MemberCreateResponse =
+  | MemberCreateResponse.MemberCreateResponseItem
+  | MemberCreateResponse.MemberCreateResponseItem2;
+
+export namespace MemberCreateResponse {
+  export interface MemberCreateResponseItem {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    userId: string;
+    /**
+     * @format email
+     */
+    emailAddress: string;
+    firstName: string | null;
+    /**
+     * @format uri
+     */
+    imageUrl: string | null;
+    lastName: string | null;
+    role: MemberCreateResponseItem.Role;
+    status: 'active';
+  }
+
+  export namespace MemberCreateResponseItem {
+    export interface Role {
+      id: string;
+      name: string;
+    }
+  }
+
+  export interface MemberCreateResponseItem2 {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    userId: null;
+    /**
+     * @format email
+     */
+    emailAddress: string;
+    firstName: string | null;
+    /**
+     * @format uri
+     */
+    imageUrl: string | null;
+    lastName: string | null;
+    role: MemberCreateResponseItem2.Role | null;
+    status: 'pending';
+  }
+
+  export namespace MemberCreateResponseItem2 {
+    export interface Role {
+      id: string;
+      name: string;
+    }
+  }
 }
 
 export interface MemberRetrieveParams {
   organizationId: string;
 }
 
-export interface MemberRetrieveResponse {
-  /**
-   * @format date-time
-   */
-  createdAt: string;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   */
-  id: string;
-  role: 'org:admin' | 'org:member';
-  /**
-   * @format date-time
-   */
-  updatedAt: string;
-  userId: string | null;
-  /**
-   * @format email
-   */
-  emailAddress: string;
-  firstName: string | null;
-  /**
-   * @format uri
-   */
-  imageUrl: string | null;
-  lastName: string | null;
-  status: 'active' | 'pending';
+export type MemberRetrieveResponse =
+  | MemberRetrieveResponse.MemberRetrieveResponseItem
+  | MemberRetrieveResponse.MemberRetrieveResponseItem2;
+
+export namespace MemberRetrieveResponse {
+  export interface MemberRetrieveResponseItem {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    userId: string;
+    /**
+     * @format email
+     */
+    emailAddress: string;
+    firstName: string | null;
+    /**
+     * @format uri
+     */
+    imageUrl: string | null;
+    lastName: string | null;
+    role: MemberRetrieveResponseItem.Role;
+    status: 'active';
+  }
+
+  export namespace MemberRetrieveResponseItem {
+    export interface Role {
+      id: string;
+      name: string;
+    }
+  }
+
+  export interface MemberRetrieveResponseItem2 {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    userId: null;
+    /**
+     * @format email
+     */
+    emailAddress: string;
+    firstName: string | null;
+    /**
+     * @format uri
+     */
+    imageUrl: string | null;
+    lastName: string | null;
+    role: MemberRetrieveResponseItem2.Role | null;
+    status: 'pending';
+  }
+
+  export namespace MemberRetrieveResponseItem2 {
+    export interface Role {
+      id: string;
+      name: string;
+    }
+  }
 }
 
 export interface MemberUpdateParams {
@@ -278,38 +417,87 @@ export interface MemberUpdateParams {
    */
   organizationId: string;
   /**
-   * Body param: New organization role: org:admin or org:member.
+   * Body param
    */
-  role: 'org:admin' | 'org:member';
+  roleId?: string;
 }
 
-export interface MemberUpdateResponse {
-  /**
-   * @format date-time
-   */
-  createdAt: string;
-  /**
-   * @minLength 1
-   * @maxLength 255
-   */
-  id: string;
-  role: 'org:admin' | 'org:member';
-  /**
-   * @format date-time
-   */
-  updatedAt: string;
-  userId: string | null;
-  /**
-   * @format email
-   */
-  emailAddress: string;
-  firstName: string | null;
-  /**
-   * @format uri
-   */
-  imageUrl: string | null;
-  lastName: string | null;
-  status: 'active' | 'pending';
+export type MemberUpdateResponse =
+  | MemberUpdateResponse.MemberUpdateResponseItem
+  | MemberUpdateResponse.MemberUpdateResponseItem2;
+
+export namespace MemberUpdateResponse {
+  export interface MemberUpdateResponseItem {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    userId: string;
+    /**
+     * @format email
+     */
+    emailAddress: string;
+    firstName: string | null;
+    /**
+     * @format uri
+     */
+    imageUrl: string | null;
+    lastName: string | null;
+    role: MemberUpdateResponseItem.Role;
+    status: 'active';
+  }
+
+  export namespace MemberUpdateResponseItem {
+    export interface Role {
+      id: string;
+      name: string;
+    }
+  }
+
+  export interface MemberUpdateResponseItem2 {
+    /**
+     * @format date-time
+     */
+    createdAt: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @format date-time
+     */
+    updatedAt: string;
+    userId: null;
+    /**
+     * @format email
+     */
+    emailAddress: string;
+    firstName: string | null;
+    /**
+     * @format uri
+     */
+    imageUrl: string | null;
+    lastName: string | null;
+    role: MemberUpdateResponseItem2.Role | null;
+    status: 'pending';
+  }
+
+  export namespace MemberUpdateResponseItem2 {
+    export interface Role {
+      id: string;
+      name: string;
+    }
+  }
 }
 
 export interface MemberDeleteParams {

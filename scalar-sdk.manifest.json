@@ -9510,11 +9510,11 @@
       "publicHeaderParams": [],
       "bodyParams": [
         "emailAddress",
-        "role"
+        "roleId"
       ],
       "publicBodyParams": [
         "emailAddress",
-        "role"
+        "roleId"
       ],
       "bodyParamDetails": [
         {
@@ -9522,8 +9522,8 @@
           "required": true
         },
         {
-          "name": "role",
-          "required": false
+          "name": "roleId",
+          "required": true
         }
       ],
       "pathParamDetails": [
@@ -9807,15 +9807,15 @@
       "headerParams": [],
       "publicHeaderParams": [],
       "bodyParams": [
-        "role"
+        "roleId"
       ],
       "publicBodyParams": [
-        "role"
+        "roleId"
       ],
       "bodyParamDetails": [
         {
-          "name": "role",
-          "required": true
+          "name": "roleId",
+          "required": false
         }
       ],
       "pathParamDetails": [
@@ -15770,9 +15770,11 @@
         "limit",
         "excludePinned",
         "externalIds",
+        "folderId",
         "hasProject",
         "includeArchived",
         "includeTotal",
+        "inFolder",
         "parentSessionId",
         "participant",
         "pendingReviewerKeys",
@@ -15793,9 +15795,11 @@
         "limit",
         "excludePinned",
         "externalIds",
+        "folderId",
         "hasProject",
         "includeArchived",
         "includeTotal",
+        "inFolder",
         "parentSessionId",
         "participant",
         "pendingReviewerKeys",
@@ -15859,6 +15863,12 @@
           "explode": true
         },
         {
+          "name": "folderId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
           "name": "hasProject",
           "required": false,
           "style": "form",
@@ -15877,6 +15887,12 @@
           "style": "form",
           "explode": true,
           "defaultValue": false
+        },
+        {
+          "name": "inFolder",
+          "required": false,
+          "style": "form",
+          "explode": true
         },
         {
           "name": "parentSessionId",
