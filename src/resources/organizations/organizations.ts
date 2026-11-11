@@ -18,6 +18,19 @@ import {
   type MemberUpdateParams,
   type MemberDeleteParams,
 } from './members';
+import * as RolesAPI from './roles';
+import {
+  Roles,
+  type RoleListResponse,
+  type RoleCreateResponse,
+  type RoleRetrieveResponse,
+  type RoleUpdateResponse,
+  type RoleDeleteResponse,
+  type RoleCreateParams,
+  type RoleRetrieveParams,
+  type RoleUpdateParams,
+  type RoleDeleteParams,
+} from './roles';
 import * as SecretsAPI from './secrets';
 import {
   Secrets,
@@ -46,6 +59,7 @@ import { Subscriptions, type SubscriptionRetrieveResponse } from './subscription
 
 export class Organizations extends APIResource {
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
+  roles: RolesAPI.Roles = new RolesAPI.Roles(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
   settings: SettingsAPI.Settings = new SettingsAPI.Settings(this._client);
   subscriptions: SubscriptionsAPI.Subscriptions = new SubscriptionsAPI.Subscriptions(this._client);
@@ -745,6 +759,7 @@ export interface OrganizationDeleteResponse {
   id: string;
 }
 Organizations.Members = Members;
+Organizations.Roles = Roles;
 Organizations.Secrets = Secrets;
 Organizations.Settings = Settings;
 Organizations.Subscriptions = Subscriptions;
@@ -771,6 +786,19 @@ export declare namespace Organizations {
     type MemberRetrieveParams as MemberRetrieveParams,
     type MemberUpdateParams as MemberUpdateParams,
     type MemberDeleteParams as MemberDeleteParams,
+  };
+
+  export {
+    Roles as Roles,
+    type RoleListResponse as RoleListResponse,
+    type RoleCreateResponse as RoleCreateResponse,
+    type RoleRetrieveResponse as RoleRetrieveResponse,
+    type RoleUpdateResponse as RoleUpdateResponse,
+    type RoleDeleteResponse as RoleDeleteResponse,
+    type RoleCreateParams as RoleCreateParams,
+    type RoleRetrieveParams as RoleRetrieveParams,
+    type RoleUpdateParams as RoleUpdateParams,
+    type RoleDeleteParams as RoleDeleteParams,
   };
 
   export {

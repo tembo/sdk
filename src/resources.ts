@@ -19,6 +19,7 @@ export {
   Repositories,
   Integrations,
   Billing,
+  Folders,
   Live,
 } from './resources/index';
 export type {
@@ -67,6 +68,7 @@ export type {
   ArtifactCreateParams,
   ArtifactCreateResponse,
   ArtifactRetrieveResponse,
+  ArtifactRetrieveAssetURLResponse,
   ArtifactDeleteResponse,
   TipTapDocument,
   TipTapNode,
@@ -118,6 +120,7 @@ export type {
   SessionListEventsResponse,
   ProjectUpdateDefaultsParams,
   ProjectUpdateDefaultsResponse,
+  ProjectRetrieveDefaultsResponse,
   ProjectListParams,
   ProjectListResponse,
   ProjectCreateParams,
@@ -178,6 +181,12 @@ export type {
   BillingRetrieveResponse,
   BillingListUsageParams,
   BillingListUsageResponse,
+  FolderListResponse,
+  FolderCreateParams,
+  FolderCreateResponse,
+  FolderUpdateParams,
+  FolderUpdateResponse,
+  FolderDeleteResponse,
   LiveAuthorizeResponse,
   LiveConnectParams,
 } from './resources/index';

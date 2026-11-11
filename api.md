@@ -35,6 +35,12 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve an organization member](#retrieve-an-organization-member)
     - [Update an organization member](#update-an-organization-member)
     - [Remove an organization member](#remove-an-organization-member)
+  - [`Organizations Roles`](#organizations-roles)
+    - [List organization roles](#list-organization-roles)
+    - [Create a organization role](#create-a-organization-role)
+    - [Retrieve an organization role](#retrieve-an-organization-role)
+    - [Update a organization role](#update-a-organization-role)
+    - [Archive a role with an explicit replacement](#archive-a-role-with-an-explicit-replacement)
   - [`Organizations Secrets`](#organizations-secrets)
     - [List organization secrets](#list-organization-secrets)
     - [Create an organization secret](#create-an-organization-secret)
@@ -59,6 +65,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [List artifacts](#list-artifacts)
   - [Create an artifact](#create-an-artifact)
   - [Retrieve an artifact](#retrieve-an-artifact)
+  - [Retrieve a signed asset URL](#retrieve-a-signed-asset-url)
   - [Delete an artifact](#delete-an-artifact)
 - [`Messages`](#messages)
   - [List messages](#list-messages)
@@ -115,6 +122,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [List session commands](#list-session-commands)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
+  - [Retrieve project defaults](#retrieve-project-defaults)
   - [List projects](#list-projects)
   - [Create a project](#create-a-project)
   - [Retrieve a project](#retrieve-a-project)
@@ -206,6 +214,11 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Billing`](#billing)
   - [Retrieve billing](#retrieve-billing)
   - [List billing usage](#list-billing-usage)
+- [`Folders`](#folders)
+  - [List folders](#list-folders)
+  - [Create a folder](#create-a-folder)
+  - [Update a folder](#update-a-folder)
+  - [Delete a folder](#delete-a-folder)
 - [`Live`](#live)
   - [Authorize a live connection](#authorize-a-live-connection)
   - [Live resource subscriptions](#live-resource-subscriptions)
@@ -596,6 +609,74 @@ const member = await client.organizations.members.delete('memberId', {
 });
 ```
 
+### `Organizations Roles`
+
+#### List organization roles
+
+| Direction | Type |
+| --- | --- |
+| Response | [`RoleListResponse`](./src/resources/organizations/roles.ts) |
+
+```ts
+const role = await client.organizations.roles.list('organizationId');
+```
+
+#### Create a organization role
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RoleCreateParams`](./src/resources/organizations/roles.ts) |
+| Response | [`RoleCreateResponse`](./src/resources/organizations/roles.ts) |
+
+```ts
+const role = await client.organizations.roles.create('organizationId', {
+  name: 'x',
+  description: '',
+  permissions: ['organization:read'],
+});
+```
+
+#### Retrieve an organization role
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RoleRetrieveParams`](./src/resources/organizations/roles.ts) |
+| Response | [`RoleRetrieveResponse`](./src/resources/organizations/roles.ts) |
+
+```ts
+const role = await client.organizations.roles.retrieve('roleId', {
+  organizationId: 'organizationId',
+});
+```
+
+#### Update a organization role
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RoleUpdateParams`](./src/resources/organizations/roles.ts) |
+| Response | [`RoleUpdateResponse`](./src/resources/organizations/roles.ts) |
+
+```ts
+const role = await client.organizations.roles.update('roleId', {
+  organizationId: 'organizationId',
+  description: '',
+});
+```
+
+#### Archive a role with an explicit replacement
+
+| Direction | Type |
+| --- | --- |
+| Request | [`RoleDeleteParams`](./src/resources/organizations/roles.ts) |
+| Response | [`RoleDeleteResponse`](./src/resources/organizations/roles.ts) |
+
+```ts
+const role = await client.organizations.roles.delete('roleId', {
+  organizationId: 'organizationId',
+  replacementRoleId: 'x',
+});
+```
+
 ### `Organizations Secrets`
 
 #### List organization secrets
@@ -877,6 +958,18 @@ Retrieve an organization artifact by ID.
 
 ```ts
 const artifact = await client.artifacts.retrieve('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+### Retrieve a signed asset URL
+
+Get a fresh signed download URL for an uploaded session asset by its asset ID.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ArtifactRetrieveAssetURLResponse`](./src/resources/artifacts.ts) |
+
+```ts
+const artifact = await client.artifacts.retrieveAssetURL('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
 ### Delete an artifact
@@ -1479,6 +1572,18 @@ const project = await client.projects.updateDefaults({
   projectId: 'x',
   sandboxSize: 'nano',
 });
+```
+
+### Retrieve project defaults
+
+Get the default sandbox size and the largest size the plan allows.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`ProjectRetrieveDefaultsResponse`](./src/resources/projects/projects.ts) |
+
+```ts
+const project = await client.projects.retrieveDefaults();
 ```
 
 ### List projects
@@ -2595,6 +2700,60 @@ List session usage by default, or include warm pool compute with the type filter
 const billing = await client.billing.listUsage({
   limit: 50,
 });
+```
+
+## `Folders`
+
+### List folders
+
+List the sidebar folders you use to organize sessions. Use listSessions with folderId to list the sessions in a folder.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`FolderListResponse`](./src/resources/folders.ts) |
+
+```ts
+const folder = await client.folders.list();
+```
+
+### Create a folder
+
+Create a sidebar folder for organizing sessions. New folders go first in your folder list; use createPin to pin one.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`FolderCreateParams`](./src/resources/folders.ts) |
+| Response | [`FolderCreateResponse`](./src/resources/folders.ts) |
+
+```ts
+const folder = await client.folders.create({
+  name: 'x',
+});
+```
+
+### Update a folder
+
+Rename one of your sidebar folders, change its icon color, move it in your folder list, or add, reorder, or remove its sessions. Use updatePin to move a pinned folder among your pins.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`FolderUpdateParams`](./src/resources/folders.ts) |
+| Response | [`FolderUpdateResponse`](./src/resources/folders.ts) |
+
+```ts
+const folder = await client.folders.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
+```
+
+### Delete a folder
+
+Delete one of your sidebar folders. Its sessions are kept and return to your recent sessions.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`FolderDeleteResponse`](./src/resources/folders.ts) |
+
+```ts
+const folder = await client.folders.delete('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
 ## `Live`

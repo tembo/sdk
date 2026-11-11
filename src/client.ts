@@ -1,6 +1,5 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { Live as PublicLive } from './live';
 import { APIPromise, type APIResponseProps } from './api-promise';
 import * as Errors from './error';
 import { uuid4 } from './internal/utils/uuid';
@@ -89,6 +88,7 @@ import {
   type ArtifactListResponse,
   type ArtifactCreateResponse,
   type ArtifactRetrieveResponse,
+  type ArtifactRetrieveAssetURLResponse,
   type ArtifactDeleteResponse,
   type ArtifactListParams,
   type ArtifactCreateParams,
@@ -151,6 +151,7 @@ import {
 import {
   Projects,
   type ProjectUpdateDefaultsResponse,
+  type ProjectRetrieveDefaultsResponse,
   type ProjectListResponse,
   type ProjectCreateResponse,
   type ProjectRetrieveResponse,
@@ -231,6 +232,15 @@ import {
   type BillingListUsageResponse,
   type BillingListUsageParams,
 } from './resources/billing';
+import {
+  Folders,
+  type FolderListResponse,
+  type FolderCreateResponse,
+  type FolderUpdateResponse,
+  type FolderDeleteResponse,
+  type FolderCreateParams,
+  type FolderUpdateParams,
+} from './resources/folders';
 import { Live, type LiveAuthorizeResponse, type LiveConnectParams } from './resources/live/live';
 
 export type AuthTokenProvider = () => string | Promise<string>;
@@ -330,7 +340,6 @@ export type TemboOptions = ClientOptions;
  * API Client for interfacing with the TemboSdk API.
  */
 export class Tembo {
-  live: PublicLive = new PublicLive(this);
   apiKey: string | AuthTokenProvider;
 
   baseURL: string;
@@ -1263,6 +1272,8 @@ export class Tembo {
   repositories: Repositories = new Repositories(this);
   integrations: Integrations = new Integrations(this);
   billing: Billing = new Billing(this);
+  folders: Folders = new Folders(this);
+  live: Live = new Live(this);
 }
 
 Tembo.APIKeys = APIKeys;
@@ -1283,6 +1294,7 @@ Tembo.Agents = Agents;
 Tembo.Repositories = Repositories;
 Tembo.Integrations = Integrations;
 Tembo.Billing = Billing;
+Tembo.Folders = Folders;
 Tembo.Live = Live;
 
 export declare namespace Tembo {
@@ -1352,6 +1364,7 @@ export declare namespace Tembo {
     type ArtifactListResponse as ArtifactListResponse,
     type ArtifactCreateResponse as ArtifactCreateResponse,
     type ArtifactRetrieveResponse as ArtifactRetrieveResponse,
+    type ArtifactRetrieveAssetURLResponse as ArtifactRetrieveAssetURLResponse,
     type ArtifactDeleteResponse as ArtifactDeleteResponse,
     type ArtifactListParams as ArtifactListParams,
     type ArtifactCreateParams as ArtifactCreateParams,
@@ -1428,6 +1441,7 @@ export declare namespace Tembo {
   export {
     Projects as Projects,
     type ProjectUpdateDefaultsResponse as ProjectUpdateDefaultsResponse,
+    type ProjectRetrieveDefaultsResponse as ProjectRetrieveDefaultsResponse,
     type ProjectListResponse as ProjectListResponse,
     type ProjectCreateResponse as ProjectCreateResponse,
     type ProjectRetrieveResponse as ProjectRetrieveResponse,
@@ -1513,6 +1527,16 @@ export declare namespace Tembo {
     type BillingRetrieveResponse as BillingRetrieveResponse,
     type BillingListUsageResponse as BillingListUsageResponse,
     type BillingListUsageParams as BillingListUsageParams,
+  };
+
+  export {
+    Folders as Folders,
+    type FolderListResponse as FolderListResponse,
+    type FolderCreateResponse as FolderCreateResponse,
+    type FolderUpdateResponse as FolderUpdateResponse,
+    type FolderDeleteResponse as FolderDeleteResponse,
+    type FolderCreateParams as FolderCreateParams,
+    type FolderUpdateParams as FolderUpdateParams,
   };
 
   export {
