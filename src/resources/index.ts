@@ -62,6 +62,7 @@ export type {
   ArtifactCreateParams,
   ArtifactCreateResponse,
   ArtifactRetrieveResponse,
+  ArtifactRetrieveAssetURLResponse,
   ArtifactDeleteResponse,
 } from './artifacts';
 export { Messages } from './messages';
@@ -120,6 +121,7 @@ export { Projects } from './projects/projects';
 export type {
   ProjectUpdateDefaultsParams,
   ProjectUpdateDefaultsResponse,
+  ProjectRetrieveDefaultsResponse,
   ProjectListParams,
   ProjectListResponse,
   ProjectCreateParams,
@@ -195,5 +197,14 @@ export type {
 } from './integrations/integrations';
 export { Billing } from './billing';
 export type { BillingRetrieveResponse, BillingListUsageParams, BillingListUsageResponse } from './billing';
+export { Folders } from './folders';
+export type {
+  FolderListResponse,
+  FolderCreateParams,
+  FolderCreateResponse,
+  FolderUpdateParams,
+  FolderUpdateResponse,
+  FolderDeleteResponse,
+} from './folders';
 export { Live } from './live/live';
 export type { LiveAuthorizeResponse, LiveConnectParams } from './live/live';

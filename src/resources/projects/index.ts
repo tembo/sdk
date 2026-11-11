@@ -4,6 +4,7 @@ export { Projects } from './projects';
 export type {
   ProjectUpdateDefaultsParams,
   ProjectUpdateDefaultsResponse,
+  ProjectRetrieveDefaultsResponse,
   ProjectListParams,
   ProjectListResponse,
   ProjectCreateParams,

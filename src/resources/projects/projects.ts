@@ -82,6 +82,21 @@ export class Projects extends APIResource {
   }
 
   /**
+   * Get the default sandbox size and the largest size the plan allows.
+   *
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<ProjectRetrieveDefaultsResponse>} Retrieve project defaults
+   *
+   * @example
+   * ```ts
+   * const project = await client.projects.retrieveDefaults();
+   * ```
+   */
+  retrieveDefaults(options?: RequestOptions): APIPromise<ProjectRetrieveDefaultsResponse> {
+    return this._client.get('/v1/projects/defaults', options);
+  }
+
+  /**
    * List projects in the authenticated organization.
    *
    * @param {ProjectListParams} [query] - The parameters to send with the request.
@@ -218,6 +233,17 @@ export interface ProjectUpdateDefaultsResponse {
    * Default workspace VM size for the organization.
    */
   sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+}
+
+export interface ProjectRetrieveDefaultsResponse {
+  /**
+   * Default workspace VM size for the organization.
+   */
+  sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  /**
+   * Largest VM size the organization plan allows, or null when unlimited.
+   */
+  maxSandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
 }
 
 export interface ProjectListParams {
@@ -1451,6 +1477,7 @@ Projects.Schedules = Schedules;
 export declare namespace Projects {
   export {
     type ProjectUpdateDefaultsResponse as ProjectUpdateDefaultsResponse,
+    type ProjectRetrieveDefaultsResponse as ProjectRetrieveDefaultsResponse,
     type ProjectListResponse as ProjectListResponse,
     type ProjectCreateResponse as ProjectCreateResponse,
     type ProjectRetrieveResponse as ProjectRetrieveResponse,
