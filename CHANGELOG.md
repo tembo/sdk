@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.23.1](https://github.com/tembo/sdk/compare/v0.23.0...v0.23.1) (2026-11-12)
+
+
+### Chores
+
+* **api:** update generated SDK content ([303a5a7](https://github.com/tembo/sdk/commit/303a5a70c1b61ce6ed8facc17011bbb7fd1f091a))
+
 ## [0.23.0](https://github.com/tembo/sdk/compare/v0.22.1...v0.23.0) (2026-11-11)
 
 
