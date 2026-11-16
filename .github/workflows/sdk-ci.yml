@@ -27,4 +27,4 @@ jobs:
       # check-only and exits non-zero on a diff; Biome has no `--check` flag, and `biome ci` is
       # avoided so enabling the linter in this repo's biome.json cannot fail CI on generator-owned
       # code the shipped config deliberately exempts.
-      - run: npx --yes @biomejs/biome@2.5.14 format .
+      - run: npx --yes @biomejs/biome@2.6.6 format .
