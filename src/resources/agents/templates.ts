@@ -93,6 +93,7 @@ export type TriggerFilters =
   | TriggerFilters.TriggerFiltersItem42
   | TriggerFilters.TriggerFiltersItem43
   | TriggerFilters.TriggerFiltersItem44
+  | TriggerFilters.TriggerFiltersItem45
   | Record<string, unknown>;
 
 export namespace TriggerFilters {
@@ -227,25 +228,27 @@ export namespace TriggerFilters {
 
   export interface TriggerFiltersItem30 extends GitlabMergeRequestUpdatedFilters {}
 
-  export interface TriggerFiltersItem31 extends GitlabPipelineFailedFilters {}
+  export interface TriggerFiltersItem31 extends GitlabMergeRequestReadyForReviewFilters {}
 
-  export interface TriggerFiltersItem32 extends GitlabRefCreatedFilters {}
+  export interface TriggerFiltersItem32 extends GitlabPipelineFailedFilters {}
 
-  export interface TriggerFiltersItem33 extends LinearIssueCreateFilters {}
+  export interface TriggerFiltersItem33 extends GitlabRefCreatedFilters {}
 
-  export interface TriggerFiltersItem34 extends LinearIssueLabelAddedFilters {}
+  export interface TriggerFiltersItem34 extends LinearIssueCreateFilters {}
 
-  export interface TriggerFiltersItem35 extends LinearIssueStatusChangedFilters {}
+  export interface TriggerFiltersItem35 extends LinearIssueLabelAddedFilters {}
 
-  export interface TriggerFiltersItem36 extends LinearIssueUpdatedFilters {}
+  export interface TriggerFiltersItem36 extends LinearIssueStatusChangedFilters {}
 
-  export interface TriggerFiltersItem37 extends SentryIssueCreatedFilters {}
+  export interface TriggerFiltersItem37 extends LinearIssueUpdatedFilters {}
 
-  export interface TriggerFiltersItem38 extends SlackMessageReactionAddedFilters {}
+  export interface TriggerFiltersItem38 extends SentryIssueCreatedFilters {}
 
-  export interface TriggerFiltersItem39 extends SlackMessageSentInChannelFilters {}
+  export interface TriggerFiltersItem39 extends SlackMessageReactionAddedFilters {}
 
-  export interface TriggerFiltersItem40 {
+  export interface TriggerFiltersItem40 extends SlackMessageSentInChannelFilters {}
+
+  export interface TriggerFiltersItem41 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -257,7 +260,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem41 {
+  export interface TriggerFiltersItem42 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -273,7 +276,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem42 {
+  export interface TriggerFiltersItem43 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -289,7 +292,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem43 {
+  export interface TriggerFiltersItem44 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -309,7 +312,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem44 {
+  export interface TriggerFiltersItem45 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -732,6 +735,17 @@ export interface GitlabMergeRequestOpenedFilters {
    * Include draft merge requests. Drafts are excluded when omitted or false.
    */
   draftMrs?: boolean;
+  /**
+   * Enable agent for Tembo-created merge requests (disabled by default)
+   */
+  temboMrs?: boolean;
+}
+
+export interface GitlabMergeRequestReadyForReviewFilters {
+  /**
+   * Only trigger if the merge request is in one of the repositories
+   */
+  repositories?: Array<string>;
   /**
    * Enable agent for Tembo-created merge requests (disabled by default)
    */
@@ -1167,6 +1181,7 @@ export declare namespace Templates {
     type GitlabMergeRequestClosedFilters as GitlabMergeRequestClosedFilters,
     type GitlabMergeRequestMergedFilters as GitlabMergeRequestMergedFilters,
     type GitlabMergeRequestOpenedFilters as GitlabMergeRequestOpenedFilters,
+    type GitlabMergeRequestReadyForReviewFilters as GitlabMergeRequestReadyForReviewFilters,
     type GitlabMergeRequestUpdatedFilters as GitlabMergeRequestUpdatedFilters,
     type GitlabPipelineFailedFilters as GitlabPipelineFailedFilters,
     type GitlabRefCreatedFilters as GitlabRefCreatedFilters,

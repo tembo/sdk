@@ -219,7 +219,7 @@ export interface ProjectUpdateDefaultsParams {
   /**
    * Default workspace VM size for the organization.
    */
-  sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  sandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
 }
 
 export interface ProjectUpdateDefaultsResponse {
@@ -232,7 +232,7 @@ export interface ProjectUpdateDefaultsResponse {
   /**
    * Default workspace VM size for the organization.
    */
-  sandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  sandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
 }
 
 export interface ProjectRetrieveDefaultsResponse {

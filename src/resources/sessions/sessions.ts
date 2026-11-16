@@ -659,7 +659,7 @@ export interface SessionCreateParams {
   /**
    * VM size for the session workspace.
    */
-  sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  sandboxSize?: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
   /**
    * Default target branch for pull requests created by the session.
    * @minLength 1
@@ -1300,7 +1300,7 @@ export interface SessionUpdateParams {
   /**
    * Change the workspace VM size. Null clears the session override.
    */
-  sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
+  sandboxSize?: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   /**
    * Change the default pull request target branch. Null clears the session override.
    * @minLength 1

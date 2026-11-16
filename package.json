@@ -1,6 +1,6 @@
 {
   "name": "@tembo-io/sdk",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "description": "Manage agents, sessions, repositories, and organization resources with the Tembo API.",
   "author": "Tembo SDK",
   "repository": {
@@ -60,6 +60,7 @@
     "prepublishOnly": "npm run build",
     "test": "npm run build && tsc -p tsconfig.consumer.json && node --test tests/*.test.mjs",
     "test:dev": "npm run build && node scripts/test-dev.mjs",
+    "test:smoke": "vitest run",
     "schema:fetch": "node scripts/fetch-schema.mjs",
     "schema:prepare": "node scripts/prepare-schema.mjs"
   },
@@ -69,7 +70,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.17.0",
-    "typescript": "^6.0.0"
+    "typescript": "^6.0.0",
+    "vitest": "^4.1.7"
   },
   "peerDependencies": {
     "ws": "^8.18.0"

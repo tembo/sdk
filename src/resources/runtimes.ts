@@ -111,6 +111,7 @@ export namespace RuntimeListResponse {
         code:
           | 'model_disabled'
           | 'plan_required'
+          | 'trial_inference_exhausted'
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'

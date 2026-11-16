@@ -134,6 +134,7 @@ export namespace ModelListResponse {
         available: false;
         unavailableCode:
           | 'plan_required'
+          | 'trial_inference_exhausted'
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
@@ -152,6 +153,7 @@ export namespace ModelListResponse {
         available: false;
         unavailableCode:
           | 'plan_required'
+          | 'trial_inference_exhausted'
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
@@ -170,6 +172,7 @@ export namespace ModelListResponse {
         available: false;
         unavailableCode:
           | 'plan_required'
+          | 'trial_inference_exhausted'
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
@@ -188,6 +191,7 @@ export namespace ModelListResponse {
         available: false;
         unavailableCode:
           | 'plan_required'
+          | 'trial_inference_exhausted'
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
@@ -206,6 +210,7 @@ export namespace ModelListResponse {
         available: false;
         unavailableCode:
           | 'plan_required'
+          | 'trial_inference_exhausted'
           | 'missing_credentials'
           | 'unsupported_provider'
           | 'chatgpt_not_connected'
@@ -287,6 +292,7 @@ export namespace ModelUpdateResponse {
       available: false;
       unavailableCode:
         | 'plan_required'
+        | 'trial_inference_exhausted'
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
@@ -305,6 +311,7 @@ export namespace ModelUpdateResponse {
       available: false;
       unavailableCode:
         | 'plan_required'
+        | 'trial_inference_exhausted'
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
@@ -323,6 +330,7 @@ export namespace ModelUpdateResponse {
       available: false;
       unavailableCode:
         | 'plan_required'
+        | 'trial_inference_exhausted'
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
@@ -341,6 +349,7 @@ export namespace ModelUpdateResponse {
       available: false;
       unavailableCode:
         | 'plan_required'
+        | 'trial_inference_exhausted'
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'
@@ -359,6 +368,7 @@ export namespace ModelUpdateResponse {
       available: false;
       unavailableCode:
         | 'plan_required'
+        | 'trial_inference_exhausted'
         | 'missing_credentials'
         | 'unsupported_provider'
         | 'chatgpt_not_connected'

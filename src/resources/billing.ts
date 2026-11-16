@@ -81,6 +81,9 @@ export namespace BillingRetrieveResponse {
     remainingAllowance: number;
     purchasedCredits: number;
     exhausted: boolean;
+    managedInferenceAllowance: number | null;
+    remainingManagedInference: number | null;
+    managedInferenceExhausted: boolean;
   }
 
   export interface AvailablePlan {

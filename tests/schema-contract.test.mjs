@@ -329,3 +329,20 @@ test('folder, organization role, artifact asset, and project defaults mappings c
   assert.equal(roles.methods.delete.verb, 'delete');
   assert.equal(roles.methods.delete.bodyParamName, 'body');
 });
+
+test('audit log mappings cover the new list and filter routes', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const auditLogs = sdkConfig.resources.audit_logs;
+  assert.ok(auditLogs);
+  validateCoverage(
+    {
+      paths: {
+        '/v1/audit-logs': { get: {} },
+        '/v1/audit-logs/filters': { get: {} },
+      },
+    },
+    { resources: { audit_logs: auditLogs } },
+  );
+  assert.equal(auditLogs.methods.list, 'get /v1/audit-logs');
+  assert.equal(auditLogs.methods.list_filters, 'get /v1/audit-logs/filters');
+});

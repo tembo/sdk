@@ -40,6 +40,7 @@ export type {
   GitlabMergeRequestClosedFilters,
   GitlabMergeRequestMergedFilters,
   GitlabMergeRequestOpenedFilters,
+  GitlabMergeRequestReadyForReviewFilters,
   GitlabMergeRequestUpdatedFilters,
   GitlabPipelineFailedFilters,
   GitlabRefCreatedFilters,

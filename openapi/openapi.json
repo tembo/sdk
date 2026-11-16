@@ -1490,6 +1490,14 @@
           {
             "allOf": [
               {
+                "$ref": "#/components/schemas/GitlabMergeRequestReadyForReviewFilters"
+              }
+            ],
+            "additionalProperties": {}
+          },
+          {
+            "allOf": [
+              {
                 "$ref": "#/components/schemas/GitlabPipelineFailedFilters"
               }
             ],
@@ -2552,6 +2560,22 @@
           "draftMrs": {
             "type": "boolean",
             "description": "Include draft merge requests. Drafts are excluded when omitted or false."
+          },
+          "temboMrs": {
+            "type": "boolean",
+            "description": "Enable agent for Tembo-created merge requests (disabled by default)"
+          }
+        }
+      },
+      "GitlabMergeRequestReadyForReviewFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Only trigger if the merge request is in one of the repositories"
           },
           "temboMrs": {
             "type": "boolean",
@@ -3865,6 +3889,260 @@
             "required": true
           }
         ]
+      }
+    },
+    "/v1/audit-logs": {
+      "get": {
+        "operationId": "listAuditLogs",
+        "summary": "List organization audit logs",
+        "description": "Read retained mutation history for the authenticated organization. Requires organization:audit_log:read.",
+        "tags": [
+          "Audit logs"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paginated audit history",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "organizationId": {
+                            "type": "string"
+                          },
+                          "actorType": {
+                            "type": "string"
+                          },
+                          "actorId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "actorLabel": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "source": {
+                            "type": "string"
+                          },
+                          "resourceType": {
+                            "type": "string"
+                          },
+                          "resourceId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "resourceLabel": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "operation": {
+                            "type": "string"
+                          },
+                          "details": {
+                            "type": [
+                              "object",
+                              "null"
+                            ],
+                            "additionalProperties": {}
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "organizationId",
+                          "actorType",
+                          "actorId",
+                          "actorLabel",
+                          "source",
+                          "resourceType",
+                          "resourceId",
+                          "resourceLabel",
+                          "operation",
+                          "details",
+                          "createdAt"
+                        ]
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Audit log read permission is required"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "maxLength": 300
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "in": "query",
+            "name": "actorId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          {
+            "in": "query",
+            "name": "resourceType",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          {
+            "in": "query",
+            "name": "resourceId",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          {
+            "in": "query",
+            "name": "operation",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000
+            }
+          },
+          {
+            "in": "query",
+            "name": "from",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "description": "Search actor names, targets, resource types, and operations, e.g. `api_key.create`."
+          }
+        ]
+      }
+    },
+    "/v1/audit-logs/filters": {
+      "get": {
+        "operationId": "listAuditLogFilters",
+        "summary": "List audit log filter options",
+        "description": "Resource and operation pairs recorded for the authenticated organization. Requires organization:audit_log:read.",
+        "tags": [
+          "Audit logs"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recorded resource and operation pairs",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "resourceType": {
+                            "type": "string"
+                          },
+                          "operation": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "resourceType",
+                          "operation"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "items"
+                  ]
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Audit log read permission is required"
+          }
+        }
       }
     },
     "/v1/skills/marketplace": {
@@ -6358,6 +6636,8 @@
                               "items": {
                                 "type": "string",
                                 "enum": [
+                                  "organization:audit_log:read",
+                                  "organization:audit_log:write",
                                   "organization:read",
                                   "organization:write",
                                   "organization:member:read",
@@ -6661,6 +6941,8 @@
                               "items": {
                                 "type": "string",
                                 "enum": [
+                                  "organization:audit_log:read",
+                                  "organization:audit_log:write",
                                   "organization:read",
                                   "organization:write",
                                   "organization:member:read",
@@ -10058,7 +10340,6 @@
                           "enum": [
                             "nano",
                             "micro",
-                            "small",
                             "medium",
                             "large",
                             "xl",
@@ -10405,7 +10686,6 @@
                           "enum": [
                             "nano",
                             "micro",
-                            "small",
                             "medium",
                             "large",
                             "xl",
@@ -10762,7 +11042,6 @@
                     "enum": [
                       "nano",
                       "micro",
-                      "small",
                       "medium",
                       "large",
                       "xl",
@@ -10909,7 +11188,7 @@
       "post": {
         "operationId": "validateOrganizationCredentials",
         "summary": "Validate organization provider credentials",
-        "description": "Validate supplied inference provider credentials for an organization without saving them. The provider must be available on the organization’s plan.",
+        "description": "Validate supplied or stored inference provider credentials for an organization without returning them. The provider must be available on the organization’s plan.",
         "tags": [
           "Organizations"
         ],
@@ -11069,138 +11348,167 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
+                "anyOf": [
                   {
-                    "type": "object",
-                    "properties": {
-                      "provider": {
-                        "type": "string",
-                        "const": "anthropic",
-                        "description": "Validate Anthropic API credentials without saving them."
+                    "oneOf": [
+                      {
+                        "type": "object",
+                        "properties": {
+                          "provider": {
+                            "type": "string",
+                            "const": "anthropic",
+                            "description": "Validate Anthropic API credentials without saving them."
+                          },
+                          "apiKey": {
+                            "type": "string",
+                            "description": "The Anthropic API key."
+                          }
+                        },
+                        "required": [
+                          "provider",
+                          "apiKey"
+                        ],
+                        "additionalProperties": false
                       },
-                      "apiKey": {
-                        "type": "string",
-                        "description": "The Anthropic API key."
+                      {
+                        "type": "object",
+                        "properties": {
+                          "provider": {
+                            "type": "string",
+                            "const": "openai",
+                            "description": "Validate OpenAI API credentials without saving them."
+                          },
+                          "apiKey": {
+                            "type": "string",
+                            "description": "The OpenAI API key."
+                          }
+                        },
+                        "required": [
+                          "provider",
+                          "apiKey"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "provider": {
+                            "type": "string",
+                            "const": "xai",
+                            "description": "Validate xAI API credentials without saving them."
+                          },
+                          "apiKey": {
+                            "type": "string",
+                            "description": "The xAI API key."
+                          }
+                        },
+                        "required": [
+                          "provider",
+                          "apiKey"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "provider": {
+                            "type": "string",
+                            "const": "openrouter",
+                            "description": "Validate OpenRouter API credentials without saving them."
+                          },
+                          "apiKey": {
+                            "type": "string",
+                            "description": "The OpenRouter API key."
+                          }
+                        },
+                        "required": [
+                          "provider",
+                          "apiKey"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "provider": {
+                            "type": "string",
+                            "const": "aws-bedrock",
+                            "description": "Validate AWS Bedrock credentials without saving them."
+                          },
+                          "accessKeyId": {
+                            "type": "string",
+                            "description": "The AWS access key ID."
+                          },
+                          "secretAccessKey": {
+                            "type": "string",
+                            "description": "The AWS secret access key."
+                          },
+                          "region": {
+                            "type": "string",
+                            "description": "The AWS region."
+                          }
+                        },
+                        "required": [
+                          "provider",
+                          "accessKeyId",
+                          "secretAccessKey",
+                          "region"
+                        ],
+                        "additionalProperties": false
+                      },
+                      {
+                        "type": "object",
+                        "properties": {
+                          "provider": {
+                            "type": "string",
+                            "const": "gcp-vertex-ai",
+                            "description": "Validate Google Cloud Vertex AI credentials without saving them."
+                          },
+                          "serviceAccountJson": {
+                            "type": "string",
+                            "description": "The GCP service account JSON."
+                          },
+                          "project": {
+                            "type": "string",
+                            "description": "The GCP project ID."
+                          },
+                          "location": {
+                            "type": "string",
+                            "description": "The Vertex AI location."
+                          }
+                        },
+                        "required": [
+                          "provider",
+                          "serviceAccountJson",
+                          "project",
+                          "location"
+                        ],
+                        "additionalProperties": false
                       }
-                    },
-                    "required": [
-                      "provider",
-                      "apiKey"
-                    ],
-                    "additionalProperties": false
+                    ]
                   },
                   {
                     "type": "object",
                     "properties": {
                       "provider": {
                         "type": "string",
-                        "const": "openai",
-                        "description": "Validate OpenAI API credentials without saving them."
+                        "enum": [
+                          "anthropic",
+                          "openai",
+                          "xai",
+                          "openrouter",
+                          "aws-bedrock",
+                          "gcp-vertex-ai"
+                        ]
                       },
-                      "apiKey": {
-                        "type": "string",
-                        "description": "The OpenAI API key."
+                      "stored": {
+                        "type": "boolean",
+                        "const": true
                       }
                     },
                     "required": [
                       "provider",
-                      "apiKey"
-                    ],
-                    "additionalProperties": false
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "provider": {
-                        "type": "string",
-                        "const": "xai",
-                        "description": "Validate xAI API credentials without saving them."
-                      },
-                      "apiKey": {
-                        "type": "string",
-                        "description": "The xAI API key."
-                      }
-                    },
-                    "required": [
-                      "provider",
-                      "apiKey"
-                    ],
-                    "additionalProperties": false
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "provider": {
-                        "type": "string",
-                        "const": "openrouter",
-                        "description": "Validate OpenRouter API credentials without saving them."
-                      },
-                      "apiKey": {
-                        "type": "string",
-                        "description": "The OpenRouter API key."
-                      }
-                    },
-                    "required": [
-                      "provider",
-                      "apiKey"
-                    ],
-                    "additionalProperties": false
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "provider": {
-                        "type": "string",
-                        "const": "aws-bedrock",
-                        "description": "Validate AWS Bedrock credentials without saving them."
-                      },
-                      "accessKeyId": {
-                        "type": "string",
-                        "description": "The AWS access key ID."
-                      },
-                      "secretAccessKey": {
-                        "type": "string",
-                        "description": "The AWS secret access key."
-                      },
-                      "region": {
-                        "type": "string",
-                        "description": "The AWS region."
-                      }
-                    },
-                    "required": [
-                      "provider",
-                      "accessKeyId",
-                      "secretAccessKey",
-                      "region"
-                    ],
-                    "additionalProperties": false
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "provider": {
-                        "type": "string",
-                        "const": "gcp-vertex-ai",
-                        "description": "Validate Google Cloud Vertex AI credentials without saving them."
-                      },
-                      "serviceAccountJson": {
-                        "type": "string",
-                        "description": "The GCP service account JSON."
-                      },
-                      "project": {
-                        "type": "string",
-                        "description": "The GCP project ID."
-                      },
-                      "location": {
-                        "type": "string",
-                        "description": "The Vertex AI location."
-                      }
-                    },
-                    "required": [
-                      "provider",
-                      "serviceAccountJson",
-                      "project",
-                      "location"
+                      "stored"
                     ],
                     "additionalProperties": false
                   }
@@ -11915,10 +12223,27 @@
                                   }
                                 ]
                               }
+                            },
+                            "rateLimitResetCredits": {
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "availableCount": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "availableCount"
+                              ],
+                              "additionalProperties": false
                             }
                           },
                           "required": [
-                            "rateLimits"
+                            "rateLimits",
+                            "rateLimitResetCredits"
                           ],
                           "additionalProperties": false
                         },
@@ -11967,10 +12292,179 @@
                       "properties": {
                         "connected": {
                           "type": "boolean"
+                        },
+                        "usage": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "rateLimits": {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {
+                                        "type": "string",
+                                        "const": "weekly"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "const": "Weekly limit"
+                                      },
+                                      "detail": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "remainingPercent": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100
+                                      },
+                                      "resetsAt": {
+                                        "type": [
+                                          "number",
+                                          "null"
+                                        ],
+                                        "minimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "key",
+                                      "label",
+                                      "detail",
+                                      "remainingPercent",
+                                      "resetsAt"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {
+                                        "type": "string",
+                                        "const": "monthly"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "const": "Monthly limit"
+                                      },
+                                      "detail": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "remainingPercent": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100
+                                      },
+                                      "resetsAt": {
+                                        "type": [
+                                          "number",
+                                          "null"
+                                        ],
+                                        "minimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "key",
+                                      "label",
+                                      "detail",
+                                      "remainingPercent",
+                                      "resetsAt"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {
+                                        "type": "string",
+                                        "const": "credits"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "const": "Credit usage"
+                                      },
+                                      "detail": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "remainingPercent": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100
+                                      },
+                                      "resetsAt": {
+                                        "type": [
+                                          "number",
+                                          "null"
+                                        ],
+                                        "minimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "key",
+                                      "label",
+                                      "detail",
+                                      "remainingPercent",
+                                      "resetsAt"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "rateLimits"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "usageError": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "code": {
+                              "type": "string",
+                              "enum": [
+                                "reconnectRequired",
+                                "rateLimited",
+                                "unavailable"
+                              ]
+                            },
+                            "message": {
+                              "type": "string"
+                            },
+                            "retryAfter": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message",
+                            "retryAfter"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "required": [
-                        "connected"
+                        "connected",
+                        "usage",
+                        "usageError"
                       ],
                       "additionalProperties": false
                     }
@@ -12162,6 +12656,15 @@
                       "description": {
                         "type": "string"
                       },
+                      "icon": {
+                        "type": [
+                          "string",
+                          "null"
+                        ]
+                      },
+                      "color": {
+                        "type": "string"
+                      },
                       "isDefault": {
                         "type": "boolean"
                       },
@@ -12170,6 +12673,8 @@
                         "items": {
                           "type": "string",
                           "enum": [
+                            "organization:audit_log:read",
+                            "organization:audit_log:write",
                             "organization:read",
                             "organization:write",
                             "organization:member:read",
@@ -12410,7 +12915,7 @@
                             "insight:user:read"
                           ]
                         },
-                        "maxItems": 238
+                        "maxItems": 240
                       },
                       "memberCount": {
                         "type": "integer",
@@ -12424,6 +12929,8 @@
                       "id",
                       "name",
                       "description",
+                      "icon",
+                      "color",
                       "isDefault",
                       "permissions",
                       "memberCount",
@@ -12662,11 +13169,54 @@
                     "maxLength": 1000,
                     "default": ""
                   },
+                  "icon": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "enum": [
+                      "key",
+                      "crown",
+                      "shield",
+                      "star",
+                      "rocket",
+                      "user",
+                      "people",
+                      "eye",
+                      "code",
+                      "bug",
+                      "tools",
+                      "megaphone",
+                      "graduate",
+                      "heart",
+                      "fire",
+                      "diamond",
+                      "magic",
+                      "robot",
+                      null
+                    ]
+                  },
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "neutral",
+                      "red",
+                      "orange",
+                      "yellow",
+                      "green",
+                      "teal",
+                      "blue",
+                      "purple",
+                      "pink"
+                    ]
+                  },
                   "permissions": {
                     "type": "array",
                     "items": {
                       "type": "string",
                       "enum": [
+                        "organization:audit_log:read",
+                        "organization:audit_log:write",
                         "organization:read",
                         "organization:write",
                         "organization:member:read",
@@ -12907,7 +13457,7 @@
                         "insight:user:read"
                       ]
                     },
-                    "maxItems": 238
+                    "maxItems": 240
                   }
                 },
                 "required": [
@@ -12960,6 +13510,15 @@
                     "description": {
                       "type": "string"
                     },
+                    "icon": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "color": {
+                      "type": "string"
+                    },
                     "isDefault": {
                       "type": "boolean"
                     },
@@ -12968,6 +13527,8 @@
                       "items": {
                         "type": "string",
                         "enum": [
+                          "organization:audit_log:read",
+                          "organization:audit_log:write",
                           "organization:read",
                           "organization:write",
                           "organization:member:read",
@@ -13208,7 +13769,7 @@
                           "insight:user:read"
                         ]
                       },
-                      "maxItems": 238
+                      "maxItems": 240
                     },
                     "memberCount": {
                       "type": "integer",
@@ -13222,6 +13783,8 @@
                     "id",
                     "name",
                     "description",
+                    "icon",
+                    "color",
                     "isDefault",
                     "permissions",
                     "memberCount",
@@ -13467,11 +14030,54 @@
                     "maxLength": 1000,
                     "default": ""
                   },
+                  "icon": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "enum": [
+                      "key",
+                      "crown",
+                      "shield",
+                      "star",
+                      "rocket",
+                      "user",
+                      "people",
+                      "eye",
+                      "code",
+                      "bug",
+                      "tools",
+                      "megaphone",
+                      "graduate",
+                      "heart",
+                      "fire",
+                      "diamond",
+                      "magic",
+                      "robot",
+                      null
+                    ]
+                  },
+                  "color": {
+                    "type": "string",
+                    "enum": [
+                      "neutral",
+                      "red",
+                      "orange",
+                      "yellow",
+                      "green",
+                      "teal",
+                      "blue",
+                      "purple",
+                      "pink"
+                    ]
+                  },
                   "permissions": {
                     "type": "array",
                     "items": {
                       "type": "string",
                       "enum": [
+                        "organization:audit_log:read",
+                        "organization:audit_log:write",
                         "organization:read",
                         "organization:write",
                         "organization:member:read",
@@ -13712,7 +14318,7 @@
                         "insight:user:read"
                       ]
                     },
-                    "maxItems": 238
+                    "maxItems": 240
                   },
                   "isDefault": {
                     "type": "boolean"
@@ -14255,6 +14861,14 @@
                             "type": "string"
                           }
                         },
+                        "network": {
+                          "type": "string",
+                          "enum": [
+                            "public",
+                            "tailnet"
+                          ],
+                          "description": "public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed."
+                        },
                         "updatedAt": {
                           "type": "string",
                           "format": "date-time"
@@ -14273,6 +14887,7 @@
                         "createdAt",
                         "envKeys",
                         "headerKeys",
+                        "network",
                         "updatedAt"
                       ],
                       "additionalProperties": false
@@ -14517,6 +15132,15 @@
                         },
                         "description": "Request headers for static-header or automatic OAuth authentication. Values are write-only."
                       },
+                      "network": {
+                        "type": "string",
+                        "enum": [
+                          "public",
+                          "tailnet"
+                        ],
+                        "description": "public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed.",
+                        "default": "public"
+                      },
                       "oauthRegistration": {
                         "type": "string",
                         "enum": [
@@ -14664,6 +15288,14 @@
                         "type": "string"
                       }
                     },
+                    "network": {
+                      "type": "string",
+                      "enum": [
+                        "public",
+                        "tailnet"
+                      ],
+                      "description": "public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed."
+                    },
                     "updatedAt": {
                       "type": "string",
                       "format": "date-time"
@@ -14682,6 +15314,7 @@
                     "createdAt",
                     "envKeys",
                     "headerKeys",
+                    "network",
                     "updatedAt"
                   ],
                   "additionalProperties": false
@@ -14918,6 +15551,14 @@
                         "type": "string"
                       }
                     },
+                    "network": {
+                      "type": "string",
+                      "enum": [
+                        "public",
+                        "tailnet"
+                      ],
+                      "description": "public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed."
+                    },
                     "updatedAt": {
                       "type": "string",
                       "format": "date-time"
@@ -14936,6 +15577,7 @@
                     "createdAt",
                     "envKeys",
                     "headerKeys",
+                    "network",
                     "updatedAt"
                   ],
                   "additionalProperties": false
@@ -15496,6 +16138,14 @@
                             "type": "string"
                           }
                         },
+                        "network": {
+                          "type": "string",
+                          "enum": [
+                            "public",
+                            "tailnet"
+                          ],
+                          "description": "public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed."
+                        },
                         "updatedAt": {
                           "type": "string",
                           "format": "date-time"
@@ -15514,6 +16164,7 @@
                         "createdAt",
                         "envKeys",
                         "headerKeys",
+                        "network",
                         "updatedAt"
                       ],
                       "additionalProperties": false
@@ -18823,6 +19474,7 @@
                                         "type": "string",
                                         "enum": [
                                           "plan_required",
+                                          "trial_inference_exhausted",
                                           "missing_credentials",
                                           "unsupported_provider",
                                           "chatgpt_not_connected",
@@ -18877,6 +19529,7 @@
                                         "type": "string",
                                         "enum": [
                                           "plan_required",
+                                          "trial_inference_exhausted",
                                           "missing_credentials",
                                           "unsupported_provider",
                                           "chatgpt_not_connected",
@@ -18931,6 +19584,7 @@
                                         "type": "string",
                                         "enum": [
                                           "plan_required",
+                                          "trial_inference_exhausted",
                                           "missing_credentials",
                                           "unsupported_provider",
                                           "chatgpt_not_connected",
@@ -18985,6 +19639,7 @@
                                         "type": "string",
                                         "enum": [
                                           "plan_required",
+                                          "trial_inference_exhausted",
                                           "missing_credentials",
                                           "unsupported_provider",
                                           "chatgpt_not_connected",
@@ -19039,6 +19694,7 @@
                                         "type": "string",
                                         "enum": [
                                           "plan_required",
+                                          "trial_inference_exhausted",
                                           "missing_credentials",
                                           "unsupported_provider",
                                           "chatgpt_not_connected",
@@ -19379,6 +20035,7 @@
                                   "type": "string",
                                   "enum": [
                                     "plan_required",
+                                    "trial_inference_exhausted",
                                     "missing_credentials",
                                     "unsupported_provider",
                                     "chatgpt_not_connected",
@@ -19433,6 +20090,7 @@
                                   "type": "string",
                                   "enum": [
                                     "plan_required",
+                                    "trial_inference_exhausted",
                                     "missing_credentials",
                                     "unsupported_provider",
                                     "chatgpt_not_connected",
@@ -19487,6 +20145,7 @@
                                   "type": "string",
                                   "enum": [
                                     "plan_required",
+                                    "trial_inference_exhausted",
                                     "missing_credentials",
                                     "unsupported_provider",
                                     "chatgpt_not_connected",
@@ -19541,6 +20200,7 @@
                                   "type": "string",
                                   "enum": [
                                     "plan_required",
+                                    "trial_inference_exhausted",
                                     "missing_credentials",
                                     "unsupported_provider",
                                     "chatgpt_not_connected",
@@ -19595,6 +20255,7 @@
                                   "type": "string",
                                   "enum": [
                                     "plan_required",
+                                    "trial_inference_exhausted",
                                     "missing_credentials",
                                     "unsupported_provider",
                                     "chatgpt_not_connected",
@@ -20005,6 +20666,7 @@
                                           "enum": [
                                             "model_disabled",
                                             "plan_required",
+                                            "trial_inference_exhausted",
                                             "missing_credentials",
                                             "unsupported_provider",
                                             "chatgpt_not_connected",
@@ -23506,10 +24168,27 @@
                                   }
                                 ]
                               }
+                            },
+                            "rateLimitResetCredits": {
+                              "type": [
+                                "object",
+                                "null"
+                              ],
+                              "properties": {
+                                "availableCount": {
+                                  "type": "integer",
+                                  "minimum": 0
+                                }
+                              },
+                              "required": [
+                                "availableCount"
+                              ],
+                              "additionalProperties": false
                             }
                           },
                           "required": [
-                            "rateLimits"
+                            "rateLimits",
+                            "rateLimitResetCredits"
                           ],
                           "additionalProperties": false
                         },
@@ -23558,10 +24237,179 @@
                       "properties": {
                         "connected": {
                           "type": "boolean"
+                        },
+                        "usage": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "rateLimits": {
+                              "type": "array",
+                              "items": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {
+                                        "type": "string",
+                                        "const": "weekly"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "const": "Weekly limit"
+                                      },
+                                      "detail": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "remainingPercent": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100
+                                      },
+                                      "resetsAt": {
+                                        "type": [
+                                          "number",
+                                          "null"
+                                        ],
+                                        "minimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "key",
+                                      "label",
+                                      "detail",
+                                      "remainingPercent",
+                                      "resetsAt"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {
+                                        "type": "string",
+                                        "const": "monthly"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "const": "Monthly limit"
+                                      },
+                                      "detail": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "remainingPercent": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100
+                                      },
+                                      "resetsAt": {
+                                        "type": [
+                                          "number",
+                                          "null"
+                                        ],
+                                        "minimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "key",
+                                      "label",
+                                      "detail",
+                                      "remainingPercent",
+                                      "resetsAt"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "key": {
+                                        "type": "string",
+                                        "const": "credits"
+                                      },
+                                      "label": {
+                                        "type": "string",
+                                        "const": "Credit usage"
+                                      },
+                                      "detail": {
+                                        "type": [
+                                          "string",
+                                          "null"
+                                        ]
+                                      },
+                                      "remainingPercent": {
+                                        "type": "integer",
+                                        "minimum": 0,
+                                        "maximum": 100
+                                      },
+                                      "resetsAt": {
+                                        "type": [
+                                          "number",
+                                          "null"
+                                        ],
+                                        "minimum": 0
+                                      }
+                                    },
+                                    "required": [
+                                      "key",
+                                      "label",
+                                      "detail",
+                                      "remainingPercent",
+                                      "resetsAt"
+                                    ],
+                                    "additionalProperties": false
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            "rateLimits"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "usageError": {
+                          "type": [
+                            "object",
+                            "null"
+                          ],
+                          "properties": {
+                            "code": {
+                              "type": "string",
+                              "enum": [
+                                "reconnectRequired",
+                                "rateLimited",
+                                "unavailable"
+                              ]
+                            },
+                            "message": {
+                              "type": "string"
+                            },
+                            "retryAfter": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "code",
+                            "message",
+                            "retryAfter"
+                          ],
+                          "additionalProperties": false
                         }
                       },
                       "required": [
-                        "connected"
+                        "connected",
+                        "usage",
+                        "usageError"
                       ],
                       "additionalProperties": false
                     }
@@ -26550,7 +27398,6 @@
                     "enum": [
                       "nano",
                       "micro",
-                      "small",
                       "medium",
                       "large",
                       "xl",
@@ -30050,7 +30897,6 @@
                     "enum": [
                       "nano",
                       "micro",
-                      "small",
                       "medium",
                       "large",
                       "xl",
@@ -34738,7 +35584,6 @@
                       "enum": [
                         "nano",
                         "micro",
-                        "small",
                         "medium",
                         "large",
                         "xl",
@@ -34874,7 +35719,6 @@
                     "enum": [
                       "nano",
                       "micro",
-                      "small",
                       "medium",
                       "large",
                       "xl",
@@ -43989,7 +44833,6 @@
                     "enum": [
                       "nano",
                       "micro",
-                      "small",
                       "medium",
                       "large",
                       "xl",
@@ -45656,19 +46499,16 @@
                   "sandboxSize": {
                     "type": [
                       "string",
-                      "null",
                       "null"
                     ],
                     "enum": [
                       "nano",
                       "micro",
-                      "small",
                       "medium",
                       "large",
                       "xl",
                       "xxl",
                       "ultra",
-                      null,
                       null
                     ],
                     "description": "Change the workspace VM size. Null clears the override."
@@ -55800,6 +56640,21 @@
                         },
                         "exhausted": {
                           "type": "boolean"
+                        },
+                        "managedInferenceAllowance": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "remainingManagedInference": {
+                          "type": [
+                            "number",
+                            "null"
+                          ]
+                        },
+                        "managedInferenceExhausted": {
+                          "type": "boolean"
                         }
                       },
                       "required": [
@@ -55809,7 +56664,10 @@
                         "allowance",
                         "remainingAllowance",
                         "purchasedCredits",
-                        "exhausted"
+                        "exhausted",
+                        "managedInferenceAllowance",
+                        "remainingManagedInference",
+                        "managedInferenceExhausted"
                       ],
                       "default": null
                     },
