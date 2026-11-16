@@ -47,7 +47,7 @@ export class Settings extends APIResource {
   }
 
   /**
-   * Validate supplied inference provider credentials for an organization without saving them. The provider must be available on the organization’s plan.
+   * Validate supplied or stored inference provider credentials for an organization without returning them. The provider must be available on the organization’s plan.
    *
    * @param {string} organizationID
    * @param {SettingValidateCredentialsParams} body - The request body to send.
@@ -115,7 +115,7 @@ export namespace SettingRetrieveResponse {
     /**
      * Default VM size for organization sessions.
      */
-    defaultSandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+    defaultSandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     /**
      * Delete agent-created branches when their pull requests close.
      */
@@ -283,7 +283,7 @@ export interface SettingUpdateParams {
   /**
    * Default VM size for organization sessions.
    */
-  defaultSandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  defaultSandboxSize?: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
   /**
    * Delete agent-created branches when their pull requests close.
    */
@@ -453,7 +453,7 @@ export namespace SettingUpdateResponse {
     /**
      * Default VM size for organization sessions.
      */
-    defaultSandboxSize: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+    defaultSandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     /**
      * Delete agent-created branches when their pull requests close.
      */
@@ -562,7 +562,8 @@ export type SettingValidateCredentialsParams =
   | SettingValidateCredentialsParams.Variant2
   | SettingValidateCredentialsParams.Variant3
   | SettingValidateCredentialsParams.Variant4
-  | SettingValidateCredentialsParams.Variant5;
+  | SettingValidateCredentialsParams.Variant5
+  | SettingValidateCredentialsParams.Variant6;
 
 export declare namespace SettingValidateCredentialsParams {
   export interface Variant0 {
@@ -645,6 +646,11 @@ export declare namespace SettingValidateCredentialsParams {
      * The Vertex AI location.
      */
     location: string;
+  }
+
+  export interface Variant6 {
+    provider: 'anthropic' | 'openai' | 'xai' | 'openrouter' | 'aws-bedrock' | 'gcp-vertex-ai';
+    stored: true;
   }
 }
 

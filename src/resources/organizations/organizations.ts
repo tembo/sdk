@@ -207,6 +207,8 @@ export namespace OrganizationRetrieveResponse {
     export interface CurrentMembership {
       userId: string;
       permissions: Array<
+        | 'organization:audit_log:read'
+        | 'organization:audit_log:write'
         | 'organization:read'
         | 'organization:write'
         | 'organization:member:read'
@@ -464,6 +466,8 @@ export namespace OrganizationRetrieveResponse {
     export interface CurrentMembership {
       userId: string;
       permissions: Array<
+        | 'organization:audit_log:read'
+        | 'organization:audit_log:write'
         | 'organization:read'
         | 'organization:write'
         | 'organization:member:read'

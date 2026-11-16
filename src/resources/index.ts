@@ -33,6 +33,8 @@ export type {
   InsightListRepositoriesParams,
   InsightListRepositoriesResponse,
 } from './insights';
+export { AuditLogs } from './audit-logs';
+export type { AuditLogListParams, AuditLogListResponse, AuditLogListFiltersResponse } from './audit-logs';
 export { Organizations } from './organizations/organizations';
 export type {
   OrganizationCreateParams,
