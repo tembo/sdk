@@ -47,10 +47,7 @@ test('manifest and configured methods satisfy the branch contract', () => {
     )
     .sort();
   assert.ok(expected.length > 0);
-  assert.deepEqual(
-    manifest.operations.map((operation) => `${operation.method} ${operation.path}`).sort(),
-    expected,
-  );
+  const generated = manifest.operations.map((operation) => `${operation.method} ${operation.path}`).sort();
   const endpoints = [];
   function collect(resources) {
     for (const resource of Object.values(resources)) {
@@ -64,7 +61,21 @@ test('manifest and configured methods satisfy the branch contract', () => {
   }
   collect(config.resources);
   assert.equal(new Set(endpoints).size, endpoints.length, 'Scalar resource mappings must be unique');
-  if (!allowPendingScalarMappings) assert.deepEqual(endpoints.sort(), expected);
+  if (allowPendingScalarMappings) {
+    // Scalar delivers generated code only after a build is promoted, so on scalar-next the
+    // manifest may lag the snapshot, but only by operations the pending mappings add or remove.
+    const configured = new Set(endpoints);
+    const lagging = new Set(generated);
+    for (const operation of expected.filter((operation) => !lagging.has(operation))) {
+      assert.ok(configured.has(operation), `Not generated and not mapped: ${operation}`);
+    }
+    for (const operation of generated.filter((operation) => !expected.includes(operation))) {
+      assert.ok(!configured.has(operation), `Removed from the schema but still mapped: ${operation}`);
+    }
+  } else {
+    assert.deepEqual(generated, expected);
+    assert.deepEqual(endpoints.sort(), expected);
+  }
   const { client } = mockClient();
   // The TypeScript emitter upper-cases a `Url` word that the manifest keeps camel-cased
   // (`retrieveAssetUrl` is emitted as `retrieveAssetURL`).

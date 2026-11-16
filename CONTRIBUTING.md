@@ -25,7 +25,7 @@ npm pack --dry-run
 
 The generated `sdk-ci.yml` builds and checks formatting. Our `contract-tests.yml` checks consumer declarations, v1 coverage, serialization, normalization, and trusted-publishing safeguards without API credentials. The generated `tests/smoke-test.ts` is preserved, but is not run against dev because its operation set includes writes. Do not run that script against an environment with real data.
 
-Mappings may lead the committed generated snapshot only on `scalar-next` or pull requests targeting it. Those CI runs validate the pending mappings against the live production schema. Release pull requests targeting `main` continue to require exact schema, manifest, and mapping parity.
+Mappings and the schema snapshot may lead the generated code only on `scalar-next` or pull requests targeting it, because Scalar delivers a build there only after it is promoted. Any operation that differs between the snapshot and the generated manifest must be a pending mapping addition or removal, and those CI runs validate the pending mappings against the live production schema. Release pull requests targeting `main` continue to require exact schema, manifest, and mapping parity.
 
 For an authenticated, read-only dev check, export a dev `TEMBO_API_KEY` and run `npm run test:dev`. It pins `https://internal.tembo-development.com/public-api` and only calls `models.list`. Browser login is not an API key; `.env` files are not loaded automatically. Never commit credentials.
 
