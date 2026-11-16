@@ -239,6 +239,7 @@ export namespace SubscriptionRetrieveResponse {
         | Usage.RateLimit5
         | Usage.RateLimit6
       >;
+      rateLimitResetCredits: Usage.RateLimitResetCredits | null;
     }
 
     export namespace Usage {
@@ -331,6 +332,13 @@ export namespace SubscriptionRetrieveResponse {
          */
         resetsAt: number | null;
       }
+
+      export interface RateLimitResetCredits {
+        /**
+         * @minimum 0
+         */
+        availableCount: number;
+      }
     }
 
     export interface UsageError {
@@ -342,6 +350,67 @@ export namespace SubscriptionRetrieveResponse {
 
   export interface Supergrok {
     connected: boolean;
+    usage: Supergrok.Usage | null;
+    usageError: Supergrok.UsageError | null;
+  }
+
+  export namespace Supergrok {
+    export interface Usage {
+      rateLimits: Array<Usage.RateLimit | Usage.RateLimit2 | Usage.RateLimit3>;
+    }
+
+    export namespace Usage {
+      export interface RateLimit {
+        key: 'weekly';
+        label: 'Weekly limit';
+        detail: string | null;
+        /**
+         * @minimum 0
+         * @maximum 100
+         */
+        remainingPercent: number;
+        /**
+         * @minimum 0
+         */
+        resetsAt: number | null;
+      }
+
+      export interface RateLimit2 {
+        key: 'monthly';
+        label: 'Monthly limit';
+        detail: string | null;
+        /**
+         * @minimum 0
+         * @maximum 100
+         */
+        remainingPercent: number;
+        /**
+         * @minimum 0
+         */
+        resetsAt: number | null;
+      }
+
+      export interface RateLimit3 {
+        key: 'credits';
+        label: 'Credit usage';
+        detail: string | null;
+        /**
+         * @minimum 0
+         * @maximum 100
+         */
+        remainingPercent: number;
+        /**
+         * @minimum 0
+         */
+        resetsAt: number | null;
+      }
+    }
+
+    export interface UsageError {
+      code: 'reconnectRequired' | 'rateLimited' | 'unavailable';
+      message: string;
+      retryAfter: string | null;
+    }
   }
 }
 export declare namespace Subscriptions {

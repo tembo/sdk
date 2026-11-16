@@ -35,7 +35,7 @@ export class Roles extends APIResource {
    * const role = await client.organizations.roles.create('organizationId', {
    *   name: 'x',
    *   description: '',
-   *   permissions: ['organization:read'],
+   *   permissions: ['organization:audit_log:read'],
    * });
    * ```
    */
@@ -127,11 +127,15 @@ export namespace RoleListResponse {
     id: string;
     name: string;
     description: string;
+    icon: string | null;
+    color: string;
     isDefault: boolean;
     /**
-     * @maxItems 238
+     * @maxItems 240
      */
     permissions: Array<
+      | 'organization:audit_log:read'
+      | 'organization:audit_log:write'
       | 'organization:read'
       | 'organization:write'
       | 'organization:member:read'
@@ -386,9 +390,11 @@ export interface RoleCreateParams {
    */
   name: string;
   /**
-   * @maxItems 238
+   * @maxItems 240
    */
   permissions: Array<
+    | 'organization:audit_log:read'
+    | 'organization:audit_log:write'
     | 'organization:read'
     | 'organization:write'
     | 'organization:member:read'
@@ -633,6 +639,27 @@ export interface RoleCreateParams {
    * @maxLength 1000
    */
   description?: string;
+  icon?:
+    | 'key'
+    | 'crown'
+    | 'shield'
+    | 'star'
+    | 'rocket'
+    | 'user'
+    | 'people'
+    | 'eye'
+    | 'code'
+    | 'bug'
+    | 'tools'
+    | 'megaphone'
+    | 'graduate'
+    | 'heart'
+    | 'fire'
+    | 'diamond'
+    | 'magic'
+    | 'robot'
+    | null;
+  color?: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
 }
 
 export interface RoleCreateResponse {
@@ -647,11 +674,15 @@ export interface RoleRetrieveResponse {
   id: string;
   name: string;
   description: string;
+  icon: string | null;
+  color: string;
   isDefault: boolean;
   /**
-   * @maxItems 238
+   * @maxItems 240
    */
   permissions: Array<
+    | 'organization:audit_log:read'
+    | 'organization:audit_log:write'
     | 'organization:read'
     | 'organization:write'
     | 'organization:member:read'
@@ -917,9 +948,38 @@ export interface RoleUpdateParams {
   description?: string;
   /**
    * Body param
-   * @maxItems 238
+   */
+  icon?:
+    | 'key'
+    | 'crown'
+    | 'shield'
+    | 'star'
+    | 'rocket'
+    | 'user'
+    | 'people'
+    | 'eye'
+    | 'code'
+    | 'bug'
+    | 'tools'
+    | 'megaphone'
+    | 'graduate'
+    | 'heart'
+    | 'fire'
+    | 'diamond'
+    | 'magic'
+    | 'robot'
+    | null;
+  /**
+   * Body param
+   */
+  color?: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
+  /**
+   * Body param
+   * @maxItems 240
    */
   permissions?: Array<
+    | 'organization:audit_log:read'
+    | 'organization:audit_log:write'
     | 'organization:read'
     | 'organization:write'
     | 'organization:member:read'

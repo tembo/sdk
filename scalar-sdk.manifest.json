@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.38.0",
+  "generatorVersion": "0.42.1",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -3104,6 +3104,35 @@
                 }
               },
               {
+                "name": "temboMrs",
+                "publicName": "temboMrs",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "primitive",
+                  "type": "boolean"
+                }
+              }
+            ],
+            "additionalProperties": false
+          },
+          {
+            "kind": "object",
+            "properties": [
+              {
+                "name": "repositories",
+                "publicName": "repositories",
+                "required": false,
+                "deprecated": false,
+                "type": {
+                  "kind": "array",
+                  "items": {
+                    "kind": "primitive",
+                    "type": "string"
+                  }
+                }
+              },
+              {
                 "name": "branches",
                 "publicName": "branches",
                 "required": false,
@@ -3868,6 +3897,7 @@
           }
         ],
         "variantNames": [
+          null,
           null,
           null,
           null,
@@ -5633,6 +5663,41 @@
       }
     },
     {
+      "name": "gitlab_merge_request_ready_for_review_filters",
+      "source": "gitlab_merge_request_ready_for_review_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "temboMrs",
+            "publicName": "temboMrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "gitlab_pipeline_failed_filters",
       "source": "gitlab_pipeline_failed_filters",
       "publicAliases": [],
@@ -6895,6 +6960,7 @@
     "skills",
     "skills.marketplace",
     "insights",
+    "auditLogs",
     "organizations",
     "organizations.members",
     "organizations.roles",
@@ -6944,6 +7010,7 @@
     "skills",
     "skills.marketplace",
     "insights",
+    "auditLogs",
     "organizations",
     "organizations.members",
     "organizations.roles",
@@ -8757,6 +8824,183 @@
       "transport": "http"
     },
     {
+      "resource": "auditLogs",
+      "publicResource": "auditLogs",
+      "operation": "list",
+      "publicOperation": "list",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/audit-logs",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [
+        "cursor",
+        "limit",
+        "actorId",
+        "resourceType",
+        "resourceId",
+        "operation",
+        "from",
+        "to",
+        "search"
+      ],
+      "publicQueryParams": [
+        "cursor",
+        "limit",
+        "actorId",
+        "resourceType",
+        "resourceId",
+        "operation",
+        "from",
+        "to",
+        "search"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "cursor",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": 50
+        },
+        {
+          "name": "actorId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "resourceType",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "resourceId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "operation",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "from",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "to",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "search",
+          "required": false,
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "AuditLogListParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "403"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "403",
+          "contents": []
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "auditLogs",
+      "publicResource": "auditLogs",
+      "operation": "listFilters",
+      "publicOperation": "listFilters",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/audit-logs/filters",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "403"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "403",
+          "contents": []
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
       "resource": "organizations",
       "publicResource": "organizations",
       "operation": "create",
@@ -10215,11 +10459,15 @@
       "bodyParams": [
         "name",
         "description",
+        "icon",
+        "color",
         "permissions"
       ],
       "publicBodyParams": [
         "name",
         "description",
+        "icon",
+        "color",
         "permissions"
       ],
       "bodyParamDetails": [
@@ -10229,6 +10477,14 @@
         },
         {
           "name": "description",
+          "required": false
+        },
+        {
+          "name": "icon",
+          "required": false
+        },
+        {
+          "name": "color",
           "required": false
         },
         {
@@ -10471,12 +10727,16 @@
       "bodyParams": [
         "name",
         "description",
+        "icon",
+        "color",
         "permissions",
         "isDefault"
       ],
       "publicBodyParams": [
         "name",
         "description",
+        "icon",
+        "color",
         "permissions",
         "isDefault"
       ],
@@ -10487,6 +10747,14 @@
         },
         {
           "name": "description",
+          "required": false
+        },
+        {
+          "name": "icon",
+          "required": false
+        },
+        {
+          "name": "color",
           "required": false
         },
         {

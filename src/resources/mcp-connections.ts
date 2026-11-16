@@ -263,6 +263,11 @@ export declare namespace McpConnectionCreateParams {
      */
     headers?: Record<string, string>;
     /**
+     * public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed.
+     * @default public
+     */
+    network?: 'public' | 'tailnet';
+    /**
      * Register an OAuth client automatically or use pre-registered clientId and optional clientSecret.
      * @default automatic
      */
@@ -328,6 +333,10 @@ export namespace McpConnectionCreateResponse {
     envKeys: Array<string>;
     headerKeys: Array<string>;
     /**
+     * public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed.
+     */
+    network: 'public' | 'tailnet';
+    /**
      * @format date-time
      */
     updatedAt: string;
@@ -366,6 +375,10 @@ export interface McpConnectionRetrieveResponse {
   createdAt: string;
   envKeys: Array<string>;
   headerKeys: Array<string>;
+  /**
+   * public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed.
+   */
+  network: 'public' | 'tailnet';
   /**
    * @format date-time
    */
@@ -487,6 +500,10 @@ export interface McpConnectionUpdateResponse {
   envKeys: Array<string>;
   headerKeys: Array<string>;
   /**
+   * public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed.
+   */
+  network: 'public' | 'tailnet';
+  /**
    * @format date-time
    */
   updatedAt: string;
@@ -541,6 +558,10 @@ export namespace McpConnectionAuthorizeResponse {
     createdAt: string;
     envKeys: Array<string>;
     headerKeys: Array<string>;
+    /**
+     * public servers are reached directly. tailnet servers are reached only from sessions, through the organization's Tailscale integration; Tembo's API never contacts them, so they authenticate with the tailnet ACL and optional static headers. Set at creation and cannot be changed.
+     */
+    network: 'public' | 'tailnet';
     /**
      * @format date-time
      */

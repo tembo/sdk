@@ -34,6 +34,7 @@ import {
   type GitlabMergeRequestClosedFilters,
   type GitlabMergeRequestMergedFilters,
   type GitlabMergeRequestOpenedFilters,
+  type GitlabMergeRequestReadyForReviewFilters,
   type GitlabMergeRequestUpdatedFilters,
   type GitlabPipelineFailedFilters,
   type GitlabRefCreatedFilters,
@@ -415,7 +416,7 @@ export interface AgentCreateParams {
   /**
    * Workspace VM size used for agent runs.
    */
-  sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
+  sandboxSize?: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   /**
    * Project environment used for agent runs.
    */
@@ -794,7 +795,7 @@ export interface AgentUpdateParams {
   /**
    * Change the workspace VM size. Null clears the override.
    */
-  sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
+  sandboxSize?: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra' | null;
   /**
    * Change the project environment for runs. Null clears the override.
    */
@@ -996,6 +997,7 @@ export declare namespace Agents {
     type GitlabMergeRequestClosedFilters as GitlabMergeRequestClosedFilters,
     type GitlabMergeRequestMergedFilters as GitlabMergeRequestMergedFilters,
     type GitlabMergeRequestOpenedFilters as GitlabMergeRequestOpenedFilters,
+    type GitlabMergeRequestReadyForReviewFilters as GitlabMergeRequestReadyForReviewFilters,
     type GitlabMergeRequestUpdatedFilters as GitlabMergeRequestUpdatedFilters,
     type GitlabPipelineFailedFilters as GitlabPipelineFailedFilters,
     type GitlabRefCreatedFilters as GitlabRefCreatedFilters,
