@@ -67,6 +67,12 @@
         "list_repositories": "get /v1/insights/repositories"
       }
     },
+    "audit_logs": {
+      "methods": {
+        "list": "get /v1/audit-logs",
+        "list_filters": "get /v1/audit-logs/filters"
+      }
+    },
     "organizations": {
       "methods": {
         "create": {
@@ -575,6 +581,7 @@
             "gitlab_merge_request_closed_filters": "#/components/schemas/GitlabMergeRequestClosedFilters",
             "gitlab_merge_request_merged_filters": "#/components/schemas/GitlabMergeRequestMergedFilters",
             "gitlab_merge_request_opened_filters": "#/components/schemas/GitlabMergeRequestOpenedFilters",
+            "gitlab_merge_request_ready_for_review_filters": "#/components/schemas/GitlabMergeRequestReadyForReviewFilters",
             "gitlab_merge_request_updated_filters": "#/components/schemas/GitlabMergeRequestUpdatedFilters",
             "gitlab_pipeline_failed_filters": "#/components/schemas/GitlabPipelineFailedFilters",
             "gitlab_ref_created_filters": "#/components/schemas/GitlabRefCreatedFilters",
