@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.24.0](https://github.com/tembo/sdk/compare/v0.23.0...v0.24.0) (2026-11-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** update schema trigger_filters (+8 more changes) ([4f74df4](https://github.com/tembo/sdk/commit/4f74df430dbe27ab00bf77a2fd6f2cedb1a1d068))
+
+
+### Bug Fixes
+
+* **sdk:** record wasm optional deps in lockfile for npm 11.19 ([d1447e8](https://github.com/tembo/sdk/commit/d1447e806939f37cd7e8c511e955903b172bbeff))
+* **sdk:** restore customized package.json after Scalar regeneration ([0e1a42b](https://github.com/tembo/sdk/commit/0e1a42b5ba4ba2933b42936c7c57835acf05b381))
+* **sdk:** restore customized package.json after Scalar regeneration ([1248a5b](https://github.com/tembo/sdk/commit/1248a5b12ba344ab6124a3c36300c7c16c0be1f5))
+
+
+### Chores
+
+* **api:** update generated SDK content ([303a5a7](https://github.com/tembo/sdk/commit/303a5a70c1b61ce6ed8facc17011bbb7fd1f091a))
+* **openapi:** refresh snapshot for v0.2.894 and map audit logs ([07c0dcd](https://github.com/tembo/sdk/commit/07c0dcdf1fd2202d649c23f4a267d40071f3a94c))
+* **openapi:** refresh snapshot for v0.2.894 and map audit logs ([a3f293c](https://github.com/tembo/sdk/commit/a3f293c01be6809ac31819ade49be817604d2a54))
+
 ## [0.23.0](https://github.com/tembo/sdk/compare/v0.22.1...v0.23.0) (2026-11-11)
 
 
