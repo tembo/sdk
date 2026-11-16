@@ -23,7 +23,7 @@ npm test
 npm pack --dry-run
 ```
 
-The generated `sdk-ci.yml` builds and checks formatting. Our `contract-tests.yml` checks consumer declarations, v1 coverage, serialization, normalization, and trusted-publishing safeguards without API credentials. The generated `tests/smoke-test.ts` is preserved, but is not run against dev because its operation set includes writes. Do not run that script against an environment with real data.
+The generated `sdk-ci.yml` builds and checks formatting. Our `contract-tests.yml` checks consumer declarations, v1 coverage, serialization, normalization, and trusted-publishing safeguards without API credentials. The generated vitest smoke tests under `tests/api-resources/` run with `npm run test:smoke`, not `npm test`, and skip unless `TEST_API_BASE_URL` is set. Their operation set includes writes, so never point them at an environment with real data. If a regeneration replaces `package.json` scripts, restore `test` and keep the generated vitest command as `test:smoke`.
 
 Mappings and the schema snapshot may lead the generated code only on `scalar-next` or pull requests targeting it, because Scalar delivers a build there only after it is promoted. Any operation that differs between the snapshot and the generated manifest must be a pending mapping addition or removal, and those CI runs validate the pending mappings against the live production schema. Release pull requests targeting `main` continue to require exact schema, manifest, and mapping parity.
 
