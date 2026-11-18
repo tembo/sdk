@@ -13,7 +13,6 @@ describe.concurrent('resource repositories', () => {
     async () => {
       const repository = await client.repositories.list({
         limit: 50,
-        enabled: 'all',
         order: 'desc',
         sort: 'pullRequests',
       });
@@ -49,9 +48,7 @@ describe.concurrent('resource repositories', () => {
     { operation: 'update', path: '/v1/repositories/{repositoryId}' },
     'update: only required params',
     async () => {
-      const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        enabled: false,
-      });
+      const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
     },
   );
   smokeCase(

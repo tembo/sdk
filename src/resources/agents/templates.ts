@@ -49,59 +49,55 @@ export class Templates extends APIResource {
  * Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type.
  */
 export type TriggerFilters =
+  | AtlassianIssueAddedToBoardFilters
+  | AtlassianIssueAssignedToUserFilters
+  | TriggerFilters.AtlassianIssueCommentCreatedFilters
+  | AtlassianIssueCreatedFilters
+  | AtlassianIssueLabelAddedFilters
+  | AtlassianIssueStatusChangedFilters
+  | AtlassianIssueUpdatedFilters
+  | BitbucketPullRequestOpenedFilters
+  | GithubCreateFilters
+  | GithubIssueClosedFilters
+  | GithubIssueCommentCreatedFilters
+  | GithubIssueOpenedFilters
+  | TriggerFilters.GithubPullRequestClosedFilters
+  | TriggerFilters.GithubPullRequestMergedFilters
+  | TriggerFilters.GithubPullRequestOpenedFilters
+  | TriggerFilters.GithubPullRequestReadyForReviewFilters
+  | TriggerFilters.GithubReleasePublishedFilters
+  | TriggerFilters.GithubPullRequestSynchronizeFilters
+  | GithubTemboPullRequestOpenedFilters
+  | GithubWorkflowRunFailedFilters
+  | TriggerFilters.GithubWorkflowRunCompletedFilters
+  | GitlabBotMergeRequestCommentFilters
+  | GitlabIssueClosedFilters
+  | GitlabIssueOpenedFilters
+  | TriggerFilters.GitlabIssueLabelAddedFilters
+  | TriggerFilters.GitlabIssueUpdatedFilters
+  | GitlabMergeRequestClosedFilters
+  | GitlabMergeRequestMergedFilters
+  | GitlabMergeRequestOpenedFilters
+  | GitlabMergeRequestUpdatedFilters
+  | GitlabMergeRequestReadyForReviewFilters
+  | GitlabPipelineFailedFilters
+  | GitlabRefCreatedFilters
+  | LinearIssueCreateFilters
+  | LinearIssueLabelAddedFilters
+  | LinearIssueStatusChangedFilters
+  | LinearIssueUpdatedFilters
+  | SentryIssueCreatedFilters
+  | SlackMessageReactionAddedFilters
+  | SlackMessageSentInChannelFilters
   | TriggerFilters.TriggerFiltersItem
   | TriggerFilters.TriggerFiltersItem2
   | TriggerFilters.TriggerFiltersItem3
   | TriggerFilters.TriggerFiltersItem4
   | TriggerFilters.TriggerFiltersItem5
-  | TriggerFilters.TriggerFiltersItem6
-  | TriggerFilters.TriggerFiltersItem7
-  | TriggerFilters.TriggerFiltersItem8
-  | TriggerFilters.TriggerFiltersItem9
-  | TriggerFilters.TriggerFiltersItem10
-  | TriggerFilters.TriggerFiltersItem11
-  | TriggerFilters.TriggerFiltersItem12
-  | TriggerFilters.TriggerFiltersItem13
-  | TriggerFilters.TriggerFiltersItem14
-  | TriggerFilters.TriggerFiltersItem15
-  | TriggerFilters.TriggerFiltersItem16
-  | TriggerFilters.TriggerFiltersItem17
-  | TriggerFilters.TriggerFiltersItem18
-  | TriggerFilters.TriggerFiltersItem19
-  | TriggerFilters.TriggerFiltersItem20
-  | TriggerFilters.TriggerFiltersItem21
-  | TriggerFilters.TriggerFiltersItem22
-  | TriggerFilters.TriggerFiltersItem23
-  | TriggerFilters.TriggerFiltersItem24
-  | TriggerFilters.TriggerFiltersItem25
-  | TriggerFilters.TriggerFiltersItem26
-  | TriggerFilters.TriggerFiltersItem27
-  | TriggerFilters.TriggerFiltersItem28
-  | TriggerFilters.TriggerFiltersItem29
-  | TriggerFilters.TriggerFiltersItem30
-  | TriggerFilters.TriggerFiltersItem31
-  | TriggerFilters.TriggerFiltersItem32
-  | TriggerFilters.TriggerFiltersItem33
-  | TriggerFilters.TriggerFiltersItem34
-  | TriggerFilters.TriggerFiltersItem35
-  | TriggerFilters.TriggerFiltersItem36
-  | TriggerFilters.TriggerFiltersItem37
-  | TriggerFilters.TriggerFiltersItem38
-  | TriggerFilters.TriggerFiltersItem39
-  | TriggerFilters.TriggerFiltersItem40
-  | TriggerFilters.TriggerFiltersItem41
-  | TriggerFilters.TriggerFiltersItem42
-  | TriggerFilters.TriggerFiltersItem43
-  | TriggerFilters.TriggerFiltersItem44
-  | TriggerFilters.TriggerFiltersItem45
-  | Record<string, unknown>;
+  | EmptyTriggerFilters;
 
 export namespace TriggerFilters {
-  export interface TriggerFiltersItem extends AtlassianIssueAddedToBoardFilters {}
-
-  export interface TriggerFiltersItem2 extends AtlassianIssueAssignedToUserFilters {}
-
-  export interface TriggerFiltersItem3 {
+  export interface AtlassianIssueCommentCreatedFilters {
     /**
      * Only trigger if the issue is in one of the specified projects
      */
@@ -118,48 +114,119 @@ export namespace TriggerFilters {
      * Only trigger if the issue has at least one of the specified labels
      */
     labels?: Array<string>;
+    [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem4 extends AtlassianIssueCreatedFilters {}
+  export interface GithubPullRequestClosedFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger if the pull request was opened by one of the specified users
+     */
+    openedBy?: Array<string>;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    [k: string]: unknown;
+  }
 
-  export interface TriggerFiltersItem5 extends AtlassianIssueLabelAddedFilters {}
+  export interface GithubPullRequestMergedFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger if the pull request was merged by one of the specified users
+     */
+    mergedBy?: Array<string>;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    [k: string]: unknown;
+  }
 
-  export interface TriggerFiltersItem6 extends AtlassianIssueStatusChangedFilters {}
+  export interface GithubPullRequestOpenedFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger if the pull request has at least one of the specified labels
+     */
+    labels?: Array<string>;
+    /**
+     * Only trigger if the pull request was opened by one of the specified users
+     */
+    openedBy?: Array<string>;
+    /**
+     * Only trigger if the pull request targets one of these branches
+     */
+    branches?: Array<string>;
+    /**
+     * Trigger also for draft pull requests (disabled by default)
+     */
+    draftPrs?: boolean;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    [k: string]: unknown;
+  }
 
-  export interface TriggerFiltersItem7 extends AtlassianIssueUpdatedFilters {}
+  export interface GithubPullRequestReadyForReviewFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger if the pull request was opened by one of the specified users
+     */
+    openedBy?: Array<string>;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    [k: string]: unknown;
+  }
 
-  export interface TriggerFiltersItem8 extends BitbucketPullRequestOpenedFilters {}
-
-  export interface TriggerFiltersItem9 extends GithubCreateFilters {}
-
-  export interface TriggerFiltersItem10 extends GithubIssueClosedFilters {}
-
-  export interface TriggerFiltersItem11 extends GithubIssueCommentCreatedFilters {}
-
-  export interface TriggerFiltersItem12 extends GithubIssueOpenedFilters {}
-
-  export interface TriggerFiltersItem13 extends GithubPullRequestClosedFilters {}
-
-  export interface TriggerFiltersItem14 extends GithubPullRequestMergedFilters {}
-
-  export interface TriggerFiltersItem15 extends GithubPullRequestOpenedFilters {}
-
-  export interface TriggerFiltersItem16 extends GithubPullRequestReadyForReviewFilters {}
-
-  export interface TriggerFiltersItem17 {
+  export interface GithubReleasePublishedFilters {
     /**
      * Only trigger if the release is in one of the repositories
      */
     repositories?: Array<string>;
+    [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem18 extends GithubPullRequestSynchronizeFilters {}
+  export interface GithubPullRequestSynchronizeFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger if the commits were pushed by one of the specified users
+     */
+    pushedBy?: Array<string>;
+    /**
+     * Trigger even if the pull request is a draft
+     */
+    draftPrs?: boolean;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    [k: string]: unknown;
+  }
 
-  export interface TriggerFiltersItem19 extends GithubTemboPullRequestOpenedFilters {}
-
-  export interface TriggerFiltersItem20 extends GithubWorkflowRunFailedFilters {}
-
-  export interface TriggerFiltersItem21 {
+  export interface GithubWorkflowRunCompletedFilters {
     /**
      * Only trigger if the workflow run is in one of the repositories
      */
@@ -182,15 +249,10 @@ export namespace TriggerFilters {
      * Only trigger for these originating GitHub events; use schedule for cron runs, not push or pull_request
      */
     events?: Array<string>;
+    [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem22 extends GitlabBotMergeRequestCommentFilters {}
-
-  export interface TriggerFiltersItem23 extends GitlabIssueClosedFilters {}
-
-  export interface TriggerFiltersItem24 extends GitlabIssueOpenedFilters {}
-
-  export interface TriggerFiltersItem25 {
+  export interface GitlabIssueLabelAddedFilters {
     /**
      * Only trigger if the issue is in one of the repositories
      */
@@ -203,9 +265,10 @@ export namespace TriggerFilters {
      * Only trigger if the label was added by one of the specified users
      */
     addedBy?: Array<string>;
+    [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem26 {
+  export interface GitlabIssueUpdatedFilters {
     /**
      * Only trigger if the issue is in one of the repositories
      */
@@ -218,37 +281,10 @@ export namespace TriggerFilters {
      * Only trigger if the issue was updated by one of the specified users
      */
     updatedBy?: Array<string>;
+    [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem27 extends GitlabMergeRequestClosedFilters {}
-
-  export interface TriggerFiltersItem28 extends GitlabMergeRequestMergedFilters {}
-
-  export interface TriggerFiltersItem29 extends GitlabMergeRequestOpenedFilters {}
-
-  export interface TriggerFiltersItem30 extends GitlabMergeRequestUpdatedFilters {}
-
-  export interface TriggerFiltersItem31 extends GitlabMergeRequestReadyForReviewFilters {}
-
-  export interface TriggerFiltersItem32 extends GitlabPipelineFailedFilters {}
-
-  export interface TriggerFiltersItem33 extends GitlabRefCreatedFilters {}
-
-  export interface TriggerFiltersItem34 extends LinearIssueCreateFilters {}
-
-  export interface TriggerFiltersItem35 extends LinearIssueLabelAddedFilters {}
-
-  export interface TriggerFiltersItem36 extends LinearIssueStatusChangedFilters {}
-
-  export interface TriggerFiltersItem37 extends LinearIssueUpdatedFilters {}
-
-  export interface TriggerFiltersItem38 extends SentryIssueCreatedFilters {}
-
-  export interface TriggerFiltersItem39 extends SlackMessageReactionAddedFilters {}
-
-  export interface TriggerFiltersItem40 extends SlackMessageSentInChannelFilters {}
-
-  export interface TriggerFiltersItem41 {
+  export interface TriggerFiltersItem {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -260,7 +296,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem42 {
+  export interface TriggerFiltersItem2 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -276,7 +312,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem43 {
+  export interface TriggerFiltersItem3 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -292,7 +328,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem44 {
+  export interface TriggerFiltersItem4 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -312,7 +348,7 @@ export namespace TriggerFilters {
     [k: string]: unknown;
   }
 
-  export interface TriggerFiltersItem45 {
+  export interface TriggerFiltersItem5 {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
      */
@@ -358,6 +394,7 @@ export interface AtlassianIssueAddedToBoardFilters {
    * Also trigger for newly created issues (not just status changes)
    */
   includeNewIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface AtlassianIssueAssignedToUserFilters {
@@ -377,6 +414,7 @@ export interface AtlassianIssueAssignedToUserFilters {
    * Also trigger for newly created issues that are already assigned
    */
   includeNewIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface AtlassianIssueCreatedFilters {
@@ -396,6 +434,7 @@ export interface AtlassianIssueCreatedFilters {
    * Only trigger if the issue has at least one of the specified labels
    */
   labels?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface AtlassianIssueLabelAddedFilters {
@@ -411,6 +450,7 @@ export interface AtlassianIssueLabelAddedFilters {
    * Only trigger if one of the specified labels was added
    */
   labels?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface AtlassianIssueStatusChangedFilters {
@@ -438,6 +478,7 @@ export interface AtlassianIssueStatusChangedFilters {
    * Only trigger if the issue has at least one of the specified labels
    */
   labels?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface AtlassianIssueUpdatedFilters {
@@ -457,6 +498,7 @@ export interface AtlassianIssueUpdatedFilters {
    * Only trigger if the issue has at least one of the specified labels
    */
   labels?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface BitbucketPullRequestOpenedFilters {
@@ -472,6 +514,7 @@ export interface BitbucketPullRequestOpenedFilters {
    * Enable agent for Tembo-created pull requests (disabled by default)
    */
   temboPrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubCreateFilters {
@@ -482,6 +525,7 @@ export interface GithubCreateFilters {
   refType?: Array<'branch' | 'tag'>;
   branchNames?: Array<string>;
   tagNames?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface GithubIssueClosedFilters {
@@ -497,6 +541,7 @@ export interface GithubIssueClosedFilters {
    * Enable agent for Tembo-created issues (disabled by default)
    */
   temboIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubIssueCommentCreatedFilters {
@@ -516,6 +561,7 @@ export interface GithubIssueCommentCreatedFilters {
    * Only trigger if the comment contains one of these substrings
    */
   messageContains?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface GithubIssueOpenedFilters {
@@ -531,6 +577,7 @@ export interface GithubIssueOpenedFilters {
    * Enable agent for Tembo-created issues (disabled by default)
    */
   temboIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubPullRequestClosedFilters {
@@ -547,6 +594,7 @@ export interface GithubPullRequestClosedFilters {
    * @default true
    */
   temboPrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubPullRequestMergedFilters {
@@ -563,6 +611,7 @@ export interface GithubPullRequestMergedFilters {
    * @default true
    */
   temboPrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubPullRequestOpenedFilters {
@@ -591,6 +640,7 @@ export interface GithubPullRequestOpenedFilters {
    * @default true
    */
   temboPrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubPullRequestReadyForReviewFilters {
@@ -607,6 +657,7 @@ export interface GithubPullRequestReadyForReviewFilters {
    * @default true
    */
   temboPrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubPullRequestSynchronizeFilters {
@@ -627,6 +678,7 @@ export interface GithubPullRequestSynchronizeFilters {
    * @default true
    */
   temboPrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubTemboPullRequestOpenedFilters {
@@ -638,6 +690,7 @@ export interface GithubTemboPullRequestOpenedFilters {
    * Also trigger for draft pull requests
    */
   draftPrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GithubWorkflowRunFailedFilters {
@@ -653,6 +706,7 @@ export interface GithubWorkflowRunFailedFilters {
    * Only trigger for specific branches
    */
   branches?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface GitlabBotMergeRequestCommentFilters {
@@ -664,6 +718,7 @@ export interface GitlabBotMergeRequestCommentFilters {
    * Only trigger if the comment is from one of these bot usernames
    */
   botUsernames?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface GitlabIssueClosedFilters {
@@ -679,6 +734,7 @@ export interface GitlabIssueClosedFilters {
    * Enable agent for Tembo-created issues (disabled by default)
    */
   temboIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GitlabIssueOpenedFilters {
@@ -694,6 +750,7 @@ export interface GitlabIssueOpenedFilters {
    * Enable agent for Tembo-created issues (disabled by default)
    */
   temboIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GitlabMergeRequestClosedFilters {
@@ -709,6 +766,7 @@ export interface GitlabMergeRequestClosedFilters {
    * Enable agent for Tembo-created merge requests (disabled by default)
    */
   temboMrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GitlabMergeRequestMergedFilters {
@@ -724,6 +782,7 @@ export interface GitlabMergeRequestMergedFilters {
    * Enable agent for Tembo-created merge requests (disabled by default)
    */
   temboMrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GitlabMergeRequestOpenedFilters {
@@ -739,6 +798,7 @@ export interface GitlabMergeRequestOpenedFilters {
    * Enable agent for Tembo-created merge requests (disabled by default)
    */
   temboMrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GitlabMergeRequestReadyForReviewFilters {
@@ -750,6 +810,7 @@ export interface GitlabMergeRequestReadyForReviewFilters {
    * Enable agent for Tembo-created merge requests (disabled by default)
    */
   temboMrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GitlabMergeRequestUpdatedFilters {
@@ -769,6 +830,7 @@ export interface GitlabMergeRequestUpdatedFilters {
    * Enable agent for Tembo-created merge requests (disabled by default)
    */
   temboMrs?: boolean;
+  [k: string]: unknown;
 }
 
 export interface GitlabPipelineFailedFilters {
@@ -780,6 +842,7 @@ export interface GitlabPipelineFailedFilters {
    * Only trigger for specific branches
    */
   branches?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface GitlabRefCreatedFilters {
@@ -790,6 +853,7 @@ export interface GitlabRefCreatedFilters {
   refType?: Array<'branch' | 'tag'>;
   branchNames?: Array<string>;
   tagNames?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface LinearIssueCreateFilters {
@@ -797,6 +861,10 @@ export interface LinearIssueCreateFilters {
    * Only trigger if the issue belongs to one of the specified teams
    */
   teams?: Array<string>;
+  /**
+   * Only trigger if the issue is in one of the specified projects
+   */
+  projects?: Array<string>;
   /**
    * Only trigger if the issue state type matches one of the specified types
    */
@@ -817,6 +885,7 @@ export interface LinearIssueCreateFilters {
    * Enable agent for Tembo-created issues (disabled by default)
    */
   temboIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface LinearIssueLabelAddedFilters {
@@ -832,6 +901,7 @@ export interface LinearIssueLabelAddedFilters {
    * Only trigger if one of the specified labels was added to the issue
    */
   labels?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface LinearIssueStatusChangedFilters {
@@ -855,6 +925,7 @@ export interface LinearIssueStatusChangedFilters {
    * Only trigger if the issue has at least one of the specified labels
    */
   labels?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface LinearIssueUpdatedFilters {
@@ -878,6 +949,7 @@ export interface LinearIssueUpdatedFilters {
    * Enable agent for Tembo-updated issues (disabled by default)
    */
   temboIssues?: boolean;
+  [k: string]: unknown;
 }
 
 export interface SentryIssueCreatedFilters {
@@ -889,6 +961,7 @@ export interface SentryIssueCreatedFilters {
    * Only trigger if the issue is in one of the specified projects
    */
   projectSlugs?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface SlackMessageReactionAddedFilters {
@@ -904,6 +977,7 @@ export interface SlackMessageReactionAddedFilters {
    * Only trigger if the reaction is added by one of these user names
    */
   users?: Array<string>;
+  [k: string]: unknown;
 }
 
 export interface SlackMessageSentInChannelFilters {
@@ -923,6 +997,7 @@ export interface SlackMessageSentInChannelFilters {
    * Skip messages containing any of these case-sensitive substrings (for example, On-call handover:)
    */
   messageNotContains?: Array<string>;
+  [k: string]: unknown;
 }
 
 export type EmptyTriggerFilters = Record<string, unknown>;
@@ -1084,7 +1159,328 @@ export namespace TemplateListResponse {
       /**
        * Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type.
        */
-      filters?: TriggerFilters;
+      filters?:
+        | AtlassianIssueAddedToBoardFilters
+        | AtlassianIssueAssignedToUserFilters
+        | Trigger.AtlassianIssueCommentCreatedFilters
+        | AtlassianIssueCreatedFilters
+        | AtlassianIssueLabelAddedFilters
+        | AtlassianIssueStatusChangedFilters
+        | AtlassianIssueUpdatedFilters
+        | BitbucketPullRequestOpenedFilters
+        | GithubCreateFilters
+        | GithubIssueClosedFilters
+        | GithubIssueCommentCreatedFilters
+        | GithubIssueOpenedFilters
+        | Trigger.GithubPullRequestClosedFiltersOutput
+        | Trigger.GithubPullRequestMergedFiltersOutput
+        | Trigger.GithubPullRequestOpenedFiltersOutput
+        | Trigger.GithubPullRequestReadyForReviewFiltersOutput
+        | Trigger.GithubReleasePublishedFilters
+        | Trigger.GithubPullRequestSynchronizeFiltersOutput
+        | GithubTemboPullRequestOpenedFilters
+        | GithubWorkflowRunFailedFilters
+        | Trigger.GithubWorkflowRunCompletedFilters
+        | GitlabBotMergeRequestCommentFilters
+        | GitlabIssueClosedFilters
+        | GitlabIssueOpenedFilters
+        | Trigger.GitlabIssueLabelAddedFilters
+        | Trigger.GitlabIssueUpdatedFilters
+        | GitlabMergeRequestClosedFilters
+        | GitlabMergeRequestMergedFilters
+        | GitlabMergeRequestOpenedFilters
+        | GitlabMergeRequestUpdatedFilters
+        | GitlabMergeRequestReadyForReviewFilters
+        | GitlabPipelineFailedFilters
+        | GitlabRefCreatedFilters
+        | LinearIssueCreateFilters
+        | LinearIssueLabelAddedFilters
+        | LinearIssueStatusChangedFilters
+        | LinearIssueUpdatedFilters
+        | SentryIssueCreatedFilters
+        | SlackMessageReactionAddedFilters
+        | SlackMessageSentInChannelFilters
+        | Trigger.Filters
+        | Trigger.Filters2
+        | Trigger.Filters3
+        | Trigger.Filters4
+        | Trigger.Filters5
+        | EmptyTriggerFilters;
+    }
+
+    export namespace Trigger {
+      export interface AtlassianIssueCommentCreatedFilters {
+        /**
+         * Only trigger if the issue is in one of the specified projects
+         */
+        projects?: Array<string>;
+        /**
+         * Only trigger if the comment was added by one of the specified users
+         */
+        commentedBy?: Array<string>;
+        /**
+         * Only trigger if the comment contains one of these substrings
+         */
+        messageContains?: Array<string>;
+        /**
+         * Only trigger if the issue has at least one of the specified labels
+         */
+        labels?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestClosedFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger if the pull request was opened by one of the specified users
+         */
+        openedBy?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestMergedFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger if the pull request was merged by one of the specified users
+         */
+        mergedBy?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestOpenedFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger if the pull request has at least one of the specified labels
+         */
+        labels?: Array<string>;
+        /**
+         * Only trigger if the pull request was opened by one of the specified users
+         */
+        openedBy?: Array<string>;
+        /**
+         * Only trigger if the pull request targets one of these branches
+         */
+        branches?: Array<string>;
+        /**
+         * Trigger also for draft pull requests (disabled by default)
+         */
+        draftPrs?: boolean;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestReadyForReviewFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger if the pull request was opened by one of the specified users
+         */
+        openedBy?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubReleasePublishedFilters {
+        /**
+         * Only trigger if the release is in one of the repositories
+         */
+        repositories?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestSynchronizeFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger if the commits were pushed by one of the specified users
+         */
+        pushedBy?: Array<string>;
+        /**
+         * Trigger even if the pull request is a draft
+         */
+        draftPrs?: boolean;
+        [k: string]: unknown;
+      }
+
+      export interface GithubWorkflowRunCompletedFilters {
+        /**
+         * Only trigger if the workflow run is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger for specific workflow names
+         */
+        workflowNames?: Array<string>;
+        /**
+         * Only trigger for specific branches
+         */
+        branches?: Array<string>;
+        /**
+         * Only trigger for these completed workflow results, such as success
+         */
+        conclusions?: Array<
+          | 'success'
+          | 'failure'
+          | 'neutral'
+          | 'cancelled'
+          | 'timed_out'
+          | 'action_required'
+          | 'stale'
+          | 'skipped'
+        >;
+        /**
+         * Only trigger for these originating GitHub events; use schedule for cron runs, not push or pull_request
+         */
+        events?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GitlabIssueLabelAddedFilters {
+        /**
+         * Only trigger if the issue is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger if one of the added labels matches these labels
+         */
+        labels?: Array<string>;
+        /**
+         * Only trigger if the label was added by one of the specified users
+         */
+        addedBy?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GitlabIssueUpdatedFilters {
+        /**
+         * Only trigger if the issue is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger if the issue has at least one of the specified labels
+         */
+        labels?: Array<string>;
+        /**
+         * Only trigger if the issue was updated by one of the specified users
+         */
+        updatedBy?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface Filters {
+        /**
+         * Only trigger if the page is in a space with one of these names or IDs
+         */
+        spaces?: Array<string>;
+        /**
+         * Only trigger if the page title contains one of these substrings
+         */
+        titleContains?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface Filters2 {
+        /**
+         * Only trigger if the page is in a space with one of these names or IDs
+         */
+        spaces?: Array<string>;
+        /**
+         * Only trigger if the page title contains one of these substrings
+         */
+        titleContains?: Array<string>;
+        /**
+         * Only trigger if the page was moved from a space with one of these names or IDs
+         */
+        previousSpaces?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface Filters3 {
+        /**
+         * Only trigger if the page is in a space with one of these names or IDs
+         */
+        spaces?: Array<string>;
+        /**
+         * Only trigger if the page title contains one of these substrings
+         */
+        titleContains?: Array<string>;
+        /**
+         * Only trigger for footer comments, inline comments, or both
+         */
+        locations?: Array<'footer' | 'inline'>;
+        [k: string]: unknown;
+      }
+
+      export interface Filters4 {
+        /**
+         * Only trigger if the page is in a space with one of these names or IDs
+         */
+        spaces?: Array<string>;
+        /**
+         * Only trigger if the page title contains one of these substrings
+         */
+        titleContains?: Array<string>;
+        /**
+         * Only trigger if the added label has one of these values
+         */
+        labels?: Array<string>;
+        /**
+         * Only trigger if the comment contains one of these substrings
+         */
+        commentContains?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface Filters5 {
+        /**
+         * Only trigger if the page is in a space with one of these names or IDs
+         */
+        spaces?: Array<string>;
+        /**
+         * Only trigger if the page title contains one of these substrings
+         */
+        titleContains?: Array<string>;
+        /**
+         * Only trigger if the removed label has one of these values
+         */
+        labels?: Array<string>;
+        /**
+         * Only trigger if the comment contains one of these substrings
+         */
+        commentContains?: Array<string>;
+        [k: string]: unknown;
+      }
     }
   }
 }
@@ -1151,7 +1547,328 @@ export namespace TemplateRetrieveResponse {
     /**
      * Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type.
      */
-    filters?: TriggerFilters;
+    filters?:
+      | AtlassianIssueAddedToBoardFilters
+      | AtlassianIssueAssignedToUserFilters
+      | Trigger.AtlassianIssueCommentCreatedFilters
+      | AtlassianIssueCreatedFilters
+      | AtlassianIssueLabelAddedFilters
+      | AtlassianIssueStatusChangedFilters
+      | AtlassianIssueUpdatedFilters
+      | BitbucketPullRequestOpenedFilters
+      | GithubCreateFilters
+      | GithubIssueClosedFilters
+      | GithubIssueCommentCreatedFilters
+      | GithubIssueOpenedFilters
+      | Trigger.GithubPullRequestClosedFiltersOutput
+      | Trigger.GithubPullRequestMergedFiltersOutput
+      | Trigger.GithubPullRequestOpenedFiltersOutput
+      | Trigger.GithubPullRequestReadyForReviewFiltersOutput
+      | Trigger.GithubReleasePublishedFilters
+      | Trigger.GithubPullRequestSynchronizeFiltersOutput
+      | GithubTemboPullRequestOpenedFilters
+      | GithubWorkflowRunFailedFilters
+      | Trigger.GithubWorkflowRunCompletedFilters
+      | GitlabBotMergeRequestCommentFilters
+      | GitlabIssueClosedFilters
+      | GitlabIssueOpenedFilters
+      | Trigger.GitlabIssueLabelAddedFilters
+      | Trigger.GitlabIssueUpdatedFilters
+      | GitlabMergeRequestClosedFilters
+      | GitlabMergeRequestMergedFilters
+      | GitlabMergeRequestOpenedFilters
+      | GitlabMergeRequestUpdatedFilters
+      | GitlabMergeRequestReadyForReviewFilters
+      | GitlabPipelineFailedFilters
+      | GitlabRefCreatedFilters
+      | LinearIssueCreateFilters
+      | LinearIssueLabelAddedFilters
+      | LinearIssueStatusChangedFilters
+      | LinearIssueUpdatedFilters
+      | SentryIssueCreatedFilters
+      | SlackMessageReactionAddedFilters
+      | SlackMessageSentInChannelFilters
+      | Trigger.Filters
+      | Trigger.Filters2
+      | Trigger.Filters3
+      | Trigger.Filters4
+      | Trigger.Filters5
+      | EmptyTriggerFilters;
+  }
+
+  export namespace Trigger {
+    export interface AtlassianIssueCommentCreatedFilters {
+      /**
+       * Only trigger if the issue is in one of the specified projects
+       */
+      projects?: Array<string>;
+      /**
+       * Only trigger if the comment was added by one of the specified users
+       */
+      commentedBy?: Array<string>;
+      /**
+       * Only trigger if the comment contains one of these substrings
+       */
+      messageContains?: Array<string>;
+      /**
+       * Only trigger if the issue has at least one of the specified labels
+       */
+      labels?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestClosedFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger if the pull request was opened by one of the specified users
+       */
+      openedBy?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestMergedFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger if the pull request was merged by one of the specified users
+       */
+      mergedBy?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestOpenedFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger if the pull request has at least one of the specified labels
+       */
+      labels?: Array<string>;
+      /**
+       * Only trigger if the pull request was opened by one of the specified users
+       */
+      openedBy?: Array<string>;
+      /**
+       * Only trigger if the pull request targets one of these branches
+       */
+      branches?: Array<string>;
+      /**
+       * Trigger also for draft pull requests (disabled by default)
+       */
+      draftPrs?: boolean;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestReadyForReviewFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger if the pull request was opened by one of the specified users
+       */
+      openedBy?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubReleasePublishedFilters {
+      /**
+       * Only trigger if the release is in one of the repositories
+       */
+      repositories?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestSynchronizeFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger if the commits were pushed by one of the specified users
+       */
+      pushedBy?: Array<string>;
+      /**
+       * Trigger even if the pull request is a draft
+       */
+      draftPrs?: boolean;
+      [k: string]: unknown;
+    }
+
+    export interface GithubWorkflowRunCompletedFilters {
+      /**
+       * Only trigger if the workflow run is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger for specific workflow names
+       */
+      workflowNames?: Array<string>;
+      /**
+       * Only trigger for specific branches
+       */
+      branches?: Array<string>;
+      /**
+       * Only trigger for these completed workflow results, such as success
+       */
+      conclusions?: Array<
+        | 'success'
+        | 'failure'
+        | 'neutral'
+        | 'cancelled'
+        | 'timed_out'
+        | 'action_required'
+        | 'stale'
+        | 'skipped'
+      >;
+      /**
+       * Only trigger for these originating GitHub events; use schedule for cron runs, not push or pull_request
+       */
+      events?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GitlabIssueLabelAddedFilters {
+      /**
+       * Only trigger if the issue is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger if one of the added labels matches these labels
+       */
+      labels?: Array<string>;
+      /**
+       * Only trigger if the label was added by one of the specified users
+       */
+      addedBy?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GitlabIssueUpdatedFilters {
+      /**
+       * Only trigger if the issue is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger if the issue has at least one of the specified labels
+       */
+      labels?: Array<string>;
+      /**
+       * Only trigger if the issue was updated by one of the specified users
+       */
+      updatedBy?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface Filters {
+      /**
+       * Only trigger if the page is in a space with one of these names or IDs
+       */
+      spaces?: Array<string>;
+      /**
+       * Only trigger if the page title contains one of these substrings
+       */
+      titleContains?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface Filters2 {
+      /**
+       * Only trigger if the page is in a space with one of these names or IDs
+       */
+      spaces?: Array<string>;
+      /**
+       * Only trigger if the page title contains one of these substrings
+       */
+      titleContains?: Array<string>;
+      /**
+       * Only trigger if the page was moved from a space with one of these names or IDs
+       */
+      previousSpaces?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface Filters3 {
+      /**
+       * Only trigger if the page is in a space with one of these names or IDs
+       */
+      spaces?: Array<string>;
+      /**
+       * Only trigger if the page title contains one of these substrings
+       */
+      titleContains?: Array<string>;
+      /**
+       * Only trigger for footer comments, inline comments, or both
+       */
+      locations?: Array<'footer' | 'inline'>;
+      [k: string]: unknown;
+    }
+
+    export interface Filters4 {
+      /**
+       * Only trigger if the page is in a space with one of these names or IDs
+       */
+      spaces?: Array<string>;
+      /**
+       * Only trigger if the page title contains one of these substrings
+       */
+      titleContains?: Array<string>;
+      /**
+       * Only trigger if the added label has one of these values
+       */
+      labels?: Array<string>;
+      /**
+       * Only trigger if the comment contains one of these substrings
+       */
+      commentContains?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface Filters5 {
+      /**
+       * Only trigger if the page is in a space with one of these names or IDs
+       */
+      spaces?: Array<string>;
+      /**
+       * Only trigger if the page title contains one of these substrings
+       */
+      titleContains?: Array<string>;
+      /**
+       * Only trigger if the removed label has one of these values
+       */
+      labels?: Array<string>;
+      /**
+       * Only trigger if the comment contains one of these substrings
+       */
+      commentContains?: Array<string>;
+      [k: string]: unknown;
+    }
   }
 }
 export declare namespace Templates {

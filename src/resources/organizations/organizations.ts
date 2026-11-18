@@ -31,6 +31,24 @@ import {
   type RoleUpdateParams,
   type RoleDeleteParams,
 } from './roles';
+import * as TeamsAPI from './teams';
+import {
+  Teams,
+  type TeamListResponse,
+  type TeamCreateResponse,
+  type TeamRetrieveResponse,
+  type TeamUpdateResponse,
+  type TeamDeleteResponse,
+  type TeamAddMemberResponse,
+  type TeamRemoveMemberResponse,
+  type TeamListParams,
+  type TeamCreateParams,
+  type TeamRetrieveParams,
+  type TeamUpdateParams,
+  type TeamDeleteParams,
+  type TeamAddMemberParams,
+  type TeamRemoveMemberParams,
+} from './teams';
 import * as SecretsAPI from './secrets';
 import {
   Secrets,
@@ -60,6 +78,7 @@ import { Subscriptions, type SubscriptionRetrieveResponse } from './subscription
 export class Organizations extends APIResource {
   members: MembersAPI.Members = new MembersAPI.Members(this._client);
   roles: RolesAPI.Roles = new RolesAPI.Roles(this._client);
+  teams: TeamsAPI.Teams = new TeamsAPI.Teams(this._client);
   secrets: SecretsAPI.Secrets = new SecretsAPI.Secrets(this._client);
   settings: SettingsAPI.Settings = new SettingsAPI.Settings(this._client);
   subscriptions: SubscriptionsAPI.Subscriptions = new SubscriptionsAPI.Subscriptions(this._client);
@@ -155,6 +174,7 @@ export interface OrganizationCreateParams {
 export interface OrganizationCreateResponse {
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
   id: string;
@@ -162,6 +182,7 @@ export interface OrganizationCreateResponse {
   slug: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   updatedAt: string | null;
   /**
@@ -170,6 +191,7 @@ export interface OrganizationCreateResponse {
   logoUrl: string | null;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   memberCount: number;
 }
@@ -182,6 +204,7 @@ export namespace OrganizationRetrieveResponse {
   export interface OrganizationRetrieveResponseItem {
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     createdAt: string;
     id: string;
@@ -189,6 +212,7 @@ export namespace OrganizationRetrieveResponse {
     slug: string | null;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     updatedAt: string | null;
     /**
@@ -197,6 +221,7 @@ export namespace OrganizationRetrieveResponse {
     logoUrl: string | null;
     /**
      * @minimum 0
+     * @maximum 9007199254740991
      */
     memberCount: number;
     currentMembership: OrganizationRetrieveResponseItem.CurrentMembership | null;
@@ -217,6 +242,8 @@ export namespace OrganizationRetrieveResponse {
         | 'organization:invitation:write'
         | 'organization:role:read'
         | 'organization:role:write'
+        | 'organization:team:read'
+        | 'organization:team:write'
         | 'organization:secret:read'
         | 'organization:secret:write'
         | 'organization:setting:read'
@@ -476,6 +503,8 @@ export namespace OrganizationRetrieveResponse {
         | 'organization:invitation:write'
         | 'organization:role:read'
         | 'organization:role:write'
+        | 'organization:team:read'
+        | 'organization:team:write'
         | 'organization:secret:read'
         | 'organization:secret:write'
         | 'organization:setting:read'
@@ -739,6 +768,7 @@ export interface OrganizationUpdateParams {
 export interface OrganizationUpdateResponse {
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
   id: string;
@@ -746,6 +776,7 @@ export interface OrganizationUpdateResponse {
   slug: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   updatedAt: string | null;
   /**
@@ -754,6 +785,7 @@ export interface OrganizationUpdateResponse {
   logoUrl: string | null;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   memberCount: number;
 }
@@ -764,6 +796,7 @@ export interface OrganizationDeleteResponse {
 }
 Organizations.Members = Members;
 Organizations.Roles = Roles;
+Organizations.Teams = Teams;
 Organizations.Secrets = Secrets;
 Organizations.Settings = Settings;
 Organizations.Subscriptions = Subscriptions;
@@ -803,6 +836,24 @@ export declare namespace Organizations {
     type RoleRetrieveParams as RoleRetrieveParams,
     type RoleUpdateParams as RoleUpdateParams,
     type RoleDeleteParams as RoleDeleteParams,
+  };
+
+  export {
+    Teams as Teams,
+    type TeamListResponse as TeamListResponse,
+    type TeamCreateResponse as TeamCreateResponse,
+    type TeamRetrieveResponse as TeamRetrieveResponse,
+    type TeamUpdateResponse as TeamUpdateResponse,
+    type TeamDeleteResponse as TeamDeleteResponse,
+    type TeamAddMemberResponse as TeamAddMemberResponse,
+    type TeamRemoveMemberResponse as TeamRemoveMemberResponse,
+    type TeamListParams as TeamListParams,
+    type TeamCreateParams as TeamCreateParams,
+    type TeamRetrieveParams as TeamRetrieveParams,
+    type TeamUpdateParams as TeamUpdateParams,
+    type TeamDeleteParams as TeamDeleteParams,
+    type TeamAddMemberParams as TeamAddMemberParams,
+    type TeamRemoveMemberParams as TeamRemoveMemberParams,
   };
 
   export {

@@ -83,7 +83,6 @@ export class Roles extends APIResource {
    * ```ts
    * const role = await client.organizations.roles.update('roleId', {
    *   organizationId: 'organizationId',
-   *   description: '',
    * });
    * ```
    */
@@ -131,7 +130,7 @@ export namespace RoleListResponse {
     color: string;
     isDefault: boolean;
     /**
-     * @maxItems 240
+     * @maxItems 242
      */
     permissions: Array<
       | 'organization:audit_log:read'
@@ -144,6 +143,8 @@ export namespace RoleListResponse {
       | 'organization:invitation:write'
       | 'organization:role:read'
       | 'organization:role:write'
+      | 'organization:team:read'
+      | 'organization:team:write'
       | 'organization:secret:read'
       | 'organization:secret:write'
       | 'organization:setting:read'
@@ -377,6 +378,7 @@ export namespace RoleListResponse {
     >;
     /**
      * @minimum 0
+     * @maximum 9007199254740991
      */
     memberCount: number;
     isCurrentRole: boolean;
@@ -390,7 +392,7 @@ export interface RoleCreateParams {
    */
   name: string;
   /**
-   * @maxItems 240
+   * @maxItems 242
    */
   permissions: Array<
     | 'organization:audit_log:read'
@@ -403,6 +405,8 @@ export interface RoleCreateParams {
     | 'organization:invitation:write'
     | 'organization:role:read'
     | 'organization:role:write'
+    | 'organization:team:read'
+    | 'organization:team:write'
     | 'organization:secret:read'
     | 'organization:secret:write'
     | 'organization:setting:read'
@@ -678,7 +682,7 @@ export interface RoleRetrieveResponse {
   color: string;
   isDefault: boolean;
   /**
-   * @maxItems 240
+   * @maxItems 242
    */
   permissions: Array<
     | 'organization:audit_log:read'
@@ -691,6 +695,8 @@ export interface RoleRetrieveResponse {
     | 'organization:invitation:write'
     | 'organization:role:read'
     | 'organization:role:write'
+    | 'organization:team:read'
+    | 'organization:team:write'
     | 'organization:secret:read'
     | 'organization:secret:write'
     | 'organization:setting:read'
@@ -924,6 +930,7 @@ export interface RoleRetrieveResponse {
   >;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   memberCount: number;
   isCurrentRole: boolean;
@@ -942,7 +949,6 @@ export interface RoleUpdateParams {
   name?: string;
   /**
    * Body param
-   * @default ""
    * @maxLength 1000
    */
   description?: string;
@@ -975,7 +981,7 @@ export interface RoleUpdateParams {
   color?: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
   /**
    * Body param
-   * @maxItems 240
+   * @maxItems 242
    */
   permissions?: Array<
     | 'organization:audit_log:read'
@@ -988,6 +994,8 @@ export interface RoleUpdateParams {
     | 'organization:invitation:write'
     | 'organization:role:read'
     | 'organization:role:write'
+    | 'organization:team:read'
+    | 'organization:team:write'
     | 'organization:secret:read'
     | 'organization:secret:write'
     | 'organization:setting:read'

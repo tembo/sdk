@@ -32,11 +32,229 @@ export interface SubscriptionRetrieveResponse {
 export namespace SubscriptionRetrieveResponse {
   export interface Chatgpt {
     connected: boolean;
+    accounts: Array<Chatgpt.Account>;
     usage: Chatgpt.Usage | null;
     usageError: Chatgpt.UsageError | null;
   }
 
   export namespace Chatgpt {
+    export interface Account {
+      /**
+       * Connected account, when an owner has several for one provider.
+       * @minimum 0
+       * @maximum 9007199254740991
+       */
+      slot: number;
+      /**
+       * Email of the provider account, when the provider shares it.
+       */
+      email: string | null;
+      usage: Account.Usage | null;
+      usageError: Account.UsageError | null;
+    }
+
+    export namespace Account {
+      export interface Usage {
+        planType:
+          | 'free'
+          | 'go'
+          | 'plus'
+          | 'pro'
+          | 'prolite'
+          | 'promax'
+          | 'team'
+          | 'self_serve_business_prolite'
+          | 'self_serve_business_usage_based'
+          | 'business'
+          | 'ent26'
+          | 'enterprise_cbp_automation'
+          | 'enterprise_cbp_usage_based'
+          | 'enterprise'
+          | 'edu'
+          | 'edu_plus'
+          | 'edu_pro'
+          | 'unknown';
+        rateLimits: Array<Usage.RateLimit>;
+        rateLimitResetCredits: Usage.RateLimitResetCredits | null;
+        tokenUsage: Usage.TokenUsage;
+        /**
+         * @format date-time
+         * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+         */
+        fetchedAt: string;
+      }
+
+      export namespace Usage {
+        export interface RateLimit {
+          limitId: string | null;
+          limitName: string | null;
+          planType:
+            | 'free'
+            | 'go'
+            | 'plus'
+            | 'pro'
+            | 'prolite'
+            | 'promax'
+            | 'team'
+            | 'self_serve_business_prolite'
+            | 'self_serve_business_usage_based'
+            | 'business'
+            | 'ent26'
+            | 'enterprise_cbp_automation'
+            | 'enterprise_cbp_usage_based'
+            | 'enterprise'
+            | 'edu'
+            | 'edu_plus'
+            | 'edu_pro'
+            | 'unknown'
+            | null;
+          primary: RateLimit.Primary | null;
+          secondary: RateLimit.Secondary | null;
+          credits: RateLimit.Credits | null;
+          individualLimit: RateLimit.IndividualLimit | null;
+          spendControlReached: boolean | null;
+          rateLimitReachedType:
+            | 'rate_limit_reached'
+            | 'workspace_owner_credits_depleted'
+            | 'workspace_member_credits_depleted'
+            | 'workspace_owner_usage_limit_reached'
+            | 'workspace_member_usage_limit_reached'
+            | 'unknown'
+            | null;
+        }
+
+        export namespace RateLimit {
+          export interface Primary {
+            usedPercent: number;
+            /**
+             * @maximum 9007199254740991
+             * @exclusiveMinimum 0
+             */
+            windowDurationMins: number | null;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            resetsAt: number | null;
+          }
+
+          export interface Secondary {
+            usedPercent: number;
+            /**
+             * @maximum 9007199254740991
+             * @exclusiveMinimum 0
+             */
+            windowDurationMins: number | null;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            resetsAt: number | null;
+          }
+
+          export interface Credits {
+            hasCredits: boolean;
+            unlimited: boolean;
+            balance: string | null;
+          }
+
+          export interface IndividualLimit {
+            limit: string;
+            used: string;
+            remainingPercent: number;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            resetsAt: number;
+          }
+        }
+
+        export interface RateLimitResetCredits {
+          /**
+           * @minimum 0
+           * @maximum 9007199254740991
+           */
+          availableCount: number;
+          credits: Array<RateLimitResetCredits.Credit> | null;
+        }
+
+        export namespace RateLimitResetCredits {
+          export interface Credit {
+            id: string;
+            resetType: 'codexRateLimits' | 'unknown';
+            status: 'available' | 'redeeming' | 'redeemed' | 'unknown';
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            grantedAt: number;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            expiresAt: number | null;
+            title: string | null;
+            description: string | null;
+          }
+        }
+
+        export interface TokenUsage {
+          summary: TokenUsage.Summary;
+          dailyUsageBuckets: Array<TokenUsage.DailyUsageBucket> | null;
+        }
+
+        export namespace TokenUsage {
+          export interface Summary {
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            lifetimeTokens: number | null;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            peakDailyTokens: number | null;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            longestRunningTurnSec: number | null;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            currentStreakDays: number | null;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            longestStreakDays: number | null;
+          }
+
+          export interface DailyUsageBucket {
+            /**
+             * @format date
+             * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))$
+             */
+            startDate: string;
+            /**
+             * @minimum 0
+             * @maximum 9007199254740991
+             */
+            tokens: number;
+          }
+        }
+      }
+
+      export interface UsageError {
+        code: 'reconnectRequired' | 'rateLimited' | 'unavailable';
+        message: string;
+        retryAfter: string | null;
+      }
+    }
+
     export interface Usage {
       planType:
         | 'free'
@@ -62,6 +280,7 @@ export namespace SubscriptionRetrieveResponse {
       tokenUsage: Usage.TokenUsage;
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       fetchedAt: string;
     }
@@ -109,11 +328,13 @@ export namespace SubscriptionRetrieveResponse {
         export interface Primary {
           usedPercent: number;
           /**
+           * @maximum 9007199254740991
            * @exclusiveMinimum 0
            */
           windowDurationMins: number | null;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           resetsAt: number | null;
         }
@@ -121,11 +342,13 @@ export namespace SubscriptionRetrieveResponse {
         export interface Secondary {
           usedPercent: number;
           /**
+           * @maximum 9007199254740991
            * @exclusiveMinimum 0
            */
           windowDurationMins: number | null;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           resetsAt: number | null;
         }
@@ -142,6 +365,7 @@ export namespace SubscriptionRetrieveResponse {
           remainingPercent: number;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           resetsAt: number;
         }
@@ -150,6 +374,7 @@ export namespace SubscriptionRetrieveResponse {
       export interface RateLimitResetCredits {
         /**
          * @minimum 0
+         * @maximum 9007199254740991
          */
         availableCount: number;
         credits: Array<RateLimitResetCredits.Credit> | null;
@@ -162,10 +387,12 @@ export namespace SubscriptionRetrieveResponse {
           status: 'available' | 'redeeming' | 'redeemed' | 'unknown';
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           grantedAt: number;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           expiresAt: number | null;
           title: string | null;
@@ -182,22 +409,27 @@ export namespace SubscriptionRetrieveResponse {
         export interface Summary {
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           lifetimeTokens: number | null;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           peakDailyTokens: number | null;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           longestRunningTurnSec: number | null;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           currentStreakDays: number | null;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           longestStreakDays: number | null;
         }
@@ -205,10 +437,12 @@ export namespace SubscriptionRetrieveResponse {
         export interface DailyUsageBucket {
           /**
            * @format date
+           * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))$
            */
           startDate: string;
           /**
            * @minimum 0
+           * @maximum 9007199254740991
            */
           tokens: number;
         }
@@ -225,11 +459,149 @@ export namespace SubscriptionRetrieveResponse {
   export interface Claude {
     connected: boolean;
     reconnectRequired: boolean;
+    accounts: Array<Claude.Account>;
     usage: Claude.Usage | null;
     usageError: Claude.UsageError | null;
   }
 
   export namespace Claude {
+    export interface Account {
+      /**
+       * Connected account, when an owner has several for one provider.
+       * @minimum 0
+       * @maximum 9007199254740991
+       */
+      slot: number;
+      /**
+       * Email of the provider account, when the provider shares it.
+       */
+      email: string | null;
+      connected: boolean;
+      reconnectRequired: boolean;
+      usage: Account.Usage | null;
+      usageError: Account.UsageError | null;
+    }
+
+    export namespace Account {
+      export interface Usage {
+        rateLimits: Array<
+          | Usage.RateLimit
+          | Usage.RateLimit2
+          | Usage.RateLimit3
+          | Usage.RateLimit4
+          | Usage.RateLimit5
+          | Usage.RateLimit6
+        >;
+        rateLimitResetCredits: Usage.RateLimitResetCredits | null;
+      }
+
+      export namespace Usage {
+        export interface RateLimit {
+          key: 'five_hour';
+          label: '5-hour limit';
+          detail: null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimit2 {
+          key: 'seven_day';
+          label: 'Weekly limit';
+          detail: null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimit3 {
+          key: 'seven_day_oauth_apps';
+          label: 'Weekly limit · OAuth apps';
+          detail: null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimit4 {
+          key: 'seven_day_opus';
+          label: 'Weekly limit · Opus';
+          detail: null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimit5 {
+          key: 'seven_day_sonnet';
+          label: 'Weekly limit · Sonnet';
+          detail: null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimit6 {
+          key: 'seven_day_cowork';
+          label: 'Weekly limit · Cowork';
+          detail: null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimitResetCredits {
+          /**
+           * @minimum 0
+           * @maximum 9007199254740991
+           */
+          availableCount: number;
+        }
+      }
+
+      export interface UsageError {
+        code: 'reconnectRequired' | 'rateLimited' | 'unavailable';
+        message: string;
+        retryAfter: string | null;
+      }
+    }
+
     export interface Usage {
       rateLimits: Array<
         | Usage.RateLimit
@@ -336,6 +708,7 @@ export namespace SubscriptionRetrieveResponse {
       export interface RateLimitResetCredits {
         /**
          * @minimum 0
+         * @maximum 9007199254740991
          */
         availableCount: number;
       }
@@ -350,11 +723,86 @@ export namespace SubscriptionRetrieveResponse {
 
   export interface Supergrok {
     connected: boolean;
+    accounts: Array<Supergrok.Account>;
     usage: Supergrok.Usage | null;
     usageError: Supergrok.UsageError | null;
   }
 
   export namespace Supergrok {
+    export interface Account {
+      /**
+       * Connected account, when an owner has several for one provider.
+       * @minimum 0
+       * @maximum 9007199254740991
+       */
+      slot: number;
+      /**
+       * Email of the provider account, when the provider shares it.
+       */
+      email: string | null;
+      usage: Account.Usage | null;
+      usageError: Account.UsageError | null;
+    }
+
+    export namespace Account {
+      export interface Usage {
+        rateLimits: Array<Usage.RateLimit | Usage.RateLimit2 | Usage.RateLimit3>;
+      }
+
+      export namespace Usage {
+        export interface RateLimit {
+          key: 'weekly';
+          label: 'Weekly limit';
+          detail: string | null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimit2 {
+          key: 'monthly';
+          label: 'Monthly limit';
+          detail: string | null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+
+        export interface RateLimit3 {
+          key: 'credits';
+          label: 'Credit usage';
+          detail: string | null;
+          /**
+           * @minimum 0
+           * @maximum 100
+           */
+          remainingPercent: number;
+          /**
+           * @minimum 0
+           */
+          resetsAt: number | null;
+        }
+      }
+
+      export interface UsageError {
+        code: 'reconnectRequired' | 'rateLimited' | 'unavailable';
+        message: string;
+        retryAfter: string | null;
+      }
+    }
+
     export interface Usage {
       rateLimits: Array<Usage.RateLimit | Usage.RateLimit2 | Usage.RateLimit3>;
     }

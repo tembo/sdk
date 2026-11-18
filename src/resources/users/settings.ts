@@ -26,18 +26,18 @@ export class Settings extends APIResource {
    * Configure personal agent/model and project defaults, system instructions, follow-up queue/steer behavior, VM restart, commit signing/attribution, notifications, themes, and review layout. Updates preserve unrelated settings.
    *
    * @param {string} userID
-   * @param {SettingUpdateParams} body - The request body to send.
+   * @param {SettingUpdateParams} [body] - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<SettingUpdateResponse>} Update user settings
    *
    * @example
    * ```ts
-   * const setting = await client.users.settings.update('userId', {});
+   * const setting = await client.users.settings.update('userId');
    * ```
    */
   update(
     userID: string,
-    body: SettingUpdateParams,
+    body: SettingUpdateParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<SettingUpdateResponse> {
     return this._client.patch(__scalarPath`/v1/users/${userID}/settings`, { body, ...options });

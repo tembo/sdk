@@ -32,7 +32,7 @@ describe.concurrent('resource apiKeys', () => {
     { operation: 'create', path: '/v1/api-keys' },
     'create: only required params',
     async () => {
-      const apiKey = await client.apiKeys.create({});
+      const apiKey = await client.apiKeys.create();
     },
   );
   smokeCase(

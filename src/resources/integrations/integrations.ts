@@ -169,20 +169,18 @@ export class Integrations extends APIResource {
    * Queue or immediately perform an integration sync.
    *
    * @param {string} integrationID
-   * @param {IntegrationSyncParams} body - The request body to send.
+   * @param {IntegrationSyncParams} [body] - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<IntegrationSyncResponse>} Sync an integration
    *
    * @example
    * ```ts
-   * const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-   *   mode: 'queued',
-   * });
+   * const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7');
    * ```
    */
   sync(
     integrationID: string,
-    body: IntegrationSyncParams,
+    body: IntegrationSyncParams | null | undefined = {},
     options?: RequestOptions,
   ): APIPromise<IntegrationSyncResponse> {
     return this._client.post(__scalarPath`/v1/integrations/${integrationID}/sync`, { body, ...options });
@@ -191,16 +189,19 @@ export class Integrations extends APIResource {
   /**
    * Queue integration and pull-request sync jobs for integrations with enabled repositories.
    *
-   * @param {IntegrationSyncAllParams} body - The request body to send.
+   * @param {IntegrationSyncAllParams} [body] - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<IntegrationSyncAllResponse>} Sync eligible integrations
    *
    * @example
    * ```ts
-   * const integration = await client.integrations.syncAll({});
+   * const integration = await client.integrations.syncAll();
    * ```
    */
-  syncAll(body: IntegrationSyncAllParams, options?: RequestOptions): APIPromise<IntegrationSyncAllResponse> {
+  syncAll(
+    body: IntegrationSyncAllParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<IntegrationSyncAllResponse> {
     return this._client.post('/v1/integrations/sync', { body, ...options });
   }
 
@@ -299,6 +300,7 @@ export interface IntegrationListParams {
   /**
    * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   cursor?: string;
   /**
@@ -337,6 +339,7 @@ export interface IntegrationListParams {
   /**
    * Only integrations created after this ISO 8601 timestamp.
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAfter?: string;
   /**
@@ -356,10 +359,12 @@ export interface IntegrationListResponse {
   items: Array<IntegrationListResponse.Item>;
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   nextCursor: string | null;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   totalCount?: number;
 }
@@ -368,24 +373,29 @@ export namespace IntegrationListResponse {
   export interface Item {
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     createdAt: string;
     displayName: string;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     enabledAt: string | null;
     id: string;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     lastSyncedAt: string | null;
     /**
      * @minimum 0
+     * @maximum 9007199254740991
      */
     repositoryCount: number;
     /**
      * @minimum 0
+     * @maximum 9007199254740991
      */
     sourceCount: number;
     /**
@@ -395,6 +405,7 @@ export namespace IntegrationListResponse {
     type: string;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     updatedAt: string;
   }
@@ -535,6 +546,7 @@ export declare namespace IntegrationCreateParams {
     /**
      * Snyk organization ID, not a Tembo organization ID. Discover choices with discoverSnykOrganizations.
      * @format uuid
+     * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
      */
     organizationId: string;
     /**
@@ -592,6 +604,7 @@ export interface IntegrationCreateResponse {
   integration: IntegrationCreateResponse.Integration;
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   sessionSourceId: string | null;
 }
@@ -600,24 +613,29 @@ export namespace IntegrationCreateResponse {
   export interface Integration {
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     createdAt: string;
     displayName: string;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     enabledAt: string | null;
     id: string;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     lastSyncedAt: string | null;
     /**
      * @minimum 0
+     * @maximum 9007199254740991
      */
     repositoryCount: number;
     /**
      * @minimum 0
+     * @maximum 9007199254740991
      */
     sourceCount: number;
     /**
@@ -627,6 +645,7 @@ export namespace IntegrationCreateResponse {
     type: string;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     updatedAt: string;
   }
@@ -635,24 +654,29 @@ export namespace IntegrationCreateResponse {
 export interface IntegrationRetrieveResponse {
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
   displayName: string;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   enabledAt: string | null;
   id: string;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   lastSyncedAt: string | null;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   repositoryCount: number;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   sourceCount: number;
   /**
@@ -662,6 +686,7 @@ export interface IntegrationRetrieveResponse {
   type: string;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   updatedAt: string;
 }
@@ -677,6 +702,7 @@ export declare namespace IntegrationUpdateParams {
   export interface Settings {
     /**
      * Update integration settings, preserving unspecified settings.
+     * @minProperties 1
      */
     settings: Settings.Settings;
   }
@@ -685,6 +711,7 @@ export declare namespace IntegrationUpdateParams {
     export interface Settings {
       /**
        * @format uuid
+       * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
        */
       defaultRepositoryId?: string | null;
       /**
@@ -796,24 +823,29 @@ export declare namespace IntegrationUpdateParams {
 export interface IntegrationUpdateResponse {
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
   displayName: string;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   enabledAt: string | null;
   id: string;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   lastSyncedAt: string | null;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   repositoryCount: number;
   /**
    * @minimum 0
+   * @maximum 9007199254740991
    */
   sourceCount: number;
   /**
@@ -823,6 +855,7 @@ export interface IntegrationUpdateResponse {
   type: string;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   updatedAt: string;
 }
@@ -830,6 +863,7 @@ export interface IntegrationUpdateResponse {
 export interface IntegrationDeleteResponse {
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   id: string;
   deleted: true;
@@ -871,6 +905,7 @@ export interface IntegrationSyncParams {
 export interface IntegrationSyncResponse {
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   integrationId: string;
   jobId: string | null;
@@ -900,6 +935,7 @@ export interface IntegrationSyncAllResponse {
 export interface IntegrationRetrieveSyncStatusParams {
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   integrationId?: string;
 }
@@ -925,6 +961,7 @@ export namespace IntegrationRetrieveRateLimitResponse {
     remaining: number;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     resetAt: string;
     used: number;
@@ -935,6 +972,7 @@ export namespace IntegrationRetrieveRateLimitResponse {
     remaining: number;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     resetAt: string;
     used: number;
@@ -945,6 +983,7 @@ export namespace IntegrationRetrieveRateLimitResponse {
     remaining: number;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     resetAt: string;
     used: number;
