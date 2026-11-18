@@ -32657,7 +32657,7 @@
                     "type": "boolean"
                   },
                   "automaticSizing": {
-                    "description": "Size the VM automatically. Only for sessions created without a project (projectId \"tembo\").",
+                    "description": "Size the VM automatically. Sessions are sized automatically by default, and project sessions always are.",
                     "type": "boolean"
                   },
                   "sessionMode": {
@@ -41929,22 +41929,22 @@
                       "description": "Project to make the organization default, or null to clear the default."
                     },
                     "sandboxSize": {
+                      "description": "Deprecated and ignored. Projects always use automatic sizing.",
                       "type": "string",
                       "enum": [
                         "nano",
                         "micro",
+                        "small",
                         "medium",
                         "large",
                         "xl",
                         "xxl",
                         "ultra"
-                      ],
-                      "description": "Default workspace VM size for the organization."
+                      ]
                     }
                   },
                   "required": [
-                    "projectId",
-                    "sandboxSize"
+                    "projectId"
                   ],
                   "additionalProperties": false
                 }
@@ -42068,22 +42068,22 @@
                     "description": "Project to make the organization default, or null to clear the default."
                   },
                   "sandboxSize": {
+                    "description": "Deprecated and ignored. Projects always use automatic sizing.",
                     "type": "string",
                     "enum": [
                       "nano",
                       "micro",
+                      "small",
                       "medium",
                       "large",
                       "xl",
                       "xxl",
                       "ultra"
-                    ],
-                    "description": "Default workspace VM size for the organization."
+                    ]
                   }
                 },
                 "required": [
-                  "projectId",
-                  "sandboxSize"
+                  "projectId"
                 ],
                 "additionalProperties": false
               }
@@ -43428,10 +43428,7 @@
                     "additionalProperties": false
                   },
                   "sizes": {
-                    "default": [
-                      "medium"
-                    ],
-                    "description": "Workspace VM sizes to build for this project.",
+                    "description": "Deprecated and ignored. Projects always use automatic sizing.",
                     "minItems": 1,
                     "type": "array",
                     "items": {
@@ -43448,9 +43445,7 @@
                     }
                   },
                   "resourceSettings": {
-                    "default": {
-                      "automaticSizing": false
-                    },
+                    "description": "Custom resource limits for automatic sizing. Omit to use the organization defaults.",
                     "oneOf": [
                       {
                         "type": "object",
@@ -44752,7 +44747,7 @@
                     ]
                   },
                   "defaultForSizes": {
-                    "description": "VM sizes for which this project is the organization default. An empty array removes its default assignments.",
+                    "description": "Make this project the organization default with any size, or remove its default with an empty array. Sizes are otherwise ignored.",
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -44811,7 +44806,7 @@
                     "minProperties": 1
                   },
                   "sizes": {
-                    "description": "Replace the workspace VM sizes built for this project.",
+                    "description": "Deprecated and ignored. Projects always use automatic sizing.",
                     "minItems": 1,
                     "type": "array",
                     "items": {
@@ -47931,7 +47926,7 @@
                 "type": "object",
                 "properties": {
                   "sizes": {
-                    "description": "VM sizes to build. Omit to use the project sizes. Cannot be combined with snapshotId.",
+                    "description": "Deprecated and ignored. Projects build one automatically sized snapshot. Cannot be combined with snapshotId.",
                     "minItems": 1,
                     "type": "array",
                     "items": {
