@@ -190,7 +190,7 @@ export namespace BuildListResponse {
 
 export interface BuildCreateParams {
   /**
-   * VM sizes to build. Omit to use the project sizes. Cannot be combined with snapshotId.
+   * Deprecated and ignored. Projects build one automatically sized snapshot. Cannot be combined with snapshotId.
    * @minItems 1
    */
   sizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;

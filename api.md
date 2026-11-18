@@ -1754,7 +1754,6 @@ Choose the default project and sandbox size for the organization.
 ```ts
 const project = await client.projects.updateDefaults({
   projectId: 'x',
-  sandboxSize: 'nano',
 });
 ```
 
@@ -1797,8 +1796,6 @@ Create a reusable project environment.
 ```ts
 const project = await client.projects.create({
   name: 'x',
-  sizes: ['medium'],
-  resourceSettings: { automaticSizing: false },
 });
 ```
 

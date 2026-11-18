@@ -70,7 +70,6 @@ export class Projects extends APIResource {
    * ```ts
    * const project = await client.projects.updateDefaults({
    *   projectId: 'x',
-   *   sandboxSize: 'nano',
    * });
    * ```
    */
@@ -128,8 +127,6 @@ export class Projects extends APIResource {
    * ```ts
    * const project = await client.projects.create({
    *   name: 'x',
-   *   sizes: ['medium'],
-   *   resourceSettings: { automaticSizing: false },
    * });
    * ```
    */
@@ -215,9 +212,9 @@ export interface ProjectUpdateDefaultsParams {
    */
   projectId: string | null;
   /**
-   * Default workspace VM size for the organization.
+   * Deprecated and ignored. Projects always use automatic sizing.
    */
-  sandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
 }
 
 export interface ProjectUpdateDefaultsResponse {
@@ -228,9 +225,9 @@ export interface ProjectUpdateDefaultsResponse {
    */
   projectId: string | null;
   /**
-   * Default workspace VM size for the organization.
+   * Deprecated and ignored. Projects always use automatic sizing.
    */
-  sandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+  sandboxSize?: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
 }
 
 export interface ProjectRetrieveDefaultsResponse {
@@ -530,13 +527,12 @@ export interface ProjectCreateParams {
    */
   schedule?: ProjectCreateParams.Schedule;
   /**
-   * Workspace VM sizes to build for this project.
-   * @default ["medium"]
+   * Deprecated and ignored. Projects always use automatic sizing.
    * @minItems 1
    */
   sizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   /**
-   * @default {"automaticSizing":false}
+   * Custom resource limits for automatic sizing. Omit to use the organization defaults.
    */
   resourceSettings?: ProjectCreateParams.ResourceSettings | ProjectCreateParams.ResourceSettings2;
 }
@@ -1050,7 +1046,7 @@ export interface ProjectUpdateParams {
   includeSkills?: boolean;
   resourceSettings?: ProjectUpdateParams.ResourceSettings | ProjectUpdateParams.ResourceSettings2;
   /**
-   * VM sizes for which this project is the organization default. An empty array removes its default assignments.
+   * Make this project the organization default with any size, or remove its default with an empty array. Sizes are otherwise ignored.
    */
   defaultForSizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
   /**
@@ -1063,7 +1059,7 @@ export interface ProjectUpdateParams {
    */
   schedule?: ProjectUpdateParams.Schedule;
   /**
-   * Replace the workspace VM sizes built for this project.
+   * Deprecated and ignored. Projects always use automatic sizing.
    * @minItems 1
    */
   sizes?: Array<'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra'>;
