@@ -346,3 +346,30 @@ test('audit log mappings cover the new list and filter routes', () => {
   assert.equal(auditLogs.methods.list, 'get /v1/audit-logs');
   assert.equal(auditLogs.methods.list_filters, 'get /v1/audit-logs/filters');
 });
+
+test('organization team and session share mappings cover the new routes', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const teams = sdkConfig.resources.organizations.subresources.teams;
+  const shares = sdkConfig.resources.sessions.subresources.shares;
+  validateCoverage(
+    {
+      paths: {
+        '/v1/organizations/{organizationId}/teams': { get: {}, post: {} },
+        '/v1/organizations/{organizationId}/teams/{teamId}': { get: {}, patch: {}, delete: {} },
+        '/v1/organizations/{organizationId}/teams/{teamId}/members': { post: {} },
+        '/v1/organizations/{organizationId}/teams/{teamId}/members/{userId}': { delete: {} },
+        '/v1/sessions/{sessionId}/sharing': { get: {}, post: {} },
+        '/v1/sessions/{sessionId}/sharing/{shareId}': { delete: {} },
+      },
+    },
+    { resources: { organizations: { subresources: { teams } }, sessions: { subresources: { shares } } } },
+  );
+  for (const method of [
+    teams.methods.create,
+    teams.methods.update,
+    teams.methods.add_member,
+    shares.methods.create,
+  ]) {
+    assert.equal(method.bodyParamName, 'body');
+  }
+});

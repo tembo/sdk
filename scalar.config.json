@@ -141,6 +141,35 @@
             }
           }
         },
+        "teams": {
+          "methods": {
+            "list": "get /v1/organizations/{organizationId}/teams",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/teams",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/teams",
+              "bodyParamName": "body"
+            },
+            "retrieve": "get /v1/organizations/{organizationId}/teams/{teamId}",
+            "update": {
+              "kind": "http",
+              "endpoint": "patch /v1/organizations/{organizationId}/teams/{teamId}",
+              "verb": "patch",
+              "path": "/v1/organizations/{organizationId}/teams/{teamId}",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/organizations/{organizationId}/teams/{teamId}",
+            "add_member": {
+              "kind": "http",
+              "endpoint": "post /v1/organizations/{organizationId}/teams/{teamId}/members",
+              "verb": "post",
+              "path": "/v1/organizations/{organizationId}/teams/{teamId}/members",
+              "bodyParamName": "body"
+            },
+            "remove_member": "delete /v1/organizations/{organizationId}/teams/{teamId}/members/{userId}"
+          }
+        },
         "secrets": {
           "methods": {
             "list": "get /v1/organizations/{organizationId}/secrets",
@@ -218,12 +247,12 @@
       "models": {
         "tip_tap_document": "#/components/schemas/TipTapDocument",
         "tip_tap_node": "#/components/schemas/TipTapNode",
-        "tip_tap_image_node": "#/components/schemas/TipTapImageContentNode",
-        "tip_tap_mention_node": "#/components/schemas/TipTapMentionContentNode",
-        "tip_tap_heading_node": "#/components/schemas/TipTapHeadingContentNode",
-        "tip_tap_ordered_list_node": "#/components/schemas/TipTapOrderedListContentNode",
-        "tip_tap_task_item_node": "#/components/schemas/TipTapTaskItemContentNode",
-        "tip_tap_code_block_node": "#/components/schemas/TipTapCodeBlockContentNode",
+        "tip_tap_image_node": "#/components/schemas/TipTapImageNode",
+        "tip_tap_mention_node": "#/components/schemas/TipTapMentionNode",
+        "tip_tap_heading_node": "#/components/schemas/TipTapHeadingNode",
+        "tip_tap_ordered_list_node": "#/components/schemas/TipTapOrderedListNode",
+        "tip_tap_task_item_node": "#/components/schemas/TipTapTaskItemNode",
+        "tip_tap_code_block_node": "#/components/schemas/TipTapCodeBlockNode",
         "tip_tap_content_node": "#/components/schemas/TipTapContentNode",
         "tip_tap_link_mark": "#/components/schemas/TipTapLinkMark",
         "tip_tap_mark": "#/components/schemas/TipTapMark",
@@ -405,6 +434,19 @@
         "commands": {
           "methods": {
             "list": "get /v1/sessions/{sessionId}/commands"
+          }
+        },
+        "shares": {
+          "methods": {
+            "list": "get /v1/sessions/{sessionId}/sharing",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/sessions/{sessionId}/sharing",
+              "verb": "post",
+              "path": "/v1/sessions/{sessionId}/sharing",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/sessions/{sessionId}/sharing/{shareId}"
           }
         }
       }
