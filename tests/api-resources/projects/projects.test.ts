@@ -98,9 +98,7 @@ describe.concurrent('resource projects', () => {
     { operation: 'update', path: '/v1/projects/{projectId}' },
     'update: only required params',
     async () => {
-      const project = await client.projects.update('projectId', {
-        resourceSettings: { automaticSizing: false },
-      });
+      const project = await client.projects.update('projectId', {});
     },
   );
   smokeCase(
@@ -118,7 +116,9 @@ describe.concurrent('resource projects', () => {
         icon: 'folder',
         includeDeps: false,
         includeSkills: false,
-        resourceSettings: { automaticSizing: false },
+        resourceSettings: {
+          automaticSizing: true,
+        },
         defaultForSizes: ['nano'],
         environmentVariables: {},
         schedule: {},

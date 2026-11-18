@@ -32,6 +32,7 @@ describe.concurrent('resource sessions', () => {
         cursor: 'cursor',
         limit: 50,
         excludePinned: true,
+        excludeTeamId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         externalIds: ['externalId'],
         folderId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         hasProject: true,
@@ -49,6 +50,7 @@ describe.concurrent('resource sessions', () => {
         sourceIds: ['sourceId'],
         sourceTypes: ['sourceType'],
         state: 'all',
+        teamId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
       });
     },
   );
@@ -86,6 +88,7 @@ describe.concurrent('resource sessions', () => {
     'update: required and optional params',
     async () => {
       const session = await client.sessions.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
+        visibility: 'private',
         memoryMb: 1024,
         agent: 'x',
         agentOptions: {},
@@ -100,7 +103,6 @@ describe.concurrent('resource sessions', () => {
         sandboxSize: 'nano',
         targetBranch: 'x',
         title: 'x',
-        visibility: 'private',
       });
     },
   );
@@ -117,9 +119,7 @@ describe.concurrent('resource sessions', () => {
     { operation: 'fork', path: '/v1/sessions/{sessionId}/fork' },
     'fork: only required params',
     async () => {
-      const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-        queueRightAway: true,
-      });
+      const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7');
     },
   );
   smokeCase(

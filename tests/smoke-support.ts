@@ -28,7 +28,7 @@ import Tembo from '@tembo-io/sdk';
  * only for generator tooling). The runner refuses a list whose digest differs, so a list left by
  * an earlier generation is never trusted.
  */
-export const SMOKE_CASE_LIST_DIGEST = '276698447252ca62';
+export const SMOKE_CASE_LIST_DIGEST = 'a83bac171da37b90';
 
 const baseURL = process.env['TEST_API_BASE_URL'] || undefined;
 

@@ -57,7 +57,6 @@ describe.concurrent('resource roles', () => {
     async () => {
       const role = await client.organizations.roles.update('roleId', {
         organizationId: 'organizationId',
-        description: '',
       });
     },
   );

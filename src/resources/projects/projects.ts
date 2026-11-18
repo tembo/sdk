@@ -163,9 +163,7 @@ export class Projects extends APIResource {
    *
    * @example
    * ```ts
-   * const project = await client.projects.update('projectId', {
-   *   resourceSettings: { automaticSizing: false },
-   * });
+   * const project = await client.projects.update('projectId', {});
    * ```
    */
   update(
@@ -286,6 +284,7 @@ export namespace ProjectListResponse {
   export interface Item {
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     createdAt: string;
     description: string | null;
@@ -298,6 +297,7 @@ export namespace ProjectListResponse {
     setupScript: string | null;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     updatedAt: string;
     activeSnapshots: Array<Item.ActiveSnapshot>;
@@ -351,6 +351,7 @@ export namespace ProjectListResponse {
       size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       builtAt: string;
     }
@@ -363,24 +364,29 @@ export namespace ProjectListResponse {
     export namespace ResourceSettings {
       export interface Allocation {
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMinMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMaxMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         diskSizeGb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMin?: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMax?: number;
@@ -395,24 +401,29 @@ export namespace ProjectListResponse {
     export namespace ResourceSettings2 {
       export interface Allocation {
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMinMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMaxMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         diskSizeGb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMin?: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMax?: number;
@@ -554,24 +565,29 @@ export namespace ProjectCreateParams {
   export namespace ResourceSettings {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -586,24 +602,29 @@ export namespace ProjectCreateParams {
   export namespace ResourceSettings2 {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -620,6 +641,7 @@ export namespace ProjectCreateResponse {
   export interface Project {
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     createdAt: string;
     description: string | null;
@@ -632,6 +654,7 @@ export namespace ProjectCreateResponse {
     setupScript: string | null;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     updatedAt: string;
     activeSnapshots: Array<Project.ActiveSnapshot>;
@@ -685,6 +708,7 @@ export namespace ProjectCreateResponse {
       size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       builtAt: string;
     }
@@ -697,24 +721,29 @@ export namespace ProjectCreateResponse {
     export namespace ResourceSettings {
       export interface Allocation {
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMinMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMaxMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         diskSizeGb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMin?: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMax?: number;
@@ -729,24 +758,29 @@ export namespace ProjectCreateResponse {
     export namespace ResourceSettings2 {
       export interface Allocation {
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMinMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMaxMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         diskSizeGb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMin?: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMax?: number;
@@ -779,6 +813,7 @@ export namespace ProjectCreateResponse {
 export interface ProjectRetrieveResponse {
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
   description: string | null;
@@ -791,6 +826,7 @@ export interface ProjectRetrieveResponse {
   setupScript: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   updatedAt: string;
   activeSnapshots: Array<ProjectRetrieveResponse.ActiveSnapshot>;
@@ -847,6 +883,7 @@ export namespace ProjectRetrieveResponse {
     size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     builtAt: string;
   }
@@ -859,24 +896,29 @@ export namespace ProjectRetrieveResponse {
   export namespace ResourceSettings {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -891,24 +933,29 @@ export namespace ProjectRetrieveResponse {
   export namespace ResourceSettings2 {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -1001,9 +1048,6 @@ export interface ProjectUpdateParams {
    * Deprecated and ignored. Project builds always include skills.
    */
   includeSkills?: boolean;
-  /**
-   * @default {"automaticSizing":false}
-   */
   resourceSettings?: ProjectUpdateParams.ResourceSettings | ProjectUpdateParams.ResourceSettings2;
   /**
    * VM sizes for which this project is the organization default. An empty array removes its default assignments.
@@ -1015,6 +1059,7 @@ export interface ProjectUpdateParams {
   environmentVariables?: Record<string, string>;
   /**
    * Change the project build schedule, including enabling or pausing it.
+   * @minProperties 1
    */
   schedule?: ProjectUpdateParams.Schedule;
   /**
@@ -1041,24 +1086,29 @@ export namespace ProjectUpdateParams {
   export namespace ResourceSettings {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -1073,24 +1123,29 @@ export namespace ProjectUpdateParams {
   export namespace ResourceSettings2 {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -1141,6 +1196,7 @@ export namespace ProjectUpdateParams {
 export interface ProjectUpdateResponse {
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
   description: string | null;
@@ -1153,6 +1209,7 @@ export interface ProjectUpdateResponse {
   setupScript: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   updatedAt: string;
   activeSnapshots: Array<ProjectUpdateResponse.ActiveSnapshot>;
@@ -1206,6 +1263,7 @@ export namespace ProjectUpdateResponse {
     size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     builtAt: string;
   }
@@ -1218,24 +1276,29 @@ export namespace ProjectUpdateResponse {
   export namespace ResourceSettings {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -1250,24 +1313,29 @@ export namespace ProjectUpdateResponse {
   export namespace ResourceSettings2 {
     export interface Allocation {
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMinMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        * @multipleOf 1024
        */
       memoryMaxMb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       diskSizeGb: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMin?: number;
       /**
+       * @maximum 9007199254740991
        * @exclusiveMinimum 0
        */
       cpuMax?: number;
@@ -1314,6 +1382,7 @@ export namespace ProjectDuplicateResponse {
   export interface Project {
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     createdAt: string;
     description: string | null;
@@ -1326,6 +1395,7 @@ export namespace ProjectDuplicateResponse {
     setupScript: string | null;
     /**
      * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
     updatedAt: string;
     activeSnapshots: Array<Project.ActiveSnapshot>;
@@ -1379,6 +1449,7 @@ export namespace ProjectDuplicateResponse {
       size: 'nano' | 'micro' | 'small' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       builtAt: string;
     }
@@ -1391,24 +1462,29 @@ export namespace ProjectDuplicateResponse {
     export namespace ResourceSettings {
       export interface Allocation {
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMinMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMaxMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         diskSizeGb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMin?: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMax?: number;
@@ -1423,24 +1499,29 @@ export namespace ProjectDuplicateResponse {
     export namespace ResourceSettings2 {
       export interface Allocation {
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMinMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          * @multipleOf 1024
          */
         memoryMaxMb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         diskSizeGb: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMin?: number;
         /**
+         * @maximum 9007199254740991
          * @exclusiveMinimum 0
          */
         cpuMax?: number;

@@ -73,7 +73,7 @@ export interface ProviderListParams {
 }
 
 export interface ProviderListResponse {
-  installedCounts: ProviderListResponse.InstalledCounts;
+  installedCounts: Record<string, number>;
   /**
    * @maxItems 100
    */
@@ -86,81 +86,6 @@ export interface ProviderListResponse {
 }
 
 export namespace ProviderListResponse {
-  export interface InstalledCounts {
-    /**
-     * @minimum 0
-     */
-    github?: number;
-    /**
-     * @minimum 0
-     */
-    gitlab?: number;
-    /**
-     * @minimum 0
-     */
-    bitbucket?: number;
-    /**
-     * @minimum 0
-     */
-    atlassian?: number;
-    /**
-     * @minimum 0
-     */
-    linear?: number;
-    /**
-     * @minimum 0
-     */
-    slack?: number;
-    /**
-     * @minimum 0
-     */
-    sentry?: number;
-    /**
-     * @minimum 0
-     */
-    aws?: number;
-    /**
-     * @minimum 0
-     */
-    agent?: number;
-    /**
-     * @minimum 0
-     */
-    notion?: number;
-    /**
-     * @minimum 0
-     */
-    postgres?: number;
-    /**
-     * @minimum 0
-     */
-    bigquery?: number;
-    /**
-     * @minimum 0
-     */
-    azure?: number;
-    /**
-     * @minimum 0
-     */
-    'ms-teams'?: number;
-    /**
-     * @minimum 0
-     */
-    snyk?: number;
-    /**
-     * @minimum 0
-     */
-    hubspot?: number;
-    /**
-     * @minimum 0
-     */
-    openconnect?: number;
-    /**
-     * @minimum 0
-     */
-    tailscale?: number;
-  }
-
   export interface Item {
     /**
      * @maxLength 8192
@@ -263,6 +188,7 @@ export namespace ProviderDiscoverSnykOrganizationsResponse {
   export interface Item {
     /**
      * @format uuid
+     * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
      */
     id: string;
     name: string | null;

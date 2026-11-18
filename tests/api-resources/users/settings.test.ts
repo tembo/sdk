@@ -19,7 +19,7 @@ describe.concurrent('resource settings', () => {
     { operation: 'update', path: '/v1/users/{userId}/settings' },
     'update: only required params',
     async () => {
-      const setting = await client.users.settings.update('userId', {});
+      const setting = await client.users.settings.update('userId');
     },
   );
   smokeCase(

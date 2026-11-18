@@ -99,19 +99,23 @@ export interface InsightRetrieveParams {
 export interface InsightRetrieveResponse {
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   id: string | null;
   status: 'syncing' | 'ready' | 'failed' | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   rangeStart: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   rangeEnd: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   lastSyncedAt: string | null;
   enabled: boolean;
@@ -127,8 +131,20 @@ export namespace InsightRetrieveResponse {
 
   export namespace Data {
     export interface Summary {
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       tasksCompleted: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsCreated: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsMerged: number;
       /**
        * Recorded model cost plus VM compute fees in USD across the organization divided by Tembo-created PRs in the selected sync window. Excludes subscription fees and inference billing markup. Null when there are no PRs or no recorded costs.
@@ -155,9 +171,21 @@ export namespace InsightRetrieveResponse {
        * Bucket key: YYYY-MM for 1y, YYYY-MM-DD (UTC) for 7d and 30d, and an ISO 8601 hour start for 1d.
        */
       month: string;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsWithTembo: number;
       prsWithoutTembo: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsMerged: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsCreated: number;
       temboContribution: number;
     }
@@ -174,19 +202,23 @@ export interface InsightUpdateParams {
 export interface InsightUpdateResponse {
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   id: string | null;
   status: 'syncing' | 'ready' | 'failed' | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   rangeStart: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   rangeEnd: string | null;
   /**
    * @format date-time
+   * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   lastSyncedAt: string | null;
   enabled: boolean;
@@ -202,8 +234,20 @@ export namespace InsightUpdateResponse {
 
   export namespace Data {
     export interface Summary {
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       tasksCompleted: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsCreated: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsMerged: number;
       /**
        * Recorded model cost plus VM compute fees in USD across the organization divided by Tembo-created PRs in the selected sync window. Excludes subscription fees and inference billing markup. Null when there are no PRs or no recorded costs.
@@ -230,9 +274,21 @@ export namespace InsightUpdateResponse {
        * Bucket key: YYYY-MM for 1y, YYYY-MM-DD (UTC) for 7d and 30d, and an ISO 8601 hour start for 1d.
        */
       month: string;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsWithTembo: number;
       prsWithoutTembo: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsMerged: number;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       prsCreated: number;
       temboContribution: number;
     }
@@ -243,6 +299,7 @@ export interface InsightListMembersParams {
   /**
    * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   cursor?: string;
   /**
@@ -262,6 +319,7 @@ export interface InsightListMembersResponse {
   items: Array<InsightListMembersResponse.Item>;
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   nextCursor: string | null;
 }
@@ -272,7 +330,15 @@ export namespace InsightListMembersResponse {
     username: string;
     name: string | null;
     avatarUrl: string;
+    /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
     prsCreated: number;
+    /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
     prsMerged: number;
     temboContribution: number;
   }
@@ -282,6 +348,7 @@ export interface InsightListRepositoriesParams {
   /**
    * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   cursor?: string;
   /**
@@ -301,6 +368,7 @@ export interface InsightListRepositoriesResponse {
   items: Array<InsightListRepositoriesResponse.Item>;
   /**
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   nextCursor: string | null;
 }
@@ -311,7 +379,15 @@ export namespace InsightListRepositoriesResponse {
     name: string;
     url: string;
     provider: string;
+    /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
     prsCreated: number;
+    /**
+     * @minimum -9007199254740991
+     * @maximum 9007199254740991
+     */
     prsMerged: number;
     temboContribution: number;
   }
