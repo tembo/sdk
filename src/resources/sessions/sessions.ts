@@ -766,7 +766,7 @@ export interface SessionCreateParams {
    */
   queueRightAway?: boolean;
   /**
-   * Size the VM automatically. Only for sessions created without a project (projectId "tembo").
+   * Size the VM automatically. Sessions are sized automatically by default, and project sessions always are.
    */
   automaticSizing?: boolean;
   /**
