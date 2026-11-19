@@ -93,6 +93,7 @@ export namespace MarketplaceListResponse {
     name: string;
     /**
      * @minimum 0
+     * @maximum 9007199254740991
      */
     installs: number;
   }

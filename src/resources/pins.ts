@@ -146,20 +146,31 @@ export namespace PinListResponse {
       agentId: string | null;
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       createdAt: string;
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       updatedAt: string;
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       lastQueuedAt: string | null;
       createdBy: string | null;
       projectId: string | null;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       level: number;
-      visibility: 'public' | 'private';
+      /**
+       * Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.
+       * @deprecated
+       */
+      visibility: 'private' | 'public';
       vm: Resource.VM | null;
       sessionSource: Resource.SessionSource;
       pullRequests: Array<Resource.PullRequest>;
@@ -167,6 +178,7 @@ export namespace PinListResponse {
       /**
        * Sidebar folder you filed this session in.
        * @format uuid
+       * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
        */
       folderId: string | null;
       state: Resource.State;
@@ -318,6 +330,7 @@ export namespace PinListResponse {
     export interface Resource {
       /**
        * @format uuid
+       * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
        */
       id: string;
       name: string;
@@ -334,6 +347,7 @@ export interface PinCreateParams {
   /**
    * ID of the session, pull request, project, or folder, not a separate pin ID.
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   id: string;
   /**
@@ -363,6 +377,7 @@ export namespace PinCreateParams {
       /**
        * ID of the session, pull request, project, or folder, not a separate pin ID.
        * @format uuid
+       * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
        */
       id: string;
     }
@@ -390,20 +405,31 @@ export namespace PinCreateResponse {
       agentId: string | null;
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       createdAt: string;
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       updatedAt: string;
       /**
        * @format date-time
+       * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
        */
       lastQueuedAt: string | null;
       createdBy: string | null;
       projectId: string | null;
+      /**
+       * @minimum -9007199254740991
+       * @maximum 9007199254740991
+       */
       level: number;
-      visibility: 'public' | 'private';
+      /**
+       * Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.
+       * @deprecated
+       */
+      visibility: 'private' | 'public';
       vm: Resource.VM | null;
       sessionSource: Resource.SessionSource;
       pullRequests: Array<Resource.PullRequest>;
@@ -411,6 +437,7 @@ export namespace PinCreateResponse {
       /**
        * Sidebar folder you filed this session in.
        * @format uuid
+       * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
        */
       folderId: string | null;
       state: Resource.State;
@@ -562,6 +589,7 @@ export namespace PinCreateResponse {
     export interface Resource {
       /**
        * @format uuid
+       * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
        */
       id: string;
       name: string;
@@ -602,6 +630,7 @@ export namespace PinUpdateParams {
       /**
        * ID of the session, pull request, project, or folder, not a separate pin ID.
        * @format uuid
+       * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
        */
       id: string;
     }
@@ -627,6 +656,7 @@ export interface PinDeleteResponse {
   /**
    * ID of the session, pull request, project, or folder, not a separate pin ID.
    * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
    */
   id: string;
   deleted: true;

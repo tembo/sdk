@@ -19,16 +19,15 @@ export function normalizeOpenapiForScalar(source) {
   assert.equal(structured.oneOf?.length, nodeKinds.length, 'Review changed node variants before generating');
   assert.deepEqual(content, { $ref: '#/components/schemas/TipTapContentNode' });
 
-  const references = structured.oneOf.map((variant, index) => {
+  // The API publishes each structured variant as a named component; only the nested union is flattened.
+  structured.oneOf.forEach((reference, index) => {
     const [type, suffix] = nodeKinds[index];
-    assert.equal(variant.type, 'object');
+    assert.deepEqual(reference, { $ref: `#/components/schemas/TipTap${suffix}Node` });
+    const variant = schemas[`TipTap${suffix}Node`];
+    assert.equal(variant?.type, 'object');
     assert.ok(variant.required?.includes('type'), 'Discriminators must be required for disjoint variants');
     assert.equal(variant.properties?.type?.const, type, 'Discriminators must remain distinct');
-    const name = `TipTap${suffix}ContentNode`;
-    assert.equal(schemas[name], undefined, `Cannot overwrite existing schema ${name}`);
-    schemas[name] = variant;
-    return { $ref: `#/components/schemas/${name}` };
   });
-  node.anyOf = [...references, content];
+  node.anyOf = [...structured.oneOf, content];
   return schema;
 }

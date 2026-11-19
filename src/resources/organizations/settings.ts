@@ -83,6 +83,7 @@ export namespace SettingRetrieveResponse {
   export interface Settings {
     /**
      * Git clone history depth used for repositories.
+     * @maximum 9007199254740991
      * @exclusiveMinimum 0
      */
     cloneDepth: number;
@@ -163,11 +164,13 @@ export namespace SettingRetrieveResponse {
     /**
      * Maximum number of bot review iterations.
      * @minimum 0
+     * @maximum 9007199254740991
      */
     maxBotReviews: number;
     /**
      * Maximum number of generated solutions.
      * @minimum 0
+     * @maximum 9007199254740991
      */
     maxSolutions: number;
     /**
@@ -246,6 +249,7 @@ export interface SettingUpdateParams {
   awsBedrockSecretAccessKey?: string;
   /**
    * Git clone history depth used for repositories.
+   * @maximum 9007199254740991
    * @exclusiveMinimum 0
    */
   cloneDepth?: number;
@@ -347,11 +351,13 @@ export interface SettingUpdateParams {
   /**
    * Maximum number of bot review iterations.
    * @minimum 0
+   * @maximum 9007199254740991
    */
   maxBotReviews?: number;
   /**
    * Maximum number of generated solutions.
    * @minimum 0
+   * @maximum 9007199254740991
    */
   maxSolutions?: number;
   /**
@@ -421,6 +427,7 @@ export namespace SettingUpdateResponse {
   export interface Settings {
     /**
      * Git clone history depth used for repositories.
+     * @maximum 9007199254740991
      * @exclusiveMinimum 0
      */
     cloneDepth: number;
@@ -501,11 +508,13 @@ export namespace SettingUpdateResponse {
     /**
      * Maximum number of bot review iterations.
      * @minimum 0
+     * @maximum 9007199254740991
      */
     maxBotReviews: number;
     /**
      * Maximum number of generated solutions.
      * @minimum 0
+     * @maximum 9007199254740991
      */
     maxSolutions: number;
     /**

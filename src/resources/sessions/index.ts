@@ -31,3 +31,12 @@ export { Queue } from './queue';
 export type { QueueUpdateParams, QueueUpdateResponse } from './queue';
 export { Commands } from './commands';
 export type { CommandListResponse } from './commands';
+export { Shares } from './shares';
+export type {
+  ShareListParams,
+  ShareListResponse,
+  ShareCreateParams,
+  ShareCreateResponse,
+  ShareDeleteParams,
+  ShareDeleteResponse,
+} from './shares';

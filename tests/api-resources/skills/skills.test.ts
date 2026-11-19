@@ -60,7 +60,7 @@ describe.concurrent('resource skills', () => {
     { operation: 'update', path: '/v1/skills/{skillId}' },
     'update: only required params',
     async () => {
-      const skill = await client.skills.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
+      const skill = await client.skills.update('7c9e6679-7425-40de-944b-e07fc1f90ae7');
     },
   );
   smokeCase(

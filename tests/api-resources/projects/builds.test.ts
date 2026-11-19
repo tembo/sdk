@@ -32,7 +32,7 @@ describe.concurrent('resource builds', () => {
     { operation: 'create', path: '/v1/projects/{projectId}/builds' },
     'create: only required params',
     async () => {
-      const build = await client.projects.builds.create('projectId', {});
+      const build = await client.projects.builds.create('projectId');
     },
   );
   smokeCase(

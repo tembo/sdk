@@ -6,21 +6,15 @@ import { normalizeOpenapiForScalar } from '../scripts/normalize-openapi.mjs';
 const source = JSON.parse(readFileSync(new URL('../openapi/openapi.json', import.meta.url)));
 const config = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
 
-test('normalization preserves the contract, hoisting only disjoint recursive variants', () => {
+test('normalization preserves the contract, flattening only the disjoint recursive variant union', () => {
   const original = structuredClone(source);
   const normalized = normalizeOpenapiForScalar(source);
   assert.deepEqual(source, original);
   const references = normalized.components.schemas.TipTapNode.anyOf.slice(0, -1);
+  assert.deepEqual(references, source.components.schemas.TipTapNode.anyOf[0].oneOf);
   const restored = structuredClone(normalized);
-  const variants = references.map((reference) => {
-    const name = reference.$ref.split('/').at(-1);
-    const variant = restored.components.schemas[name];
-    delete restored.components.schemas[name];
-    return variant;
-  });
-  assert.deepEqual(variants, source.components.schemas.TipTapNode.anyOf[0].oneOf);
   restored.components.schemas.TipTapNode.anyOf = [
-    { oneOf: variants },
+    { oneOf: references },
     normalized.components.schemas.TipTapNode.anyOf.at(-1),
   ];
   assert.deepEqual(restored, source);
@@ -46,16 +40,19 @@ test('all configured models resolve against the prepared schema', () => {
 test('normalization refuses overlapping variants or additional union constraints', () => {
   for (const mutate of [
     (schema) => {
-      schema.components.schemas.TipTapNode.anyOf[0].oneOf[0].required = [];
+      schema.components.schemas.TipTapImageNode.required = [];
     },
     (schema) => {
-      schema.components.schemas.TipTapNode.anyOf[0].oneOf[0].properties.type.const = 'mention';
+      schema.components.schemas.TipTapImageNode.properties.type.const = 'mention';
     },
     (schema) => {
       schema.components.schemas.TipTapNode.anyOf[0].not = {};
     },
     (schema) => {
-      schema.components.schemas.TipTapImageContentNode = {};
+      schema.components.schemas.TipTapNode.anyOf[0].oneOf[0] = schema.components.schemas.TipTapImageNode;
+    },
+    (schema) => {
+      schema.components.schemas.TipTapNode.anyOf[0].oneOf.reverse();
     },
   ]) {
     const schema = structuredClone(source);

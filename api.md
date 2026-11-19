@@ -44,6 +44,14 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Retrieve an organization role](#retrieve-an-organization-role)
     - [Update a organization role](#update-a-organization-role)
     - [Archive a role with an explicit replacement](#archive-a-role-with-an-explicit-replacement)
+  - [`Organizations Teams`](#organizations-teams)
+    - [List teams](#list-teams)
+    - [Create a team](#create-a-team)
+    - [Retrieve a team](#retrieve-a-team)
+    - [Rename a team or change its icon](#rename-a-team-or-change-its-icon)
+    - [Delete a team, its memberships and its shares](#delete-a-team-its-memberships-and-its-shares)
+    - [Add a member to a team](#add-a-member-to-a-team)
+    - [Remove a member from a team](#remove-a-member-from-a-team)
   - [`Organizations Secrets`](#organizations-secrets)
     - [List organization secrets](#list-organization-secrets)
     - [Create an organization secret](#create-an-organization-secret)
@@ -123,6 +131,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Update a session queue](#update-a-session-queue)
   - [`Sessions Commands`](#sessions-commands)
     - [List session commands](#list-session-commands)
+  - [`Sessions Shares`](#sessions-shares)
+    - [List shares](#list-shares)
+    - [Share](#share)
+    - [Remove a share](#remove-a-share)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
   - [Retrieve project defaults](#retrieve-project-defaults)
@@ -263,7 +275,7 @@ Create an API key for the current organization. Optionally set `expiresAt` to a 
 | Response | [`APIKeyCreateResponse`](./src/resources/api-keys.ts) |
 
 ```ts
-const apiKey = await client.apiKeys.create({});
+const apiKey = await client.apiKeys.create();
 ```
 
 ### Retrieve an API key
@@ -368,7 +380,7 @@ Update an organization skill. When files are provided, they replace the complete
 | Response | [`SkillUpdateResponse`](./src/resources/skills/skills.ts) |
 
 ```ts
-const skill = await client.skills.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
+const skill = await client.skills.update('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
 ### Delete a skill
@@ -691,7 +703,6 @@ const role = await client.organizations.roles.retrieve('roleId', {
 ```ts
 const role = await client.organizations.roles.update('roleId', {
   organizationId: 'organizationId',
-  description: '',
 });
 ```
 
@@ -706,6 +717,101 @@ const role = await client.organizations.roles.update('roleId', {
 const role = await client.organizations.roles.delete('roleId', {
   organizationId: 'organizationId',
   replacementRoleId: 'x',
+});
+```
+
+### `Organizations Teams`
+
+#### List teams
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TeamListParams`](./src/resources/organizations/teams.ts) |
+| Response | [`TeamListResponse`](./src/resources/organizations/teams.ts) |
+
+```ts
+const team = await client.organizations.teams.list('organizationId', {
+  limit: 50,
+});
+```
+
+#### Create a team
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TeamCreateParams`](./src/resources/organizations/teams.ts) |
+| Response | [`TeamCreateResponse`](./src/resources/organizations/teams.ts) |
+
+```ts
+const team = await client.organizations.teams.create('organizationId', {
+  name: 'x',
+});
+```
+
+#### Retrieve a team
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TeamRetrieveParams`](./src/resources/organizations/teams.ts) |
+| Response | [`TeamRetrieveResponse`](./src/resources/organizations/teams.ts) |
+
+```ts
+const team = await client.organizations.teams.retrieve('teamId', {
+  organizationId: 'organizationId',
+});
+```
+
+#### Rename a team or change its icon
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TeamUpdateParams`](./src/resources/organizations/teams.ts) |
+| Response | [`TeamUpdateResponse`](./src/resources/organizations/teams.ts) |
+
+```ts
+const team = await client.organizations.teams.update('teamId', {
+  organizationId: 'organizationId',
+});
+```
+
+#### Delete a team, its memberships and its shares
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TeamDeleteParams`](./src/resources/organizations/teams.ts) |
+| Response | [`TeamDeleteResponse`](./src/resources/organizations/teams.ts) |
+
+```ts
+const team = await client.organizations.teams.delete('teamId', {
+  organizationId: 'organizationId',
+});
+```
+
+#### Add a member to a team
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TeamAddMemberParams`](./src/resources/organizations/teams.ts) |
+| Response | [`TeamAddMemberResponse`](./src/resources/organizations/teams.ts) |
+
+```ts
+const team = await client.organizations.teams.addMember('teamId', {
+  organizationId: 'organizationId',
+  userId: 'x',
+});
+```
+
+#### Remove a member from a team
+
+| Direction | Type |
+| --- | --- |
+| Request | [`TeamRemoveMemberParams`](./src/resources/organizations/teams.ts) |
+| Response | [`TeamRemoveMemberResponse`](./src/resources/organizations/teams.ts) |
+
+```ts
+const team = await client.organizations.teams.removeMember('userId', {
+  organizationId: 'organizationId',
+  teamId: 'teamId',
 });
 ```
 
@@ -1183,7 +1289,7 @@ Configure personal agent/model and project defaults, system instructions, follow
 | Response | [`SettingUpdateResponse`](./src/resources/users/settings.ts) |
 
 ```ts
-const setting = await client.users.settings.update('userId', {});
+const setting = await client.users.settings.update('userId');
 ```
 
 ### `Users ConnectedAccounts`
@@ -1340,7 +1446,7 @@ const session = await client.sessions.list({
 
 ### Create a session
 
-Create a session for a task. Provide the initial prompt in description and optionally configure its repositories, agent, Build (normal) or Plan (planning) mode, and private or workspace visibility.
+Create a session for a task. Provide the initial prompt in description and optionally configure its repositories, agent, and Build (normal) or Plan (planning) mode. New sessions are private to their creator until shared through grants.
 
 | Direction | Type |
 | --- | --- |
@@ -1374,7 +1480,7 @@ const session = await client.sessions.retrieve('7c9e6679-7425-40de-944b-e07fc1f9
 
 ### Update a session
 
-Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, configure its workspace and branches, or change visibility between private and visible to workspace (public). Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.
+Update a session: archive or restore it, set priority, rename it, change agent/model, switch between Build (normal) and Plan (planning) modes, or configure its workspace and branches. Share it through its sharing subresource; the deprecated visibility field remains for older clients. Archiving uses level=0; restoring archived sessions uses level=1 and does not restart work. Use pins to pin or unpin sessions. Submit memoryMb alone to request asynchronous memory growth for a running adaptive sandbox within project limits; sandbox metrics report progress.
 
 | Direction | Type |
 | --- | --- |
@@ -1407,9 +1513,7 @@ Create an independent session from a fresh workspace snapshot, or the latest sav
 | Response | [`SessionForkResponse`](./src/resources/sessions/sessions.ts) |
 
 ```ts
-const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  queueRightAway: true,
-});
+const session = await client.sessions.fork('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
 ### Import a chat as a session
@@ -1588,6 +1692,54 @@ List slash commands available to the session runtime.
 const command = await client.sessions.commands.list('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
+### `Sessions Shares`
+
+#### List shares
+
+List the people, teams and organization this is shared with. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareListParams`](./src/resources/sessions/shares.ts) |
+| Response | [`ShareListResponse`](./src/resources/sessions/shares.ts) |
+
+```ts
+const share = await client.sessions.shares.list('sessionId', {
+  limit: 50,
+});
+```
+
+#### Share
+
+Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareCreateParams`](./src/resources/sessions/shares.ts) |
+| Response | [`ShareCreateResponse`](./src/resources/sessions/shares.ts) |
+
+```ts
+const share = await client.sessions.shares.create('sessionId', {
+  type: 'user',
+  id: 'x',
+});
+```
+
+#### Remove a share
+
+Stop sharing with one person, team or the organization. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareDeleteParams`](./src/resources/sessions/shares.ts) |
+| Response | [`ShareDeleteResponse`](./src/resources/sessions/shares.ts) |
+
+```ts
+const share = await client.sessions.shares.delete('shareId', {
+  sessionId: 'sessionId',
+});
+```
+
 ## `Projects`
 
 ### Update project defaults
@@ -1602,7 +1754,6 @@ Choose the default project and sandbox size for the organization.
 ```ts
 const project = await client.projects.updateDefaults({
   projectId: 'x',
-  sandboxSize: 'nano',
 });
 ```
 
@@ -1645,8 +1796,6 @@ Create a reusable project environment.
 ```ts
 const project = await client.projects.create({
   name: 'x',
-  sizes: ['medium'],
-  resourceSettings: { automaticSizing: false },
 });
 ```
 
@@ -1672,9 +1821,7 @@ Update project repositories, setup script, agent instructions, environment varia
 | Response | [`ProjectUpdateResponse`](./src/resources/projects/projects.ts) |
 
 ```ts
-const project = await client.projects.update('projectId', {
-  resourceSettings: { automaticSizing: false },
-});
+const project = await client.projects.update('projectId', {});
 ```
 
 ### Delete a project
@@ -1839,7 +1986,7 @@ Build selected project sizes or rebuild one snapshot.
 | Response | [`BuildCreateResponse`](./src/resources/projects/builds.ts) |
 
 ```ts
-const build = await client.projects.builds.create('projectId', {});
+const build = await client.projects.builds.create('projectId');
 ```
 
 #### Retrieve a project build
@@ -2407,7 +2554,6 @@ List repositories in the authenticated organization. Defaults to enabled reposit
 ```ts
 const repository = await client.repositories.list({
   limit: 50,
-  enabled: 'all',
   order: 'desc',
   sort: 'pullRequests',
 });
@@ -2435,9 +2581,7 @@ Update repository configuration or enable or disable it.
 | Response | [`RepositoryUpdateResponse`](./src/resources/repositories.ts) |
 
 ```ts
-const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  enabled: false,
-});
+const repository = await client.repositories.update('7c9e6679-7425-40de-944b-e07fc1f90ae7', {});
 ```
 
 ## `Integrations`
@@ -2549,9 +2693,7 @@ Queue or immediately perform an integration sync.
 | Response | [`IntegrationSyncResponse`](./src/resources/integrations/integrations.ts) |
 
 ```ts
-const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
-  mode: 'queued',
-});
+const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7');
 ```
 
 ### Sync eligible integrations
@@ -2564,7 +2706,7 @@ Queue integration and pull-request sync jobs for integrations with enabled repos
 | Response | [`IntegrationSyncAllResponse`](./src/resources/integrations/integrations.ts) |
 
 ```ts
-const integration = await client.integrations.syncAll({});
+const integration = await client.integrations.syncAll();
 ```
 
 ### Retrieve integration sync status

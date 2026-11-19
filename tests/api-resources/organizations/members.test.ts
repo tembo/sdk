@@ -31,13 +31,25 @@ describe.concurrent('resource members', () => {
     },
   );
   smokeCase(
-    'organizations.members.create:single',
+    'organizations.members.create:required',
     { operation: 'create', path: '/v1/organizations/{organizationId}/members' },
-    'create',
+    'create: only required params',
     async () => {
       const member = await client.organizations.members.create('organizationId', {
         emailAddress: 'user@example.com',
         roleId: 'x',
+      });
+    },
+  );
+  smokeCase(
+    'organizations.members.create:all',
+    { operation: 'create', path: '/v1/organizations/{organizationId}/members' },
+    'create: required and optional params',
+    async () => {
+      const member = await client.organizations.members.create('organizationId', {
+        emailAddress: 'user@example.com',
+        roleId: 'x',
+        teamIds: ['x'],
       });
     },
   );

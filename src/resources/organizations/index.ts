@@ -34,6 +34,23 @@ export type {
   RoleDeleteParams,
   RoleDeleteResponse,
 } from './roles';
+export { Teams } from './teams';
+export type {
+  TeamListParams,
+  TeamListResponse,
+  TeamCreateParams,
+  TeamCreateResponse,
+  TeamRetrieveParams,
+  TeamRetrieveResponse,
+  TeamUpdateParams,
+  TeamUpdateResponse,
+  TeamDeleteParams,
+  TeamDeleteResponse,
+  TeamAddMemberParams,
+  TeamAddMemberResponse,
+  TeamRemoveMemberParams,
+  TeamRemoveMemberResponse,
+} from './teams';
 export { Secrets } from './secrets';
 export type {
   SecretListParams,

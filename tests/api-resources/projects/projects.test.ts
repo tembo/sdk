@@ -7,9 +7,19 @@ import { client, smokeCase } from '../../smoke-support';
 
 describe.concurrent('resource projects', () => {
   smokeCase(
-    'projects.updateDefaults:single',
+    'projects.updateDefaults:required',
     { operation: 'updateDefaults', path: '/v1/projects/defaults' },
-    'updateDefaults',
+    'updateDefaults: only required params',
+    async () => {
+      const project = await client.projects.updateDefaults({
+        projectId: 'x',
+      });
+    },
+  );
+  smokeCase(
+    'projects.updateDefaults:all',
+    { operation: 'updateDefaults', path: '/v1/projects/defaults' },
+    'updateDefaults: required and optional params',
     async () => {
       const project = await client.projects.updateDefaults({
         projectId: 'x',
@@ -55,8 +65,6 @@ describe.concurrent('resource projects', () => {
     async () => {
       const project = await client.projects.create({
         name: 'x',
-        sizes: ['medium'],
-        resourceSettings: { automaticSizing: false },
       });
     },
   );
@@ -80,8 +88,10 @@ describe.concurrent('resource projects', () => {
         schedule: {
           cron: 'x',
         },
-        sizes: ['medium'],
-        resourceSettings: { automaticSizing: false },
+        sizes: ['nano'],
+        resourceSettings: {
+          automaticSizing: true,
+        },
       });
     },
   );
@@ -98,9 +108,7 @@ describe.concurrent('resource projects', () => {
     { operation: 'update', path: '/v1/projects/{projectId}' },
     'update: only required params',
     async () => {
-      const project = await client.projects.update('projectId', {
-        resourceSettings: { automaticSizing: false },
-      });
+      const project = await client.projects.update('projectId', {});
     },
   );
   smokeCase(
@@ -118,7 +126,9 @@ describe.concurrent('resource projects', () => {
         icon: 'folder',
         includeDeps: false,
         includeSkills: false,
-        resourceSettings: { automaticSizing: false },
+        resourceSettings: {
+          automaticSizing: true,
+        },
         defaultForSizes: ['nano'],
         environmentVariables: {},
         schedule: {},

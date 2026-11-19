@@ -102,9 +102,17 @@ describe.concurrent('resource integrations', () => {
     },
   );
   smokeCase(
-    'integrations.sync:single',
+    'integrations.sync:required',
     { operation: 'sync', path: '/v1/integrations/{integrationId}/sync' },
-    'sync',
+    'sync: only required params',
+    async () => {
+      const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+    },
+  );
+  smokeCase(
+    'integrations.sync:all',
+    { operation: 'sync', path: '/v1/integrations/{integrationId}/sync' },
+    'sync: required and optional params',
     async () => {
       const integration = await client.integrations.sync('7c9e6679-7425-40de-944b-e07fc1f90ae7', {
         mode: 'queued',
@@ -112,9 +120,17 @@ describe.concurrent('resource integrations', () => {
     },
   );
   smokeCase(
-    'integrations.syncAll:single',
+    'integrations.syncAll:required',
     { operation: 'syncAll', path: '/v1/integrations/sync' },
-    'syncAll',
+    'syncAll: only required params',
+    async () => {
+      const integration = await client.integrations.syncAll();
+    },
+  );
+  smokeCase(
+    'integrations.syncAll:all',
+    { operation: 'syncAll', path: '/v1/integrations/sync' },
+    'syncAll: required and optional params',
     async () => {
       const integration = await client.integrations.syncAll({});
     },

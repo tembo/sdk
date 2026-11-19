@@ -1,5 +1,69 @@
 # Changelog
 
+## [0.25.0](https://github.com/tembo/sdk/compare/v0.24.0...v0.25.0) (2026-11-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 46 breaking changes to the SDK surface.
+    - Serialization or defaults of query param `enabled` on `repositories.list` changed.
+    - Property `tip_tap_ordered_list_node.attrs` validation changed (`start.minimum` none → `-9007199254740991`, `start.maximum` none → `9007199254740991`).
+    - Property `session_event_data.index` validation changed (`minimum` none → `-9007199254740991`, `maximum` none → `9007199254740991`).
+    - Property `session_event_data.sequenceNumber` validation changed (`minimum` none → `-9007199254740991`, `maximum` none → `9007199254740991`).
+    - Schema `atlassian_issue_added_to_board_filters` shape changed.
+    - Schema `atlassian_issue_assigned_to_user_filters` shape changed.
+    - Schema `atlassian_issue_comment_created_filters` shape changed.
+    - Schema `atlassian_issue_created_filters` shape changed.
+    - Schema `atlassian_issue_label_added_filters` shape changed.
+    - Schema `atlassian_issue_status_changed_filters` shape changed.
+    - Schema `atlassian_issue_updated_filters` shape changed.
+    - Schema `bitbucket_pull_request_opened_filters` shape changed.
+    - Schema `github_create_filters` shape changed.
+    - Schema `github_issue_closed_filters` shape changed.
+    - Schema `github_issue_comment_created_filters` shape changed.
+    - Schema `github_issue_opened_filters` shape changed.
+    - Schema `github_pull_request_closed_filters` shape changed.
+    - Schema `github_pull_request_merged_filters` shape changed.
+    - Schema `github_pull_request_opened_filters` shape changed.
+    - Schema `github_pull_request_ready_for_review_filters` shape changed.
+    - Schema `github_release_published_filters` shape changed.
+    - Schema `github_pull_request_synchronize_filters` shape changed.
+    - Schema `github_tembo_pull_request_opened_filters` shape changed.
+    - Schema `github_workflow_run_failed_filters` shape changed.
+    - Schema `github_workflow_run_completed_filters` shape changed.
+    - Schema `gitlab_bot_merge_request_comment_filters` shape changed.
+    - Schema `gitlab_issue_closed_filters` shape changed.
+    - Schema `gitlab_issue_opened_filters` shape changed.
+    - Schema `gitlab_issue_label_added_filters` shape changed.
+    - Schema `gitlab_issue_updated_filters` shape changed.
+    - Schema `gitlab_merge_request_closed_filters` shape changed.
+    - Schema `gitlab_merge_request_merged_filters` shape changed.
+    - Schema `gitlab_merge_request_opened_filters` shape changed.
+    - Schema `gitlab_merge_request_updated_filters` shape changed.
+    - Schema `gitlab_merge_request_ready_for_review_filters` shape changed.
+    - Schema `gitlab_pipeline_failed_filters` shape changed.
+    - Schema `gitlab_ref_created_filters` shape changed.
+    - Schema `linear_issue_create_filters` shape changed.
+    - Schema `linear_issue_label_added_filters` shape changed.
+    - Schema `linear_issue_status_changed_filters` shape changed.
+    - Schema `linear_issue_updated_filters` shape changed.
+    - Schema `sentry_issue_created_filters` shape changed.
+    - Schema `slack_message_reaction_added_filters` shape changed.
+    - Schema `slack_message_sent_in_channel_filters` shape changed.
+    - Schema `empty_trigger_filters` shape changed.
+    - Schema `trigger_filters` shape changed.
+
+### Features
+
+* **api:** update SDK surface (68 changes) ([bec8d7d](https://github.com/tembo/sdk/commit/bec8d7d175e02c3378a31861fcc73a1252260359))
+
+
+### Chores
+
+* **api:** update generated SDK content ([a622805](https://github.com/tembo/sdk/commit/a62280550625613de647a7502a6788d530882e85))
+* **openapi:** refresh snapshot for v0.2.896 and map teams and session sharing ([098fab4](https://github.com/tembo/sdk/commit/098fab4ef596a98c54359b678cf8407e735cd3f3))
+* **openapi:** refresh snapshot for v0.2.897 ([b42b08e](https://github.com/tembo/sdk/commit/b42b08efcc4baf495782b59c090a000c84e9250a))
+
 ## [0.24.0](https://github.com/tembo/sdk/compare/v0.23.0...v0.24.0) (2026-11-16)
 
 
