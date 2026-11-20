@@ -65,6 +65,9 @@ export type TriggerFilters =
   | TriggerFilters.GithubPullRequestMergedFilters
   | TriggerFilters.GithubPullRequestOpenedFilters
   | TriggerFilters.GithubPullRequestReadyForReviewFilters
+  | TriggerFilters.GithubPullRequestLabeledFilters
+  | TriggerFilters.GithubPullRequestReviewRequestedFilters
+  | TriggerFilters.GithubPullRequestReviewSubmittedFilters
   | TriggerFilters.GithubReleasePublishedFilters
   | TriggerFilters.GithubPullRequestSynchronizeFilters
   | GithubTemboPullRequestOpenedFilters
@@ -194,6 +197,69 @@ export namespace TriggerFilters {
      * @default true
      */
     temboPrs?: boolean;
+    [k: string]: unknown;
+  }
+
+  export interface GithubPullRequestLabeledFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger when one of these labels is added
+     */
+    labels?: Array<string>;
+    /**
+     * Only trigger if the label was added by one of the specified users
+     */
+    labeledBy?: Array<string>;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    [k: string]: unknown;
+  }
+
+  export interface GithubPullRequestReviewRequestedFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger when one of these users or team slugs is requested as a reviewer
+     */
+    reviewers?: Array<string>;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    [k: string]: unknown;
+  }
+
+  export interface GithubPullRequestReviewSubmittedFilters {
+    /**
+     * Only trigger if the pull request is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger for reviews with one of these states
+     */
+    reviewStates?: Array<'approved' | 'changes_requested' | 'commented'>;
+    /**
+     * Only trigger if the review was submitted by one of the specified users
+     */
+    reviewedBy?: Array<string>;
+    /**
+     * Enable agent for Tembo-created pull requests (enabled by default)
+     * @default true
+     */
+    temboPrs?: boolean;
+    /**
+     * Trigger also for reviews submitted by Tembo (disabled by default). Replies Tembo posts to review threads never trigger.
+     */
+    temboReviews?: boolean;
     [k: string]: unknown;
   }
 
@@ -1176,6 +1242,9 @@ export namespace TemplateListResponse {
         | Trigger.GithubPullRequestMergedFiltersOutput
         | Trigger.GithubPullRequestOpenedFiltersOutput
         | Trigger.GithubPullRequestReadyForReviewFiltersOutput
+        | Trigger.GithubPullRequestLabeledFiltersOutput
+        | Trigger.GithubPullRequestReviewRequestedFiltersOutput
+        | Trigger.GithubPullRequestReviewSubmittedFiltersOutput
         | Trigger.GithubReleasePublishedFilters
         | Trigger.GithubPullRequestSynchronizeFiltersOutput
         | GithubTemboPullRequestOpenedFilters
@@ -1302,6 +1371,66 @@ export namespace TemplateListResponse {
          * Only trigger if the pull request was opened by one of the specified users
          */
         openedBy?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestLabeledFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger when one of these labels is added
+         */
+        labels?: Array<string>;
+        /**
+         * Only trigger if the label was added by one of the specified users
+         */
+        labeledBy?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestReviewRequestedFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger when one of these users or team slugs is requested as a reviewer
+         */
+        reviewers?: Array<string>;
+        [k: string]: unknown;
+      }
+
+      export interface GithubPullRequestReviewSubmittedFiltersOutput {
+        /**
+         * Enable agent for Tembo-created pull requests (enabled by default)
+         */
+        temboPrs: boolean;
+        /**
+         * Only trigger if the pull request is in one of the repositories
+         */
+        repositories?: Array<string>;
+        /**
+         * Only trigger for reviews with one of these states
+         */
+        reviewStates?: Array<'approved' | 'changes_requested' | 'commented'>;
+        /**
+         * Only trigger if the review was submitted by one of the specified users
+         */
+        reviewedBy?: Array<string>;
+        /**
+         * Trigger also for reviews submitted by Tembo (disabled by default). Replies Tembo posts to review threads never trigger.
+         */
+        temboReviews?: boolean;
         [k: string]: unknown;
       }
 
@@ -1564,6 +1693,9 @@ export namespace TemplateRetrieveResponse {
       | Trigger.GithubPullRequestMergedFiltersOutput
       | Trigger.GithubPullRequestOpenedFiltersOutput
       | Trigger.GithubPullRequestReadyForReviewFiltersOutput
+      | Trigger.GithubPullRequestLabeledFiltersOutput
+      | Trigger.GithubPullRequestReviewRequestedFiltersOutput
+      | Trigger.GithubPullRequestReviewSubmittedFiltersOutput
       | Trigger.GithubReleasePublishedFilters
       | Trigger.GithubPullRequestSynchronizeFiltersOutput
       | GithubTemboPullRequestOpenedFilters
@@ -1690,6 +1822,66 @@ export namespace TemplateRetrieveResponse {
        * Only trigger if the pull request was opened by one of the specified users
        */
       openedBy?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestLabeledFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger when one of these labels is added
+       */
+      labels?: Array<string>;
+      /**
+       * Only trigger if the label was added by one of the specified users
+       */
+      labeledBy?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestReviewRequestedFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger when one of these users or team slugs is requested as a reviewer
+       */
+      reviewers?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubPullRequestReviewSubmittedFiltersOutput {
+      /**
+       * Enable agent for Tembo-created pull requests (enabled by default)
+       */
+      temboPrs: boolean;
+      /**
+       * Only trigger if the pull request is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger for reviews with one of these states
+       */
+      reviewStates?: Array<'approved' | 'changes_requested' | 'commented'>;
+      /**
+       * Only trigger if the review was submitted by one of the specified users
+       */
+      reviewedBy?: Array<string>;
+      /**
+       * Trigger also for reviews submitted by Tembo (disabled by default). Replies Tembo posts to review threads never trigger.
+       */
+      temboReviews?: boolean;
       [k: string]: unknown;
     }
 
