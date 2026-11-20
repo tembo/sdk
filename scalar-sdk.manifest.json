@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.44.0",
+  "generatorVersion": "0.45.0",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -3213,6 +3213,206 @@
       }
     },
     {
+      "name": "github_pull_request_labeled_filters",
+      "source": "github_pull_request_labeled_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "labels",
+            "publicName": "labels",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "labeledBy",
+            "publicName": "labeledBy",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "temboPrs",
+            "publicName": "temboPrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "github_pull_request_review_requested_filters",
+      "source": "github_pull_request_review_requested_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "reviewers",
+            "publicName": "reviewers",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "temboPrs",
+            "publicName": "temboPrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "github_pull_request_review_submitted_filters",
+      "source": "github_pull_request_review_submitted_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "reviewStates",
+            "publicName": "reviewStates",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "enum",
+                "values": [
+                  "approved",
+                  "changes_requested",
+                  "commented"
+                ],
+                "names": [
+                  "Approved",
+                  "ChangesRequested",
+                  "Commented"
+                ],
+                "deprecations": [
+                  false,
+                  false,
+                  false
+                ]
+              }
+            }
+          },
+          {
+            "name": "reviewedBy",
+            "publicName": "reviewedBy",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "temboPrs",
+            "publicName": "temboPrs",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "temboReviews",
+            "publicName": "temboReviews",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
       "name": "github_release_published_filters",
       "source": "github_release_published_filters",
       "publicAliases": [],
@@ -4677,6 +4877,18 @@
           },
           {
             "kind": "ref",
+            "name": "github_pull_request_labeled_filters"
+          },
+          {
+            "kind": "ref",
+            "name": "github_pull_request_review_requested_filters"
+          },
+          {
+            "kind": "ref",
+            "name": "github_pull_request_review_submitted_filters"
+          },
+          {
+            "kind": "ref",
             "name": "github_release_published_filters"
           },
           {
@@ -5081,6 +5293,9 @@
           null,
           null,
           null,
+          null,
+          null,
+          null,
           null
         ]
       }
@@ -5322,6 +5537,206 @@
       }
     },
     {
+      "name": "github_pull_request_labeled_filters_output",
+      "source": "github_pull_request_labeled_filters_output",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "labels",
+            "publicName": "labels",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "labeledBy",
+            "publicName": "labeledBy",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "temboPrs",
+            "publicName": "temboPrs",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "github_pull_request_review_requested_filters_output",
+      "source": "github_pull_request_review_requested_filters_output",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "reviewers",
+            "publicName": "reviewers",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "temboPrs",
+            "publicName": "temboPrs",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
+      "name": "github_pull_request_review_submitted_filters_output",
+      "source": "github_pull_request_review_submitted_filters_output",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "reviewStates",
+            "publicName": "reviewStates",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "enum",
+                "values": [
+                  "approved",
+                  "changes_requested",
+                  "commented"
+                ],
+                "names": [
+                  "Approved",
+                  "ChangesRequested",
+                  "Commented"
+                ],
+                "deprecations": [
+                  false,
+                  false,
+                  false
+                ]
+              }
+            }
+          },
+          {
+            "name": "reviewedBy",
+            "publicName": "reviewedBy",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "temboPrs",
+            "publicName": "temboPrs",
+            "required": true,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "temboReviews",
+            "publicName": "temboReviews",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "primitive",
+              "type": "boolean"
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
       "name": "github_pull_request_synchronize_filters_output",
       "source": "github_pull_request_synchronize_filters_output",
       "publicAliases": [],
@@ -5452,6 +5867,18 @@
           {
             "kind": "ref",
             "name": "github_pull_request_ready_for_review_filters_output"
+          },
+          {
+            "kind": "ref",
+            "name": "github_pull_request_labeled_filters_output"
+          },
+          {
+            "kind": "ref",
+            "name": "github_pull_request_review_requested_filters_output"
+          },
+          {
+            "kind": "ref",
+            "name": "github_pull_request_review_submitted_filters_output"
           },
           {
             "kind": "ref",
@@ -5814,6 +6241,9 @@
           }
         ],
         "variantNames": [
+          null,
+          null,
+          null,
           null,
           null,
           null,
