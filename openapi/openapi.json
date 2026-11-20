@@ -1569,6 +1569,104 @@
         },
         "additionalProperties": {}
       },
+      "GithubPullRequestLabeledFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "description": "Only trigger if the pull request is in one of the repositories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labels": {
+            "description": "Only trigger when one of these labels is added",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labeledBy": {
+            "description": "Only trigger if the label was added by one of the specified users",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "temboPrs": {
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": {}
+      },
+      "GithubPullRequestReviewRequestedFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "description": "Only trigger if the pull request is in one of the repositories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewers": {
+            "description": "Only trigger when one of these users or team slugs is requested as a reviewer",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "temboPrs": {
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": {}
+      },
+      "GithubPullRequestReviewSubmittedFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "description": "Only trigger if the pull request is in one of the repositories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewStates": {
+            "description": "Only trigger for reviews with one of these states",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "approved",
+                "changes_requested",
+                "commented"
+              ]
+            }
+          },
+          "reviewedBy": {
+            "description": "Only trigger if the review was submitted by one of the specified users",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "temboPrs": {
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)",
+            "type": "boolean"
+          },
+          "temboReviews": {
+            "description": "Trigger also for reviews submitted by Tembo (disabled by default). Replies Tembo posts to review threads never trigger.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": {}
+      },
       "GithubReleasePublishedFilters": {
         "type": "object",
         "properties": {
@@ -2298,6 +2396,15 @@
             "$ref": "#/components/schemas/GithubPullRequestReadyForReviewFilters"
           },
           {
+            "$ref": "#/components/schemas/GithubPullRequestLabeledFilters"
+          },
+          {
+            "$ref": "#/components/schemas/GithubPullRequestReviewRequestedFilters"
+          },
+          {
+            "$ref": "#/components/schemas/GithubPullRequestReviewSubmittedFilters"
+          },
+          {
             "$ref": "#/components/schemas/GithubReleasePublishedFilters"
           },
           {
@@ -2651,6 +2758,113 @@
         ],
         "additionalProperties": {}
       },
+      "GithubPullRequestLabeledFiltersOutput": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "description": "Only trigger if the pull request is in one of the repositories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labels": {
+            "description": "Only trigger when one of these labels is added",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labeledBy": {
+            "description": "Only trigger if the label was added by one of the specified users",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "temboPrs": {
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "temboPrs"
+        ],
+        "additionalProperties": {}
+      },
+      "GithubPullRequestReviewRequestedFiltersOutput": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "description": "Only trigger if the pull request is in one of the repositories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewers": {
+            "description": "Only trigger when one of these users or team slugs is requested as a reviewer",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "temboPrs": {
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "temboPrs"
+        ],
+        "additionalProperties": {}
+      },
+      "GithubPullRequestReviewSubmittedFiltersOutput": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "description": "Only trigger if the pull request is in one of the repositories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewStates": {
+            "description": "Only trigger for reviews with one of these states",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "approved",
+                "changes_requested",
+                "commented"
+              ]
+            }
+          },
+          "reviewedBy": {
+            "description": "Only trigger if the review was submitted by one of the specified users",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "temboPrs": {
+            "default": true,
+            "description": "Enable agent for Tembo-created pull requests (enabled by default)",
+            "type": "boolean"
+          },
+          "temboReviews": {
+            "description": "Trigger also for reviews submitted by Tembo (disabled by default). Replies Tembo posts to review threads never trigger.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "temboPrs"
+        ],
+        "additionalProperties": {}
+      },
       "GithubPullRequestSynchronizeFiltersOutput": {
         "type": "object",
         "properties": {
@@ -2732,6 +2946,15 @@
           },
           {
             "$ref": "#/components/schemas/GithubPullRequestReadyForReviewFiltersOutput"
+          },
+          {
+            "$ref": "#/components/schemas/GithubPullRequestLabeledFiltersOutput"
+          },
+          {
+            "$ref": "#/components/schemas/GithubPullRequestReviewRequestedFiltersOutput"
+          },
+          {
+            "$ref": "#/components/schemas/GithubPullRequestReviewSubmittedFiltersOutput"
           },
           {
             "$ref": "#/components/schemas/GithubReleasePublishedFilters"
