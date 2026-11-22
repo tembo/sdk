@@ -56,10 +56,12 @@ import {
   type InsightUpdateResponse,
   type InsightListMembersResponse,
   type InsightListRepositoriesResponse,
+  type InsightListTeamsResponse,
   type InsightRetrieveParams,
   type InsightUpdateParams,
   type InsightListMembersParams,
   type InsightListRepositoriesParams,
+  type InsightListTeamsParams,
 } from './resources/insights';
 import {
   AuditLogs,
@@ -130,7 +132,7 @@ import {
   type ModelUpdateResponse,
   type ModelListParams,
   type ModelUpdateParams,
-} from './resources/models';
+} from './resources/models/models';
 import { Runtimes, type RuntimeListResponse, type RuntimeListParams } from './resources/runtimes';
 import { Users, type UserMeResponse, type UserRetrieveResponse } from './resources/users/users';
 import {
@@ -1345,10 +1347,12 @@ export declare namespace Tembo {
     type InsightUpdateResponse as InsightUpdateResponse,
     type InsightListMembersResponse as InsightListMembersResponse,
     type InsightListRepositoriesResponse as InsightListRepositoriesResponse,
+    type InsightListTeamsResponse as InsightListTeamsResponse,
     type InsightRetrieveParams as InsightRetrieveParams,
     type InsightUpdateParams as InsightUpdateParams,
     type InsightListMembersParams as InsightListMembersParams,
     type InsightListRepositoriesParams as InsightListRepositoriesParams,
+    type InsightListTeamsParams as InsightListTeamsParams,
   };
 
   export {

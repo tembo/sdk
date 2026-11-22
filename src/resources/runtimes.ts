@@ -110,6 +110,7 @@ export namespace RuntimeListResponse {
         status: 'unavailable';
         code:
           | 'model_disabled'
+          | 'model_not_shared'
           | 'plan_required'
           | 'trial_inference_exhausted'
           | 'missing_credentials'

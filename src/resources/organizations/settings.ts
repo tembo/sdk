@@ -86,138 +86,138 @@ export namespace SettingRetrieveResponse {
      * @maximum 9007199254740991
      * @exclusiveMinimum 0
      */
-    cloneDepth: number;
+    cloneDepth?: number;
     /**
      * Organization instructions for agent commit messages.
      * @maxLength 64000
      */
-    commitInstructions: string;
+    commitInstructions?: string;
     /**
      * Additional GitHub bot logins Tembo responds to without an @tembo mention.
      * @maxItems 25
      */
-    customReviewBots: Array<string>;
+    customReviewBots?: Array<string>;
     /**
      * Custom system instructions supplied to organization agents.
      * @maxLength 64000
      */
-    customSystemPrompt: string;
+    customSystemPrompt?: string;
     /**
      * Default coding agent and model key for the organization.
      * @maxLength 64000
      */
-    defaultAgent: string;
+    defaultAgent?: string;
     /**
      * Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations.
      * @minimum 0
      * @maximum 10080
      */
-    defaultKeepAliveMinutes: number;
+    defaultKeepAliveMinutes?: number;
     /**
      * Default VM size for organization sessions.
      */
-    defaultSandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+    defaultSandboxSize?: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     /**
      * Delete agent-created branches when their pull requests close.
      */
-    deleteBranchWhenPrClosed: boolean;
+    deleteBranchWhenPrClosed?: boolean;
     /**
      * Create agent pull requests as drafts by default.
      */
-    draftPrs: boolean;
+    draftPrs?: boolean;
     /**
      * Enable handling of CodeRabbit bot feedback.
      */
-    enableCoderabbitBot: boolean;
+    enableCoderabbitBot?: boolean;
     /**
      * Enable handling of Cursor bot feedback.
      */
-    enableCursorBot: boolean;
+    enableCursorBot?: boolean;
     /**
      * Enable handling of Gemini Code Assist bot feedback.
      */
-    enableGeminiCodeAssistBot: boolean;
+    enableGeminiCodeAssistBot?: boolean;
     /**
      * Enable handling of GitHub Actions bot feedback.
      */
-    enableGithubActionsBot: boolean;
+    enableGithubActionsBot?: boolean;
     /**
      * Enable handling of Graphite bot feedback.
      */
-    enableGraphiteBot: boolean;
+    enableGraphiteBot?: boolean;
     /**
      * Enable handling of Greptile bot feedback.
      */
-    enableGreptileBot: boolean;
+    enableGreptileBot?: boolean;
     /**
      * Enable experimental MCP features for the organization.
      */
-    experimentalMcp: boolean;
+    experimentalMcp?: boolean;
     /**
      * Use the API key or Tembo inference when every connected subscription is out of usage.
      */
-    fallbackToApiOnSubscriptionLimit: boolean;
+    fallbackToApiOnSubscriptionLimit?: boolean;
     /**
      * Enable mentioning the author in supported integration responses.
      */
-    featureMentionAuthor: boolean;
+    featureMentionAuthor?: boolean;
     /**
      * Maximum number of bot review iterations.
      * @minimum 0
      * @maximum 9007199254740991
      */
-    maxBotReviews: number;
+    maxBotReviews?: number;
     /**
      * Maximum number of generated solutions.
      * @minimum 0
      * @maximum 9007199254740991
      */
-    maxSolutions: number;
+    maxSolutions?: number;
     /**
      * @minimum 0
      */
-    onDemandMaxCreditUsage: number;
+    onDemandMaxCreditUsage?: number;
     /**
      * Reset frequency for PostgreSQL pg_stat_statements collection.
      * @maxLength 64000
      */
-    pgStatStatementsResetFrequency: string;
+    pgStatStatementsResetFrequency?: string;
     /**
      * Custom system instructions for the project-management agent.
      * @maxLength 64000
      */
-    pmSystemPrompt: string;
+    pmSystemPrompt?: string;
     /**
      * Organization instructions for agent pull request titles.
      * @maxLength 64000
      */
-    prTitleInstructions: string;
+    prTitleInstructions?: string;
     /**
      * Enable or disable pull request contribution insight collection.
      */
-    pullRequestInsightsEnabled: boolean;
+    pullRequestInsightsEnabled?: boolean;
     /**
      * Sign agent-created commits when signing credentials are configured.
      */
-    shouldSignCommits: boolean;
+    shouldSignCommits?: boolean;
     /**
      * Use Tembo review links in Slack review notifications.
      */
-    slackReviewOnTembo: boolean;
+    slackReviewOnTembo?: boolean;
     /**
      * Threshold in milliseconds for identifying slow database queries.
      * @minimum 0
      */
-    slowQueryThresholdMs: number;
+    slowQueryThresholdMs?: number;
     /**
      * SSH public keys authorized for organization workspace access.
      * @maxLength 64000
      */
-    sshPublicKeys: string;
+    sshPublicKeys?: string;
     /**
      * Enable or disable the organization weekly report.
      */
-    weeklyReportEnabled: boolean;
+    weeklyReportEnabled?: boolean;
   }
 }
 
@@ -430,138 +430,138 @@ export namespace SettingUpdateResponse {
      * @maximum 9007199254740991
      * @exclusiveMinimum 0
      */
-    cloneDepth: number;
+    cloneDepth?: number;
     /**
      * Organization instructions for agent commit messages.
      * @maxLength 64000
      */
-    commitInstructions: string;
+    commitInstructions?: string;
     /**
      * Additional GitHub bot logins Tembo responds to without an @tembo mention.
      * @maxItems 25
      */
-    customReviewBots: Array<string>;
+    customReviewBots?: Array<string>;
     /**
      * Custom system instructions supplied to organization agents.
      * @maxLength 64000
      */
-    customSystemPrompt: string;
+    customSystemPrompt?: string;
     /**
      * Default coding agent and model key for the organization.
      * @maxLength 64000
      */
-    defaultAgent: string;
+    defaultAgent?: string;
     /**
      * Default VM keep-alive duration in minutes. 0 preserves built-in per-source durations.
      * @minimum 0
      * @maximum 10080
      */
-    defaultKeepAliveMinutes: number;
+    defaultKeepAliveMinutes?: number;
     /**
      * Default VM size for organization sessions.
      */
-    defaultSandboxSize: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
+    defaultSandboxSize?: 'nano' | 'micro' | 'medium' | 'large' | 'xl' | 'xxl' | 'ultra';
     /**
      * Delete agent-created branches when their pull requests close.
      */
-    deleteBranchWhenPrClosed: boolean;
+    deleteBranchWhenPrClosed?: boolean;
     /**
      * Create agent pull requests as drafts by default.
      */
-    draftPrs: boolean;
+    draftPrs?: boolean;
     /**
      * Enable handling of CodeRabbit bot feedback.
      */
-    enableCoderabbitBot: boolean;
+    enableCoderabbitBot?: boolean;
     /**
      * Enable handling of Cursor bot feedback.
      */
-    enableCursorBot: boolean;
+    enableCursorBot?: boolean;
     /**
      * Enable handling of Gemini Code Assist bot feedback.
      */
-    enableGeminiCodeAssistBot: boolean;
+    enableGeminiCodeAssistBot?: boolean;
     /**
      * Enable handling of GitHub Actions bot feedback.
      */
-    enableGithubActionsBot: boolean;
+    enableGithubActionsBot?: boolean;
     /**
      * Enable handling of Graphite bot feedback.
      */
-    enableGraphiteBot: boolean;
+    enableGraphiteBot?: boolean;
     /**
      * Enable handling of Greptile bot feedback.
      */
-    enableGreptileBot: boolean;
+    enableGreptileBot?: boolean;
     /**
      * Enable experimental MCP features for the organization.
      */
-    experimentalMcp: boolean;
+    experimentalMcp?: boolean;
     /**
      * Use the API key or Tembo inference when every connected subscription is out of usage.
      */
-    fallbackToApiOnSubscriptionLimit: boolean;
+    fallbackToApiOnSubscriptionLimit?: boolean;
     /**
      * Enable mentioning the author in supported integration responses.
      */
-    featureMentionAuthor: boolean;
+    featureMentionAuthor?: boolean;
     /**
      * Maximum number of bot review iterations.
      * @minimum 0
      * @maximum 9007199254740991
      */
-    maxBotReviews: number;
+    maxBotReviews?: number;
     /**
      * Maximum number of generated solutions.
      * @minimum 0
      * @maximum 9007199254740991
      */
-    maxSolutions: number;
+    maxSolutions?: number;
     /**
      * @minimum 0
      */
-    onDemandMaxCreditUsage: number;
+    onDemandMaxCreditUsage?: number;
     /**
      * Reset frequency for PostgreSQL pg_stat_statements collection.
      * @maxLength 64000
      */
-    pgStatStatementsResetFrequency: string;
+    pgStatStatementsResetFrequency?: string;
     /**
      * Custom system instructions for the project-management agent.
      * @maxLength 64000
      */
-    pmSystemPrompt: string;
+    pmSystemPrompt?: string;
     /**
      * Organization instructions for agent pull request titles.
      * @maxLength 64000
      */
-    prTitleInstructions: string;
+    prTitleInstructions?: string;
     /**
      * Enable or disable pull request contribution insight collection.
      */
-    pullRequestInsightsEnabled: boolean;
+    pullRequestInsightsEnabled?: boolean;
     /**
      * Sign agent-created commits when signing credentials are configured.
      */
-    shouldSignCommits: boolean;
+    shouldSignCommits?: boolean;
     /**
      * Use Tembo review links in Slack review notifications.
      */
-    slackReviewOnTembo: boolean;
+    slackReviewOnTembo?: boolean;
     /**
      * Threshold in milliseconds for identifying slow database queries.
      * @minimum 0
      */
-    slowQueryThresholdMs: number;
+    slowQueryThresholdMs?: number;
     /**
      * SSH public keys authorized for organization workspace access.
      * @maxLength 64000
      */
-    sshPublicKeys: string;
+    sshPublicKeys?: string;
     /**
      * Enable or disable the organization weekly report.
      */
-    weeklyReportEnabled: boolean;
+    weeklyReportEnabled?: boolean;
   }
 }
 

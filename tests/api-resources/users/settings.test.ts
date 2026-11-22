@@ -50,6 +50,7 @@ describe.concurrent('resource settings', () => {
         defaultFastMode: false,
         followUpBehavior: 'queue',
         customSystemPrompt: '',
+        fallbackToApiOnSubscriptionLimit: false,
       });
     },
   );

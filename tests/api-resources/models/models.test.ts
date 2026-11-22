@@ -3,7 +3,7 @@
 // Smoke tests for one resource; see smoke-support.ts for how to run them.
 import { describe } from 'vitest';
 
-import { client, smokeCase } from '../smoke-support';
+import { client, smokeCase } from '../../smoke-support';
 
 describe.concurrent('resource models', () => {
   smokeCase(
@@ -24,6 +24,7 @@ describe.concurrent('resource models', () => {
       const model = await client.models.list({
         cursor: 'cursor',
         limit: 50,
+        teamId: 'teamId',
       });
     },
   );

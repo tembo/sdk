@@ -25,6 +25,7 @@ describe.concurrent('resource skills', () => {
       const skill = await client.skills.list({
         cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         limit: 50,
+        teamId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         names: ['name'],
         repositoryIds: ['7c9e6679-7425-40de-944b-e07fc1f90ae7'],
         projectId: 'projectId',
