@@ -18,3 +18,12 @@ export type {
   MarketplaceRetrieveParams,
   MarketplaceRetrieveResponse,
 } from './marketplace';
+export { Shares } from './shares';
+export type {
+  ShareListParams,
+  ShareListResponse,
+  ShareCreateParams,
+  ShareCreateResponse,
+  ShareDeleteParams,
+  ShareDeleteResponse,
+} from './shares';

@@ -48,6 +48,8 @@ export type {
   InsightListMembersResponse,
   InsightListRepositoriesParams,
   InsightListRepositoriesResponse,
+  InsightListTeamsParams,
+  InsightListTeamsResponse,
   AuditLogListParams,
   AuditLogListResponse,
   AuditLogListFiltersResponse,

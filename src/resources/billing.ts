@@ -262,9 +262,9 @@ export interface BillingListUsageParams {
    */
   limit?: number;
   /**
-   * Usage types to include. Defaults to sessions for backwards compatibility.
+   * Usage types to include. Defaults to sessions for backwards compatibility. `cloud-devices` lists the cloud devices (macOS VMs) behind session compute charges and is never combined with other types.
    */
-  type?: 'all' | 'sessions' | 'warm-pool';
+  type?: 'all' | 'sessions' | 'warm-pool' | 'cloud-devices';
   /**
    * Filter billing usage to this session.
    * @minLength 1
@@ -301,7 +301,9 @@ export interface BillingListUsageResponse {
   /**
    * @maxItems 100
    */
-  items: Array<BillingListUsageResponse.Item | BillingListUsageResponse.Item2>;
+  items: Array<
+    BillingListUsageResponse.Item | BillingListUsageResponse.Item2 | BillingListUsageResponse.Item3
+  >;
   /**
    * @maxLength 2048
    */
@@ -335,6 +337,10 @@ export namespace BillingListUsageResponse {
     /**
      * @minimum 0
      */
+    cloudDeviceCredits: number;
+    /**
+     * @minimum 0
+     */
     computeCredits: number;
     /**
      * @minimum 0
@@ -344,6 +350,43 @@ export namespace BillingListUsageResponse {
   }
 
   export interface Item2 {
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    id: string;
+    /**
+     * @minLength 1
+     * @maxLength 255
+     */
+    sessionId: string;
+    sessionTitle: string;
+    platform: 'ios' | 'android' | 'macos';
+    model: string | null;
+    osVersion: string | null;
+    /**
+     * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+     */
+    startedAt: string;
+    /**
+     * @format date-time
+     * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
+     */
+    endedAt: string | null;
+    /**
+     * @minimum 0
+     * @maximum 9007199254740991
+     */
+    billedSeconds: number;
+    /**
+     * @minimum 0
+     */
+    computeCredits: number;
+    type: 'cloud-device';
+  }
+
+  export interface Item3 {
     /**
      * @minLength 1
      * @maxLength 255

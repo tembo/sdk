@@ -100,3 +100,12 @@ export type {
   ContentRevisionRestoreParams,
   ContentRevisionRestoreResponse,
 } from './content-revisions';
+export { Shares } from './shares';
+export type {
+  ShareListParams,
+  ShareListResponse,
+  ShareCreateParams,
+  ShareCreateResponse,
+  ShareDeleteParams,
+  ShareDeleteResponse,
+} from './shares';

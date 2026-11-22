@@ -130,7 +130,7 @@ export namespace RoleListResponse {
     color: string;
     isDefault: boolean;
     /**
-     * @maxItems 242
+     * @maxItems 250
      */
     permissions: Array<
       | 'organization:audit_log:read'
@@ -149,6 +149,14 @@ export namespace RoleListResponse {
       | 'organization:secret:write'
       | 'organization:setting:read'
       | 'organization:setting:write'
+      | 'organization:credential:read'
+      | 'organization:credential:write'
+      | 'organization:instruction:read'
+      | 'organization:instruction:write'
+      | 'organization:sandbox_default:read'
+      | 'organization:sandbox_default:write'
+      | 'organization:policy:read'
+      | 'organization:policy:write'
       | 'organization:configuration:read'
       | 'organization:configuration:write'
       | 'organization:subscription:read'
@@ -392,7 +400,7 @@ export interface RoleCreateParams {
    */
   name: string;
   /**
-   * @maxItems 242
+   * @maxItems 250
    */
   permissions: Array<
     | 'organization:audit_log:read'
@@ -411,6 +419,14 @@ export interface RoleCreateParams {
     | 'organization:secret:write'
     | 'organization:setting:read'
     | 'organization:setting:write'
+    | 'organization:credential:read'
+    | 'organization:credential:write'
+    | 'organization:instruction:read'
+    | 'organization:instruction:write'
+    | 'organization:sandbox_default:read'
+    | 'organization:sandbox_default:write'
+    | 'organization:policy:read'
+    | 'organization:policy:write'
     | 'organization:configuration:read'
     | 'organization:configuration:write'
     | 'organization:subscription:read'
@@ -682,7 +698,7 @@ export interface RoleRetrieveResponse {
   color: string;
   isDefault: boolean;
   /**
-   * @maxItems 242
+   * @maxItems 250
    */
   permissions: Array<
     | 'organization:audit_log:read'
@@ -701,6 +717,14 @@ export interface RoleRetrieveResponse {
     | 'organization:secret:write'
     | 'organization:setting:read'
     | 'organization:setting:write'
+    | 'organization:credential:read'
+    | 'organization:credential:write'
+    | 'organization:instruction:read'
+    | 'organization:instruction:write'
+    | 'organization:sandbox_default:read'
+    | 'organization:sandbox_default:write'
+    | 'organization:policy:read'
+    | 'organization:policy:write'
     | 'organization:configuration:read'
     | 'organization:configuration:write'
     | 'organization:subscription:read'
@@ -981,7 +1005,7 @@ export interface RoleUpdateParams {
   color?: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
   /**
    * Body param
-   * @maxItems 242
+   * @maxItems 250
    */
   permissions?: Array<
     | 'organization:audit_log:read'
@@ -1000,6 +1024,14 @@ export interface RoleUpdateParams {
     | 'organization:secret:write'
     | 'organization:setting:read'
     | 'organization:setting:write'
+    | 'organization:credential:read'
+    | 'organization:credential:write'
+    | 'organization:instruction:read'
+    | 'organization:instruction:write'
+    | 'organization:sandbox_default:read'
+    | 'organization:sandbox_default:write'
+    | 'organization:policy:read'
+    | 'organization:policy:write'
     | 'organization:configuration:read'
     | 'organization:configuration:write'
     | 'organization:subscription:read'

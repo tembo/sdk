@@ -19,11 +19,16 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Skills Marketplace`](#skills-marketplace)
     - [List marketplace skills](#list-marketplace-skills)
     - [Retrieve a marketplace skill](#retrieve-a-marketplace-skill)
+  - [`Skills Shares`](#skills-shares)
+    - [List shares](#list-shares)
+    - [Share](#share)
+    - [Remove a share](#remove-a-share)
 - [`Insights`](#insights)
   - [Retrieve insights](#retrieve-insights)
   - [Update insights](#update-insights)
   - [List insight members](#list-insight-members)
   - [List insight repositories](#list-insight-repositories)
+  - [List team usage insights](#list-team-usage-insights)
 - [`AuditLogs`](#auditlogs)
   - [List organization audit logs](#list-organization-audit-logs)
   - [List audit log filter options](#list-audit-log-filter-options)
@@ -87,6 +92,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`Models`](#models)
   - [List models](#list-models)
   - [Update a model](#update-a-model)
+  - [`Models Shares`](#models-shares)
+    - [List shares](#list-shares-1)
+    - [Share](#share-1)
+    - [Remove a share](#remove-a-share-1)
 - [`Runtimes`](#runtimes)
   - [List runtimes](#list-runtimes)
 - [`Users`](#users)
@@ -132,9 +141,9 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`Sessions Commands`](#sessions-commands)
     - [List session commands](#list-session-commands)
   - [`Sessions Shares`](#sessions-shares)
-    - [List shares](#list-shares)
-    - [Share](#share)
-    - [Remove a share](#remove-a-share)
+    - [List shares](#list-shares-2)
+    - [Share](#share-2)
+    - [Remove a share](#remove-a-share-2)
 - [`Projects`](#projects)
   - [Update project defaults](#update-project-defaults)
   - [Retrieve project defaults](#retrieve-project-defaults)
@@ -201,6 +210,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [List agent instruction revisions](#list-agent-instruction-revisions)
     - [Retrieve an agent instruction revision](#retrieve-an-agent-instruction-revision)
     - [Restore agent instructions](#restore-agent-instructions)
+  - [`Agents Shares`](#agents-shares)
+    - [List shares](#list-shares-3)
+    - [Share](#share-3)
+    - [Remove a share](#remove-a-share-3)
 - [`Repositories`](#repositories)
   - [List repositories](#list-repositories)
   - [Retrieve a repository](#retrieve-a-repository)
@@ -427,6 +440,54 @@ const marketplace = await client.skills.marketplace.retrieve('skillId', {
 });
 ```
 
+### `Skills Shares`
+
+#### List shares
+
+List the people, teams and organization this is shared with. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareListParams`](./src/resources/skills/shares.ts) |
+| Response | [`ShareListResponse`](./src/resources/skills/shares.ts) |
+
+```ts
+const share = await client.skills.shares.list('skillId', {
+  limit: 50,
+});
+```
+
+#### Share
+
+Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareCreateParams`](./src/resources/skills/shares.ts) |
+| Response | [`ShareCreateResponse`](./src/resources/skills/shares.ts) |
+
+```ts
+const share = await client.skills.shares.create('skillId', {
+  type: 'user',
+  id: 'x',
+});
+```
+
+#### Remove a share
+
+Stop sharing with one person, team or the organization. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareDeleteParams`](./src/resources/skills/shares.ts) |
+| Response | [`ShareDeleteResponse`](./src/resources/skills/shares.ts) |
+
+```ts
+const share = await client.skills.shares.delete('shareId', {
+  skillId: 'skillId',
+});
+```
+
 ## `Insights`
 
 ### Retrieve insights
@@ -488,6 +549,22 @@ List repositories included in pull request insights for the current organization
 const insight = await client.insights.listRepositories({
   limit: 50,
   range: '1y',
+});
+```
+
+### List team usage insights
+
+Compare sessions, turns, tokens, Tembo pull requests, and model cost by current active team membership. Team totals can overlap.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`InsightListTeamsParams`](./src/resources/insights.ts) |
+| Response | [`InsightListTeamsResponse`](./src/resources/insights.ts) |
+
+```ts
+const insight = await client.insights.listTeams({
+  range: '1y',
+  limit: 50,
 });
 ```
 
@@ -1200,8 +1277,8 @@ List the models available to the current organization, including enablement and 
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ModelListParams`](./src/resources/models.ts) |
-| Response | [`ModelListResponse`](./src/resources/models.ts) |
+| Request | [`ModelListParams`](./src/resources/models/models.ts) |
+| Response | [`ModelListResponse`](./src/resources/models/models.ts) |
 
 ```ts
 const model = await client.models.list({
@@ -1211,15 +1288,63 @@ const model = await client.models.list({
 
 ### Update a model
 
-Enable or disable an organization model, or select its inference provider.
+Manage workspace model access and provider.
 
 | Direction | Type |
 | --- | --- |
-| Request | [`ModelUpdateParams`](./src/resources/models.ts) |
-| Response | [`ModelUpdateResponse`](./src/resources/models.ts) |
+| Request | [`ModelUpdateParams`](./src/resources/models/models.ts) |
+| Response | [`ModelUpdateResponse`](./src/resources/models/models.ts) |
 
 ```ts
 const model = await client.models.update('modelName', {});
+```
+
+### `Models Shares`
+
+#### List shares
+
+List the people, teams and organization this is shared with. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareListParams`](./src/resources/models/shares.ts) |
+| Response | [`ShareListResponse`](./src/resources/models/shares.ts) |
+
+```ts
+const share = await client.models.shares.list('modelId', {
+  limit: 50,
+});
+```
+
+#### Share
+
+Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareCreateParams`](./src/resources/models/shares.ts) |
+| Response | [`ShareCreateResponse`](./src/resources/models/shares.ts) |
+
+```ts
+const share = await client.models.shares.create('modelId', {
+  type: 'user',
+  id: 'x',
+});
+```
+
+#### Remove a share
+
+Stop sharing with one person, team or the organization. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareDeleteParams`](./src/resources/models/shares.ts) |
+| Response | [`ShareDeleteResponse`](./src/resources/models/shares.ts) |
+
+```ts
+const share = await client.models.shares.delete('shareId', {
+  modelId: 'modelId',
+});
 ```
 
 ## `Runtimes`
@@ -2537,6 +2662,54 @@ Restore a saved instruction JSON document and its mentioned integrations, withou
 const contentRevision = await client.agents.contentRevisions.restore(1, {
   agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
   expectedContentVersion: 1,
+});
+```
+
+### `Agents Shares`
+
+#### List shares
+
+List the people, teams and organization this is shared with. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareListParams`](./src/resources/agents/shares.ts) |
+| Response | [`ShareListResponse`](./src/resources/agents/shares.ts) |
+
+```ts
+const share = await client.agents.shares.list('agentId', {
+  limit: 50,
+});
+```
+
+#### Share
+
+Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareCreateParams`](./src/resources/agents/shares.ts) |
+| Response | [`ShareCreateResponse`](./src/resources/agents/shares.ts) |
+
+```ts
+const share = await client.agents.shares.create('agentId', {
+  type: 'user',
+  id: 'x',
+});
+```
+
+#### Remove a share
+
+Stop sharing with one person, team or the organization. Requires Write on it.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`ShareDeleteParams`](./src/resources/agents/shares.ts) |
+| Response | [`ShareDeleteResponse`](./src/resources/agents/shares.ts) |
+
+```ts
+const share = await client.agents.shares.delete('shareId', {
+  agentId: 'agentId',
 });
 ```
 

@@ -73,6 +73,7 @@ export interface SettingRetrieveResponse {
    * @maxLength 4096
    */
   customSystemPrompt?: string;
+  fallbackToApiOnSubscriptionLimit?: boolean;
 }
 
 export namespace SettingRetrieveResponse {
@@ -101,7 +102,7 @@ export namespace SettingRetrieveResponse {
   export interface AppSidebarPreferences {
     open?: boolean;
     sessionOwnerScope?: 'mine' | 'team';
-    sessionSortBy?: 'createdAt' | 'updatedAt';
+    sessionSortBy?: 'manual' | 'createdAt' | 'updatedAt';
     sessionOrganization?: 'list' | 'project';
     showArchivedSessions?: boolean;
     showActivity?: boolean;
@@ -279,6 +280,10 @@ export interface SettingUpdateParams {
    * @maxLength 4096
    */
   customSystemPrompt?: string;
+  /**
+   * Use the API key or Tembo inference when your subscriptions run out. Overrides the organization setting; null uses the organization setting.
+   */
+  fallbackToApiOnSubscriptionLimit?: boolean | null;
 }
 
 export namespace SettingUpdateParams {
@@ -326,7 +331,7 @@ export namespace SettingUpdateParams {
   export interface AppSidebarPreferences {
     open?: boolean;
     sessionOwnerScope?: 'mine' | 'team';
-    sessionSortBy?: 'createdAt' | 'updatedAt';
+    sessionSortBy?: 'manual' | 'createdAt' | 'updatedAt';
     sessionOrganization?: 'list' | 'project';
     showArchivedSessions?: boolean;
     showActivity?: boolean;
@@ -506,6 +511,7 @@ export interface SettingUpdateResponse {
    * @maxLength 4096
    */
   customSystemPrompt?: string;
+  fallbackToApiOnSubscriptionLimit?: boolean;
 }
 
 export namespace SettingUpdateResponse {
@@ -534,7 +540,7 @@ export namespace SettingUpdateResponse {
   export interface AppSidebarPreferences {
     open?: boolean;
     sessionOwnerScope?: 'mine' | 'team';
-    sessionSortBy?: 'createdAt' | 'updatedAt';
+    sessionSortBy?: 'manual' | 'createdAt' | 'updatedAt';
     sessionOrganization?: 'list' | 'project';
     showArchivedSessions?: boolean;
     showActivity?: boolean;

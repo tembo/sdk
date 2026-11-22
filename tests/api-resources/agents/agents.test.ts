@@ -24,6 +24,7 @@ describe.concurrent('resource agents', () => {
       const agent = await client.agents.list({
         cursor: 'cursor',
         limit: 50,
+        teamId: 'teamId',
         ids: 'ids',
         search: 'search',
         archived: true,

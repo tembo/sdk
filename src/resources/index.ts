@@ -32,6 +32,8 @@ export type {
   InsightListMembersResponse,
   InsightListRepositoriesParams,
   InsightListRepositoriesResponse,
+  InsightListTeamsParams,
+  InsightListTeamsResponse,
 } from './insights';
 export { AuditLogs } from './audit-logs';
 export type { AuditLogListParams, AuditLogListResponse, AuditLogListFiltersResponse } from './audit-logs';
@@ -92,8 +94,13 @@ export type {
   MessageUpdateResponse,
   MessageDeleteResponse,
 } from './messages';
-export { Models } from './models';
-export type { ModelListParams, ModelListResponse, ModelUpdateParams, ModelUpdateResponse } from './models';
+export { Models } from './models/models';
+export type {
+  ModelListParams,
+  ModelListResponse,
+  ModelUpdateParams,
+  ModelUpdateResponse,
+} from './models/models';
 export { Runtimes } from './runtimes';
 export type { RuntimeListParams, RuntimeListResponse } from './runtimes';
 export { Users } from './users/users';
