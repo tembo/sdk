@@ -55,6 +55,7 @@ export interface SettingRetrieveResponse {
   desktopNotificationPreferences?: SettingRetrieveResponse.DesktopNotificationPreferences;
   hasDesktopApp?: boolean;
   openLinksInDesktopApp?: boolean;
+  openPullRequestLinksInTembo?: boolean;
   appearancePreferences?: SettingRetrieveResponse.AppearancePreferences;
   appSidebarPreferences?: SettingRetrieveResponse.AppSidebarPreferences;
   diffPreferences?: SettingRetrieveResponse.DiffPreferences;
@@ -227,6 +228,10 @@ export interface SettingUpdateParams {
    * Open Tembo links from the browser in the desktop app when it is installed.
    */
   openLinksInDesktopApp?: boolean;
+  /**
+   * Open pull request links in Tembo Review. When false, they open on GitHub, GitLab, or Bitbucket.
+   */
+  openPullRequestLinksInTembo?: boolean;
   /**
    * Theme, accent, and appearance preferences. Nested updates preserve unrelated preferences.
    */
@@ -493,6 +498,7 @@ export interface SettingUpdateResponse {
   desktopNotificationPreferences?: SettingUpdateResponse.DesktopNotificationPreferences;
   hasDesktopApp?: boolean;
   openLinksInDesktopApp?: boolean;
+  openPullRequestLinksInTembo?: boolean;
   appearancePreferences?: SettingUpdateResponse.AppearancePreferences;
   appSidebarPreferences?: SettingUpdateResponse.AppSidebarPreferences;
   diffPreferences?: SettingUpdateResponse.DiffPreferences;

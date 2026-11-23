@@ -207,6 +207,7 @@ export namespace TriggerListResponse {
       | TemplatesAPI.AtlassianIssueUpdatedFilters
       | TemplatesAPI.BitbucketPullRequestOpenedFilters
       | TemplatesAPI.GithubCreateFilters
+      | Item.GithubDependabotAlertAssignedFilters
       | TemplatesAPI.GithubIssueClosedFilters
       | TemplatesAPI.GithubIssueCommentCreatedFilters
       | TemplatesAPI.GithubIssueOpenedFilters
@@ -267,6 +268,18 @@ export namespace TriggerListResponse {
        * Only trigger if the issue has at least one of the specified labels
        */
       labels?: Array<string>;
+      [k: string]: unknown;
+    }
+
+    export interface GithubDependabotAlertAssignedFilters {
+      /**
+       * Only trigger if the alert is in one of the repositories
+       */
+      repositories?: Array<string>;
+      /**
+       * Only trigger when the alert is assigned to one of the specified users
+       */
+      assignees?: Array<string>;
       [k: string]: unknown;
     }
 
@@ -661,6 +674,7 @@ export interface TriggerCreateResponse {
     | TemplatesAPI.AtlassianIssueUpdatedFilters
     | TemplatesAPI.BitbucketPullRequestOpenedFilters
     | TemplatesAPI.GithubCreateFilters
+    | TriggerCreateResponse.GithubDependabotAlertAssignedFilters
     | TemplatesAPI.GithubIssueClosedFilters
     | TemplatesAPI.GithubIssueCommentCreatedFilters
     | TemplatesAPI.GithubIssueOpenedFilters
@@ -721,6 +735,18 @@ export namespace TriggerCreateResponse {
      * Only trigger if the issue has at least one of the specified labels
      */
     labels?: Array<string>;
+    [k: string]: unknown;
+  }
+
+  export interface GithubDependabotAlertAssignedFilters {
+    /**
+     * Only trigger if the alert is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger when the alert is assigned to one of the specified users
+     */
+    assignees?: Array<string>;
     [k: string]: unknown;
   }
 
@@ -1090,6 +1116,7 @@ export interface TriggerRetrieveResponse {
     | TemplatesAPI.AtlassianIssueUpdatedFilters
     | TemplatesAPI.BitbucketPullRequestOpenedFilters
     | TemplatesAPI.GithubCreateFilters
+    | TriggerRetrieveResponse.GithubDependabotAlertAssignedFilters
     | TemplatesAPI.GithubIssueClosedFilters
     | TemplatesAPI.GithubIssueCommentCreatedFilters
     | TemplatesAPI.GithubIssueOpenedFilters
@@ -1150,6 +1177,18 @@ export namespace TriggerRetrieveResponse {
      * Only trigger if the issue has at least one of the specified labels
      */
     labels?: Array<string>;
+    [k: string]: unknown;
+  }
+
+  export interface GithubDependabotAlertAssignedFilters {
+    /**
+     * Only trigger if the alert is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger when the alert is assigned to one of the specified users
+     */
+    assignees?: Array<string>;
     [k: string]: unknown;
   }
 
@@ -1536,6 +1575,7 @@ export interface TriggerUpdateResponse {
     | TemplatesAPI.AtlassianIssueUpdatedFilters
     | TemplatesAPI.BitbucketPullRequestOpenedFilters
     | TemplatesAPI.GithubCreateFilters
+    | TriggerUpdateResponse.GithubDependabotAlertAssignedFilters
     | TemplatesAPI.GithubIssueClosedFilters
     | TemplatesAPI.GithubIssueCommentCreatedFilters
     | TemplatesAPI.GithubIssueOpenedFilters
@@ -1596,6 +1636,18 @@ export namespace TriggerUpdateResponse {
      * Only trigger if the issue has at least one of the specified labels
      */
     labels?: Array<string>;
+    [k: string]: unknown;
+  }
+
+  export interface GithubDependabotAlertAssignedFilters {
+    /**
+     * Only trigger if the alert is in one of the repositories
+     */
+    repositories?: Array<string>;
+    /**
+     * Only trigger when the alert is assigned to one of the specified users
+     */
+    assignees?: Array<string>;
     [k: string]: unknown;
   }
 

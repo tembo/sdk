@@ -2800,6 +2800,46 @@
       }
     },
     {
+      "name": "github_dependabot_alert_assigned_filters",
+      "source": "github_dependabot_alert_assigned_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "repositories",
+            "publicName": "repositories",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "assignees",
+            "publicName": "assignees",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
       "name": "github_issue_closed_filters",
       "source": "github_issue_closed_filters",
       "publicAliases": [],
@@ -4849,6 +4889,10 @@
           },
           {
             "kind": "ref",
+            "name": "github_dependabot_alert_assigned_filters"
+          },
+          {
+            "kind": "ref",
             "name": "github_issue_closed_filters"
           },
           {
@@ -5248,6 +5292,7 @@
           }
         ],
         "variantNames": [
+          null,
           null,
           null,
           null,
@@ -5842,6 +5887,10 @@
           },
           {
             "kind": "ref",
+            "name": "github_dependabot_alert_assigned_filters"
+          },
+          {
+            "kind": "ref",
             "name": "github_issue_closed_filters"
           },
           {
@@ -6241,6 +6290,7 @@
           }
         ],
         "variantNames": [
+          null,
           null,
           null,
           null,
@@ -16597,6 +16647,7 @@
         "desktopNotificationPreferences",
         "hasDesktopApp",
         "openLinksInDesktopApp",
+        "openPullRequestLinksInTembo",
         "appearancePreferences",
         "appSidebarPreferences",
         "diffPreferences",
@@ -16622,6 +16673,7 @@
         "desktopNotificationPreferences",
         "hasDesktopApp",
         "openLinksInDesktopApp",
+        "openPullRequestLinksInTembo",
         "appearancePreferences",
         "appSidebarPreferences",
         "diffPreferences",
@@ -16675,6 +16727,10 @@
         },
         {
           "name": "openLinksInDesktopApp",
+          "required": false
+        },
+        {
+          "name": "openPullRequestLinksInTembo",
           "required": false
         },
         {
