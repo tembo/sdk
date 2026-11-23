@@ -38,6 +38,7 @@ describe.concurrent('resource settings', () => {
         desktopNotificationPreferences: {},
         hasDesktopApp: false,
         openLinksInDesktopApp: false,
+        openPullRequestLinksInTembo: false,
         appearancePreferences: {},
         appSidebarPreferences: {},
         diffPreferences: {},
