@@ -67,4 +67,28 @@ describe.concurrent('resource insights', () => {
       });
     },
   );
+  smokeCase(
+    'insights.listTeams:required',
+    { operation: 'listTeams', path: '/v1/insights/teams' },
+    'listTeams: only required params',
+    async () => {
+      const insight = await client.insights.listTeams({
+        range: '1y',
+        limit: 50,
+      });
+    },
+  );
+  smokeCase(
+    'insights.listTeams:all',
+    { operation: 'listTeams', path: '/v1/insights/teams' },
+    'listTeams: required and optional params',
+    async () => {
+      const insight = await client.insights.listTeams({
+        range: '1y',
+        teamId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        cursor: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        limit: 50,
+      });
+    },
+  );
 });

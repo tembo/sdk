@@ -373,3 +373,35 @@ test('organization team and session share mappings cover the new routes', () => 
     assert.equal(method.bodyParamName, 'body');
   }
 });
+
+test('agent, skill, and model share and team insight mappings cover the new routes', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const agentShares = sdkConfig.resources.agents.subresources.shares;
+  const skillShares = sdkConfig.resources.skills.subresources.shares;
+  const modelShares = sdkConfig.resources.models.subresources.shares;
+  const insights = sdkConfig.resources.insights;
+  validateCoverage(
+    {
+      paths: {
+        '/v1/agents/{agentId}/sharing': { get: {}, post: {} },
+        '/v1/agents/{agentId}/sharing/{shareId}': { delete: {} },
+        '/v1/skills/{skillId}/sharing': { get: {}, post: {} },
+        '/v1/skills/{skillId}/sharing/{shareId}': { delete: {} },
+        '/v1/models/{modelId}/sharing': { get: {}, post: {} },
+        '/v1/models/{modelId}/sharing/{shareId}': { delete: {} },
+        '/v1/insights/teams': { get: {} },
+      },
+    },
+    {
+      resources: {
+        agents: { subresources: { shares: agentShares } },
+        skills: { subresources: { shares: skillShares } },
+        models: { subresources: { shares: modelShares } },
+        insights: { methods: { list_teams: insights.methods.list_teams } },
+      },
+    },
+  );
+  for (const method of [agentShares.methods.create, skillShares.methods.create, modelShares.methods.create]) {
+    assert.equal(method.bodyParamName, 'body');
+  }
+});

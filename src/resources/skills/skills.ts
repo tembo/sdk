@@ -12,9 +12,20 @@ import {
   type MarketplaceListParams,
   type MarketplaceRetrieveParams,
 } from './marketplace';
+import * as SharesAPI from './shares';
+import {
+  Shares,
+  type ShareListResponse,
+  type ShareCreateResponse,
+  type ShareDeleteResponse,
+  type ShareListParams,
+  type ShareCreateParams,
+  type ShareDeleteParams,
+} from './shares';
 
 export class Skills extends APIResource {
   marketplace: MarketplaceAPI.Marketplace = new MarketplaceAPI.Marketplace(this._client);
+  shares: SharesAPI.Shares = new SharesAPI.Shares(this._client);
 
   /**
    * List organization skills or skills checked into a repository.
@@ -133,6 +144,12 @@ export interface SkillListParams {
    */
   limit?: number;
   /**
+   * Saved skills shared with this team that the caller can read.
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  teamId?: string;
+  /**
    * Filter by exact skill names.
    */
   names?: Array<string>;
@@ -229,6 +246,7 @@ export interface SkillCreateResponse {
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
+  createdBy: string | null;
   description: string;
   /**
    * @format uuid
@@ -263,6 +281,7 @@ export interface SkillRetrieveResponse {
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
+  createdBy: string | null;
   description: string;
   /**
    * @format uuid
@@ -333,6 +352,7 @@ export interface SkillUpdateResponse {
    * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
    */
   createdAt: string;
+  createdBy: string | null;
   description: string;
   /**
    * @format uuid
@@ -370,6 +390,7 @@ export interface SkillDeleteResponse {
   id: string;
 }
 Skills.Marketplace = Marketplace;
+Skills.Shares = Shares;
 
 export declare namespace Skills {
   export {
@@ -389,5 +410,15 @@ export declare namespace Skills {
     type MarketplaceRetrieveResponse as MarketplaceRetrieveResponse,
     type MarketplaceListParams as MarketplaceListParams,
     type MarketplaceRetrieveParams as MarketplaceRetrieveParams,
+  };
+
+  export {
+    Shares as Shares,
+    type ShareListResponse as ShareListResponse,
+    type ShareCreateResponse as ShareCreateResponse,
+    type ShareDeleteResponse as ShareDeleteResponse,
+    type ShareListParams as ShareListParams,
+    type ShareCreateParams as ShareCreateParams,
+    type ShareDeleteParams as ShareDeleteParams,
   };
 }

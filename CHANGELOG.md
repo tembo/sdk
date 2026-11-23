@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.27.0](https://github.com/tembo/sdk/compare/v0.26.0...v0.27.0) (2026-11-22)
+
+
+### Features
+
+* **api:** add query param teamId on skills.list (+13 more changes) ([becac40](https://github.com/tembo/sdk/commit/becac4039a05ab45f239cafb6a9ed494aa91af9c))
+
+
+### Chores
+
+* **openapi:** refresh snapshot for v0.2.900 and map agent, skill and model sharing and team insights ([43f8a5f](https://github.com/tembo/sdk/commit/43f8a5f4edf4d49bcdf47437d69af98ab7e832e1))
+
 ## [0.26.0](https://github.com/tembo/sdk/compare/v0.25.0...v0.26.0) (2026-11-20)
 
 

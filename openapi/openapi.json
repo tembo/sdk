@@ -5107,6 +5107,16 @@
           },
           {
             "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Saved skills shared with this team that the caller can read."
+          },
+          {
+            "in": "query",
             "name": "names",
             "schema": {
               "type": "array",
@@ -5200,6 +5210,12 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "description": {
                       "type": "string"
                     },
@@ -5253,6 +5269,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "description",
                     "id",
                     "name",
@@ -5410,6 +5427,12 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "description": {
                       "type": "string"
                     },
@@ -5463,6 +5486,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "description",
                     "id",
                     "name",
@@ -5570,6 +5594,12 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "description": {
                       "type": "string"
                     },
@@ -5623,6 +5653,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "description",
                     "id",
                     "name",
@@ -5866,6 +5897,809 @@
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
             "required": true
+          }
+        ]
+      }
+    },
+    "/v1/skills/{skillId}/sharing": {
+      "get": {
+        "operationId": "listSkillShares",
+        "summary": "List shares",
+        "description": "List the people, teams and organization this is shared with. Requires Write on it.",
+        "tags": [
+          "Skills"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List shares",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "audience": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user",
+                                  "team",
+                                  "organization"
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "audience",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "skillId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createSkillShare",
+        "summary": "Share",
+        "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
+        "tags": [
+          "Skills"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "team",
+                            "organization"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "audience",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "user",
+                        "description": "One active member."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "User ID of an active member."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "team",
+                        "description": "Every member of a team."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Team ID in this organization."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "organization",
+                        "description": "Everyone in the organization."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Who to share with. Each member then acts only as far as their role allows."
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "skillId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/skills/{skillId}/sharing/{shareId}": {
+      "delete": {
+        "operationId": "deleteSkillShare",
+        "summary": "Remove a share",
+        "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
+        "tags": [
+          "Skills"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remove a share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "skillId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "shareId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/insights/teams": {
+      "get": {
+        "operationId": "listInsightTeams",
+        "summary": "List team usage insights",
+        "description": "Compare sessions, turns, tokens, Tembo pull requests, and model cost by current active team membership. Team totals can overlap.",
+        "tags": [
+          "Insights"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List team usage insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "members": {
+                            "type": "number"
+                          },
+                          "activeMembers": {
+                            "type": "number"
+                          },
+                          "turnsByPeriod": {
+                            "type": "array",
+                            "items": {
+                              "type": "number"
+                            }
+                          },
+                          "turns": {
+                            "type": "number",
+                            "description": "Messages the user sent to agents."
+                          },
+                          "sessions": {
+                            "type": "number",
+                            "description": "Sessions the user started."
+                          },
+                          "totalTokens": {
+                            "type": "number"
+                          },
+                          "prsCreated": {
+                            "type": "number",
+                            "description": "Pull requests Tembo opened from the user's sessions."
+                          },
+                          "prsMerged": {
+                            "type": "number",
+                            "description": "Pull requests from the user's sessions that were merged."
+                          },
+                          "modelCostUsd": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "members",
+                          "activeMembers",
+                          "turnsByPeriod",
+                          "turns",
+                          "sessions",
+                          "totalTokens",
+                          "prsCreated",
+                          "prsMerged",
+                          "modelCostUsd"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Insight operation conflicts with its current state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Insight operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "range",
+            "schema": {
+              "default": "1y",
+              "type": "string",
+              "enum": [
+                "1d",
+                "7d",
+                "30d",
+                "1y"
+              ]
+            },
+            "description": "Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y."
+          },
+          {
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Filter activity to current active team members."
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
           }
         ]
       }
@@ -7214,6 +8048,14 @@
                                       "organization:secret:write",
                                       "organization:setting:read",
                                       "organization:setting:write",
+                                      "organization:credential:read",
+                                      "organization:credential:write",
+                                      "organization:instruction:read",
+                                      "organization:instruction:write",
+                                      "organization:sandbox_default:read",
+                                      "organization:sandbox_default:write",
+                                      "organization:policy:read",
+                                      "organization:policy:write",
                                       "organization:configuration:read",
                                       "organization:configuration:write",
                                       "organization:subscription:read",
@@ -7525,6 +8367,14 @@
                                       "organization:secret:write",
                                       "organization:setting:read",
                                       "organization:setting:write",
+                                      "organization:credential:read",
+                                      "organization:credential:write",
+                                      "organization:instruction:read",
+                                      "organization:instruction:write",
+                                      "organization:sandbox_default:read",
+                                      "organization:sandbox_default:write",
+                                      "organization:policy:read",
+                                      "organization:policy:write",
                                       "organization:configuration:read",
                                       "organization:configuration:write",
                                       "organization:subscription:read",
@@ -11202,38 +12052,6 @@
                           "description": "Enable or disable the organization weekly report."
                         }
                       },
-                      "required": [
-                        "cloneDepth",
-                        "commitInstructions",
-                        "customReviewBots",
-                        "customSystemPrompt",
-                        "defaultAgent",
-                        "defaultKeepAliveMinutes",
-                        "defaultSandboxSize",
-                        "deleteBranchWhenPrClosed",
-                        "draftPrs",
-                        "enableCoderabbitBot",
-                        "enableCursorBot",
-                        "enableGeminiCodeAssistBot",
-                        "enableGithubActionsBot",
-                        "enableGraphiteBot",
-                        "enableGreptileBot",
-                        "experimentalMcp",
-                        "fallbackToApiOnSubscriptionLimit",
-                        "featureMentionAuthor",
-                        "maxBotReviews",
-                        "maxSolutions",
-                        "onDemandMaxCreditUsage",
-                        "pgStatStatementsResetFrequency",
-                        "pmSystemPrompt",
-                        "prTitleInstructions",
-                        "pullRequestInsightsEnabled",
-                        "shouldSignCommits",
-                        "slackReviewOnTembo",
-                        "slowQueryThresholdMs",
-                        "sshPublicKeys",
-                        "weeklyReportEnabled"
-                      ],
                       "additionalProperties": false
                     }
                   },
@@ -11551,38 +12369,6 @@
                           "description": "Enable or disable the organization weekly report."
                         }
                       },
-                      "required": [
-                        "cloneDepth",
-                        "commitInstructions",
-                        "customReviewBots",
-                        "customSystemPrompt",
-                        "defaultAgent",
-                        "defaultKeepAliveMinutes",
-                        "defaultSandboxSize",
-                        "deleteBranchWhenPrClosed",
-                        "draftPrs",
-                        "enableCoderabbitBot",
-                        "enableCursorBot",
-                        "enableGeminiCodeAssistBot",
-                        "enableGithubActionsBot",
-                        "enableGraphiteBot",
-                        "enableGreptileBot",
-                        "experimentalMcp",
-                        "fallbackToApiOnSubscriptionLimit",
-                        "featureMentionAuthor",
-                        "maxBotReviews",
-                        "maxSolutions",
-                        "onDemandMaxCreditUsage",
-                        "pgStatStatementsResetFrequency",
-                        "pmSystemPrompt",
-                        "prTitleInstructions",
-                        "pullRequestInsightsEnabled",
-                        "shouldSignCommits",
-                        "slackReviewOnTembo",
-                        "slowQueryThresholdMs",
-                        "sshPublicKeys",
-                        "weeklyReportEnabled"
-                      ],
                       "additionalProperties": false
                     }
                   },
@@ -14717,7 +15503,7 @@
                         "type": "boolean"
                       },
                       "permissions": {
-                        "maxItems": 242,
+                        "maxItems": 250,
                         "type": "array",
                         "items": {
                           "type": "string",
@@ -14738,6 +15524,14 @@
                             "organization:secret:write",
                             "organization:setting:read",
                             "organization:setting:write",
+                            "organization:credential:read",
+                            "organization:credential:write",
+                            "organization:instruction:read",
+                            "organization:instruction:write",
+                            "organization:sandbox_default:read",
+                            "organization:sandbox_default:write",
+                            "organization:policy:read",
+                            "organization:policy:write",
                             "organization:configuration:read",
                             "organization:configuration:write",
                             "organization:subscription:read",
@@ -15275,7 +16069,7 @@
                     ]
                   },
                   "permissions": {
-                    "maxItems": 242,
+                    "maxItems": 250,
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -15296,6 +16090,14 @@
                         "organization:secret:write",
                         "organization:setting:read",
                         "organization:setting:write",
+                        "organization:credential:read",
+                        "organization:credential:write",
+                        "organization:instruction:read",
+                        "organization:instruction:write",
+                        "organization:sandbox_default:read",
+                        "organization:sandbox_default:write",
+                        "organization:policy:read",
+                        "organization:policy:write",
                         "organization:configuration:read",
                         "organization:configuration:write",
                         "organization:subscription:read",
@@ -15589,7 +16391,7 @@
                       "type": "boolean"
                     },
                     "permissions": {
-                      "maxItems": 242,
+                      "maxItems": 250,
                       "type": "array",
                       "items": {
                         "type": "string",
@@ -15610,6 +16412,14 @@
                           "organization:secret:write",
                           "organization:setting:read",
                           "organization:setting:write",
+                          "organization:credential:read",
+                          "organization:credential:write",
+                          "organization:instruction:read",
+                          "organization:instruction:write",
+                          "organization:sandbox_default:read",
+                          "organization:sandbox_default:write",
+                          "organization:policy:read",
+                          "organization:policy:write",
                           "organization:configuration:read",
                           "organization:configuration:write",
                           "organization:subscription:read",
@@ -16152,7 +16962,7 @@
                     ]
                   },
                   "permissions": {
-                    "maxItems": 242,
+                    "maxItems": 250,
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -16173,6 +16983,14 @@
                         "organization:secret:write",
                         "organization:setting:read",
                         "organization:setting:write",
+                        "organization:credential:read",
+                        "organization:credential:write",
+                        "organization:instruction:read",
+                        "organization:instruction:write",
+                        "organization:sandbox_default:read",
+                        "organization:sandbox_default:write",
+                        "organization:policy:read",
+                        "organization:policy:write",
                         "organization:configuration:read",
                         "organization:configuration:write",
                         "organization:subscription:read",
@@ -23155,6 +23973,9 @@
                             "minLength": 1,
                             "maxLength": 200
                           },
+                          "id": {
+                            "type": "string"
+                          },
                           "label": {
                             "type": "string"
                           },
@@ -23163,6 +23984,28 @@
                           },
                           "enabled": {
                             "type": "boolean"
+                          },
+                          "isDefault": {
+                            "type": "boolean"
+                          },
+                          "access": {
+                            "type": "object",
+                            "properties": {
+                              "organizationWide": {
+                                "type": "boolean"
+                              },
+                              "audienceNames": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "required": [
+                              "organizationWide",
+                              "audienceNames"
+                            ],
+                            "additionalProperties": false
                           },
                           "available": {
                             "type": "boolean"
@@ -23554,9 +24397,12 @@
                         },
                         "required": [
                           "name",
+                          "id",
                           "label",
                           "provider",
                           "enabled",
+                          "isDefault",
+                          "access",
                           "available",
                           "unavailableReason",
                           "supportedInferenceProviders",
@@ -23697,6 +24543,599 @@
               "maximum": 100
             },
             "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ]
+      }
+    },
+    "/v1/models/{modelId}/sharing": {
+      "get": {
+        "operationId": "listModelShares",
+        "summary": "List shares",
+        "description": "List the people, teams and organization this is shared with. Requires Write on it.",
+        "tags": [
+          "Models"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List shares",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "audience": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user",
+                                  "team",
+                                  "organization"
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "audience",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "modelId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createModelShare",
+        "summary": "Share",
+        "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
+        "tags": [
+          "Models"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "team",
+                            "organization"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "audience",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "user",
+                        "description": "One active member."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "User ID of an active member."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "team",
+                        "description": "Every member of a team."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Team ID in this organization."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "organization",
+                        "description": "Everyone in the organization."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Who to share with. Each member then acts only as far as their role allows."
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "modelId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/models/{modelId}/sharing/{shareId}": {
+      "delete": {
+        "operationId": "deleteModelShare",
+        "summary": "Remove a share",
+        "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
+        "tags": [
+          "Models"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remove a share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "modelId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "shareId",
+            "required": true
           }
         ]
       }
@@ -23705,7 +25144,7 @@
       "patch": {
         "operationId": "updateModel",
         "summary": "Update a model",
-        "description": "Enable or disable an organization model, or select its inference provider.",
+        "description": "Manage workspace model access and provider.",
         "tags": [
           "Models"
         ],
@@ -23727,6 +25166,9 @@
                       "minLength": 1,
                       "maxLength": 200
                     },
+                    "id": {
+                      "type": "string"
+                    },
                     "label": {
                       "type": "string"
                     },
@@ -23735,6 +25177,28 @@
                     },
                     "enabled": {
                       "type": "boolean"
+                    },
+                    "isDefault": {
+                      "type": "boolean"
+                    },
+                    "access": {
+                      "type": "object",
+                      "properties": {
+                        "organizationWide": {
+                          "type": "boolean"
+                        },
+                        "audienceNames": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        "organizationWide",
+                        "audienceNames"
+                      ],
+                      "additionalProperties": false
                     },
                     "available": {
                       "type": "boolean"
@@ -24126,9 +25590,12 @@
                   },
                   "required": [
                     "name",
+                    "id",
                     "label",
                     "provider",
                     "enabled",
+                    "isDefault",
+                    "access",
                     "available",
                     "unavailableReason",
                     "supportedInferenceProviders",
@@ -24476,6 +25943,7 @@
                                           "type": "string",
                                           "enum": [
                                             "model_disabled",
+                                            "model_not_shared",
                                             "plan_required",
                                             "trial_inference_exhausted",
                                             "missing_credentials",
@@ -25487,6 +26955,7 @@
                         "sessionSortBy": {
                           "type": "string",
                           "enum": [
+                            "manual",
                             "createdAt",
                             "updatedAt"
                           ]
@@ -25763,6 +27232,9 @@
                     "customSystemPrompt": {
                       "type": "string",
                       "maxLength": 4096
+                    },
+                    "fallbackToApiOnSubscriptionLimit": {
+                      "type": "boolean"
                     }
                   },
                   "additionalProperties": false
@@ -25995,6 +27467,7 @@
                         "sessionSortBy": {
                           "type": "string",
                           "enum": [
+                            "manual",
                             "createdAt",
                             "updatedAt"
                           ]
@@ -26271,6 +27744,9 @@
                     "customSystemPrompt": {
                       "type": "string",
                       "maxLength": 4096
+                    },
+                    "fallbackToApiOnSubscriptionLimit": {
+                      "type": "boolean"
                     }
                   },
                   "additionalProperties": false
@@ -26524,6 +28000,7 @@
                       "sessionSortBy": {
                         "type": "string",
                         "enum": [
+                          "manual",
                           "createdAt",
                           "updatedAt"
                         ]
@@ -26858,6 +28335,13 @@
                     "description": "Personal system instructions supplied to agents.",
                     "type": "string",
                     "maxLength": 4096
+                  },
+                  "fallbackToApiOnSubscriptionLimit": {
+                    "description": "Use the API key or Tembo inference when your subscriptions run out. Overrides the organization setting; null uses the organization setting.",
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -51128,6 +52612,591 @@
         ]
       }
     },
+    "/v1/agents/{agentId}/sharing": {
+      "get": {
+        "operationId": "listAgentSharesPublic",
+        "summary": "List shares",
+        "description": "List the people, teams and organization this is shared with. Requires Write on it.",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List shares",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "audience": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user",
+                                  "team",
+                                  "organization"
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "audience",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "agentId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createAgentSharePublic",
+        "summary": "Share",
+        "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "team",
+                            "organization"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "audience",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "user",
+                        "description": "One active member."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "User ID of an active member."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "team",
+                        "description": "Every member of a team."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Team ID in this organization."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "organization",
+                        "description": "Everyone in the organization."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Who to share with. Each member then acts only as far as their role allows."
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "agentId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/agents/{agentId}/sharing/{shareId}": {
+      "delete": {
+        "operationId": "deleteAgentSharePublic",
+        "summary": "Remove a share",
+        "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
+        "tags": [
+          "Agents"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remove a share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "agentId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "shareId",
+            "required": true
+          }
+        ]
+      }
+    },
     "/v1/agents": {
       "get": {
         "operationId": "listAgents",
@@ -51514,6 +53583,15 @@
               "maximum": 100
             },
             "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            },
+            "description": "Only agents shared with this team that the caller can reach."
           },
           {
             "in": "query",
@@ -64891,6 +66969,10 @@
                                 "type": "number",
                                 "minimum": 0
                               },
+                              "cloudDeviceCredits": {
+                                "type": "number",
+                                "minimum": 0
+                              },
                               "computeCredits": {
                                 "type": "number",
                                 "minimum": 0
@@ -64911,8 +66993,91 @@
                               "kind",
                               "createdAt",
                               "managedInferenceCredits",
+                              "cloudDeviceCredits",
                               "computeCredits",
                               "totalCredits",
+                              "type"
+                            ],
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "sessionId": {
+                                "type": "string",
+                                "minLength": 1,
+                                "maxLength": 255
+                              },
+                              "sessionTitle": {
+                                "type": "string"
+                              },
+                              "platform": {
+                                "type": "string",
+                                "enum": [
+                                  "ios",
+                                  "android",
+                                  "macos"
+                                ]
+                              },
+                              "model": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "osVersion": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
+                              "startedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                              },
+                              "endedAt": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "billedSeconds": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991
+                              },
+                              "computeCredits": {
+                                "type": "number",
+                                "minimum": 0
+                              },
+                              "type": {
+                                "type": "string",
+                                "const": "cloud-device"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "sessionId",
+                              "sessionTitle",
+                              "platform",
+                              "model",
+                              "osVersion",
+                              "startedAt",
+                              "endedAt",
+                              "billedSeconds",
+                              "computeCredits",
                               "type"
                             ],
                             "additionalProperties": false
@@ -65135,10 +67300,11 @@
               "enum": [
                 "all",
                 "sessions",
-                "warm-pool"
+                "warm-pool",
+                "cloud-devices"
               ]
             },
-            "description": "Usage types to include. Defaults to sessions for backwards compatibility."
+            "description": "Usage types to include. Defaults to sessions for backwards compatibility. `cloud-devices` lists the cloud devices (macOS VMs) behind session compute charges and is never combined with other types."
           },
           {
             "in": "query",

@@ -87,6 +87,28 @@ export class Insights extends APIResource {
   ): APIPromise<InsightListRepositoriesResponse> {
     return this._client.get('/v1/insights/repositories', { query, ...options });
   }
+
+  /**
+   * Compare sessions, turns, tokens, Tembo pull requests, and model cost by current active team membership. Team totals can overlap.
+   *
+   * @param {InsightListTeamsParams} [query] - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<InsightListTeamsResponse>} List team usage insights
+   *
+   * @example
+   * ```ts
+   * const insight = await client.insights.listTeams({
+   *   range: '1y',
+   *   limit: 50,
+   * });
+   * ```
+   */
+  listTeams(
+    query: InsightListTeamsParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<InsightListTeamsResponse> {
+    return this._client.get('/v1/insights/teams', { query, ...options });
+  }
 }
 
 export interface InsightRetrieveParams {
@@ -392,15 +414,84 @@ export namespace InsightListRepositoriesResponse {
     temboContribution: number;
   }
 }
+
+export interface InsightListTeamsParams {
+  /**
+   * Time range to aggregate: last day, 7 days, 30 days, or year. Defaults to 1y.
+   */
+  range?: '1d' | '7d' | '30d' | '1y';
+  /**
+   * Filter activity to current active team members.
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  teamId?: string;
+  /**
+   * Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages.
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  cursor?: string;
+  /**
+   * Maximum number of items to return in one page. Use nextCursor from the response to fetch more items.
+   * @default 50
+   * @minimum 1
+   * @maximum 100
+   */
+  limit?: number;
+}
+
+export interface InsightListTeamsResponse {
+  items: Array<InsightListTeamsResponse.Item>;
+  /**
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  nextCursor: string | null;
+}
+
+export namespace InsightListTeamsResponse {
+  export interface Item {
+    /**
+     * @format uuid
+     * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+     */
+    id: string;
+    name: string;
+    members: number;
+    activeMembers: number;
+    turnsByPeriod: Array<number>;
+    /**
+     * Messages the user sent to agents.
+     */
+    turns: number;
+    /**
+     * Sessions the user started.
+     */
+    sessions: number;
+    totalTokens: number;
+    /**
+     * Pull requests Tembo opened from the user's sessions.
+     */
+    prsCreated: number;
+    /**
+     * Pull requests from the user's sessions that were merged.
+     */
+    prsMerged: number;
+    modelCostUsd: number | null;
+  }
+}
 export declare namespace Insights {
   export {
     type InsightRetrieveResponse as InsightRetrieveResponse,
     type InsightUpdateResponse as InsightUpdateResponse,
     type InsightListMembersResponse as InsightListMembersResponse,
     type InsightListRepositoriesResponse as InsightListRepositoriesResponse,
+    type InsightListTeamsResponse as InsightListTeamsResponse,
     type InsightRetrieveParams as InsightRetrieveParams,
     type InsightUpdateParams as InsightUpdateParams,
     type InsightListMembersParams as InsightListMembersParams,
     type InsightListRepositoriesParams as InsightListRepositoriesParams,
+    type InsightListTeamsParams as InsightListTeamsParams,
   };
 }

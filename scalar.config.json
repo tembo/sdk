@@ -50,6 +50,19 @@
             "list": "get /v1/skills/marketplace",
             "retrieve": "get /v1/skills/marketplace/{skillId}"
           }
+        },
+        "shares": {
+          "methods": {
+            "list": "get /v1/skills/{skillId}/sharing",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/skills/{skillId}/sharing",
+              "verb": "post",
+              "path": "/v1/skills/{skillId}/sharing",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/skills/{skillId}/sharing/{shareId}"
+          }
         }
       }
     },
@@ -64,7 +77,8 @@
           "bodyParamName": "body"
         },
         "list_members": "get /v1/insights/members",
-        "list_repositories": "get /v1/insights/repositories"
+        "list_repositories": "get /v1/insights/repositories",
+        "list_teams": "get /v1/insights/teams"
       }
     },
     "audit_logs": {
@@ -290,6 +304,21 @@
           "verb": "patch",
           "path": "/v1/models/{modelName}",
           "bodyParamName": "body"
+        }
+      },
+      "subresources": {
+        "shares": {
+          "methods": {
+            "list": "get /v1/models/{modelId}/sharing",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/models/{modelId}/sharing",
+              "verb": "post",
+              "path": "/v1/models/{modelId}/sharing",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/models/{modelId}/sharing/{shareId}"
+          }
         }
       }
     },
@@ -701,6 +730,19 @@
               "path": "/v1/agents/{agentId}/content-revisions/{version}/restore",
               "bodyParamName": "body"
             }
+          }
+        },
+        "shares": {
+          "methods": {
+            "list": "get /v1/agents/{agentId}/sharing",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/agents/{agentId}/sharing",
+              "verb": "post",
+              "path": "/v1/agents/{agentId}/sharing",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/agents/{agentId}/sharing/{shareId}"
           }
         }
       }

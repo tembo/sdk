@@ -98,6 +98,16 @@ import {
   type ContentRevisionRetrieveParams,
   type ContentRevisionRestoreParams,
 } from './content-revisions';
+import * as SharesAPI from './shares';
+import {
+  Shares,
+  type ShareListResponse,
+  type ShareCreateResponse,
+  type ShareDeleteResponse,
+  type ShareListParams,
+  type ShareCreateParams,
+  type ShareDeleteParams,
+} from './shares';
 
 export class Agents extends APIResource {
   templates: TemplatesAPI2.Templates = new TemplatesAPI2.Templates(this._client);
@@ -107,6 +117,7 @@ export class Agents extends APIResource {
   contentRevisions: ContentRevisionsAPI.ContentRevisions = new ContentRevisionsAPI.ContentRevisions(
     this._client,
   );
+  shares: SharesAPI.Shares = new SharesAPI.Shares(this._client);
 
   /**
    * List agents available in your organization, with optional search, status, integration, and author filters.
@@ -256,6 +267,11 @@ export interface AgentListParams {
    * @maximum 100
    */
   limit?: number;
+  /**
+   * Only agents shared with this team that the caller can reach.
+   * @minLength 1
+   */
+  teamId?: string;
   /**
    * Filter by agent IDs, supplied as a comma-separated list.
    * @maxLength 10000
@@ -1025,6 +1041,7 @@ Agents.Schedules = Schedules;
 Agents.Triggers = Triggers;
 Agents.Runs = Runs;
 Agents.ContentRevisions = ContentRevisions;
+Agents.Shares = Shares;
 
 export declare namespace Agents {
   export {
@@ -1130,5 +1147,15 @@ export declare namespace Agents {
     type ContentRevisionListParams as ContentRevisionListParams,
     type ContentRevisionRetrieveParams as ContentRevisionRetrieveParams,
     type ContentRevisionRestoreParams as ContentRevisionRestoreParams,
+  };
+
+  export {
+    Shares as Shares,
+    type ShareListResponse as ShareListResponse,
+    type ShareCreateResponse as ShareCreateResponse,
+    type ShareDeleteResponse as ShareDeleteResponse,
+    type ShareListParams as ShareListParams,
+    type ShareCreateParams as ShareCreateParams,
+    type ShareDeleteParams as ShareDeleteParams,
   };
 }
