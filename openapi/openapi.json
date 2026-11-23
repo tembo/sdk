@@ -1365,6 +1365,26 @@
         },
         "additionalProperties": {}
       },
+      "GithubDependabotAlertAssignedFilters": {
+        "type": "object",
+        "properties": {
+          "repositories": {
+            "description": "Only trigger if the alert is in one of the repositories",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "assignees": {
+            "description": "Only trigger when the alert is assigned to one of the specified users",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": {}
+      },
       "GithubIssueClosedFilters": {
         "type": "object",
         "properties": {
@@ -2375,6 +2395,9 @@
             "$ref": "#/components/schemas/GithubCreateFilters"
           },
           {
+            "$ref": "#/components/schemas/GithubDependabotAlertAssignedFilters"
+          },
+          {
             "$ref": "#/components/schemas/GithubIssueClosedFilters"
           },
           {
@@ -2925,6 +2948,9 @@
           },
           {
             "$ref": "#/components/schemas/GithubCreateFilters"
+          },
+          {
+            "$ref": "#/components/schemas/GithubDependabotAlertAssignedFilters"
           },
           {
             "$ref": "#/components/schemas/GithubIssueClosedFilters"
@@ -26895,6 +26921,9 @@
                     "openLinksInDesktopApp": {
                       "type": "boolean"
                     },
+                    "openPullRequestLinksInTembo": {
+                      "type": "boolean"
+                    },
                     "appearancePreferences": {
                       "type": "object",
                       "properties": {
@@ -27405,6 +27434,9 @@
                       "type": "boolean"
                     },
                     "openLinksInDesktopApp": {
+                      "type": "boolean"
+                    },
+                    "openPullRequestLinksInTembo": {
                       "type": "boolean"
                     },
                     "appearancePreferences": {
@@ -27921,6 +27953,10 @@
                   },
                   "openLinksInDesktopApp": {
                     "description": "Open Tembo links from the browser in the desktop app when it is installed.",
+                    "type": "boolean"
+                  },
+                  "openPullRequestLinksInTembo": {
+                    "description": "Open pull request links in Tembo Review. When false, they open on GitHub, GitLab, or Bitbucket.",
                     "type": "boolean"
                   },
                   "appearancePreferences": {
