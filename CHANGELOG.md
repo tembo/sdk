@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.29.0](https://github.com/tembo/sdk/compare/v0.28.0...v0.29.0) (2026-11-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** 2 breaking changes to the SDK surface.
+    - Schema `trigger_filters` shape changed.
+    - Schema `trigger_filters_output` shape changed.
+
+### Features
+
+* **api:** update schema trigger_filters (+10 more changes) ([4a5dd2a](https://github.com/tembo/sdk/commit/4a5dd2aaada5eac211e05ec256fe7b25d85e46c5))
+
+
+### Chores
+
+* **openapi:** refresh snapshot for v0.2.903 and map memories ([77f4564](https://github.com/tembo/sdk/commit/77f45649e6a8deac882c9a0740cf298426599309))
+
 ## [0.28.0](https://github.com/tembo/sdk/compare/v0.27.0...v0.28.0) (2026-11-23)
 
 
