@@ -405,3 +405,20 @@ test('agent, skill, and model share and team insight mappings cover the new rout
     assert.equal(method.bodyParamName, 'body');
   }
 });
+
+test('memory mappings cover the new routes and preserve request bodies', () => {
+  const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  const { memories } = sdkConfig.resources;
+  validateCoverage(
+    {
+      paths: {
+        '/v1/memories': { get: {}, post: {} },
+        '/v1/memories/{name}': { get: {}, patch: {}, delete: {} },
+      },
+    },
+    { resources: { memories } },
+  );
+  for (const method of [memories.methods.create, memories.methods.update]) {
+    assert.equal(method.bodyParamName, 'body');
+  }
+});

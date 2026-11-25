@@ -129,7 +129,8 @@ export namespace TriggerListResponse {
       | 'snyk'
       | 'hubspot'
       | 'openconnect'
-      | 'tailscale';
+      | 'tailscale'
+      | 'sazabi';
     /**
      * @maxItems 100
      */
@@ -251,7 +252,8 @@ export interface TriggerRetrieveResponse {
     | 'snyk'
     | 'hubspot'
     | 'openconnect'
-    | 'tailscale';
+    | 'tailscale'
+    | 'sazabi';
   defaultFilters: Record<string, boolean | string | Array<string>>;
   filters?: TriggerRetrieveResponse.Filters;
 }

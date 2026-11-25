@@ -242,6 +242,27 @@
         "test": "post /v1/mcp-connections/{mcpConnectionId}/test"
       }
     },
+    "memories": {
+      "methods": {
+        "list": "get /v1/memories",
+        "create": {
+          "kind": "http",
+          "endpoint": "post /v1/memories",
+          "verb": "post",
+          "path": "/v1/memories",
+          "bodyParamName": "body"
+        },
+        "retrieve": "get /v1/memories/{name}",
+        "update": {
+          "kind": "http",
+          "endpoint": "patch /v1/memories/{name}",
+          "verb": "patch",
+          "path": "/v1/memories/{name}",
+          "bodyParamName": "body"
+        },
+        "delete": "delete /v1/memories/{name}"
+      }
+    },
     "artifacts": {
       "methods": {
         "list": "get /v1/artifacts",

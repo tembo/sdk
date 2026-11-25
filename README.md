@@ -140,8 +140,8 @@ const client = new Tembo({
 | `defaultQuery` | `Record<string, string \| undefined>` | - | Query parameters sent with every request. |
 | `fetchOptions` | `RequestInit` | - | Additional fetch options sent with every request. |
 | `fetch` | `Fetch` | - | Custom fetch implementation. |
-| `logLevel` | `"off" \| "error" \| "warn" \| "info" \| "debug" \| null` | `process.env["TEMBO_LOG"]` | Controls request and retry debug logging. |
-| `logger` | `Logger \| null` | `console` | Custom logger implementation. |
+| `logLevel` | `"off" \| "error" \| "warn" \| "info" \| "debug"` | `process.env["TEMBO_LOG"] ?? "warn"` | Controls request and retry debug logging. `"off"` turns logging off. |
+| `logger` | `Logger` | `console` | Custom logger implementation. |
 
 <br />
 
@@ -177,12 +177,13 @@ Generated clients support request timeouts and retry temporary failures such as 
 
 - Set `logLevel: "debug"` to log request URLs, options, response status, response headers, and retry attempts.
 - Pass a custom `logger` to route logs into your own observability pipeline.
-- Set `logLevel: null` to disable environment-driven logging.
+- Set `logLevel: "off"` to turn logging off, whatever `TEMBO_LOG` says. Without `logLevel`, the client reads that environment variable, then defaults to `"warn"`.
 
 <br />
 
 ## Requirements
 
 - Node.js 20+, a modern browser, or any runtime with `fetch` support
+- TypeScript 5.8+ for type checking, with `moduleResolution` set to `node16` or `nodenext` (from CommonJS or ES modules) or `bundler`
 
 Powered by Scalar.

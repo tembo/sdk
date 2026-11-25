@@ -333,7 +333,7 @@ export interface IntegrationListParams {
   /**
    * Filter provider types, supplied as a comma-separated list.
    * @minItems 1
-   * @maxItems 18
+   * @maxItems 19
    */
   type?: Array<string>;
   /**
@@ -418,7 +418,8 @@ export type IntegrationCreateParams =
   | IntegrationCreateParams.Variant3
   | IntegrationCreateParams.Variant4
   | IntegrationCreateParams.Variant5
-  | IntegrationCreateParams.Variant6;
+  | IntegrationCreateParams.Variant6
+  | IntegrationCreateParams.Variant7;
 
 export declare namespace IntegrationCreateParams {
   export interface Variant0 {
@@ -532,6 +533,19 @@ export declare namespace IntegrationCreateParams {
 
   export interface Variant5 {
     /**
+     * Signing secret Sazabi shows when you create the webhook endpoint.
+     * @minLength 1
+     * @maxLength 4096
+     */
+    signingSecret: string;
+    /**
+     * Create a Sazabi integration for automation triggers.
+     */
+    type: 'sazabi';
+  }
+
+  export interface Variant6 {
+    /**
      * Snyk service-account client ID.
      * @minLength 1
      * @maxLength 16384
@@ -561,7 +575,7 @@ export declare namespace IntegrationCreateParams {
     organizationName?: string;
   }
 
-  export interface Variant6 {
+  export interface Variant7 {
     /**
      * Display name for the Tailscale connection.
      * @minLength 1

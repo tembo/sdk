@@ -109,6 +109,7 @@ export namespace SettingRetrieveResponse {
     showActivity?: boolean;
     width?: number;
     rightSidebar?: Record<string, AppSidebarPreferences.RightSidebar>;
+    botOrder?: Array<string>;
   }
 
   export namespace AppSidebarPreferences {
@@ -346,6 +347,10 @@ export namespace SettingUpdateParams {
      */
     width?: number;
     rightSidebar?: Record<string, AppSidebarPreferences.RightSidebar>;
+    /**
+     * @maxItems 500
+     */
+    botOrder?: Array<string>;
   }
 
   export namespace AppSidebarPreferences {
@@ -552,6 +557,7 @@ export namespace SettingUpdateResponse {
     showActivity?: boolean;
     width?: number;
     rightSidebar?: Record<string, AppSidebarPreferences.RightSidebar>;
+    botOrder?: Array<string>;
   }
 
   export namespace AppSidebarPreferences {

@@ -59,6 +59,18 @@ export type {
   McpConnectionAuthorizeResponse,
   McpConnectionTestResponse,
 } from './mcp-connections';
+export { Memories } from './memories';
+export type {
+  MemoryListParams,
+  MemoryListResponse,
+  MemoryCreateParams,
+  MemoryCreateResponse,
+  MemoryRetrieveResponse,
+  MemoryUpdateParams,
+  MemoryUpdateResponse,
+  MemoryDeleteParams,
+  MemoryDeleteResponse,
+} from './memories';
 export { Artifacts } from './artifacts';
 export type {
   ArtifactListParams,

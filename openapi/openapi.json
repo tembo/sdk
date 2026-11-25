@@ -2274,6 +2274,39 @@
         },
         "additionalProperties": {}
       },
+      "SazabiIssueFilters": {
+        "type": "object",
+        "properties": {
+          "severities": {
+            "description": "Only trigger if the issue has one of the specified severities",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "critical",
+                "high",
+                "medium",
+                "low"
+              ]
+            }
+          },
+          "projects": {
+            "description": "Only trigger if the issue is in one of these Sazabi projects (name or ID)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "components": {
+            "description": "Only trigger if the issue affects one of these components (name or ID)",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "additionalProperties": {}
+      },
       "SentryIssueCreatedFilters": {
         "type": "object",
         "properties": {
@@ -2489,6 +2522,9 @@
           },
           {
             "$ref": "#/components/schemas/LinearIssueUpdatedFilters"
+          },
+          {
+            "$ref": "#/components/schemas/SazabiIssueFilters"
           },
           {
             "$ref": "#/components/schemas/SentryIssueCreatedFilters"
@@ -3044,6 +3080,9 @@
           },
           {
             "$ref": "#/components/schemas/LinearIssueUpdatedFilters"
+          },
+          {
+            "$ref": "#/components/schemas/SazabiIssueFilters"
           },
           {
             "$ref": "#/components/schemas/SentryIssueCreatedFilters"
@@ -8292,6 +8331,8 @@
                                       "pin:write",
                                       "folder:read",
                                       "folder:write",
+                                      "memory:read",
+                                      "memory:write",
                                       "queue:job:read",
                                       "queue:job:write",
                                       "queue:host_manager_job:read",
@@ -8611,6 +8652,8 @@
                                       "pin:write",
                                       "folder:read",
                                       "folder:write",
+                                      "memory:read",
+                                      "memory:write",
                                       "queue:job:read",
                                       "queue:job:write",
                                       "queue:host_manager_job:read",
@@ -15529,7 +15572,7 @@
                         "type": "boolean"
                       },
                       "permissions": {
-                        "maxItems": 250,
+                        "maxItems": 252,
                         "type": "array",
                         "items": {
                           "type": "string",
@@ -15768,6 +15811,8 @@
                             "pin:write",
                             "folder:read",
                             "folder:write",
+                            "memory:read",
+                            "memory:write",
                             "queue:job:read",
                             "queue:job:write",
                             "queue:host_manager_job:read",
@@ -16095,7 +16140,7 @@
                     ]
                   },
                   "permissions": {
-                    "maxItems": 250,
+                    "maxItems": 252,
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -16334,6 +16379,8 @@
                         "pin:write",
                         "folder:read",
                         "folder:write",
+                        "memory:read",
+                        "memory:write",
                         "queue:job:read",
                         "queue:job:write",
                         "queue:host_manager_job:read",
@@ -16417,7 +16464,7 @@
                       "type": "boolean"
                     },
                     "permissions": {
-                      "maxItems": 250,
+                      "maxItems": 252,
                       "type": "array",
                       "items": {
                         "type": "string",
@@ -16656,6 +16703,8 @@
                           "pin:write",
                           "folder:read",
                           "folder:write",
+                          "memory:read",
+                          "memory:write",
                           "queue:job:read",
                           "queue:job:write",
                           "queue:host_manager_job:read",
@@ -16988,7 +17037,7 @@
                     ]
                   },
                   "permissions": {
-                    "maxItems": 250,
+                    "maxItems": 252,
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -17227,6 +17276,8 @@
                         "pin:write",
                         "folder:read",
                         "folder:write",
+                        "memory:read",
+                        "memory:write",
                         "queue:job:read",
                         "queue:job:write",
                         "queue:host_manager_job:read",
@@ -21213,6 +21264,16 @@
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
             "description": "Filter artifacts attached to this session."
+          },
+          {
+            "in": "query",
+            "name": "botId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Filter artifacts from sessions started by this Bot."
           },
           {
             "in": "query",
@@ -27022,6 +27083,12 @@
                             },
                             "additionalProperties": false
                           }
+                        },
+                        "botOrder": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
                         }
                       },
                       "additionalProperties": false
@@ -27536,6 +27603,12 @@
                               }
                             },
                             "additionalProperties": false
+                          }
+                        },
+                        "botOrder": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
                           }
                         }
                       },
@@ -28078,6 +28151,15 @@
                             }
                           },
                           "additionalProperties": false
+                        }
+                      },
+                      "botOrder": {
+                        "maxItems": 500,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 64
                         }
                       }
                     },
@@ -32527,18 +32609,6 @@
                               "null"
                             ]
                           },
-                          "agentId": {
-                            "anyOf": [
-                              {
-                                "type": "string",
-                                "format": "uuid",
-                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                              },
-                              {
-                                "type": "null"
-                              }
-                            ]
-                          },
                           "createdAt": {
                             "type": "string",
                             "format": "date-time",
@@ -32602,6 +32672,18 @@
                             ],
                             "description": "Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.",
                             "deprecated": true
+                          },
+                          "agentId": {
+                            "anyOf": [
+                              {
+                                "type": "string",
+                                "format": "uuid",
+                                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
                           },
                           "artifacts": {
                             "type": "array",
@@ -32940,7 +33022,6 @@
                         },
                         "required": [
                           "agent",
-                          "agentId",
                           "createdAt",
                           "externalId",
                           "id",
@@ -32952,6 +33033,7 @@
                           "title",
                           "updatedAt",
                           "visibility",
+                          "agentId",
                           "artifacts",
                           "diffSummary",
                           "folderId",
@@ -33129,6 +33211,16 @@
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
             "description": "Filter sessions created by this automation agent."
+          },
+          {
+            "in": "query",
+            "name": "botId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Filter sessions started by this Bot."
           },
           {
             "in": "query",
@@ -33429,18 +33521,6 @@
                         "null"
                       ]
                     },
-                    "agentId": {
-                      "anyOf": [
-                        {
-                          "type": "string",
-                          "format": "uuid",
-                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
                     "artifactType": {
                       "anyOf": [
                         {
@@ -33596,6 +33676,18 @@
                       ],
                       "description": "Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.",
                       "deprecated": true
+                    },
+                    "agentId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "artifacts": {
                       "type": "array",
@@ -34104,7 +34196,6 @@
                   },
                   "required": [
                     "agent",
-                    "agentId",
                     "artifactType",
                     "baseBranch",
                     "branchName",
@@ -34125,6 +34216,7 @@
                     "title",
                     "updatedAt",
                     "visibility",
+                    "agentId",
                     "artifacts",
                     "automaticSizing",
                     "description",
@@ -34487,18 +34579,6 @@
                         "null"
                       ]
                     },
-                    "agentId": {
-                      "anyOf": [
-                        {
-                          "type": "string",
-                          "format": "uuid",
-                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
                     "artifactType": {
                       "anyOf": [
                         {
@@ -34654,6 +34734,18 @@
                       ],
                       "description": "Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.",
                       "deprecated": true
+                    },
+                    "agentId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "artifacts": {
                       "type": "array",
@@ -35162,7 +35254,6 @@
                   },
                   "required": [
                     "agent",
-                    "agentId",
                     "artifactType",
                     "baseBranch",
                     "branchName",
@@ -35183,6 +35274,7 @@
                     "title",
                     "updatedAt",
                     "visibility",
+                    "agentId",
                     "artifacts",
                     "automaticSizing",
                     "description",
@@ -35404,18 +35496,6 @@
                         "null"
                       ]
                     },
-                    "agentId": {
-                      "anyOf": [
-                        {
-                          "type": "string",
-                          "format": "uuid",
-                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
                     "artifactType": {
                       "anyOf": [
                         {
@@ -35571,6 +35651,18 @@
                       ],
                       "description": "Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.",
                       "deprecated": true
+                    },
+                    "agentId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "artifacts": {
                       "type": "array",
@@ -36079,7 +36171,6 @@
                   },
                   "required": [
                     "agent",
-                    "agentId",
                     "artifactType",
                     "baseBranch",
                     "branchName",
@@ -36100,6 +36191,7 @@
                     "title",
                     "updatedAt",
                     "visibility",
+                    "agentId",
                     "artifacts",
                     "automaticSizing",
                     "description",
@@ -36362,18 +36454,6 @@
                         "null"
                       ]
                     },
-                    "agentId": {
-                      "anyOf": [
-                        {
-                          "type": "string",
-                          "format": "uuid",
-                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
                     "artifactType": {
                       "anyOf": [
                         {
@@ -36529,6 +36609,18 @@
                       ],
                       "description": "Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.",
                       "deprecated": true
+                    },
+                    "agentId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "artifacts": {
                       "type": "array",
@@ -37037,7 +37129,6 @@
                   },
                   "required": [
                     "agent",
-                    "agentId",
                     "artifactType",
                     "baseBranch",
                     "branchName",
@@ -37058,6 +37149,7 @@
                     "title",
                     "updatedAt",
                     "visibility",
+                    "agentId",
                     "artifacts",
                     "automaticSizing",
                     "description",
@@ -37248,18 +37340,6 @@
                         "null"
                       ]
                     },
-                    "agentId": {
-                      "anyOf": [
-                        {
-                          "type": "string",
-                          "format": "uuid",
-                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
-                        },
-                        {
-                          "type": "null"
-                        }
-                      ]
-                    },
                     "artifactType": {
                       "anyOf": [
                         {
@@ -37415,6 +37495,18 @@
                       ],
                       "description": "Deprecated: `private` when shared with no one, `public` when shared with anyone. List the session’s shares for its exact audiences.",
                       "deprecated": true
+                    },
+                    "agentId": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
                     },
                     "artifacts": {
                       "type": "array",
@@ -37923,7 +38015,6 @@
                   },
                   "required": [
                     "agent",
-                    "agentId",
                     "artifactType",
                     "baseBranch",
                     "branchName",
@@ -37944,6 +38035,7 @@
                     "title",
                     "updatedAt",
                     "visibility",
+                    "agentId",
                     "artifacts",
                     "automaticSizing",
                     "description",
@@ -41250,12 +41342,6 @@
                                       "null"
                                     ]
                                   },
-                                  "agentId": {
-                                    "type": [
-                                      "string",
-                                      "null"
-                                    ]
-                                  },
                                   "createdAt": {
                                     "type": "string",
                                     "format": "date-time",
@@ -41294,6 +41380,12 @@
                                     "type": "integer",
                                     "minimum": -9007199254740991,
                                     "maximum": 9007199254740991
+                                  },
+                                  "agentId": {
+                                    "type": [
+                                      "string",
+                                      "null"
+                                    ]
                                   },
                                   "visibility": {
                                     "type": "string",
@@ -41532,13 +41624,13 @@
                                   "title",
                                   "kind",
                                   "externalId",
-                                  "agentId",
                                   "createdAt",
                                   "updatedAt",
                                   "lastQueuedAt",
                                   "createdBy",
                                   "projectId",
                                   "level",
+                                  "agentId",
                                   "visibility",
                                   "vm",
                                   "sessionSource",
@@ -41954,12 +42046,6 @@
                                 "null"
                               ]
                             },
-                            "agentId": {
-                              "type": [
-                                "string",
-                                "null"
-                              ]
-                            },
                             "createdAt": {
                               "type": "string",
                               "format": "date-time",
@@ -41998,6 +42084,12 @@
                               "type": "integer",
                               "minimum": -9007199254740991,
                               "maximum": 9007199254740991
+                            },
+                            "agentId": {
+                              "type": [
+                                "string",
+                                "null"
+                              ]
                             },
                             "visibility": {
                               "type": "string",
@@ -42236,13 +42328,13 @@
                             "title",
                             "kind",
                             "externalId",
-                            "agentId",
                             "createdAt",
                             "updatedAt",
                             "lastQueuedAt",
                             "createdBy",
                             "projectId",
                             "level",
+                            "agentId",
                             "visibility",
                             "vm",
                             "sessionSource",
@@ -43631,6 +43723,888 @@
               "type": "string",
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/memories": {
+      "get": {
+        "operationId": "listMemories",
+        "summary": "List memories",
+        "description": "List your active persistent memories. Optionally search by query or filter by type.",
+        "tags": [
+          "Memories"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List memories",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+                          },
+                          "description": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "user",
+                              "feedback",
+                              "project",
+                              "reference"
+                            ]
+                          },
+                          "revision": {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                          },
+                          "snippet": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "name",
+                          "description",
+                          "type",
+                          "revision",
+                          "updatedAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "memory not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Memory already exists or revision changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "memory operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "user",
+                "feedback",
+                "project",
+                "reference"
+              ]
+            }
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            "description": "Search names, descriptions and content, ranked by relevance."
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createMemory",
+        "summary": "Create a memory",
+        "description": "Save a persistent memory for yourself across sessions. Memory names are unique per user.",
+        "tags": [
+          "Memories"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Create a memory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "feedback",
+                        "project",
+                        "reference"
+                      ]
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description",
+                    "type",
+                    "revision",
+                    "updatedAt",
+                    "content"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "memory not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Memory already exists or revision changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "memory operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 300,
+                    "description": "One-line summary used to decide relevance later."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "user",
+                      "feedback",
+                      "project",
+                      "reference"
+                    ],
+                    "description": "user: who the user is; feedback: how they want you to work; project: ongoing context; reference: external resources."
+                  },
+                  "content": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000
+                  },
+                  "name": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+                  }
+                },
+                "required": [
+                  "description",
+                  "type",
+                  "content",
+                  "name"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/memories/{name}": {
+      "get": {
+        "operationId": "retrieveMemory",
+        "summary": "Retrieve a memory",
+        "description": "Retrieve the full content and revision of one of your persistent memories.",
+        "tags": [
+          "Memories"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retrieve a memory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "feedback",
+                        "project",
+                        "reference"
+                      ]
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description",
+                    "type",
+                    "revision",
+                    "updatedAt",
+                    "content"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "memory not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Memory already exists or revision changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "memory operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+            },
+            "required": true
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateMemory",
+        "summary": "Update a memory",
+        "description": "Update content, description or type. Pass the revision last retrieved to prevent overwriting concurrent changes.",
+        "tags": [
+          "Memories"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update a memory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "user",
+                        "feedback",
+                        "project",
+                        "reference"
+                      ]
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    },
+                    "content": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "description",
+                    "type",
+                    "revision",
+                    "updatedAt",
+                    "content"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "memory not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Memory already exists or revision changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "memory operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 300,
+                    "description": "One-line summary used to decide relevance later."
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "user",
+                      "feedback",
+                      "project",
+                      "reference"
+                    ],
+                    "description": "user: who the user is; feedback: how they want you to work; project: ongoing context; reference: external resources."
+                  },
+                  "content": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000
+                  },
+                  "expectedRevision": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991,
+                    "description": "Revision last retrieved. Stale updates fail."
+                  }
+                },
+                "required": [
+                  "expectedRevision"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteMemory",
+        "summary": "Delete a memory",
+        "description": "Archive one of your persistent memories, provided its revision has not changed.",
+        "tags": [
+          "Memories"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Delete a memory",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or missing required organization or user information.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "memory not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Memory already exists or revision changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "memory operation failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "name",
+            "schema": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]{0,99}$"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "expectedRevision",
+            "schema": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
             },
             "required": true
           }
@@ -61033,7 +62007,7 @@
             "name": "type",
             "schema": {
               "minItems": 1,
-              "maxItems": 18,
+              "maxItems": 19,
               "type": "array",
               "items": {
                 "type": "string",
@@ -61524,6 +62498,27 @@
                     "required": [
                       "connectionString",
                       "instanceName",
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "signingSecret": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 4096,
+                        "description": "Signing secret Sazabi shows when you create the webhook endpoint."
+                      },
+                      "type": {
+                        "type": "string",
+                        "const": "sazabi",
+                        "description": "Create a Sazabi integration for automation triggers."
+                      }
+                    },
+                    "required": [
+                      "signingSecret",
                       "type"
                     ],
                     "additionalProperties": false
@@ -62128,7 +63123,8 @@
                           "snyk",
                           "hubspot",
                           "openconnect",
-                          "tailscale"
+                          "tailscale",
+                          "sazabi"
                         ]
                       },
                       "additionalProperties": {
@@ -62185,7 +63181,8 @@
                               "snyk",
                               "hubspot",
                               "openconnect",
-                              "tailscale"
+                              "tailscale",
+                              "sazabi"
                             ]
                           },
                           "isOAuth": {
@@ -62204,6 +63201,11 @@
                             "maxLength": 8192
                           },
                           "templateUrl": {
+                            "type": "string",
+                            "maxLength": 8192
+                          },
+                          "webhookUrl": {
+                            "description": "URL the provider sends webhook events to, when it needs one.",
                             "type": "string",
                             "maxLength": 8192
                           }
@@ -62499,7 +63501,8 @@
                               "snyk",
                               "hubspot",
                               "openconnect",
-                              "tailscale"
+                              "tailscale",
+                              "sazabi"
                             ]
                           },
                           "triggers": {
@@ -63033,7 +64036,8 @@
                         "snyk",
                         "hubspot",
                         "openconnect",
-                        "tailscale"
+                        "tailscale",
+                        "sazabi"
                       ]
                     },
                     "defaultFilters": {
