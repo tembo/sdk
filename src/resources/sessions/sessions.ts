@@ -368,6 +368,12 @@ export interface SessionListParams {
    */
   agentId?: string;
   /**
+   * Filter sessions started by this Bot.
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  botId?: string;
+  /**
    * Filter by creator IDs, supplied as a comma-separated list.
    */
   createdBy?: Array<string>;
@@ -498,11 +504,6 @@ export namespace SessionListResponse {
   export interface Item {
     agent: string | null;
     /**
-     * @format uuid
-     * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
-     */
-    agentId: string | null;
-    /**
      * @format date-time
      * @pattern ^(?:(?:\d\d[2468][048]|\d\d[13579][26]|\d\d0[48]|[02468][048]00|[13579][26]00)-02-29|\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\d|30)|(?:02)-(?:0[1-9]|1\d|2[0-8])))T(?:(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d+)?(?:Z))$
      */
@@ -541,6 +542,11 @@ export namespace SessionListResponse {
      * @deprecated
      */
     visibility: 'private' | 'public';
+    /**
+     * @format uuid
+     * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+     */
+    agentId: string | null;
     artifacts: Array<Item.Artifact>;
     diffSummary: Item.DiffSummary | null;
     /**
@@ -822,11 +828,6 @@ export namespace SessionCreateParams {
 
 export interface SessionCreateResponse {
   agent: string | null;
-  /**
-   * @format uuid
-   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
-   */
-  agentId: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   baseBranch: string | null;
   branchName: string | null;
@@ -880,6 +881,11 @@ export interface SessionCreateResponse {
    * @deprecated
    */
   visibility: 'private' | 'public';
+  /**
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  agentId: string | null;
   artifacts: Array<SessionCreateResponse.Artifact>;
   /**
    * Whether the session VM is sized automatically.
@@ -1103,11 +1109,6 @@ export namespace SessionCreateResponse {
 
 export interface SessionRetrieveResponse {
   agent: string | null;
-  /**
-   * @format uuid
-   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
-   */
-  agentId: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   baseBranch: string | null;
   branchName: string | null;
@@ -1161,6 +1162,11 @@ export interface SessionRetrieveResponse {
    * @deprecated
    */
   visibility: 'private' | 'public';
+  /**
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  agentId: string | null;
   artifacts: Array<SessionRetrieveResponse.Artifact>;
   /**
    * Whether the session VM is sized automatically.
@@ -1499,11 +1505,6 @@ export namespace SessionUpdateParams {
 
 export interface SessionUpdateResponse {
   agent: string | null;
-  /**
-   * @format uuid
-   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
-   */
-  agentId: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   baseBranch: string | null;
   branchName: string | null;
@@ -1557,6 +1558,11 @@ export interface SessionUpdateResponse {
    * @deprecated
    */
   visibility: 'private' | 'public';
+  /**
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  agentId: string | null;
   artifacts: Array<SessionUpdateResponse.Artifact>;
   /**
    * Whether the session VM is sized automatically.
@@ -1809,11 +1815,6 @@ export interface SessionForkParams {
 
 export interface SessionForkResponse {
   agent: string | null;
-  /**
-   * @format uuid
-   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
-   */
-  agentId: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   baseBranch: string | null;
   branchName: string | null;
@@ -1867,6 +1868,11 @@ export interface SessionForkResponse {
    * @deprecated
    */
   visibility: 'private' | 'public';
+  /**
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  agentId: string | null;
   artifacts: Array<SessionForkResponse.Artifact>;
   /**
    * Whether the session VM is sized automatically.
@@ -2138,11 +2144,6 @@ export namespace SessionImportParams {
 
 export interface SessionImportResponse {
   agent: string | null;
-  /**
-   * @format uuid
-   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
-   */
-  agentId: string | null;
   artifactType: 'PullRequest' | 'ToolCall' | 'Plan' | 'Response' | 'File' | 'Service' | 'Source' | null;
   baseBranch: string | null;
   branchName: string | null;
@@ -2196,6 +2197,11 @@ export interface SessionImportResponse {
    * @deprecated
    */
   visibility: 'private' | 'public';
+  /**
+   * @format uuid
+   * @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  agentId: string | null;
   artifacts: Array<SessionImportResponse.Artifact>;
   /**
    * Whether the session VM is sized automatically.

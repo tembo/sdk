@@ -130,7 +130,7 @@ export namespace RoleListResponse {
     color: string;
     isDefault: boolean;
     /**
-     * @maxItems 250
+     * @maxItems 252
      */
     permissions: Array<
       | 'organization:audit_log:read'
@@ -367,6 +367,8 @@ export namespace RoleListResponse {
       | 'pin:write'
       | 'folder:read'
       | 'folder:write'
+      | 'memory:read'
+      | 'memory:write'
       | 'queue:job:read'
       | 'queue:job:write'
       | 'queue:host_manager_job:read'
@@ -400,7 +402,7 @@ export interface RoleCreateParams {
    */
   name: string;
   /**
-   * @maxItems 250
+   * @maxItems 252
    */
   permissions: Array<
     | 'organization:audit_log:read'
@@ -637,6 +639,8 @@ export interface RoleCreateParams {
     | 'pin:write'
     | 'folder:read'
     | 'folder:write'
+    | 'memory:read'
+    | 'memory:write'
     | 'queue:job:read'
     | 'queue:job:write'
     | 'queue:host_manager_job:read'
@@ -698,7 +702,7 @@ export interface RoleRetrieveResponse {
   color: string;
   isDefault: boolean;
   /**
-   * @maxItems 250
+   * @maxItems 252
    */
   permissions: Array<
     | 'organization:audit_log:read'
@@ -935,6 +939,8 @@ export interface RoleRetrieveResponse {
     | 'pin:write'
     | 'folder:read'
     | 'folder:write'
+    | 'memory:read'
+    | 'memory:write'
     | 'queue:job:read'
     | 'queue:job:write'
     | 'queue:host_manager_job:read'
@@ -1005,7 +1011,7 @@ export interface RoleUpdateParams {
   color?: 'neutral' | 'red' | 'orange' | 'yellow' | 'green' | 'teal' | 'blue' | 'purple' | 'pink';
   /**
    * Body param
-   * @maxItems 250
+   * @maxItems 252
    */
   permissions?: Array<
     | 'organization:audit_log:read'
@@ -1242,6 +1248,8 @@ export interface RoleUpdateParams {
     | 'pin:write'
     | 'folder:read'
     | 'folder:write'
+    | 'memory:read'
+    | 'memory:write'
     | 'queue:job:read'
     | 'queue:job:write'
     | 'queue:host_manager_job:read'

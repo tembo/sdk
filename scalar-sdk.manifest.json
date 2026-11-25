@@ -1,7 +1,7 @@
 {
   "name": "TemboSdk",
   "slug": "temboSdk",
-  "generatorVersion": "0.45.0",
+  "generatorVersion": "0.46.2",
   "servers": [
     "https://api.tembo.io/"
   ],
@@ -4658,6 +4658,76 @@
       }
     },
     {
+      "name": "sazabi_issue_filters",
+      "source": "sazabi_issue_filters",
+      "publicAliases": [],
+      "deprecated": false,
+      "type": {
+        "kind": "object",
+        "properties": [
+          {
+            "name": "severities",
+            "publicName": "severities",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "enum",
+                "values": [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low"
+                ],
+                "names": [
+                  "Critical",
+                  "High",
+                  "Medium",
+                  "Low"
+                ],
+                "deprecations": [
+                  false,
+                  false,
+                  false,
+                  false
+                ]
+              }
+            }
+          },
+          {
+            "name": "projects",
+            "publicName": "projects",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "components",
+            "publicName": "components",
+            "required": false,
+            "deprecated": false,
+            "type": {
+              "kind": "array",
+              "items": {
+                "kind": "primitive",
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "additionalProperties": {
+          "kind": "unknown"
+        }
+      }
+    },
+    {
       "name": "sentry_issue_created_filters",
       "source": "sentry_issue_created_filters",
       "publicAliases": [],
@@ -5017,6 +5087,10 @@
           },
           {
             "kind": "ref",
+            "name": "sazabi_issue_filters"
+          },
+          {
+            "kind": "ref",
             "name": "sentry_issue_created_filters"
           },
           {
@@ -5292,6 +5366,7 @@
           }
         ],
         "variantNames": [
+          null,
           null,
           null,
           null,
@@ -6015,6 +6090,10 @@
           },
           {
             "kind": "ref",
+            "name": "sazabi_issue_filters"
+          },
+          {
+            "kind": "ref",
             "name": "sentry_issue_created_filters"
           },
           {
@@ -6339,6 +6418,7 @@
           null,
           null,
           null,
+          null,
           null
         ]
       }
@@ -6414,6 +6494,7 @@
     "organizations.settings",
     "organizations.subscriptions",
     "mcpConnections",
+    "memories",
     "artifacts",
     "messages",
     "models",
@@ -6469,6 +6550,7 @@
     "organizations.settings",
     "organizations.subscriptions",
     "mcpConnections",
+    "memories",
     "artifacts",
     "messages",
     "models",
@@ -14413,6 +14495,641 @@
       "transport": "http"
     },
     {
+      "resource": "memories",
+      "publicResource": "memories",
+      "operation": "list",
+      "publicOperation": "list",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/memories",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [
+        "cursor",
+        "limit",
+        "type",
+        "query"
+      ],
+      "publicQueryParams": [
+        "cursor",
+        "limit",
+        "type",
+        "query"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [],
+      "queryParamDetails": [
+        {
+          "name": "cursor",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "limit",
+          "required": false,
+          "style": "form",
+          "explode": true,
+          "defaultValue": 50
+        },
+        {
+          "name": "type",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "query",
+          "required": false,
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "MemoryListParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "memories",
+      "publicResource": "memories",
+      "operation": "create",
+      "publicOperation": "create",
+      "deprecated": false,
+      "method": "POST",
+      "path": "/v1/memories",
+      "pathParams": [],
+      "publicPathParams": [],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [
+        "description",
+        "type",
+        "content",
+        "name"
+      ],
+      "publicBodyParams": [
+        "description",
+        "type",
+        "content",
+        "name"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "description",
+          "required": true
+        },
+        {
+          "name": "type",
+          "required": true
+        },
+        {
+          "name": "content",
+          "required": true
+        },
+        {
+          "name": "name",
+          "required": true
+        }
+      ],
+      "pathParamDetails": [],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "MemoryCreateParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
+      },
+      "response": {
+        "status": "201",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "201",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "memories",
+      "publicResource": "memories",
+      "operation": "retrieve",
+      "publicOperation": "retrieve",
+      "deprecated": false,
+      "method": "GET",
+      "path": "/v1/memories/{name}",
+      "pathParams": [
+        "name"
+      ],
+      "publicPathParams": [
+        "name"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "name",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "MemoryRetrieveParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "memories",
+      "publicResource": "memories",
+      "operation": "update",
+      "publicOperation": "update",
+      "deprecated": false,
+      "method": "PATCH",
+      "path": "/v1/memories/{name}",
+      "pathParams": [
+        "name"
+      ],
+      "publicPathParams": [
+        "name"
+      ],
+      "queryParams": [],
+      "publicQueryParams": [],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [
+        "description",
+        "type",
+        "content",
+        "expectedRevision"
+      ],
+      "publicBodyParams": [
+        "description",
+        "type",
+        "content",
+        "expectedRevision"
+      ],
+      "bodyParamDetails": [
+        {
+          "name": "description",
+          "required": false
+        },
+        {
+          "name": "type",
+          "required": false
+        },
+        {
+          "name": "content",
+          "required": false
+        },
+        {
+          "name": "expectedRevision",
+          "required": true
+        }
+      ],
+      "pathParamDetails": [
+        {
+          "name": "name",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "MemoryUpdateParams"
+      },
+      "requestBody": {
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ],
+        "required": true,
+        "publicName": "body",
+        "publicIdentifier": "body"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
+      "resource": "memories",
+      "publicResource": "memories",
+      "operation": "delete",
+      "publicOperation": "delete",
+      "deprecated": false,
+      "method": "DELETE",
+      "path": "/v1/memories/{name}",
+      "pathParams": [
+        "name"
+      ],
+      "publicPathParams": [
+        "name"
+      ],
+      "queryParams": [
+        "expectedRevision"
+      ],
+      "publicQueryParams": [
+        "expectedRevision"
+      ],
+      "headerParams": [],
+      "publicHeaderParams": [],
+      "bodyParams": [],
+      "publicBodyParams": [],
+      "bodyParamDetails": [],
+      "pathParamDetails": [
+        {
+          "name": "name",
+          "required": true,
+          "style": "simple",
+          "explode": false
+        }
+      ],
+      "queryParamDetails": [
+        {
+          "name": "expectedRevision",
+          "required": true,
+          "style": "form",
+          "explode": true
+        }
+      ],
+      "headerParamDetails": [],
+      "cookieParams": [],
+      "publicCookieParams": [],
+      "cookieParamDetails": [],
+      "paramsModel": {
+        "publicName": "MemoryDeleteParams"
+      },
+      "response": {
+        "status": "200",
+        "contentType": "application/json",
+        "encoding": "json",
+        "contents": [
+          {
+            "contentType": "application/json",
+            "encoding": "json"
+          }
+        ]
+      },
+      "result": {
+        "successStatus": "200",
+        "errorStatuses": [
+          "400",
+          "404",
+          "409",
+          "500"
+        ]
+      },
+      "errorResponses": [
+        {
+          "status": "400",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "404",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "409",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        },
+        {
+          "status": "500",
+          "contentType": "application/json",
+          "encoding": "json",
+          "contents": [
+            {
+              "contentType": "application/json",
+              "encoding": "json"
+            }
+          ]
+        }
+      ],
+      "responseLinks": [],
+      "transport": "http"
+    },
+    {
       "resource": "artifacts",
       "publicResource": "artifacts",
       "operation": "list",
@@ -14427,6 +15144,7 @@
         "limit",
         "jobId",
         "sessionId",
+        "botId",
         "types"
       ],
       "publicQueryParams": [
@@ -14434,6 +15152,7 @@
         "limit",
         "jobId",
         "sessionId",
+        "botId",
         "types"
       ],
       "headerParams": [],
@@ -14464,6 +15183,12 @@
         },
         {
           "name": "sessionId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "botId",
           "required": false,
           "style": "form",
           "explode": true
@@ -18032,6 +18757,7 @@
       "publicPathParams": [],
       "queryParams": [
         "agentId",
+        "botId",
         "createdBy",
         "createdAfter",
         "cursor",
@@ -18059,6 +18785,7 @@
       ],
       "publicQueryParams": [
         "agentId",
+        "botId",
         "createdBy",
         "createdAfter",
         "cursor",
@@ -18093,6 +18820,12 @@
       "queryParamDetails": [
         {
           "name": "agentId",
+          "required": false,
+          "style": "form",
+          "explode": true
+        },
+        {
+          "name": "botId",
           "required": false,
           "style": "form",
           "explode": true

@@ -239,6 +239,7 @@ export namespace TriggerListResponse {
       | TemplatesAPI.LinearIssueLabelAddedFilters
       | TemplatesAPI.LinearIssueStatusChangedFilters
       | TemplatesAPI.LinearIssueUpdatedFilters
+      | Item.SazabiIssueFilters
       | TemplatesAPI.SentryIssueCreatedFilters
       | TemplatesAPI.SlackMessageReactionAddedFilters
       | TemplatesAPI.SlackMessageSentInChannelFilters
@@ -512,6 +513,22 @@ export namespace TriggerListResponse {
       [k: string]: unknown;
     }
 
+    export interface SazabiIssueFilters {
+      /**
+       * Only trigger if the issue has one of the specified severities
+       */
+      severities?: Array<'critical' | 'high' | 'medium' | 'low'>;
+      /**
+       * Only trigger if the issue is in one of these Sazabi projects (name or ID)
+       */
+      projects?: Array<string>;
+      /**
+       * Only trigger if the issue affects one of these components (name or ID)
+       */
+      components?: Array<string>;
+      [k: string]: unknown;
+    }
+
     export interface Filters {
       /**
        * Only trigger if the page is in a space with one of these names or IDs
@@ -706,6 +723,7 @@ export interface TriggerCreateResponse {
     | TemplatesAPI.LinearIssueLabelAddedFilters
     | TemplatesAPI.LinearIssueStatusChangedFilters
     | TemplatesAPI.LinearIssueUpdatedFilters
+    | TriggerCreateResponse.SazabiIssueFilters
     | TemplatesAPI.SentryIssueCreatedFilters
     | TemplatesAPI.SlackMessageReactionAddedFilters
     | TemplatesAPI.SlackMessageSentInChannelFilters
@@ -972,6 +990,22 @@ export namespace TriggerCreateResponse {
     [k: string]: unknown;
   }
 
+  export interface SazabiIssueFilters {
+    /**
+     * Only trigger if the issue has one of the specified severities
+     */
+    severities?: Array<'critical' | 'high' | 'medium' | 'low'>;
+    /**
+     * Only trigger if the issue is in one of these Sazabi projects (name or ID)
+     */
+    projects?: Array<string>;
+    /**
+     * Only trigger if the issue affects one of these components (name or ID)
+     */
+    components?: Array<string>;
+    [k: string]: unknown;
+  }
+
   export interface Filters {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
@@ -1148,6 +1182,7 @@ export interface TriggerRetrieveResponse {
     | TemplatesAPI.LinearIssueLabelAddedFilters
     | TemplatesAPI.LinearIssueStatusChangedFilters
     | TemplatesAPI.LinearIssueUpdatedFilters
+    | TriggerRetrieveResponse.SazabiIssueFilters
     | TemplatesAPI.SentryIssueCreatedFilters
     | TemplatesAPI.SlackMessageReactionAddedFilters
     | TemplatesAPI.SlackMessageSentInChannelFilters
@@ -1414,6 +1449,22 @@ export namespace TriggerRetrieveResponse {
     [k: string]: unknown;
   }
 
+  export interface SazabiIssueFilters {
+    /**
+     * Only trigger if the issue has one of the specified severities
+     */
+    severities?: Array<'critical' | 'high' | 'medium' | 'low'>;
+    /**
+     * Only trigger if the issue is in one of these Sazabi projects (name or ID)
+     */
+    projects?: Array<string>;
+    /**
+     * Only trigger if the issue affects one of these components (name or ID)
+     */
+    components?: Array<string>;
+    [k: string]: unknown;
+  }
+
   export interface Filters {
     /**
      * Only trigger if the page is in a space with one of these names or IDs
@@ -1607,6 +1658,7 @@ export interface TriggerUpdateResponse {
     | TemplatesAPI.LinearIssueLabelAddedFilters
     | TemplatesAPI.LinearIssueStatusChangedFilters
     | TemplatesAPI.LinearIssueUpdatedFilters
+    | TriggerUpdateResponse.SazabiIssueFilters
     | TemplatesAPI.SentryIssueCreatedFilters
     | TemplatesAPI.SlackMessageReactionAddedFilters
     | TemplatesAPI.SlackMessageSentInChannelFilters
@@ -1870,6 +1922,22 @@ export namespace TriggerUpdateResponse {
      * Only trigger if the issue was updated by one of the specified users
      */
     updatedBy?: Array<string>;
+    [k: string]: unknown;
+  }
+
+  export interface SazabiIssueFilters {
+    /**
+     * Only trigger if the issue has one of the specified severities
+     */
+    severities?: Array<'critical' | 'high' | 'medium' | 'low'>;
+    /**
+     * Only trigger if the issue is in one of these Sazabi projects (name or ID)
+     */
+    projects?: Array<string>;
+    /**
+     * Only trigger if the issue affects one of these components (name or ID)
+     */
+    components?: Array<string>;
     [k: string]: unknown;
   }
 
