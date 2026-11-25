@@ -92,6 +92,18 @@ import {
   type McpConnectionUpdateParams,
 } from './resources/mcp-connections';
 import {
+  Memories,
+  type MemoryListResponse,
+  type MemoryCreateResponse,
+  type MemoryRetrieveResponse,
+  type MemoryUpdateResponse,
+  type MemoryDeleteResponse,
+  type MemoryListParams,
+  type MemoryCreateParams,
+  type MemoryUpdateParams,
+  type MemoryDeleteParams,
+} from './resources/memories';
+import {
   Artifacts,
   type ArtifactListResponse,
   type ArtifactCreateResponse,
@@ -1276,6 +1288,7 @@ export class Tembo {
   auditLogs: AuditLogs = new AuditLogs(this);
   organizations: Organizations = new Organizations(this);
   mcpConnections: McpConnections = new McpConnections(this);
+  memories: Memories = new Memories(this);
   artifacts: Artifacts = new Artifacts(this);
   messages: Messages = new Messages(this);
   models: Models = new Models(this);
@@ -1299,6 +1312,7 @@ Tembo.Insights = Insights;
 Tembo.AuditLogs = AuditLogs;
 Tembo.Organizations = Organizations;
 Tembo.McpConnections = McpConnections;
+Tembo.Memories = Memories;
 Tembo.Artifacts = Artifacts;
 Tembo.Messages = Messages;
 Tembo.Models = Models;
@@ -1384,6 +1398,19 @@ export declare namespace Tembo {
     type McpConnectionListParams as McpConnectionListParams,
     type McpConnectionCreateParams as McpConnectionCreateParams,
     type McpConnectionUpdateParams as McpConnectionUpdateParams,
+  };
+
+  export {
+    Memories as Memories,
+    type MemoryListResponse as MemoryListResponse,
+    type MemoryCreateResponse as MemoryCreateResponse,
+    type MemoryRetrieveResponse as MemoryRetrieveResponse,
+    type MemoryUpdateResponse as MemoryUpdateResponse,
+    type MemoryDeleteResponse as MemoryDeleteResponse,
+    type MemoryListParams as MemoryListParams,
+    type MemoryCreateParams as MemoryCreateParams,
+    type MemoryUpdateParams as MemoryUpdateParams,
+    type MemoryDeleteParams as MemoryDeleteParams,
   };
 
   export {

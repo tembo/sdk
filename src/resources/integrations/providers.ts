@@ -123,7 +123,8 @@ export namespace ProviderListResponse {
       | 'snyk'
       | 'hubspot'
       | 'openconnect'
-      | 'tailscale';
+      | 'tailscale'
+      | 'sazabi';
     isOAuth: boolean;
     /**
      * @maxLength 500
@@ -141,6 +142,11 @@ export namespace ProviderListResponse {
      * @maxLength 8192
      */
     templateUrl?: string;
+    /**
+     * URL the provider sends webhook events to, when it needs one.
+     * @maxLength 8192
+     */
+    webhookUrl?: string;
   }
 }
 

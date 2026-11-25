@@ -27,6 +27,7 @@ describe.concurrent('resource sessions', () => {
     async () => {
       const session = await client.sessions.list({
         agentId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
+        botId: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
         createdBy: ['createdBy'],
         createdAfter: '2024-01-01T00:00:00.000Z',
         cursor: 'cursor',

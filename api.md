@@ -77,6 +77,12 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Delete an MCP connection](#delete-an-mcp-connection)
   - [Authorize an MCP connection](#authorize-an-mcp-connection)
   - [Test an MCP connection](#test-an-mcp-connection)
+- [`Memories`](#memories)
+  - [List memories](#list-memories)
+  - [Create a memory](#create-a-memory)
+  - [Retrieve a memory](#retrieve-a-memory)
+  - [Update a memory](#update-a-memory)
+  - [Delete a memory](#delete-a-memory)
 - [`Artifacts`](#artifacts)
   - [List artifacts](#list-artifacts)
   - [Create an artifact](#create-an-artifact)
@@ -1124,6 +1130,83 @@ Test a remote MCP connection by connecting to its server. Stdio connections are 
 
 ```ts
 const mcpConnection = await client.mcpConnections.test('7c9e6679-7425-40de-944b-e07fc1f90ae7');
+```
+
+## `Memories`
+
+### List memories
+
+List your active persistent memories. Optionally search by query or filter by type.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`MemoryListParams`](./src/resources/memories.ts) |
+| Response | [`MemoryListResponse`](./src/resources/memories.ts) |
+
+```ts
+const memory = await client.memories.list({
+  limit: 50,
+});
+```
+
+### Create a memory
+
+Save a persistent memory for yourself across sessions. Memory names are unique per user.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`MemoryCreateParams`](./src/resources/memories.ts) |
+| Response | [`MemoryCreateResponse`](./src/resources/memories.ts) |
+
+```ts
+const memory = await client.memories.create({
+  description: 'x',
+  type: 'user',
+  content: 'x',
+  name: '',
+});
+```
+
+### Retrieve a memory
+
+Retrieve the full content and revision of one of your persistent memories.
+
+| Direction | Type |
+| --- | --- |
+| Response | [`MemoryRetrieveResponse`](./src/resources/memories.ts) |
+
+```ts
+const memory = await client.memories.retrieve('name');
+```
+
+### Update a memory
+
+Update content, description or type. Pass the revision last retrieved to prevent overwriting concurrent changes.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`MemoryUpdateParams`](./src/resources/memories.ts) |
+| Response | [`MemoryUpdateResponse`](./src/resources/memories.ts) |
+
+```ts
+const memory = await client.memories.update('name', {
+  expectedRevision: 1,
+});
+```
+
+### Delete a memory
+
+Archive one of your persistent memories, provided its revision has not changed.
+
+| Direction | Type |
+| --- | --- |
+| Request | [`MemoryDeleteParams`](./src/resources/memories.ts) |
+| Response | [`MemoryDeleteResponse`](./src/resources/memories.ts) |
+
+```ts
+const memory = await client.memories.delete('name', {
+  expectedRevision: 1,
+});
 ```
 
 ## `Artifacts`
