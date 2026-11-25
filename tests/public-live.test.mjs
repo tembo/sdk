@@ -13,6 +13,13 @@ const delta = {
 };
 const params = { resource: 'sessions.events', input: { scope: { sessionId } } };
 const wait = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+async function until(condition, timeout = 5000) {
+  const deadline = Date.now() + timeout;
+  while (!condition()) {
+    assert.ok(Date.now() < deadline, 'condition was not met in time');
+    await wait(5);
+  }
+}
 
 async function fixture() {
   const state = {
@@ -127,6 +134,7 @@ test('public live readiness waits for scoped authorization and the session facad
       await Promise.race([pending.then(() => 'yielded'), wait(50).then(() => 'waiting')]),
       'waiting',
     );
+    await until(() => state.subscriptions.length > 0);
     for (const socket of state.sockets) socket.send(JSON.stringify({ id: 'events', type: 'ready' }));
     assert.deepEqual((await pending).value, { type: 'ready' });
     const end = iterator.next();
