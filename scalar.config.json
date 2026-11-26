@@ -959,9 +959,7 @@
   "environments": {
     "production": "https://api.tembo.io"
   },
-  "environmentOrder": [
-    "production"
-  ],
+  "environmentOrder": ["production"],
   "clientSettings": {
     "opts": {
       "apiKey": {

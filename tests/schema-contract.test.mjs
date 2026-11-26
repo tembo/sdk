@@ -403,7 +403,11 @@ test('automation, skill, and model share and team insight mappings cover the new
       },
     },
   );
-  for (const method of [automationShares.methods.create, skillShares.methods.create, modelShares.methods.create]) {
+  for (const method of [
+    automationShares.methods.create,
+    skillShares.methods.create,
+    modelShares.methods.create,
+  ]) {
     assert.equal(method.bodyParamName, 'body');
   }
 });
@@ -430,10 +434,7 @@ test('sharing mappings preserve the request body and scope of each resource', ()
   for (const [resource, prefix] of [
     [resources.integrations, '/v1/integrations/{integrationId}'],
     [resources.mcp_connections, '/v1/mcp-connections/{mcpConnectionId}'],
-    [
-      resources.organizations.subresources.secrets,
-      '/v1/organizations/{organizationId}/secrets/{secretId}',
-    ],
+    [resources.organizations.subresources.secrets, '/v1/organizations/{organizationId}/secrets/{secretId}'],
     [resources.projects, '/v1/projects/{projectId}'],
   ]) {
     const shares = resource.subresources.shares;
