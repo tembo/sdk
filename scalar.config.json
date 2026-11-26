@@ -203,6 +203,21 @@
               "bodyParamName": "body"
             },
             "delete": "delete /v1/organizations/{organizationId}/secrets/{secretId}"
+          },
+          "subresources": {
+            "shares": {
+              "methods": {
+                "list": "get /v1/organizations/{organizationId}/secrets/{secretId}/sharing",
+                "create": {
+                  "kind": "http",
+                  "endpoint": "post /v1/organizations/{organizationId}/secrets/{secretId}/sharing",
+                  "verb": "post",
+                  "path": "/v1/organizations/{organizationId}/secrets/{secretId}/sharing",
+                  "bodyParamName": "body"
+                },
+                "delete": "delete /v1/organizations/{organizationId}/secrets/{secretId}/sharing/{shareId}"
+              }
+            }
           }
         },
         "settings": {
@@ -240,6 +255,21 @@
         "delete": "delete /v1/mcp-connections/{mcpConnectionId}",
         "authorize": "post /v1/mcp-connections/{mcpConnectionId}/authorize",
         "test": "post /v1/mcp-connections/{mcpConnectionId}/test"
+      },
+      "subresources": {
+        "shares": {
+          "methods": {
+            "list": "get /v1/mcp-connections/{mcpConnectionId}/sharing",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/mcp-connections/{mcpConnectionId}/sharing",
+              "verb": "post",
+              "path": "/v1/mcp-connections/{mcpConnectionId}/sharing",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/mcp-connections/{mcpConnectionId}/sharing/{shareId}"
+          }
+        }
       }
     },
     "memories": {
@@ -592,6 +622,19 @@
             },
             "delete": "delete /v1/projects/{projectId}/schedules/{scheduleId}"
           }
+        },
+        "shares": {
+          "methods": {
+            "list": "get /v1/projects/{projectId}/sharing",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/projects/{projectId}/sharing",
+              "verb": "post",
+              "path": "/v1/projects/{projectId}/sharing",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/projects/{projectId}/sharing/{shareId}"
+          }
         }
       }
     },
@@ -621,29 +664,29 @@
         "retrieve": "get /v1/pull-requests/{pullRequestId}"
       }
     },
-    "agents": {
+    "automations": {
       "models": {
         "agent_options_input": "#/components/schemas/AgentOptionsInput",
-        "agent_state": "#/components/schemas/AgentState"
+        "automation_state": "#/components/schemas/AutomationState"
       },
       "methods": {
-        "list": "get /v1/agents",
+        "list": "get /v1/automations",
         "create": {
           "kind": "http",
-          "endpoint": "post /v1/agents",
+          "endpoint": "post /v1/automations",
           "verb": "post",
-          "path": "/v1/agents",
+          "path": "/v1/automations",
           "bodyParamName": "body"
         },
-        "retrieve": "get /v1/agents/{agentId}",
+        "retrieve": "get /v1/automations/{agentId}",
         "update": {
           "kind": "http",
-          "endpoint": "patch /v1/agents/{agentId}",
+          "endpoint": "patch /v1/automations/{agentId}",
           "verb": "patch",
-          "path": "/v1/agents/{agentId}",
+          "path": "/v1/automations/{agentId}",
           "bodyParamName": "body"
         },
-        "delete": "delete /v1/agents/{agentId}"
+        "delete": "delete /v1/automations/{agentId}"
       },
       "subresources": {
         "templates": {
@@ -687,83 +730,83 @@
             "empty_trigger_filters": "#/components/schemas/EmptyTriggerFilters"
           },
           "methods": {
-            "list": "get /v1/agents/templates",
-            "retrieve": "get /v1/agents/templates/{templateName}"
+            "list": "get /v1/automations/templates",
+            "retrieve": "get /v1/automations/templates/{templateName}"
           }
         },
         "schedules": {
           "methods": {
-            "list": "get /v1/agents/{agentId}/schedules",
+            "list": "get /v1/automations/{agentId}/schedules",
             "create": {
               "kind": "http",
-              "endpoint": "post /v1/agents/{agentId}/schedules",
+              "endpoint": "post /v1/automations/{agentId}/schedules",
               "verb": "post",
-              "path": "/v1/agents/{agentId}/schedules",
+              "path": "/v1/automations/{agentId}/schedules",
               "bodyParamName": "body"
             },
-            "retrieve": "get /v1/agents/{agentId}/schedules/{scheduleId}",
+            "retrieve": "get /v1/automations/{agentId}/schedules/{scheduleId}",
             "update": {
               "kind": "http",
-              "endpoint": "patch /v1/agents/{agentId}/schedules/{scheduleId}",
+              "endpoint": "patch /v1/automations/{agentId}/schedules/{scheduleId}",
               "verb": "patch",
-              "path": "/v1/agents/{agentId}/schedules/{scheduleId}",
+              "path": "/v1/automations/{agentId}/schedules/{scheduleId}",
               "bodyParamName": "body"
             },
-            "delete": "delete /v1/agents/{agentId}/schedules/{scheduleId}"
+            "delete": "delete /v1/automations/{agentId}/schedules/{scheduleId}"
           }
         },
         "triggers": {
           "methods": {
-            "list": "get /v1/agents/{agentId}/triggers",
+            "list": "get /v1/automations/{agentId}/triggers",
             "create": {
               "kind": "http",
-              "endpoint": "post /v1/agents/{agentId}/triggers",
+              "endpoint": "post /v1/automations/{agentId}/triggers",
               "verb": "post",
-              "path": "/v1/agents/{agentId}/triggers",
+              "path": "/v1/automations/{agentId}/triggers",
               "bodyParamName": "body"
             },
-            "retrieve": "get /v1/agents/{agentId}/triggers/{triggerId}",
+            "retrieve": "get /v1/automations/{agentId}/triggers/{triggerId}",
             "update": {
               "kind": "http",
-              "endpoint": "patch /v1/agents/{agentId}/triggers/{triggerId}",
+              "endpoint": "patch /v1/automations/{agentId}/triggers/{triggerId}",
               "verb": "patch",
-              "path": "/v1/agents/{agentId}/triggers/{triggerId}",
+              "path": "/v1/automations/{agentId}/triggers/{triggerId}",
               "bodyParamName": "body"
             },
-            "delete": "delete /v1/agents/{agentId}/triggers/{triggerId}"
+            "delete": "delete /v1/automations/{agentId}/triggers/{triggerId}"
           }
         },
         "runs": {
           "methods": {
-            "list": "get /v1/agents/{agentId}/runs",
-            "create": "post /v1/agents/{agentId}/runs",
-            "retrieve": "get /v1/agents/{agentId}/runs/{runId}"
+            "list": "get /v1/automations/{agentId}/runs",
+            "create": "post /v1/automations/{agentId}/runs",
+            "retrieve": "get /v1/automations/{agentId}/runs/{runId}"
           }
         },
         "content_revisions": {
           "methods": {
-            "list": "get /v1/agents/{agentId}/content-revisions",
-            "retrieve": "get /v1/agents/{agentId}/content-revisions/{version}",
+            "list": "get /v1/automations/{agentId}/content-revisions",
+            "retrieve": "get /v1/automations/{agentId}/content-revisions/{version}",
             "restore": {
               "kind": "http",
-              "endpoint": "post /v1/agents/{agentId}/content-revisions/{version}/restore",
+              "endpoint": "post /v1/automations/{agentId}/content-revisions/{version}/restore",
               "verb": "post",
-              "path": "/v1/agents/{agentId}/content-revisions/{version}/restore",
+              "path": "/v1/automations/{agentId}/content-revisions/{version}/restore",
               "bodyParamName": "body"
             }
           }
         },
         "shares": {
           "methods": {
-            "list": "get /v1/agents/{agentId}/sharing",
+            "list": "get /v1/automations/{agentId}/sharing",
             "create": {
               "kind": "http",
-              "endpoint": "post /v1/agents/{agentId}/sharing",
+              "endpoint": "post /v1/automations/{agentId}/sharing",
               "verb": "post",
-              "path": "/v1/agents/{agentId}/sharing",
+              "path": "/v1/automations/{agentId}/sharing",
               "bodyParamName": "body"
             },
-            "delete": "delete /v1/agents/{agentId}/sharing/{shareId}"
+            "delete": "delete /v1/automations/{agentId}/sharing/{shareId}"
           }
         }
       }
@@ -840,6 +883,19 @@
             "retrieve": "get /v1/integrations/{integrationId}/triggers/{triggerName}",
             "list_filter_options": "get /v1/integrations/{integrationId}/triggers/{triggerName}/filter-options/{field}"
           }
+        },
+        "shares": {
+          "methods": {
+            "list": "get /v1/integrations/{integrationId}/sharing",
+            "create": {
+              "kind": "http",
+              "endpoint": "post /v1/integrations/{integrationId}/sharing",
+              "verb": "post",
+              "path": "/v1/integrations/{integrationId}/sharing",
+              "bodyParamName": "body"
+            },
+            "delete": "delete /v1/integrations/{integrationId}/sharing/{shareId}"
+          }
         }
       }
     },
@@ -903,7 +959,9 @@
   "environments": {
     "production": "https://api.tembo.io"
   },
-  "environmentOrder": ["production"],
+  "environmentOrder": [
+    "production"
+  ],
   "clientSettings": {
     "opts": {
       "apiKey": {
