@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.30.0](https://github.com/tembo/sdk/compare/v0.29.0...v0.30.0) (2026-11-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** map automations and resource sharing
+
+### Features
+
+* **api:** map automations and resource sharing ([51e7096](https://github.com/tembo/sdk/commit/51e70963b98bd74dd706dc34f15aba5ceea0dad9))
+
+
+### Bug Fixes
+
+* **sdk:** align package description with automations ([5323190](https://github.com/tembo/sdk/commit/532319077432d91f7d780c33c01905f021f0a86c))
+
 ## [0.29.0](https://github.com/tembo/sdk/compare/v0.28.0...v0.29.0) (2026-11-25)
 
 
