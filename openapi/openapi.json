@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tembo Public API",
-    "description": "Manage agents, sessions, repositories, and organization resources with the Tembo API.",
+    "description": "Manage automations, sessions, repositories, and organization resources with the Tembo API.",
     "version": "1.0.0"
   },
   "servers": [
@@ -3245,7 +3245,7 @@
         ],
         "description": "Conditions that determine whether the selected integration event starts the agent. Available fields depend on the integration and event type."
       },
-      "AgentState": {
+      "AutomationState": {
         "type": "object",
         "propertyNames": {
           "type": "string"
@@ -3253,10 +3253,10 @@
         "additionalProperties": {},
         "description": "User-defined state keyed by name. Values may be any JSON value, including nested objects and arrays. No application-specific keys are required."
       },
-      "AgentRunEventPayload": {
+      "AutomationRunEventPayload": {
         "type": "object",
         "additionalProperties": {},
-        "description": "Custom webhook input. Arbitrary keys and nested JSON values are preserved and passed to the agent."
+        "description": "Custom webhook input. Arbitrary keys and nested JSON values are preserved and passed to the automation."
       },
       "GlobalMcpServers": {
         "type": "object",
@@ -8187,6 +8187,14 @@
                                       "agent:instruction_revision:write",
                                       "agent:template:read",
                                       "agent:template:write",
+                                      "bot:read",
+                                      "bot:write",
+                                      "bot:message:read",
+                                      "bot:message:write",
+                                      "bot:routine:read",
+                                      "bot:routine:write",
+                                      "bot:queue:read",
+                                      "bot:queue:write",
                                       "session:read",
                                       "session:write",
                                       "session:message:read",
@@ -8508,6 +8516,14 @@
                                       "agent:instruction_revision:write",
                                       "agent:template:read",
                                       "agent:template:write",
+                                      "bot:read",
+                                      "bot:write",
+                                      "bot:message:read",
+                                      "bot:message:write",
+                                      "bot:routine:read",
+                                      "bot:routine:write",
+                                      "bot:queue:read",
+                                      "bot:queue:write",
                                       "session:read",
                                       "session:write",
                                       "session:message:read",
@@ -10950,6 +10966,13 @@
                             "format": "date-time",
                             "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                           },
+                          "createdBy": {
+                            "description": "The member who created it; they reach it without a share. Null for secrets created before sharing.",
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
                           "id": {
                             "type": "string",
                             "format": "uuid",
@@ -10968,6 +10991,7 @@
                         },
                         "required": [
                           "createdAt",
+                          "createdBy",
                           "id",
                           "key",
                           "updatedAt"
@@ -11151,6 +11175,16 @@
               "maxLength": 255
             },
             "description": "Search secret names. Secret values are never returned."
+          },
+          {
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Secrets shared with this team that the caller can read."
           }
         ]
       },
@@ -11179,6 +11213,13 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "description": "The member who created it; they reach it without a share. Null for secrets created before sharing.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "id": {
                       "type": "string",
                       "format": "uuid",
@@ -11197,6 +11238,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "id",
                     "key",
                     "updatedAt"
@@ -11388,6 +11430,13 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "description": "The member who created it; they reach it without a share. Null for secrets created before sharing.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "id": {
                       "type": "string",
                       "format": "uuid",
@@ -11406,6 +11455,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "id",
                     "key",
                     "updatedAt"
@@ -11576,6 +11626,13 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "description": "The member who created it; they reach it without a share. Null for secrets created before sharing.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "id": {
                       "type": "string",
                       "format": "uuid",
@@ -11594,6 +11651,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "id",
                     "key",
                     "updatedAt"
@@ -11936,6 +11994,615 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/secrets/{secretId}/sharing": {
+      "get": {
+        "operationId": "listOrganizationSecretShares",
+        "summary": "List shares",
+        "description": "List the people, teams and organization this is shared with. Requires Write on it.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List shares",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "audience": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user",
+                                  "team",
+                                  "organization"
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "audience",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "secretId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createOrganizationSecretShare",
+        "summary": "Share",
+        "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "team",
+                            "organization"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "audience",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "user",
+                        "description": "One active member."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "User ID of an active member."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "team",
+                        "description": "Every member of a team."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Team ID in this organization."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "organization",
+                        "description": "Everyone in the organization."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Who to share with. Each member then acts only as far as their role allows."
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "secretId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/organizations/{organizationId}/secrets/{secretId}/sharing/{shareId}": {
+      "delete": {
+        "operationId": "deleteOrganizationSecretShare",
+        "summary": "Remove a share",
+        "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
+        "tags": [
+          "Organizations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remove a share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "organizationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "secretId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "shareId",
             "required": true
           }
         ]
@@ -14286,6 +14953,30 @@
                                   "null"
                                 ]
                               },
+                              "plan": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "pro",
+                                      "max",
+                                      "team",
+                                      "enterprise"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ],
+                                "description": "Claude plan of the account, when Anthropic reports one."
+                              },
+                              "organizationName": {
+                                "description": "Claude organization the account signed in with, such as a Team or Enterprise workspace.",
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
                               "connected": {
                                 "type": "boolean"
                               },
@@ -14616,6 +15307,8 @@
                             "required": [
                               "slot",
                               "email",
+                              "plan",
+                              "organizationName",
                               "connected",
                               "reconnectRequired",
                               "usage",
@@ -15572,7 +16265,7 @@
                         "type": "boolean"
                       },
                       "permissions": {
-                        "maxItems": 252,
+                        "maxItems": 260,
                         "type": "array",
                         "items": {
                           "type": "string",
@@ -15667,6 +16360,14 @@
                             "agent:instruction_revision:write",
                             "agent:template:read",
                             "agent:template:write",
+                            "bot:read",
+                            "bot:write",
+                            "bot:message:read",
+                            "bot:message:write",
+                            "bot:routine:read",
+                            "bot:routine:write",
+                            "bot:queue:read",
+                            "bot:queue:write",
                             "session:read",
                             "session:write",
                             "session:message:read",
@@ -16140,7 +16841,7 @@
                     ]
                   },
                   "permissions": {
-                    "maxItems": 252,
+                    "maxItems": 260,
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -16235,6 +16936,14 @@
                         "agent:instruction_revision:write",
                         "agent:template:read",
                         "agent:template:write",
+                        "bot:read",
+                        "bot:write",
+                        "bot:message:read",
+                        "bot:message:write",
+                        "bot:routine:read",
+                        "bot:routine:write",
+                        "bot:queue:read",
+                        "bot:queue:write",
                         "session:read",
                         "session:write",
                         "session:message:read",
@@ -16464,7 +17173,7 @@
                       "type": "boolean"
                     },
                     "permissions": {
-                      "maxItems": 252,
+                      "maxItems": 260,
                       "type": "array",
                       "items": {
                         "type": "string",
@@ -16559,6 +17268,14 @@
                           "agent:instruction_revision:write",
                           "agent:template:read",
                           "agent:template:write",
+                          "bot:read",
+                          "bot:write",
+                          "bot:message:read",
+                          "bot:message:write",
+                          "bot:routine:read",
+                          "bot:routine:write",
+                          "bot:queue:read",
+                          "bot:queue:write",
                           "session:read",
                           "session:write",
                           "session:message:read",
@@ -17037,7 +17754,7 @@
                     ]
                   },
                   "permissions": {
-                    "maxItems": 252,
+                    "maxItems": 260,
                     "type": "array",
                     "items": {
                       "type": "string",
@@ -17132,6 +17849,14 @@
                         "agent:instruction_revision:write",
                         "agent:template:read",
                         "agent:template:write",
+                        "bot:read",
+                        "bot:write",
+                        "bot:message:read",
+                        "bot:message:write",
+                        "bot:routine:read",
+                        "bot:routine:write",
+                        "bot:queue:read",
+                        "bot:queue:write",
                         "session:read",
                         "session:write",
                         "session:message:read",
@@ -18851,13 +19576,24 @@
                               "stdio"
                             ]
                           },
+                          "personal": {
+                            "type": "boolean",
+                            "description": "A personal connection acts as its creator: only they can use or manage it, and it can't be shared. Other connections reach their creator and whoever they are shared with."
+                          },
+                          "createdBy": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
                           "visibility": {
                             "type": "string",
                             "enum": [
                               "shared",
                               "personal"
                             ],
-                            "description": "shared makes the connection available to the organization; personal restricts it to its owner."
+                            "description": "Deprecated, kept until older clients update; use personal instead. personal is the same as personal: true.",
+                            "deprecated": true
                           }
                         },
                         "required": [
@@ -18866,6 +19602,8 @@
                           "name",
                           "serverUrl",
                           "type",
+                          "personal",
+                          "createdBy",
                           "visibility"
                         ],
                         "additionalProperties": false
@@ -19047,6 +19785,16 @@
               "maxLength": 200
             },
             "description": "Search MCP connection names or server URLs."
+          },
+          {
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "MCP connections shared with this team that the caller can read."
           }
         ]
       },
@@ -19117,13 +19865,15 @@
                             "stdio"
                           ]
                         },
-                        "visibility": {
-                          "type": "string",
-                          "enum": [
-                            "shared",
-                            "personal"
-                          ],
-                          "description": "shared makes the connection available to the organization; personal restricts it to its owner."
+                        "personal": {
+                          "type": "boolean",
+                          "description": "A personal connection acts as its creator: only they can use or manage it, and it can't be shared. Other connections reach their creator and whoever they are shared with."
+                        },
+                        "createdBy": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
                         },
                         "args": {
                           "anyOf": [
@@ -19192,6 +19942,15 @@
                           "type": "string",
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                        },
+                        "visibility": {
+                          "type": "string",
+                          "enum": [
+                            "shared",
+                            "personal"
+                          ],
+                          "description": "Deprecated, kept until older clients update; use personal instead. personal is the same as personal: true.",
+                          "deprecated": true
                         }
                       },
                       "required": [
@@ -19200,7 +19959,8 @@
                         "name",
                         "serverUrl",
                         "type",
-                        "visibility",
+                        "personal",
+                        "createdBy",
                         "args",
                         "authType",
                         "command",
@@ -19208,7 +19968,8 @@
                         "envKeys",
                         "headerKeys",
                         "network",
-                        "updatedAt"
+                        "updatedAt",
+                        "visibility"
                       ],
                       "additionalProperties": false
                     }
@@ -19386,14 +20147,19 @@
                         "const": "stdio",
                         "description": "Use stdio for a command-based MCP server."
                       },
+                      "personal": {
+                        "default": false,
+                        "type": "boolean",
+                        "description": "A personal connection acts as its creator: only they can use or manage it, and it can't be shared. Other connections reach their creator and whoever they are shared with."
+                      },
                       "visibility": {
-                        "default": "shared",
                         "type": "string",
                         "enum": [
                           "shared",
                           "personal"
                         ],
-                        "description": "shared makes the connection available to the organization; personal restricts it to its owner."
+                        "description": "Deprecated, kept until older clients update; use personal instead. personal is the same as personal: true.",
+                        "deprecated": true
                       }
                     },
                     "required": [
@@ -19482,14 +20248,19 @@
                         "type": "string",
                         "const": "remote"
                       },
+                      "personal": {
+                        "default": false,
+                        "type": "boolean",
+                        "description": "A personal connection acts as its creator: only they can use or manage it, and it can't be shared. Other connections reach their creator and whoever they are shared with."
+                      },
                       "visibility": {
-                        "default": "shared",
                         "type": "string",
                         "enum": [
                           "shared",
                           "personal"
                         ],
-                        "description": "shared makes the connection available to the organization; personal restricts it to its owner."
+                        "description": "Deprecated, kept until older clients update; use personal instead. personal is the same as personal: true.",
+                        "deprecated": true
                       }
                     },
                     "required": [
@@ -19559,13 +20330,15 @@
                         "stdio"
                       ]
                     },
-                    "visibility": {
-                      "type": "string",
-                      "enum": [
-                        "shared",
-                        "personal"
-                      ],
-                      "description": "shared makes the connection available to the organization; personal restricts it to its owner."
+                    "personal": {
+                      "type": "boolean",
+                      "description": "A personal connection acts as its creator: only they can use or manage it, and it can't be shared. Other connections reach their creator and whoever they are shared with."
+                    },
+                    "createdBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     },
                     "args": {
                       "anyOf": [
@@ -19634,6 +20407,15 @@
                       "type": "string",
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    },
+                    "visibility": {
+                      "type": "string",
+                      "enum": [
+                        "shared",
+                        "personal"
+                      ],
+                      "description": "Deprecated, kept until older clients update; use personal instead. personal is the same as personal: true.",
+                      "deprecated": true
                     }
                   },
                   "required": [
@@ -19642,7 +20424,8 @@
                     "name",
                     "serverUrl",
                     "type",
-                    "visibility",
+                    "personal",
+                    "createdBy",
                     "args",
                     "authType",
                     "command",
@@ -19650,7 +20433,8 @@
                     "envKeys",
                     "headerKeys",
                     "network",
-                    "updatedAt"
+                    "updatedAt",
+                    "visibility"
                   ],
                   "additionalProperties": false
                 }
@@ -19838,13 +20622,15 @@
                         "stdio"
                       ]
                     },
-                    "visibility": {
-                      "type": "string",
-                      "enum": [
-                        "shared",
-                        "personal"
-                      ],
-                      "description": "shared makes the connection available to the organization; personal restricts it to its owner."
+                    "personal": {
+                      "type": "boolean",
+                      "description": "A personal connection acts as its creator: only they can use or manage it, and it can't be shared. Other connections reach their creator and whoever they are shared with."
+                    },
+                    "createdBy": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
                     },
                     "args": {
                       "anyOf": [
@@ -19913,6 +20699,15 @@
                       "type": "string",
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                    },
+                    "visibility": {
+                      "type": "string",
+                      "enum": [
+                        "shared",
+                        "personal"
+                      ],
+                      "description": "Deprecated, kept until older clients update; use personal instead. personal is the same as personal: true.",
+                      "deprecated": true
                     }
                   },
                   "required": [
@@ -19921,7 +20716,8 @@
                     "name",
                     "serverUrl",
                     "type",
-                    "visibility",
+                    "personal",
+                    "createdBy",
                     "args",
                     "authType",
                     "command",
@@ -19929,7 +20725,8 @@
                     "envKeys",
                     "headerKeys",
                     "network",
-                    "updatedAt"
+                    "updatedAt",
+                    "visibility"
                   ],
                   "additionalProperties": false
                 }
@@ -20469,13 +21266,15 @@
                             "stdio"
                           ]
                         },
-                        "visibility": {
-                          "type": "string",
-                          "enum": [
-                            "shared",
-                            "personal"
-                          ],
-                          "description": "shared makes the connection available to the organization; personal restricts it to its owner."
+                        "personal": {
+                          "type": "boolean",
+                          "description": "A personal connection acts as its creator: only they can use or manage it, and it can't be shared. Other connections reach their creator and whoever they are shared with."
+                        },
+                        "createdBy": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
                         },
                         "args": {
                           "anyOf": [
@@ -20544,6 +21343,15 @@
                           "type": "string",
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                        },
+                        "visibility": {
+                          "type": "string",
+                          "enum": [
+                            "shared",
+                            "personal"
+                          ],
+                          "description": "Deprecated, kept until older clients update; use personal instead. personal is the same as personal: true.",
+                          "deprecated": true
                         }
                       },
                       "required": [
@@ -20552,7 +21360,8 @@
                         "name",
                         "serverUrl",
                         "type",
-                        "visibility",
+                        "personal",
+                        "createdBy",
                         "args",
                         "authType",
                         "command",
@@ -20560,7 +21369,8 @@
                         "envKeys",
                         "headerKeys",
                         "network",
-                        "updatedAt"
+                        "updatedAt",
+                        "visibility"
                       ],
                       "additionalProperties": false
                     }
@@ -20861,6 +21671,591 @@
               "format": "uuid",
               "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
             },
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/mcp-connections/{mcpConnectionId}/sharing": {
+      "get": {
+        "operationId": "listMcpConnectionShares",
+        "summary": "List shares",
+        "description": "List the people, teams and organization this is shared with. Requires Write on it.",
+        "tags": [
+          "MCP Connections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List shares",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "audience": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user",
+                                  "team",
+                                  "organization"
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "audience",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "mcpConnectionId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createMcpConnectionShare",
+        "summary": "Share",
+        "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
+        "tags": [
+          "MCP Connections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "team",
+                            "organization"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "audience",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "user",
+                        "description": "One active member."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "User ID of an active member."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "team",
+                        "description": "Every member of a team."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Team ID in this organization."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "organization",
+                        "description": "Everyone in the organization."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Who to share with. Each member then acts only as far as their role allows."
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "mcpConnectionId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/mcp-connections/{mcpConnectionId}/sharing/{shareId}": {
+      "delete": {
+        "operationId": "deleteMcpConnectionShare",
+        "summary": "Remove a share",
+        "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
+        "tags": [
+          "MCP Connections"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remove a share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "mcpConnectionId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "shareId",
             "required": true
           }
         ]
@@ -30110,6 +31505,30 @@
                                   "null"
                                 ]
                               },
+                              "plan": {
+                                "anyOf": [
+                                  {
+                                    "type": "string",
+                                    "enum": [
+                                      "pro",
+                                      "max",
+                                      "team",
+                                      "enterprise"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ],
+                                "description": "Claude plan of the account, when Anthropic reports one."
+                              },
+                              "organizationName": {
+                                "description": "Claude organization the account signed in with, such as a Team or Enterprise workspace.",
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              },
                               "connected": {
                                 "type": "boolean"
                               },
@@ -30440,6 +31859,8 @@
                             "required": [
                               "slot",
                               "email",
+                              "plan",
+                              "organizationName",
                               "connected",
                               "reconnectRequired",
                               "usage",
@@ -45005,6 +46426,13 @@
                             "format": "date-time",
                             "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                           },
+                          "createdBy": {
+                            "description": "The member who created the project, if known.",
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
                           "description": {
                             "type": [
                               "string",
@@ -45330,6 +46758,7 @@
                         },
                         "required": [
                           "createdAt",
+                          "createdBy",
                           "description",
                           "id",
                           "name",
@@ -45509,6 +46938,16 @@
               "maxLength": 120
             },
             "description": "Search project names."
+          },
+          {
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Projects shared with this team that the caller can read."
           }
         ]
       },
@@ -45547,6 +46986,13 @@
                           "type": "string",
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+                        },
+                        "createdBy": {
+                          "description": "The member who created the project, if known.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
                         },
                         "description": {
                           "type": [
@@ -45873,6 +47319,7 @@
                       },
                       "required": [
                         "createdAt",
+                        "createdBy",
                         "description",
                         "id",
                         "name",
@@ -46305,6 +47752,13 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "description": "The member who created the project, if known.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "description": {
                       "type": [
                         "string",
@@ -46630,6 +48084,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "description",
                     "id",
                     "name",
@@ -46786,6 +48241,13 @@
                       "format": "date-time",
                       "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                     },
+                    "createdBy": {
+                      "description": "The member who created the project, if known.",
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
                     "description": {
                       "type": [
                         "string",
@@ -47111,6 +48573,7 @@
                   },
                   "required": [
                     "createdAt",
+                    "createdBy",
                     "description",
                     "id",
                     "name",
@@ -47780,6 +49243,13 @@
                           "format": "date-time",
                           "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                         },
+                        "createdBy": {
+                          "description": "The member who created the project, if known.",
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
                         "description": {
                           "type": [
                             "string",
@@ -48105,6 +49575,7 @@
                       },
                       "required": [
                         "createdAt",
+                        "createdBy",
                         "description",
                         "id",
                         "name",
@@ -52311,6 +53782,591 @@
         ]
       }
     },
+    "/v1/projects/{projectId}/sharing": {
+      "get": {
+        "operationId": "listProjectShares",
+        "summary": "List shares",
+        "description": "List the people, teams and organization this is shared with. Requires Write on it.",
+        "tags": [
+          "Projects"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List shares",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "audience": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user",
+                                  "team",
+                                  "organization"
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "audience",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "projectId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createProjectShare",
+        "summary": "Share",
+        "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
+        "tags": [
+          "Projects"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "team",
+                            "organization"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "audience",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "user",
+                        "description": "One active member."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "User ID of an active member."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "team",
+                        "description": "Every member of a team."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Team ID in this organization."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "organization",
+                        "description": "Everyone in the organization."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Who to share with. Each member then acts only as far as their role allows."
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "projectId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/projects/{projectId}/sharing/{shareId}": {
+      "delete": {
+        "operationId": "deleteProjectShare",
+        "summary": "Remove a share",
+        "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
+        "tags": [
+          "Projects"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remove a share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "projectId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "shareId",
+            "required": true
+          }
+        ]
+      }
+    },
     "/v1/pull-requests": {
       "get": {
         "operationId": "listPullRequests",
@@ -53622,13 +55678,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/sharing": {
+    "/v1/automations/{agentId}/sharing": {
       "get": {
-        "operationId": "listAgentSharesPublic",
+        "operationId": "listAutomationSharesPublic",
         "summary": "List shares",
         "description": "List the people, teams and organization this is shared with. Requires Write on it.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -53829,11 +55885,11 @@
         ]
       },
       "post": {
-        "operationId": "createAgentSharePublic",
+        "operationId": "createAutomationSharePublic",
         "summary": "Share",
         "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -54060,13 +56116,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/sharing/{shareId}": {
+    "/v1/automations/{agentId}/sharing/{shareId}": {
       "delete": {
-        "operationId": "deleteAgentSharePublic",
+        "operationId": "deleteAutomationSharePublic",
         "summary": "Remove a share",
         "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -54207,13 +56263,13 @@
         ]
       }
     },
-    "/v1/agents": {
+    "/v1/automations": {
       "get": {
-        "operationId": "listAgents",
-        "summary": "List agents",
-        "description": "List agents available in your organization, with optional search, status, integration, and author filters.",
+        "operationId": "listAutomations",
+        "summary": "List automations",
+        "description": "List automations available in your organization, with optional search, status, integration, and author filters.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -54222,7 +56278,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List agents",
+            "description": "List automations",
             "content": {
               "application/json": {
                 "schema": {
@@ -54268,7 +56324,7 @@
                           "instructions": {
                             "anyOf": [
                               {
-                                "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                                "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                                 "$ref": "#/components/schemas/TipTapDocument"
                               },
                               {
@@ -54277,7 +56333,7 @@
                             ]
                           },
                           "agent": {
-                            "description": "Runtime and model selection key; not the ID of an agent resource.",
+                            "description": "Runtime and model selection key; not the ID of an automation resource.",
                             "type": [
                               "string",
                               "null"
@@ -54374,7 +56430,7 @@
                                     "type": "integer",
                                     "minimum": -9007199254740991,
                                     "maximum": 9007199254740991,
-                                    "description": "Measured duration of the agent run in milliseconds."
+                                    "description": "Measured duration of the automation run in milliseconds."
                                   },
                                   "errorMessage": {
                                     "type": [
@@ -54554,7 +56610,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -54601,7 +56657,7 @@
               "type": "string",
               "minLength": 1
             },
-            "description": "Only agents shared with this team that the caller can reach."
+            "description": "Only automations shared with this team that the caller can reach."
           },
           {
             "in": "query",
@@ -54610,7 +56666,7 @@
               "type": "string",
               "maxLength": 10000
             },
-            "description": "Filter by agent IDs, supplied as a comma-separated list."
+            "description": "Filter by automation IDs, supplied as a comma-separated list."
           },
           {
             "in": "query",
@@ -54620,7 +56676,7 @@
               "minLength": 1,
               "maxLength": 200
             },
-            "description": "Search agent names."
+            "description": "Search automation names."
           },
           {
             "in": "query",
@@ -54628,7 +56684,7 @@
             "schema": {
               "type": "boolean"
             },
-            "description": "true lists archived agents; false or omitted lists unarchived agents. Use this to find agents to restore."
+            "description": "true lists archived automations; false or omitted lists unarchived automations. Use this to find automations to restore."
           },
           {
             "in": "query",
@@ -54640,7 +56696,7 @@
                 "runCount"
               ]
             },
-            "description": "Sort agents by latest run or run count."
+            "description": "Sort automations by latest run or run count."
           },
           {
             "in": "query",
@@ -54672,11 +56728,11 @@
         ]
       },
       "post": {
-        "operationId": "createAgent",
-        "summary": "Create an agent",
-        "description": "Create an agent from instructions, a template, or another agent. sourceAgentId cannot be combined with other fields. Template creation accepts only templateName, name, and triggers; creation from scratch requires name.",
+        "operationId": "createAutomation",
+        "summary": "Create an automation",
+        "description": "Create an automation from instructions, a template, or another automation. sourceAgentId cannot be combined with other fields. Template creation accepts only templateName, name, and triggers; creation from scratch requires name.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -54685,7 +56741,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Create an agent",
+            "description": "Create an automation",
             "content": {
               "application/json": {
                 "schema": {
@@ -54829,7 +56885,7 @@
                     "instructions": {
                       "anyOf": [
                         {
-                          "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                          "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                           "$ref": "#/components/schemas/TipTapDocument"
                         },
                         {
@@ -54838,7 +56894,7 @@
                       ]
                     },
                     "agent": {
-                      "description": "Runtime and model selection key; not the ID of an agent resource.",
+                      "description": "Runtime and model selection key; not the ID of an automation resource.",
                       "type": [
                         "string",
                         "null"
@@ -54860,7 +56916,7 @@
                     "userState": {
                       "anyOf": [
                         {
-                          "$ref": "#/components/schemas/AgentState"
+                          "$ref": "#/components/schemas/AutomationState"
                         },
                         {
                           "type": "null"
@@ -54939,7 +56995,7 @@
                               "type": "integer",
                               "minimum": -9007199254740991,
                               "maximum": 9007199254740991,
-                              "description": "Measured duration of the agent run in milliseconds."
+                              "description": "Measured duration of the automation run in milliseconds."
                             },
                             "errorMessage": {
                               "type": [
@@ -55089,7 +57145,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -55116,17 +57172,17 @@
                 "type": "object",
                 "properties": {
                   "name": {
-                    "description": "Agent display name. Required when creating from scratch.",
+                    "description": "Automation display name. Required when creating from scratch.",
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 200
                   },
                   "instructions": {
-                    "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                    "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                     "$ref": "#/components/schemas/TipTapDocument"
                   },
                   "mcpServers": {
-                    "description": "MCP server or connection IDs available to agent runs.",
+                    "description": "MCP server or connection IDs available to automation runs.",
                     "maxItems": 100,
                     "type": "array",
                     "items": {
@@ -55142,11 +57198,11 @@
                     "maxLength": 200
                   },
                   "agentOptions": {
-                    "description": "Agent-specific runtime options, such as reasoning effort.",
+                    "description": "Automation-specific runtime options, such as reasoning effort.",
                     "$ref": "#/components/schemas/AgentOptionsInput"
                   },
                   "sandboxSize": {
-                    "description": "Workspace VM size used for agent runs.",
+                    "description": "Workspace VM size used for automation runs.",
                     "anyOf": [
                       {
                         "type": "string",
@@ -55166,7 +57222,7 @@
                     ]
                   },
                   "projectId": {
-                    "description": "Project environment used for agent runs.",
+                    "description": "Project environment used for automation runs.",
                     "anyOf": [
                       {
                         "type": "string",
@@ -55183,7 +57239,7 @@
                     ]
                   },
                   "artifactType": {
-                    "description": "Artifact type produced by this agent.",
+                    "description": "Artifact type produced by this automation.",
                     "anyOf": [
                       {
                         "type": "string",
@@ -55203,7 +57259,7 @@
                     ]
                   },
                   "repositoryIds": {
-                    "description": "Repository IDs available to agent runs.",
+                    "description": "Repository IDs available to automation runs.",
                     "maxItems": 250,
                     "type": "array",
                     "items": {
@@ -55213,7 +57269,7 @@
                     }
                   },
                   "triggers": {
-                    "description": "Integration events that automatically start agent runs.",
+                    "description": "Integration events that automatically start automation runs.",
                     "maxItems": 50,
                     "type": "array",
                     "items": {
@@ -55249,7 +57305,7 @@
                     }
                   },
                   "schedules": {
-                    "description": "Recurring cron schedules that automatically start agent runs.",
+                    "description": "Recurring cron schedules that automatically start automation runs.",
                     "maxItems": 50,
                     "type": "array",
                     "items": {
@@ -55259,7 +57315,7 @@
                           "type": "string",
                           "minLength": 1,
                           "maxLength": 500,
-                          "description": "Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs."
+                          "description": "Cron expression for recurring automation runs. Automation enabled and archived state controls whether the schedule runs."
                         }
                       },
                       "required": [
@@ -55269,7 +57325,7 @@
                     }
                   },
                   "templateName": {
-                    "description": "Create from a template discovered with listAgentTemplates. Only name and triggers may also be supplied.",
+                    "description": "Create from a template discovered with listAutomationTemplates. Only name and triggers may also be supplied.",
                     "type": "string",
                     "enum": [
                       "addTestCoverage",
@@ -55312,7 +57368,7 @@
                     ]
                   },
                   "sourceAgentId": {
-                    "description": "Duplicate an existing agent. Must be the only field; cannot be combined with templateName or overrides.",
+                    "description": "Duplicate an existing automation. Must be the only field; cannot be combined with templateName or overrides.",
                     "type": "string",
                     "format": "uuid",
                     "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
@@ -55326,13 +57382,13 @@
         }
       }
     },
-    "/v1/agents/templates": {
+    "/v1/automations/templates": {
       "get": {
-        "operationId": "listAgentTemplates",
-        "summary": "List agent templates",
-        "description": "List reusable agent templates and their configuration requirements.",
+        "operationId": "listAutomationTemplates",
+        "summary": "List automation templates",
+        "description": "List reusable automation templates and their configuration requirements.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -55341,7 +57397,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List agent templates",
+            "description": "List automation templates",
             "content": {
               "application/json": {
                 "schema": {
@@ -55412,7 +57468,7 @@
                             ]
                           },
                           "instructions": {
-                            "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                            "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                             "$ref": "#/components/schemas/TipTapDocument"
                           },
                           "connectedApps": {
@@ -55612,7 +57668,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -55693,13 +57749,13 @@
         ]
       }
     },
-    "/v1/agents/templates/{templateName}": {
+    "/v1/automations/templates/{templateName}": {
       "get": {
-        "operationId": "retrieveAgentTemplate",
-        "summary": "Retrieve an agent template",
-        "description": "Retrieve a reusable agent template by name, including its instructions and required parameters.",
+        "operationId": "retrieveAutomationTemplate",
+        "summary": "Retrieve an automation template",
+        "description": "Retrieve a reusable automation template by name, including its instructions and required parameters.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -55708,7 +57764,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieve an agent template",
+            "description": "Retrieve an automation template",
             "content": {
               "application/json": {
                 "schema": {
@@ -55774,7 +57830,7 @@
                       ]
                     },
                     "instructions": {
-                      "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                      "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                       "$ref": "#/components/schemas/TipTapDocument"
                     },
                     "connectedApps": {
@@ -55917,7 +57973,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -55950,13 +58006,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}": {
+    "/v1/automations/{agentId}": {
       "get": {
-        "operationId": "retrieveAgent",
-        "summary": "Retrieve an agent",
-        "description": "Retrieve an agent and its configuration, repository associations, and run summary.",
+        "operationId": "retrieveAutomation",
+        "summary": "Retrieve an automation",
+        "description": "Retrieve an automation and its configuration, repository associations, and run summary.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -55965,7 +58021,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieve an agent",
+            "description": "Retrieve an automation",
             "content": {
               "application/json": {
                 "schema": {
@@ -56109,7 +58165,7 @@
                     "instructions": {
                       "anyOf": [
                         {
-                          "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                          "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                           "$ref": "#/components/schemas/TipTapDocument"
                         },
                         {
@@ -56118,7 +58174,7 @@
                       ]
                     },
                     "agent": {
-                      "description": "Runtime and model selection key; not the ID of an agent resource.",
+                      "description": "Runtime and model selection key; not the ID of an automation resource.",
                       "type": [
                         "string",
                         "null"
@@ -56140,7 +58196,7 @@
                     "userState": {
                       "anyOf": [
                         {
-                          "$ref": "#/components/schemas/AgentState"
+                          "$ref": "#/components/schemas/AutomationState"
                         },
                         {
                           "type": "null"
@@ -56219,7 +58275,7 @@
                               "type": "integer",
                               "minimum": -9007199254740991,
                               "maximum": 9007199254740991,
-                              "description": "Measured duration of the agent run in milliseconds."
+                              "description": "Measured duration of the automation run in milliseconds."
                             },
                             "errorMessage": {
                               "type": [
@@ -56369,7 +58425,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -56402,11 +58458,11 @@
         ]
       },
       "patch": {
-        "operationId": "updateAgent",
-        "summary": "Update an agent",
-        "description": "Update agent instructions, model, workspace, repositories, or persistent state; enable or pause the agent; archive or restore it. enabled and archived also control its schedules and triggers. Supply expectedUpdatedAt to reject concurrent changes.",
+        "operationId": "updateAutomation",
+        "summary": "Update an automation",
+        "description": "Update automation instructions, model, workspace, repositories, or persistent state; enable or pause the automation; archive or restore it. enabled and archived also control its schedules and triggers. Supply expectedUpdatedAt to reject concurrent changes.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -56415,7 +58471,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Update an agent",
+            "description": "Update an automation",
             "content": {
               "application/json": {
                 "schema": {
@@ -56559,7 +58615,7 @@
                     "instructions": {
                       "anyOf": [
                         {
-                          "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                          "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                           "$ref": "#/components/schemas/TipTapDocument"
                         },
                         {
@@ -56568,7 +58624,7 @@
                       ]
                     },
                     "agent": {
-                      "description": "Runtime and model selection key; not the ID of an agent resource.",
+                      "description": "Runtime and model selection key; not the ID of an automation resource.",
                       "type": [
                         "string",
                         "null"
@@ -56590,7 +58646,7 @@
                     "userState": {
                       "anyOf": [
                         {
-                          "$ref": "#/components/schemas/AgentState"
+                          "$ref": "#/components/schemas/AutomationState"
                         },
                         {
                           "type": "null"
@@ -56669,7 +58725,7 @@
                               "type": "integer",
                               "minimum": -9007199254740991,
                               "maximum": 9007199254740991,
-                              "description": "Measured duration of the agent run in milliseconds."
+                              "description": "Measured duration of the automation run in milliseconds."
                             },
                             "errorMessage": {
                               "type": [
@@ -56819,7 +58875,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -56858,19 +58914,19 @@
                 "type": "object",
                 "properties": {
                   "expectedUpdatedAt": {
-                    "description": "Value of updatedAt from the last retrieved agent. A concurrent change causes a conflict instead of overwriting newer changes.",
+                    "description": "Value of updatedAt from the last retrieved automation. A concurrent change causes a conflict instead of overwriting newer changes.",
                     "type": "string",
                     "format": "date-time",
                     "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
                   },
                   "name": {
-                    "description": "Rename the agent.",
+                    "description": "Rename the automation.",
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 200
                   },
                   "key": {
-                    "description": "Change the agent lookup key, or null to clear it.",
+                    "description": "Change the automation lookup key, or null to clear it.",
                     "anyOf": [
                       {
                         "type": "string",
@@ -56883,10 +58939,10 @@
                     ]
                   },
                   "instructions": {
-                    "description": "Replace the agent instruction document, or null to clear it.",
+                    "description": "Replace the automation instruction document, or null to clear it.",
                     "anyOf": [
                       {
-                        "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                        "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                         "$ref": "#/components/schemas/TipTapDocument"
                       },
                       {
@@ -56922,8 +58978,8 @@
                     "$ref": "#/components/schemas/AgentOptionsInput"
                   },
                   "userState": {
-                    "description": "Replace the user-managed persistent agent state.",
-                    "$ref": "#/components/schemas/AgentState"
+                    "description": "Replace the user-managed persistent automation state.",
+                    "$ref": "#/components/schemas/AutomationState"
                   },
                   "sandboxSize": {
                     "description": "Change the workspace VM size. Null clears the override.",
@@ -56963,7 +59019,7 @@
                     ]
                   },
                   "templateId": {
-                    "description": "Change the associated agent template identifier, or null to clear it.",
+                    "description": "Change the associated automation template identifier, or null to clear it.",
                     "anyOf": [
                       {
                         "type": "string",
@@ -56975,7 +59031,7 @@
                     ]
                   },
                   "script": {
-                    "description": "Replace the agent script, or null to clear it.",
+                    "description": "Replace the automation script, or null to clear it.",
                     "anyOf": [
                       {
                         "type": "string",
@@ -56987,7 +59043,7 @@
                     ]
                   },
                   "artifactType": {
-                    "description": "Change the artifact type produced by the agent, or null to clear it.",
+                    "description": "Change the artifact type produced by the automation, or null to clear it.",
                     "anyOf": [
                       {
                         "type": "string",
@@ -57020,11 +59076,11 @@
                     }
                   },
                   "enabled": {
-                    "description": "Enable or pause the agent and its schedules and triggers. Archived agents remain paused until restored.",
+                    "description": "Enable or pause the automation and its schedules and triggers. Archived automations remain paused until restored.",
                     "type": "boolean"
                   },
                   "archived": {
-                    "description": "Archive with true or restore with false. Archiving disables schedules and triggers; restoring follows the agent enabled state.",
+                    "description": "Archive with true or restore with false. Archiving disables schedules and triggers; restoring follows the automation enabled state.",
                     "type": "boolean"
                   }
                 },
@@ -57036,11 +59092,11 @@
         }
       },
       "delete": {
-        "operationId": "deleteAgent",
-        "summary": "Delete an agent",
-        "description": "Archive an agent and disable its scheduled and triggered jobs without permanently deleting it. Restore with updateAgent and archived=false.",
+        "operationId": "deleteAutomation",
+        "summary": "Delete an automation",
+        "description": "Archive an automation and disable its scheduled and triggered jobs without permanently deleting it. Restore with updateAutomation and archived=false.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -57049,7 +59105,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete an agent",
+            "description": "Delete an automation",
             "content": {
               "application/json": {
                 "schema": {
@@ -57132,7 +59188,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -57165,13 +59221,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/content-revisions": {
+    "/v1/automations/{agentId}/content-revisions": {
       "get": {
-        "operationId": "listAgentContentRevisions",
-        "summary": "List agent instruction revisions",
-        "description": "List saved revisions of an agent’s instruction JSON document, newest first. Revisions do not include other agent configuration. Author details are redacted from public API responses.",
+        "operationId": "listAutomationContentRevisions",
+        "summary": "List automation instruction revisions",
+        "description": "List saved revisions of an automation’s instruction JSON document, newest first. Revisions do not include other automation configuration. Author details are redacted from public API responses.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -57180,7 +59236,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List agent instruction revisions",
+            "description": "List automation instruction revisions",
             "content": {
               "application/json": {
                 "schema": {
@@ -57314,7 +59370,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -57367,13 +59423,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/content-revisions/{version}": {
+    "/v1/automations/{agentId}/content-revisions/{version}": {
       "get": {
-        "operationId": "retrieveAgentContentRevision",
-        "summary": "Retrieve an agent instruction revision",
-        "description": "Retrieve the instruction JSON document saved in one revision. Other agent configuration is not included. Author details are redacted from public API responses.",
+        "operationId": "retrieveAutomationContentRevision",
+        "summary": "Retrieve an automation instruction revision",
+        "description": "Retrieve the instruction JSON document saved in one revision. Other automation configuration is not included. Author details are redacted from public API responses.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -57382,7 +59438,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieve an agent instruction revision",
+            "description": "Retrieve an automation instruction revision",
             "content": {
               "application/json": {
                 "schema": {
@@ -57428,14 +59484,14 @@
                     "instructions": {
                       "anyOf": [
                         {
-                          "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                          "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                           "$ref": "#/components/schemas/TipTapDocument"
                         },
                         {
                           "type": "null"
                         }
                       ],
-                      "description": "The instruction JSON document saved in this revision. Other agent configuration is not versioned."
+                      "description": "The instruction JSON document saved in this revision. Other automation configuration is not versioned."
                     }
                   },
                   "required": [
@@ -57448,7 +59504,7 @@
                     "instructions"
                   ],
                   "additionalProperties": false,
-                  "description": "A saved revision of an agent’s instruction JSON document."
+                  "description": "A saved revision of an automation’s instruction JSON document."
                 }
               }
             }
@@ -57511,7 +59567,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -57554,13 +59610,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/content-revisions/{version}/restore": {
+    "/v1/automations/{agentId}/content-revisions/{version}/restore": {
       "post": {
-        "operationId": "restoreAgentContentRevision",
-        "summary": "Restore agent instructions",
-        "description": "Restore a saved instruction JSON document and its mentioned integrations, without reverting other agent configuration. A changed document creates a new revision attributed to the caller. Supply the agent’s current contentVersion as expectedContentVersion; a concurrent instruction change returns 409.",
+        "operationId": "restoreAutomationContentRevision",
+        "summary": "Restore automation instructions",
+        "description": "Restore a saved instruction JSON document and its mentioned integrations, without reverting other automation configuration. A changed document creates a new revision attributed to the caller. Supply the automation’s current contentVersion as expectedContentVersion; a concurrent instruction change returns 409.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -57569,7 +59625,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Restore agent instructions",
+            "description": "Restore automation instructions",
             "content": {
               "application/json": {
                 "schema": {
@@ -57713,7 +59769,7 @@
                     "instructions": {
                       "anyOf": [
                         {
-                          "description": "Instructions for the agent as a rich-text document. Mentions can reference integrations used by the agent.",
+                          "description": "Instructions for the automation as a rich-text document. Mentions can reference integrations used by the automation.",
                           "$ref": "#/components/schemas/TipTapDocument"
                         },
                         {
@@ -57722,7 +59778,7 @@
                       ]
                     },
                     "agent": {
-                      "description": "Runtime and model selection key; not the ID of an agent resource.",
+                      "description": "Runtime and model selection key; not the ID of an automation resource.",
                       "type": [
                         "string",
                         "null"
@@ -57744,7 +59800,7 @@
                     "userState": {
                       "anyOf": [
                         {
-                          "$ref": "#/components/schemas/AgentState"
+                          "$ref": "#/components/schemas/AutomationState"
                         },
                         {
                           "type": "null"
@@ -57823,7 +59879,7 @@
                               "type": "integer",
                               "minimum": -9007199254740991,
                               "maximum": 9007199254740991,
-                              "description": "Measured duration of the agent run in milliseconds."
+                              "description": "Measured duration of the automation run in milliseconds."
                             },
                             "errorMessage": {
                               "type": [
@@ -57973,7 +60029,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -58025,7 +60081,7 @@
                     "type": "integer",
                     "exclusiveMinimum": 0,
                     "maximum": 9007199254740991,
-                    "description": "The agent’s current instruction version, used to reject a restore if the instructions have changed."
+                    "description": "The automation’s current instruction version, used to reject a restore if the instructions have changed."
                   }
                 },
                 "required": [
@@ -58038,13 +60094,13 @@
         }
       }
     },
-    "/v1/agents/{agentId}/schedules": {
+    "/v1/automations/{agentId}/schedules": {
       "get": {
-        "operationId": "listAgentSchedules",
-        "summary": "List agent schedules",
-        "description": "List the schedules configured for an agent.",
+        "operationId": "listAutomationSchedules",
+        "summary": "List automation schedules",
+        "description": "List the schedules configured for an automation.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -58053,7 +60109,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List agent schedules",
+            "description": "List automation schedules",
             "content": {
               "application/json": {
                 "schema": {
@@ -58217,7 +60273,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -58271,11 +60327,11 @@
         ]
       },
       "post": {
-        "operationId": "createAgentSchedule",
-        "summary": "Create an agent schedule",
-        "description": "Create a recurring schedule that starts agent runs using a cron expression.",
+        "operationId": "createAutomationSchedule",
+        "summary": "Create an automation schedule",
+        "description": "Create a recurring schedule that starts automation runs using a cron expression.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -58284,7 +60340,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Create an agent schedule",
+            "description": "Create an automation schedule",
             "content": {
               "application/json": {
                 "schema": {
@@ -58423,7 +60479,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -58465,7 +60521,7 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 500,
-                    "description": "Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs."
+                    "description": "Cron expression for recurring automation runs. Automation enabled and archived state controls whether the schedule runs."
                   }
                 },
                 "required": [
@@ -58478,13 +60534,13 @@
         }
       }
     },
-    "/v1/agents/{agentId}/schedules/{scheduleId}": {
+    "/v1/automations/{agentId}/schedules/{scheduleId}": {
       "get": {
-        "operationId": "retrieveAgentSchedule",
-        "summary": "Retrieve an agent schedule",
-        "description": "Retrieve an agent schedule, including its enabled state and next execution time.",
+        "operationId": "retrieveAutomationSchedule",
+        "summary": "Retrieve an automation schedule",
+        "description": "Retrieve an automation schedule, including its enabled state and next execution time.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -58493,7 +60549,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieve an agent schedule",
+            "description": "Retrieve an automation schedule",
             "content": {
               "application/json": {
                 "schema": {
@@ -58632,7 +60688,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -58675,11 +60731,11 @@
         ]
       },
       "patch": {
-        "operationId": "updateAgentSchedule",
-        "summary": "Update an agent schedule",
-        "description": "Change an agent schedule cron expression. Use updateAgent with enabled to enable or pause the agent and its schedules.",
+        "operationId": "updateAutomationSchedule",
+        "summary": "Update an automation schedule",
+        "description": "Change an automation schedule cron expression. Use updateAutomation with enabled to enable or pause the automation and its schedules.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -58688,7 +60744,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Update an agent schedule",
+            "description": "Update an automation schedule",
             "content": {
               "application/json": {
                 "schema": {
@@ -58827,7 +60883,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -58879,7 +60935,7 @@
                     "type": "string",
                     "minLength": 1,
                     "maxLength": 500,
-                    "description": "Cron expression for recurring agent runs. Agent enabled and archived state controls whether the schedule runs."
+                    "description": "Cron expression for recurring automation runs. Automation enabled and archived state controls whether the schedule runs."
                   }
                 },
                 "required": [
@@ -58892,11 +60948,11 @@
         }
       },
       "delete": {
-        "operationId": "deleteAgentSchedule",
-        "summary": "Delete an agent schedule",
-        "description": "Delete a recurring agent schedule.",
+        "operationId": "deleteAutomationSchedule",
+        "summary": "Delete an automation schedule",
+        "description": "Delete a recurring automation schedule.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -58905,7 +60961,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete an agent schedule",
+            "description": "Delete an automation schedule",
             "content": {
               "application/json": {
                 "schema": {
@@ -58988,7 +61044,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -59031,13 +61087,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/triggers": {
+    "/v1/automations/{agentId}/triggers": {
       "get": {
-        "operationId": "listAgentTriggers",
-        "summary": "List agent triggers",
-        "description": "List the integration events configured to start runs of an agent.",
+        "operationId": "listAutomationTriggers",
+        "summary": "List automation triggers",
+        "description": "List the integration events configured to start runs of an automation.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -59046,7 +61102,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List agent triggers",
+            "description": "List automation triggers",
             "content": {
               "application/json": {
                 "schema": {
@@ -59214,7 +61270,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -59268,11 +61324,11 @@
         ]
       },
       "post": {
-        "operationId": "createAgentTrigger",
-        "summary": "Create an agent trigger",
-        "description": "Configure an integration event to start agent runs. Available filters depend on the integration and event name.",
+        "operationId": "createAutomationTrigger",
+        "summary": "Create an automation trigger",
+        "description": "Configure an integration event to start automation runs. Available filters depend on the integration and event name.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -59281,7 +61337,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Create an agent trigger",
+            "description": "Create an automation trigger",
             "content": {
               "application/json": {
                 "schema": {
@@ -59424,7 +61480,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -59495,13 +61551,13 @@
         }
       }
     },
-    "/v1/agents/{agentId}/triggers/{triggerId}": {
+    "/v1/automations/{agentId}/triggers/{triggerId}": {
       "get": {
-        "operationId": "retrieveAgentTrigger",
-        "summary": "Retrieve an agent trigger",
-        "description": "Retrieve an agent trigger and its integration event filters.",
+        "operationId": "retrieveAutomationTrigger",
+        "summary": "Retrieve an automation trigger",
+        "description": "Retrieve an automation trigger and its integration event filters.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -59510,7 +61566,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieve an agent trigger",
+            "description": "Retrieve an automation trigger",
             "content": {
               "application/json": {
                 "schema": {
@@ -59653,7 +61709,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -59696,11 +61752,11 @@
         ]
       },
       "patch": {
-        "operationId": "updateAgentTrigger",
-        "summary": "Update an agent trigger",
-        "description": "Change an agent trigger event, integration, or filters. Use updateAgent with enabled to enable or pause the agent and its triggers.",
+        "operationId": "updateAutomationTrigger",
+        "summary": "Update an automation trigger",
+        "description": "Change an automation trigger event, integration, or filters. Use updateAutomation with enabled to enable or pause the automation and its triggers.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -59709,7 +61765,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Update an agent trigger",
+            "description": "Update an automation trigger",
             "content": {
               "application/json": {
                 "schema": {
@@ -59852,7 +61908,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -59927,11 +61983,11 @@
         }
       },
       "delete": {
-        "operationId": "deleteAgentTrigger",
-        "summary": "Delete an agent trigger",
-        "description": "Delete an integration event trigger for an agent.",
+        "operationId": "deleteAutomationTrigger",
+        "summary": "Delete an automation trigger",
+        "description": "Delete an integration event trigger for an automation.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -59940,7 +61996,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Delete an agent trigger",
+            "description": "Delete an automation trigger",
             "content": {
               "application/json": {
                 "schema": {
@@ -60023,7 +62079,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -60066,13 +62122,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/runs": {
+    "/v1/automations/{agentId}/runs": {
       "get": {
-        "operationId": "listAgentRuns",
-        "summary": "List agent runs",
-        "description": "List executions of an agent, including status, linked session, measured duration, and failure summary.",
+        "operationId": "listAutomationRuns",
+        "summary": "List automation runs",
+        "description": "List executions of an automation, including status, linked session, measured duration, and failure summary.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -60081,7 +62137,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List agent runs",
+            "description": "List automation runs",
             "content": {
               "application/json": {
                 "schema": {
@@ -60120,7 +62176,7 @@
                             "type": "integer",
                             "minimum": -9007199254740991,
                             "maximum": 9007199254740991,
-                            "description": "Measured duration of the agent run in milliseconds."
+                            "description": "Measured duration of the automation run in milliseconds."
                           },
                           "errorMessage": {
                             "type": [
@@ -60221,7 +62277,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -60275,11 +62331,11 @@
         ]
       },
       "post": {
-        "operationId": "createAgentRun",
-        "summary": "Create an agent run",
-        "description": "Queue an agent run. The entire JSON object body is passed to the agent as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution, and includes the run ID to poll for its status and session.",
+        "operationId": "createAutomationRun",
+        "summary": "Create an automation run",
+        "description": "Queue an automation run. The entire JSON object body is passed to the automation as event input; no eventPayload wrapper is needed. Omit the body to run without event input. The response confirms queuing, not completed execution, and includes the run ID to poll for its status and session.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -60288,7 +62344,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Create an agent run",
+            "description": "Create an automation run",
             "content": {
               "application/json": {
                 "schema": {
@@ -60303,7 +62359,7 @@
                       "type": "string",
                       "format": "uuid",
                       "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
-                      "description": "ID of the agent run. Retrieve it with GET /v1/agents/{agentId}/runs/{runId}; its sessionId is set once the run starts its session."
+                      "description": "ID of the automation run. Retrieve it with GET /v1/automations/{agentId}/runs/{runId}; its sessionId is set once the run starts its session."
                     },
                     "agentId": {
                       "type": "string",
@@ -60346,7 +62402,7 @@
             }
           },
           "403": {
-            "description": "The workspace requires a linked GitHub account to run agents",
+            "description": "The workspace requires a linked GitHub account to run automations",
             "content": {
               "application/json": {
                 "schema": {
@@ -60403,7 +62459,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -60427,7 +62483,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AgentRunEventPayload"
+                "$ref": "#/components/schemas/AutomationRunEventPayload"
               }
             }
           }
@@ -60446,13 +62502,13 @@
         ]
       }
     },
-    "/v1/agents/{agentId}/runs/{runId}": {
+    "/v1/automations/{agentId}/runs/{runId}": {
       "get": {
-        "operationId": "retrieveAgentRun",
-        "summary": "Retrieve an agent run",
-        "description": "Retrieve the status, linked session, measured duration, and failure summary of an agent run.",
+        "operationId": "retrieveAutomationRun",
+        "summary": "Retrieve an automation run",
+        "description": "Retrieve the status, linked session, measured duration, and failure summary of an automation run.",
         "tags": [
-          "Agents"
+          "Automations"
         ],
         "security": [
           {
@@ -60461,7 +62517,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Retrieve an agent run",
+            "description": "Retrieve an automation run",
             "content": {
               "application/json": {
                 "schema": {
@@ -60495,7 +62551,7 @@
                       "type": "integer",
                       "minimum": -9007199254740991,
                       "maximum": 9007199254740991,
-                      "description": "Measured duration of the agent run in milliseconds."
+                      "description": "Measured duration of the automation run in milliseconds."
                     },
                     "errorMessage": {
                       "type": [
@@ -60576,7 +62632,7 @@
             }
           },
           "500": {
-            "description": "Agent operation failed",
+            "description": "Automation operation failed",
             "content": {
               "application/json": {
                 "schema": {
@@ -62045,6 +64101,16 @@
               "type": "boolean"
             },
             "description": "Include totalCount for matching integrations."
+          },
+          {
+            "in": "query",
+            "name": "teamId",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Integrations shared with this team that the caller can read."
           }
         ]
       },
@@ -67396,6 +69462,591 @@
               "maxLength": 200
             },
             "description": "Search Slack channel names."
+          }
+        ]
+      }
+    },
+    "/v1/integrations/{integrationId}/sharing": {
+      "get": {
+        "operationId": "listIntegrationShares",
+        "summary": "List shares",
+        "description": "List the people, teams and organization this is shared with. Requires Write on it.",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List shares",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "audience": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "user",
+                                  "team",
+                                  "organization"
+                                ]
+                              },
+                              "id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": [
+                                  "string",
+                                  "null"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "id",
+                              "name"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "audience",
+                          "createdAt"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "nextCursor": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "nextCursor"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "cursor",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "description": "Continuation cursor from the previous response nextCursor. Omit for the first page; null nextCursor means there are no more pages."
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 50,
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            },
+            "description": "Maximum number of items to return in one page. Use nextCursor from the response to fetch more items."
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "integrationId",
+            "required": true
+          }
+        ]
+      },
+      "post": {
+        "operationId": "createIntegrationShare",
+        "summary": "Share",
+        "description": "Share with a person, a team or the whole organization. Each member then acts only as far as their role allows. Requires Write on it.",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "audience": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "user",
+                            "team",
+                            "organization"
+                          ]
+                        },
+                        "id": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "audience",
+                    "createdAt"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "user",
+                        "description": "One active member."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "User ID of an active member."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "team",
+                        "description": "Every member of a team."
+                      },
+                      "id": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Team ID in this organization."
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "id"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "const": "organization",
+                        "description": "Everyone in the organization."
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  }
+                ],
+                "description": "Who to share with. Each member then acts only as far as their role allows."
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "integrationId",
+            "required": true
+          }
+        ]
+      }
+    },
+    "/v1/integrations/{integrationId}/sharing/{shareId}": {
+      "delete": {
+        "operationId": "deleteIntegrationShare",
+        "summary": "Remove a share",
+        "description": "Stop sharing with one person, team or the organization. Requires Write on it.",
+        "tags": [
+          "Integrations"
+        ],
+        "security": [
+          {
+            "apiKey": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Remove a share",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "deleted"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Validation, authorization, not-found, or conflict error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "permission": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "integrationId",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "shareId",
+            "required": true
           }
         ]
       }

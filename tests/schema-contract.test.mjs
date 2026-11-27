@@ -87,11 +87,11 @@ test('subscription mappings cover user and organization reads without removed re
   assert.equal(validate.path, '/v1/organizations/{organizationId}/settings/validate-credentials');
 });
 
-test('agent content revision mappings cover reads and preserve the restore request body', () => {
+test('automation content revision mappings cover reads and preserve the restore request body', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
-  const contentRevisions = sdkConfig.resources.agents.subresources.content_revisions;
+  const contentRevisions = sdkConfig.resources.automations.subresources.content_revisions;
   assert.ok(contentRevisions);
-  const prefix = '/v1/agents/{agentId}/content-revisions';
+  const prefix = '/v1/automations/{agentId}/content-revisions';
   validateCoverage(
     {
       paths: {
@@ -146,6 +146,8 @@ test('integration mappings cover management routes and preserve request bodies',
         [`${prefix}/rate-limit`]: { get: {} },
         [`${prefix}/sentry-environments`]: { get: {} },
         [`${prefix}/slack-channels`]: { get: {} },
+        [`${prefix}/sharing`]: { get: {}, post: {} },
+        [`${prefix}/sharing/{shareId}`]: { delete: {} },
       },
     },
     { resources: { integrations } },
@@ -374,17 +376,17 @@ test('organization team and session share mappings cover the new routes', () => 
   }
 });
 
-test('agent, skill, and model share and team insight mappings cover the new routes', () => {
+test('automation, skill, and model share and team insight mappings cover the new routes', () => {
   const sdkConfig = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
-  const agentShares = sdkConfig.resources.agents.subresources.shares;
+  const automationShares = sdkConfig.resources.automations.subresources.shares;
   const skillShares = sdkConfig.resources.skills.subresources.shares;
   const modelShares = sdkConfig.resources.models.subresources.shares;
   const insights = sdkConfig.resources.insights;
   validateCoverage(
     {
       paths: {
-        '/v1/agents/{agentId}/sharing': { get: {}, post: {} },
-        '/v1/agents/{agentId}/sharing/{shareId}': { delete: {} },
+        '/v1/automations/{agentId}/sharing': { get: {}, post: {} },
+        '/v1/automations/{agentId}/sharing/{shareId}': { delete: {} },
         '/v1/skills/{skillId}/sharing': { get: {}, post: {} },
         '/v1/skills/{skillId}/sharing/{shareId}': { delete: {} },
         '/v1/models/{modelId}/sharing': { get: {}, post: {} },
@@ -394,14 +396,18 @@ test('agent, skill, and model share and team insight mappings cover the new rout
     },
     {
       resources: {
-        agents: { subresources: { shares: agentShares } },
+        automations: { subresources: { shares: automationShares } },
         skills: { subresources: { shares: skillShares } },
         models: { subresources: { shares: modelShares } },
         insights: { methods: { list_teams: insights.methods.list_teams } },
       },
     },
   );
-  for (const method of [agentShares.methods.create, skillShares.methods.create, modelShares.methods.create]) {
+  for (const method of [
+    automationShares.methods.create,
+    skillShares.methods.create,
+    modelShares.methods.create,
+  ]) {
     assert.equal(method.bodyParamName, 'body');
   }
 });
@@ -420,5 +426,29 @@ test('memory mappings cover the new routes and preserve request bodies', () => {
   );
   for (const method of [memories.methods.create, memories.methods.update]) {
     assert.equal(method.bodyParamName, 'body');
+  }
+});
+
+test('sharing mappings preserve the request body and scope of each resource', () => {
+  const { resources } = JSON.parse(readFileSync(new URL('../scalar.config.json', import.meta.url)));
+  for (const [resource, prefix] of [
+    [resources.integrations, '/v1/integrations/{integrationId}'],
+    [resources.mcp_connections, '/v1/mcp-connections/{mcpConnectionId}'],
+    [resources.organizations.subresources.secrets, '/v1/organizations/{organizationId}/secrets/{secretId}'],
+    [resources.projects, '/v1/projects/{projectId}'],
+  ]) {
+    const shares = resource.subresources.shares;
+    const path = `${prefix}/sharing`;
+    validateCoverage(
+      { paths: { [path]: { get: {}, post: {} }, [`${path}/{shareId}`]: { delete: {} } } },
+      { resources: { shares } },
+    );
+    assert.deepEqual(shares.methods.create, {
+      kind: 'http',
+      endpoint: `post ${path}`,
+      verb: 'post',
+      path,
+      bodyParamName: 'body',
+    });
   }
 });
