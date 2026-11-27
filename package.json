@@ -1,7 +1,7 @@
 {
   "name": "@tembo-io/sdk",
   "version": "0.29.0",
-  "description": "Manage agents, sessions, repositories, and organization resources with the Tembo API.",
+  "description": "Manage automations, sessions, repositories, and organization resources with the Tembo API.",
   "author": "Tembo SDK",
   "repository": {
     "type": "git",
